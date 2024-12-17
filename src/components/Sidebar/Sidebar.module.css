@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+* {
+  font-family: "Roboto";
+}
+
+.drawer::-webkit-scrollbar {
+  width: 0px;
+}
+
+.drawer {
+  display: flex;
+  justify-content: "space-between";
+}
+
+.Icons {
+  width: 18px;
+  color: "blue";
+}
+
+.logo {
+  width: 130px;
+  height: 100%;
+}
+
+.active {
+  background-color: #db0e0e;
+}
+
+.DrawerDiv>div::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  color: grey;
+}
+
+.listItemText {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: white;
+}
+
+.toolbarStyle {
+  display: flex !important;
+  justify-content: space-between !important;
+  border: 1px solid #eaefff !important;
+  height: 66px !important;
+  /* padding-left: 10px !important; */
+}
+
+.notificationBox {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 10px !important;
+}
+
+.styleNotification {
+  border-radius: 0% !important;
+  gap: 5px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  /* margin-right: 24px !important; */
+}
+
+.profileMenuStyle {
+  border-radius: 0% !important;
+  gap: 5px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+.ProfileStyle {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  overflow: hidden !important;
+}
+
+.ProfileStyleDiv {
+  width: 32px !important;
+  height: 32px !important;
+  overflow: hidden !important;
+  border-radius: 50% !important;
+}
+
+.avtarStyle {
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 2px !important;
+}
+
+.empIdStyle {
+  color: #085084 !important;
+  text-align: center !important;
+  margin-bottom: 2px !important;
+  font-weight: 600 !important;
+  margin-left: 8px !important;
+}
+
+@media screen and (max-width: 768px) {
+  .DrawerDiv>div {
+    position: fixed;
+    z-index: 1300;
+  }
+
+  .DrawerDiv2>div {
+    width: 0;
+    display: none;
+    visibility: hidden;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .toolbarStyle {
+    padding-left: 10px !important;
+  }
+}

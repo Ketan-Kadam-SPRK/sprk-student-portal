@@ -1,7 +1,7 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import thunkMiddleware from "redux-thunk";
+import { thunk } from "redux-thunk";
 import {
   FLUSH,
   REHYDRATE,
@@ -15,6 +15,7 @@ import authSlice from "./components/Login/store/authSlice";
 
 const persistConfig = { key: "auth", storage, version: 1 };
 
+// Use authSlice.reducer
 const persistreducer = persistReducer(persistConfig, authSlice);
 
 const rootReducer = {
@@ -29,7 +30,7 @@ const store = configureStore({
       serializableCheck: {
         ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(thunkMiddleware),
+    }).concat(thunk),
 });
 
 export { store, persistStore };
