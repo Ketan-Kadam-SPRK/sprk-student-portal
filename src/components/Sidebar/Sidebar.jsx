@@ -82,7 +82,6 @@ function Sidebar() {
 
   let activeTab = localStorage.setItem("activeTab", locationPath.split("/")[1]);
 
-  let subActiveTab = locationPath.split("/")[2];
 
   for (const path in tabMapping) {
     if (locationPath.startsWith(path)) {
@@ -91,74 +90,24 @@ function Sidebar() {
     }
   }
 
-  subActiveTab = locationPath?.split("/")[2];
-
   const setActiveTab = (tabName) => {
     localStorage.setItem("activeTab", tabName);
   };
 
-  const setSubActiveTab = (tabName) => {
-    localStorage.setItem("subActiveTab", tabName);
-  };
-
+  
   useEffect(() => {
     setActiveTab(locationPath?.split("/")[1]);
   }, []);
 
   useEffect(() => {
     setActiveTab(activeTab);
-    setSubActiveTab(subActiveTab);
-    setMenuState((prevState) => ({
-      openLms: false,
-      openCenter: false,
-      openEms: false,
-      openBatchScheduling: false,
-      openAcademics: false,
-      openExamination: false,
-      openCertificate: false,
-      openCMS: false,
-      openSiteManager: false,
-      openPlacement: false,
-      [`open${activeTab}`]: true, // Only toggle the clicked menu
-    }));
-  }, [activeTab, subActiveTab]);
+   
+  }, [activeTab]);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
 
-  const handleSubTabClick = (tabName) => {
-    setSubActiveTab(tabName);
-  };
-
-  const [menuState, setMenuState] = useState({
-    openLms: false,
-    openCenter: false,
-    openEms: false,
-    openBatchScheduling: false,
-    openAcademics: false,
-    openExamination: false,
-    openCertificate: false,
-    openCMS: false,
-    openSiteManager: false,
-    openPlacement: false,
-  });
-
-  const toggleMenu = (menuKey) => {
-    setMenuState((prevState) => ({
-      openLms: false,
-      openCenter: false,
-      openEms: false,
-      openBatchScheduling: false,
-      openAcademics: false,
-      openExamination: false,
-      openCertificate: false,
-      openCMS: false,
-      openSiteManager: false,
-      openPlacement: false,
-      [menuKey]: !prevState[menuKey], // Only toggle the clicked menu
-    }));
-  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -237,7 +186,9 @@ function Sidebar() {
             zIndex: (theme) => theme.zIndex.drawer + 1,
           }}
         >
+          
           <Toolbar className={Styles.toolbarStyle}>
+          <Box sx={{ display: "flex", alignItems: "center" ,}}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -270,23 +221,8 @@ function Sidebar() {
                 cloudName="dxlzzgbfw"
               />
             </Box>
-            <Box
-              sx={{
-                margin: "auto",
-                visibility: { xs: "hidden", sm: "hidden", md: "hidden" },
-              }}
-            >
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Search…"
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </Search>
+           
             </Box>
-
             <Box className={Styles.notificationBox}>
               <IconButton
                 size="large"
@@ -374,8 +310,8 @@ function Sidebar() {
             variant="permanent"
             open={open}
             className={Styles.drawer}
-            onMouseEnter={handleDrawerOpen}
-            onMouseLeave={handleDrawerClose}
+            // onMouseEnter={handleDrawerOpen}
+            // onMouseLeave={handleDrawerClose}
           >
             <div
               style={{
@@ -386,7 +322,7 @@ function Sidebar() {
               }}
             >
               <div>
-                <DrawerHeader>
+                <DrawerHeader >
                   <IconButton onClick={handleDrawerClose}>
                     {theme.direction === "rtl" ? (
                       <ChevronRightIcon size="large" color="primary" />
@@ -406,73 +342,8 @@ function Sidebar() {
                       onClick={() => {
                         navigate("/Dashboard");
                         handleTabClick("Dashboard");
-                        toggleMenu("openLms");
                       }}
-                      // isChildVisible={menuState.openLms}
                     />
-
-                  {/* <Collapse in={menuState.openLms} timeout={500} unmountOnExit>
-                    <List
-                      disablePadding
-                      sx={{ backgroundColor: "var(--sidebar-subTab-color)" }}
-                    >
-                      {tabName?.includes("LEADS") && (
-                        <ListItemWIcon
-                          open={open}
-                          icon="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1726553746/mdi_leads-outline_qvibfz.svg"
-                          text="Leads"
-                          route="/Lms/Leads"
-                          isActive={subActiveTab === "Leads"}
-                          onClick={() => {
-                            navigate("/Lms/Leads");
-                            handleSubTabClick("Leads");
-                            handleTabClick("Lms");
-                          }}
-                        />
-                      )}
-                    </List>
-
-                    <List
-                      disablePadding
-                      sx={{ backgroundColor: "var(--sidebar-subTab-color)" }}
-                    >
-                      {tabName?.includes("WEBSITE_LEADS") && (
-                        <ListItemWIcon
-                          open={open}
-                          icon="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1726552200/Group_ypcwly.svg"
-                          text="Website Leads"
-                          route="/Lms/Website_Leads"
-                          isActive={subActiveTab === "Website_Leads"}
-                          onClick={() => {
-                            navigate("/Lms/Website_Leads");
-                            handleSubTabClick("Website_Leads");
-                            handleTabClick("Lms");
-                          }}
-                        />
-                      )}
-                    </List>
-
-                    <List
-                      disablePadding
-                      sx={{ backgroundColor: "var(--sidebar-subTab-color)" }}
-                    >
-                      {tabName?.includes("CORPORATE_LEADS") && (
-                        <ListItemWIcon
-                          open={open}
-                          icon="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1726552199/ph_handshake-light_zmgkpo.svg"
-                          text="Corporate Leads"
-                          route="/Lms/Corporate_Leads"
-                          isActive={subActiveTab === "Corporate_Leads"}
-                          onClick={() => {
-                            navigate("/Lms/Corporate_Leads");
-                            handleSubTabClick("Corporate_Leads");
-                            handleTabClick("Lms");
-                          }}
-                        />
-                      )}
-                    </List>
-                  </Collapse> */}
-
                   
                 </List>
               </div>
