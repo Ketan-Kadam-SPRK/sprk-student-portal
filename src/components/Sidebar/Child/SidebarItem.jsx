@@ -4,7 +4,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Tooltip,
 } from "@mui/material";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import Styles from "../Sidebar.module.css";
@@ -16,18 +15,13 @@ const SidebarItem = ({
   open,
   isActive,
   onClick,
-  handleToggleOpen,
-  isChilds = true,
-  isChildVisible = false,
+
 }) => (
   <ListItem
     disablePadding
-    sx={{
-      backgroundColor: isActive ? "var(--sidebar-acitve-tab)" : "inherit",
-    }}
+  
     onClick={() => {
       if (onClick) onClick();
-      if (handleToggleOpen) handleToggleOpen();
     }}
   >
     <ListItemButton
@@ -37,9 +31,16 @@ const SidebarItem = ({
         justifyContent: "initial",
         // px: 2.5,
         // mr: 3,
+        borderRadius:'10px',
+        backgroundColor: isActive ? "var(--sidebar-acitve-tab)" : "inherit",
+
+        '&:hover': {
+          backgroundColor: isActive ? "var(--sidebar-acitve-tab)" : "inherit",
+          color: isActive ? "var(--sidebar-active-tab-text)" : "white",
+        },
+    
       }}
     >
-      <Tooltip title={title} placement="right" arrow>
         <ListItemIcon
           sx={{
             minWidth: 0,
@@ -56,26 +57,27 @@ const SidebarItem = ({
               cloudName="dxlzzgbfw"
             />
           ) : (
-            React.createElement(Icon, { sx: { color: "white" } })
+            React.createElement(Icon, { sx: { color: isActive ? "var(--sidebar-active-tab-text)" : "white"} })
           )}
         </ListItemIcon>
-      </Tooltip>
-      <ListItemText
-        primaryTypographyProps={{
-          fontSize: "14px",
-          fontWeight: "600",
-          color: "white",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          maxWidth: "100%",
-        }}
-      >
-        {title}
-      </ListItemText>
-      {open && isChilds && (
-        <>{isChildVisible ? <KeyboardArrowUp /> : <KeyboardArrowDown />}</>
-      )}
+        <ListItemText
+  
+  slotProps={{
+    primary: {
+      style: {
+        color: isActive ? "var(--sidebar-active-tab-text)" : "white",
+        fontSize: "var(--font-size-small)",
+        fontWeight: 600,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        maxWidth: "100%",
+      },
+    },
+  }}
+>
+  {title}
+</ListItemText>
     </ListItemButton>
   </ListItem>
 );

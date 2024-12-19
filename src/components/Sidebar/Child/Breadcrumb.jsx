@@ -13,7 +13,7 @@ const Breadcrumb = () => {
 
   const breadcrumbLinkStyle = {
     color: "white", // White text color
-    fontSize: "14px",
+    fontSize:  "var(--font-size-small)"    ,
     fontWeight: "bold",
     textDecoration: "none",
     marginRight: "5px", // Adjust spacing between breadcrumbs

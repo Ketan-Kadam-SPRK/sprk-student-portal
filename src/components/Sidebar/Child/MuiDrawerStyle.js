@@ -1,9 +1,8 @@
 import { styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-import InputBase from "@mui/material/InputBase";
 
-export const drawerWidth = 210;
+export const drawerWidth = 240;
 
 /**
  * @memberof Sidebar
@@ -21,6 +20,7 @@ export const openedMixin = (theme) => ({
   }),
   background: "var(--sidebar-bg-color)",
   color: "white",
+  padding: "10px",
 });
 
 /**
@@ -32,17 +32,26 @@ export const openedMixin = (theme) => ({
  * @returns {Object} - An object containing the style overrides
  */
 export const closedMixin = (theme) => ({
+  width: drawerWidth, // Set the drawer width when it is opena
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`, // Set the drawer width when it is closed
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`, // Adjust width for larger screens
-  },
   background: "var(--sidebar-bg-color)",
   color: "white",
+  padding: "10px",
+
+  // transition: theme.transitions.create("width", {
+  //   easing: theme.transitions.easing.sharp,
+  //   duration: theme.transitions.duration.leavingScreen,
+  // }),
+  // overflowX: "hidden",
+  // width: `calc(${theme.spacing(7)} + 1px)`, // Set the drawer width when it is closed
+  // [theme.breakpoints.up("sm")]: {
+  //   width: `calc(${theme.spacing(8)} + 1px)`, // Adjust width for larger screens
+  // },
+  // background: "var(--sidebar-bg-color)",
+  // color: "white",
 });
 
 export const DrawerHeader = styled("div")(({ theme }) => ({
@@ -89,42 +98,8 @@ export const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: "#EAEFFF",
-
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
-
-export const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-export const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "#8D91A0",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "18ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
-}));
+export const headingTextStyle = {
+  fontSize: "var(--font-size-small)",
+  fontWeight: "bold",
+  color: "white",
+};

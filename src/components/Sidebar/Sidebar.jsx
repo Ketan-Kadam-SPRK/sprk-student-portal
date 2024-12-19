@@ -36,12 +36,10 @@ import { ToastContainer } from "react-toastify";
 // import { useAuthHeaders } from "../../hooks/useAuthHeaders";
 import { tabMapping } from "./Child/ActiveTabsObject";
 import {
-  Search,
   AppBar,
   Drawer,
   DrawerHeader,
-  SearchIconWrapper,
-  StyledInputBase,
+  headingTextStyle,
 } from "./Child/MuiDrawerStyle";
 // import ListItemWIcon from "./Child/ListItemWIcon";
 import SidebarItem from "./Child/SidebarItem";
@@ -66,7 +64,7 @@ function Sidebar() {
   // const headers = useAuthHeaders() ||;
   const tabName = useSelector((state) => state.authSlice.tabName);
   const notificationsData = useSelector((state) => state.authSlice?.notifiData);
- const userProfilePic = null;
+  const userProfilePic = null;
   // State to manage the main sidebar open/close state
   const [open, setOpen] = useState(false);
 
@@ -82,7 +80,6 @@ function Sidebar() {
 
   let activeTab = localStorage.setItem("activeTab", locationPath.split("/")[1]);
 
-
   for (const path in tabMapping) {
     if (locationPath.startsWith(path)) {
       activeTab = tabMapping[path];
@@ -94,20 +91,17 @@ function Sidebar() {
     localStorage.setItem("activeTab", tabName);
   };
 
-  
   useEffect(() => {
     setActiveTab(locationPath?.split("/")[1]);
   }, []);
 
   useEffect(() => {
     setActiveTab(activeTab);
-   
   }, [activeTab]);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
-
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -172,7 +166,6 @@ function Sidebar() {
         height: "100vh",
         gridTemplateRows: "64px 1fr",
         width: "100%",
-        backgroundColor: "white",
       }}
     >
       <CssBaseline />
@@ -186,42 +179,40 @@ function Sidebar() {
             zIndex: (theme) => theme.zIndex.drawer + 1,
           }}
         >
-          
           <Toolbar className={Styles.toolbarStyle}>
-          <Box sx={{ display: "flex", alignItems: "center" ,}}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              // onClick={handleDrawerOpen }
-              onClick={handleToggleSidebar}
-              edge="start"
-              sx={{
-                marginRight: 1,
-                // ...(open && { display: 'none' }),
-                color: "#e4e8ed",
-                // display: { sx: "block", sm: "block", md: "none" },
-                display: {
-                  xs: "block", // visible on extra small screens
-                  sm: "block", // visible on small screens
-                },
-                "@media (min-width: 769px)": {
-                  display: "none", // hide after 768px
-                },
-              }}
-            >
-              {/* {open ? <ChevronLeftIcon /> : <ChevronRightIcon />} */}
-              {/* </IconButton> */}
-              <MenuIcon sx={{ color: "#888888" }} />
-            </IconButton>
-            <Box>
-              {/* Display the logo */}
-              <Image
-                className={Styles.logo}
-                publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg"
-                cloudName="dxlzzgbfw"
-              />
-            </Box>
-           
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                // onClick={handleDrawerOpen }
+                onClick={handleToggleSidebar}
+                edge="start"
+                sx={{
+                  marginRight: 1,
+                  // ...(open && { display: 'none' }),
+                  color: "#e4e8ed",
+                  // display: { sx: "block", sm: "block", md: "none" },
+                  display: {
+                    xs: "block", // visible on extra small screens
+                    sm: "block", // visible on small screens
+                  },
+                  "@media (min-width: 769px)": {
+                    display: "none", // hide after 768px
+                  },
+                }}
+              >
+                {/* {open ? <ChevronLeftIcon /> : <ChevronRightIcon />} */}
+                {/* </IconButton> */}
+                <MenuIcon sx={{ color: "#888888" }} />
+              </IconButton>
+              <Box>
+                {/* Display the logo */}
+                <Image
+                  className={Styles.logo}
+                  publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg"
+                  cloudName="dxlzzgbfw"
+                />
+              </Box>
             </Box>
             <Box className={Styles.notificationBox}>
               <IconButton
@@ -302,7 +293,7 @@ function Sidebar() {
           width: "100%",
           height: "100%",
           overflowY: "auto",
-          backgroundColor: "var(--secondry-color)",
+          // backgroundColor: "var(--secondry-color)",
         }}
       >
         <div className={open ? Styles.DrawerDiv : Styles.DrawerDiv2}>
@@ -322,7 +313,7 @@ function Sidebar() {
               }}
             >
               <div>
-                <DrawerHeader >
+                <DrawerHeader>
                   <IconButton onClick={handleDrawerClose}>
                     {theme.direction === "rtl" ? (
                       <ChevronRightIcon size="large" color="primary" />
@@ -332,19 +323,97 @@ function Sidebar() {
                   </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <List>
-                    <SidebarItem
-                      title="Dashboard"
-                      icon={PeopleAltIcon}
-                      navigateTo="/Dashboard"
-                      open={open}
-                      isActive={activeTab === "Dashboard"}
-                      onClick={() => {
-                        navigate("/Dashboard");
-                        handleTabClick("Dashboard");
-                      }}
-                    />
-                  
+                <List
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    // gap:1
+                  }}
+                >
+                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                    Overview
+                  </Typography>
+                  <SidebarItem
+                    title="Dashboard"
+                    icon={PeopleAltIcon}
+                    open={open}
+                    isActive={activeTab === "Dashboard"}
+                    onClick={() => {
+                      navigate("/Dashboard");
+                      handleTabClick("Dashboard");
+                    }}
+                  />
+
+                  <Typography
+                    sx={{
+                      fontSize: "var(--font-size-small)",
+                      fontWeight: "bold",
+                      color: "white",
+                      mt: 3,
+                    }}
+                  >
+                    My Schedule
+                  </Typography>
+                  <SidebarItem
+                    title="Attendance"
+                    icon={PeopleAltIcon}
+                    open={open}
+                    isActive={activeTab === "Attendance"}
+                    onClick={() => {
+                      navigate("/Attendance");
+                      handleTabClick("Attendance");
+                    }}
+                  />
+                  <SidebarItem
+                    title="Exam & Project"
+                    icon={PeopleAltIcon}
+                    open={open}
+                    isActive={activeTab === "Exam"}
+                    onClick={() => {
+                      navigate("/Exam");
+                      handleTabClick("Exam");
+                    }}
+                  />
+
+                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                    Course Details
+                  </Typography>
+                  <SidebarItem
+                    title="Payments"
+                    icon={PeopleAltIcon}
+                    open={open}
+                    isActive={activeTab === "Payments"}
+                    onClick={() => {
+                      navigate("/Payments");
+                      handleTabClick("Payments");
+                    }}
+                  />
+
+                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                    Career
+                  </Typography>
+                  <SidebarItem
+                    title="Certificates"
+                    icon={PeopleAltIcon}
+                    open={open}
+                    isActive={activeTab === "Certificates"}
+                    onClick={() => {
+                      navigate("/Certificates");
+                      handleTabClick("Certificates");
+                    }}
+                  />
+
+                  <SidebarItem
+                    title="Job Opportunities"
+                    icon={PeopleAltIcon}
+                    open={open}
+                    isActive={activeTab === "Job_Opportunities"}
+                    onClick={() => {
+                      navigate("/Job_Opportunities");
+                      handleTabClick("Job_Opportunities");
+                    }}
+                  />
                 </List>
               </div>
               <div>
@@ -359,7 +428,6 @@ function Sidebar() {
           component="main"
           sx={{
             flexGrow: 1,
-            backgroundColor: "var(--secondry-color)",
             width: "100%",
             height: "calc(100vh - 65px)",
             //  width:`calc(100% - ${drawerWidth})`,

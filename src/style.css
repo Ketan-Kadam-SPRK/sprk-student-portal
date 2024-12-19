@@ -1,28 +1,53 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-* {
-  font-family: 'Roboto';
-  font-size: 14px;
-}
+
 
 
 :root {
+  --background-color: #EDF6FF;
+  --text-color: #000000;
   --primary-color: #007bff;
   --secondry-color: #F0F4FF;
 
   /* sidebar colors*/
 
-  --sidebar-bg-color: #0d1821;
-  --sidebar-acitve-tab: #3989B8;
-  --sidebar-subTab-color: #264052;
+  --sidebar-bg-color: #0A2647;
+  --sidebar-acitve-tab: #DCEEFF;
+  --sidebar-active-tab-text: #0073E6;
   --table-header-bg-color: #085186;
-
+  --font-size-small: clamp(14px, 1vw, 16px);
+  --font-size-medium: clamp(16px, 3vw, 20px);
+  --font-size-large: clamp(20px, 4vw, 32px);
   --skill-card-bg-color: linear-gradient(180deg, #02012E 0%, #060513 100%);
   /* --breadcrumb-bg-color: */
 
   /* --sidebar-bg-color: #0d1821;
   --table-header-bg-color: #085186; */
 }
+
+
+[data-theme="dark"] {
+  --background-color: #000000;
+  --text-color: #ffffff;
+}
+
+
+
+body {
+  font-family: 'Roboto';
+  font-size: var(--font-size-medium);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+h1 {
+  font-size: var(--font-size-large);
+}
+
+p {
+  font-size: var(--font-size-small);
+}
+
 
 ::-webkit-scrollbar {
   width: 0px;
