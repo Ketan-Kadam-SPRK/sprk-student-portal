@@ -18,7 +18,6 @@
   --font-size-small: clamp(14px, 1vw, 16px);
   --font-size-medium: clamp(16px, 3vw, 20px);
   --font-size-large: clamp(20px, 4vw, 32px);
-  --skill-card-bg-color: linear-gradient(180deg, #02012E 0%, #060513 100%);
   /* --breadcrumb-bg-color: */
 
   /* --sidebar-bg-color: #0d1821;
