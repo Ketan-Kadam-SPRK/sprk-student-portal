@@ -24,6 +24,7 @@ import Lottie from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
 // import { rearrangeArray } from "../../Utils/tabsRearrangeArray";
 import { LogOut } from "../../Utils/LogOut";
+import { setLogin } from "./store/authSlice";
 
 function modifyCapitalization(inputString) {
   return inputString
@@ -151,108 +152,108 @@ function Login() {
    *              details in state and redirects to the main tab based on the entitlements.
    * @param {Event} event - The form submission event.
    */
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
 
-    setErrors((prev) => ({
-      ...prev,
-      isLoginIdValid: !formData.eid,
-      isPasswordValid: !formData.password,
-    }));
+  //   setErrors((prev) => ({
+  //     ...prev,
+  //     isLoginIdValid: !formData.eid,
+  //     isPasswordValid: !formData.password,
+  //   }));
 
-    // If either is invalid, reset captcha and exit
-    if (!formData.eid || !formData.password) {
-      resetCaptcha();
-      return;
-    }
+  //   // If either is invalid, reset captcha and exit
+  //   if (!formData.eid || !formData.password) {
+  //     resetCaptcha();
+  //     return;
+  //   }
 
-    // Trim string values in the form data
-    // const updatedFormData = TrimmedString(formData);
+  //   // Trim string values in the form data
+  //   // const updatedFormData = TrimmedString(formData);
 
-    if (isHuman) {
-      try {
-        setIsLoading(true);
+  //   if (isHuman) {
+  //     try {
+  //       setIsLoading(true);
 
-        // Dispatch login action and handle the response
-        // const res = await dispatch(loginUser(updatedFormData));
-        const response = null;
-        // res.payload;
+  //       // Dispatch login action and handle the response
+  //       // const res = await dispatch(loginUser(updatedFormData));
+  //       const response = null;
+  //       // res.payload;
 
-        if (response) {
-          const { status, error, data } = response;
-          setStatus(status);
+  //       if (response) {
+  //         const { status, error, data } = response;
+  //         setStatus(status);
 
-          setErrorMsg(error);
+  //         setErrorMsg(error);
 
-          if (data?.token) {
-            const accessToken = data.token;
-            localStorage.setItem("token", accessToken);
+  //         if (data?.token) {
+  //           const accessToken = data.token;
+  //           localStorage.setItem("token", accessToken);
 
-            const decodedToken = jwtDecode(accessToken);
-            const userId = decodedToken.sub;
+  //           const decodedToken = jwtDecode(accessToken);
+  //           const userId = decodedToken.sub;
 
-            // Dispatch getUser action and set user details in state
-            const userResponse = await dispatch(getUser({ accessToken }));
-            const userDetails = userResponse?.payload?.data;
-            const roles = userDetails?.authorities;
-            const entitlements = await rearrangeArray(
-              userDetails?.entitlements,
-              PermissionJson
-            );
+  //           // Dispatch getUser action and set user details in state
+  //           const userResponse = await dispatch(getUser({ accessToken }));
+  //           const userDetails = userResponse?.payload?.data;
+  //           const roles = userDetails?.authorities;
+  //           const entitlements = await rearrangeArray(
+  //             userDetails?.entitlements,
+  //             PermissionJson
+  //           );
 
-            const uniqueNames = await [
-              ...new Set(
-                entitlements?.flatMap((item) => {
-                  return Array.isArray(item.sub)
-                    ? [item.name, ...item.sub.map((subItem) => subItem.name)]
-                    : [item.name];
-                })
-              ),
-            ];
+  //           const uniqueNames = await [
+  //             ...new Set(
+  //               entitlements?.flatMap((item) => {
+  //                 return Array.isArray(item.sub)
+  //                   ? [item.name, ...item.sub.map((subItem) => subItem.name)]
+  //                   : [item.name];
+  //               })
+  //             ),
+  //           ];
 
-            // dispatch(
-            //   setUserDetails({
-            //     userDetails,
-            //     roles,
-            //     entitlements,
-            //     tabName: uniqueNames,
-            //   })
-            // );
+  //           // dispatch(
+  //           //   setUserDetails({
+  //           //     userDetails,
+  //           //     roles,
+  //           //     entitlements,
+  //           //     tabName: uniqueNames,
+  //           //   })
+  //           // );
 
-            // dispatch(
-            //   setLogin({
-            //     user: formData.eid,
-            //     token: accessToken,
-            //     userId,
-            //   })
-            // );
+  //           // dispatch(
+  //           //   setLogin({
+  //           //     user: formData.eid,
+  //           //     token: accessToken,
+  //           //     userId,
+  //           //   })
+  //           // );
 
-            // const mainTabName = await entitlements?.map((item) => item.name);
-            // const capitalizedTabNames = await mainTabName?.map((tabName) =>
-            //   modifyCapitalization(tabName)
-            // );
+  //           // const mainTabName = await entitlements?.map((item) => item.name);
+  //           // const capitalizedTabNames = await mainTabName?.map((tabName) =>
+  //           //   modifyCapitalization(tabName)
+  //           // );
 
-            // navigate(`/${capitalizedTabNames[0]}`);
-          } else {
-            resetCaptcha();
-          }
-        } else {
-          throw new Error("Network response was not ok");
-        }
-      } catch (error) {
-        console.error("Login Failed:", error);
-        // setIsSubmitError(true);
-        resetCaptcha(); // Reset the CAPTCHA state
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      setErrors((prev) => ({
-        ...prev,
-        captchaError: true,
-      }));
-    }
-  };
+  //           // navigate(`/${capitalizedTabNames[0]}`);
+  //         } else {
+  //           resetCaptcha();
+  //         }
+  //       } else {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //     } catch (error) {
+  //       console.error("Login Failed:", error);
+  //       // setIsSubmitError(true);
+  //       resetCaptcha(); // Reset the CAPTCHA state
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   } else {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       captchaError: true,
+  //     }));
+  //   }
+  // };
 
   return (
     <Grid container component="main" sx={{ minHeight: "100vh" }}>
@@ -293,7 +294,14 @@ function Login() {
           />
         </Box>
 
-        <Box
+        <Box>
+          <Image
+            style={{ width: "500px" }}
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1734759238/Frame_2609318_ipiwpz.svg"
+            cloudName="dxlzzgbfw"
+          />
+        </Box>
+        {/* <Box
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -317,7 +325,7 @@ function Login() {
           <Typography sx={{ fontSize: "var(--font-size-medium)" }}>
             Get ready to Connect, Innovate, Inspire.
           </Typography>
-        </Box>
+        </Box> */}
       </Grid>
 
       {/* Right side panel */}
@@ -338,7 +346,10 @@ function Login() {
       >
         <Box sx={{ width: "300px", maxWidth: "90%" }}>
           {/* Login Form */}
-          <form noValidate onSubmit={handleSubmit}>
+          <form
+            noValidate
+            // onSubmit={handleSubmit}
+          >
             <Typography sx={{ fontSize: "28px", fontWeight: "600" }}>
               Log in to your account
             </Typography>
@@ -418,12 +429,20 @@ function Login() {
 
             {/* Login Button */}
             <Button
-              type="submit"
+              // type="submit"
               fullWidth
               variant="contained"
               color="primary"
               sx={{ mt: 3 }}
               disabled={isLoading}
+              onClick={() => {
+                navigate("/");
+                dispatch(
+                  setLogin({
+                    token: "jlkjdlkjlkjdjljdlj",
+                  })
+                );
+              }}
             >
               {isLoading ? <CircularProgress size={24} /> : "Log In"}
             </Button>

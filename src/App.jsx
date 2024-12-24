@@ -3,9 +3,13 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Login from "./components/Login/Login";
 import "./style.css";
+import { useSelector } from "react-redux";
 
 function App() {
-  const isAuthenticated = false;
+  const token = useSelector((state) => state.authSlice.token);
+  const isAuthenticated = token ? true : false;
+  console.log(isAuthenticated);
+  console.log(token);
   return (
     <BrowserRouter>
       <Routes>
