@@ -15,6 +15,8 @@
   --sidebar-acitve-tab: #DCEEFF;
   --sidebar-active-tab-text: #0073E6;
   --table-header-bg-color: #085186;
+  --font-size-extra-small: clamp(12px, 1vw, 13px);
+
   --font-size-small: clamp(14px, 1vw, 16px);
   --font-size-medium: clamp(16px, 3vw, 20px);
   --font-size-large: clamp(20px, 4vw, 32px);

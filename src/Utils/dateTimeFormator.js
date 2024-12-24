@@ -1,0 +1,39 @@
+export function convertToLocalTime(utcString) {
+  const date = new Date(utcString); // Parse the UTC string
+  const localDate = new Date(date.toLocaleString()); // Convert to local time
+
+  let hours = localDate.getHours();
+  const minutes = localDate.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12; // Convert to 12-hour format, 0 should be 12
+  const formattedMinutes = minutes.toString().padStart(2, "0"); // Ensure minutes are two digits
+
+  return `${hours}:${formattedMinutes} ${ampm}`;
+}
+
+export function getRemainingTime(targetTimeUTC) {
+  const now = new Date(); // Current date and time
+  const targetTime = new Date(targetTimeUTC); // Target date and time
+
+  const diffInMs = targetTime - now; // Difference in milliseconds
+  if (diffInMs <= 0) return "Time is up";
+
+  const diffInSeconds = Math.floor(diffInMs / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  if (diffInSeconds < 60) {
+    return `${diffInSeconds} secs to go`;
+  } else if (diffInMinutes < 60) {
+    return `${diffInMinutes} mins to go`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours} hrs to go`;
+  } else {
+    return `${diffInDays} days to go`;
+  }
+}
+
+// Example usage:
+const targetTimeUTC = "2026-04-16T05:30:00Z";
+console.log(getRemainingTime(targetTimeUTC));
