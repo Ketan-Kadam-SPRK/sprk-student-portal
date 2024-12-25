@@ -1,0 +1,35 @@
+.boxContainer {
+    width: 150px;
+    background-color: #6560F0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    /* 1 unit of gap converted to px */
+    padding: 16px;
+    /* 2 units of padding converted to px */
+}
+
+.boxTitle {
+    font-size: var(--font-size-small);
+    color: white;
+    font-weight: bold;
+}
+
+.boxContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.boxNumber {
+    font-size: var(--font-size-large);
+    color: white;
+    font-weight: bold;
+}
+
+.imageContainer img {
+    width: 30px;
+    height: 30px;
+}

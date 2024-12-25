@@ -231,46 +231,13 @@ function Dashboard() {
             flexWrap: "wrap",
           }}
         >
-          <Box
-            sx={{
-              width: "150px",
-              backgroundColor: "#6560F0",
-              borderRadius: "10px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              gap: 1,
-              p: 2,
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "var(--font-size-small)",
-                color: "white",
-                fontWeight: "bold",
-              }}
-            >
-              Ongoing
-            </Typography>
+          <Box className={styles.boxContainer}>
+            <Typography className={styles.boxTitle}>Ongoing</Typography>
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "var(--font-size-large)",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-              >
-                5
-              </Typography>
-
+            <Box className={styles.boxContent}>
+              <Typography className={styles.boxNumber}>5</Typography>
               <Image
+                className={styles.imageContainer}
                 cloudName="dxlzzgbfw"
                 publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_fipttr.svg"
                 width="30"
@@ -279,47 +246,13 @@ function Dashboard() {
             </Box>
           </Box>
 
-          <Box
-            sx={{
-              width: "150px",
-              backgroundColor: "#1F7C20",
-              borderRadius: "10px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              gap: 1,
+          <Box className={styles.boxContainer}>
+            <Typography className={styles.boxTitle}>Completed</Typography>
 
-              p: 2,
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "var(--font-size-small)",
-                color: "white",
-                fontWeight: "bold",
-              }}
-            >
-              Completed
-            </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "var(--font-size-large)",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-              >
-                5
-              </Typography>
-
+            <Box className={styles.boxContent}>
+              <Typography className={styles.boxNumber}>5</Typography>
               <Image
+                className={styles.imageContainer}
                 cloudName="dxlzzgbfw"
                 publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
                 width="30"
@@ -327,48 +260,13 @@ function Dashboard() {
               />
             </Box>
           </Box>
+          <Box className={styles.boxContainer}>
+            <Typography className={styles.boxTitle}>Pending</Typography>
 
-          <Box
-            sx={{
-              width: "150px",
-              // height: "100px",
-              backgroundColor: "#E0BB0D",
-              borderRadius: "10px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              gap: 1,
-              p: 2,
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "var(--font-size-small)",
-                color: "white",
-                fontWeight: "bold",
-              }}
-            >
-              Pending
-            </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "var(--font-size-large)",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-              >
-                5
-              </Typography>
-
+            <Box className={styles.boxContent}>
+              <Typography className={styles.boxNumber}>5</Typography>
               <Image
+                className={styles.imageContainer}
                 cloudName="dxlzzgbfw"
                 publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_2_himwuf.svg"
                 width="30"
@@ -376,6 +274,7 @@ function Dashboard() {
               />
             </Box>
           </Box>
+
           <Box>
             <Image
               cloudName="dxlzzgbfw"
@@ -484,7 +383,7 @@ function Dashboard() {
               <Typography
                 sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
               >
-                Upcomming Batches
+                Upcoming Batches
               </Typography>
 
               <Box>Today</Box>
