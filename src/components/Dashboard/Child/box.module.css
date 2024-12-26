@@ -1,0 +1,37 @@
+.boxContainer {
+    min-width: 150px !important;
+    flex-basis: auto !important;
+    flex: 1 !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    /* 1 unit of gap converted to px */
+    padding: 16px !important;
+    /* 2 units of padding converted to px */
+    box-shadow: 0px 4px 4px 0px #00000040 !important;
+}
+
+.boxTitle {
+    font-size: var(--font-size-medium) !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.boxContent {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.boxNumber {
+    font-size: var(--font-size-large) !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.imageContainer img {
+    width: 30px !important;
+    height: 30px !important;
+}

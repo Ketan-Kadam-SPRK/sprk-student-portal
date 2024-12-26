@@ -2,7 +2,7 @@ import { styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 
-export const drawerWidth = 240;
+export const drawerWidth = 260;
 
 /**
  * @memberof Sidebar

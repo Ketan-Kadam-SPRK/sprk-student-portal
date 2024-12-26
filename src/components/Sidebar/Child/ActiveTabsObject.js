@@ -1,6 +1,6 @@
 export const tabMapping = {
   "/Dashboard": "Dashboard",
-  "/Attendance": "Attendance",
+  "/Batches": "Batches",
   "/Exam": "Exam",
   "/Payments": "Payments",
   "/Certificates": "Certificates",

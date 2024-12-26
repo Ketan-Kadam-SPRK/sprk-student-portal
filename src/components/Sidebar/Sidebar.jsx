@@ -342,6 +342,7 @@ function Sidebar() {
                     onClick={() => {
                       navigate("/Dashboard");
                       handleTabClick("Dashboard");
+                      handleDrawerClose();
                     }}
                   />
 
@@ -356,13 +357,14 @@ function Sidebar() {
                     My Schedule
                   </Typography>
                   <SidebarItem
-                    title="Attendance"
+                    title="Batches"
                     icon={PeopleAltIcon}
                     open={open}
-                    isActive={activeTab === "Attendance"}
+                    isActive={activeTab === "Batches"}
                     onClick={() => {
-                      navigate("/Attendance");
-                      handleTabClick("Attendance");
+                      navigate("/Batches");
+                      handleTabClick("Batches");
+                      handleDrawerClose();
                     }}
                   />
                   <SidebarItem
@@ -373,6 +375,7 @@ function Sidebar() {
                     onClick={() => {
                       navigate("/Exam");
                       handleTabClick("Exam");
+                      handleDrawerClose();
                     }}
                   />
 
@@ -387,6 +390,7 @@ function Sidebar() {
                     onClick={() => {
                       navigate("/Payments");
                       handleTabClick("Payments");
+                      handleDrawerClose();
                     }}
                   />
 
@@ -401,6 +405,7 @@ function Sidebar() {
                     onClick={() => {
                       navigate("/Certificates");
                       handleTabClick("Certificates");
+                      handleDrawerClose();
                     }}
                   />
 
@@ -412,6 +417,7 @@ function Sidebar() {
                     onClick={() => {
                       navigate("/Job_Opportunities");
                       handleTabClick("Job_Opportunities");
+                      handleDrawerClose();
                     }}
                   />
                 </List>

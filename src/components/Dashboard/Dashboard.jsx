@@ -4,6 +4,7 @@ import BatchCard from "./Child/BatchCard";
 import { Image } from "cloudinary-react";
 import { modifyEventJson } from "../../Utils/ModifyEventJson";
 import CircularWithValueLabel from "../Common/CircularProgressWithLable";
+import BoxCard from "./Child/BoxCard";
 
 function Dashboard() {
   const EventJson = [
@@ -231,49 +232,25 @@ function Dashboard() {
             flexWrap: "wrap",
           }}
         >
-          <Box className={styles.boxContainer}>
-            <Typography className={styles.boxTitle}>Ongoing</Typography>
+          <BoxCard
+            title="Ongoing"
+            number="5"
+            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_fipttr.svg"
+            bgColor="#6560F0"
+          />
 
-            <Box className={styles.boxContent}>
-              <Typography className={styles.boxNumber}>5</Typography>
-              <Image
-                className={styles.imageContainer}
-                cloudName="dxlzzgbfw"
-                publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_fipttr.svg"
-                width="30"
-                height="30"
-              />
-            </Box>
-          </Box>
-
-          <Box className={styles.boxContainer}>
-            <Typography className={styles.boxTitle}>Completed</Typography>
-
-            <Box className={styles.boxContent}>
-              <Typography className={styles.boxNumber}>5</Typography>
-              <Image
-                className={styles.imageContainer}
-                cloudName="dxlzzgbfw"
-                publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
-                width="30"
-                height="30"
-              />
-            </Box>
-          </Box>
-          <Box className={styles.boxContainer}>
-            <Typography className={styles.boxTitle}>Pending</Typography>
-
-            <Box className={styles.boxContent}>
-              <Typography className={styles.boxNumber}>5</Typography>
-              <Image
-                className={styles.imageContainer}
-                cloudName="dxlzzgbfw"
-                publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_2_himwuf.svg"
-                width="30"
-                height="30"
-              />
-            </Box>
-          </Box>
+          <BoxCard
+            title="Completed"
+            number="5"
+            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
+            bgColor="#1F7C20"
+          />
+          <BoxCard
+            title="Pending"
+            number="5"
+            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_2_himwuf.svg"
+            bgColor="#E0BB0D"
+          />
 
           <Box>
             <Image
@@ -361,7 +338,7 @@ function Dashboard() {
       </Grid2> */}
 
       <Grid2 container spacing={2}>
-        <Grid2 size={{ xs: 12, sm: 8 }}>
+        <Grid2 size={{ xs: 12, sm: 12, md: 8 }}>
           <Box
             sx={{
               border: "1px solid #0000007D",
@@ -403,7 +380,7 @@ function Dashboard() {
           </Box>
         </Grid2>
 
-        <Grid2 size={{ xs: 12, sm: 4 }}>
+        <Grid2 size={{ xs: 12, sm: 12, md: 4 }}>
           <Box
             sx={{
               display: "flex",
@@ -413,7 +390,7 @@ function Dashboard() {
               borderRadius: "10px",
               border: "1px solid #0073E6B8",
               gap: 4,
-              minWidth: "300px",
+              minWidth: "200px",
             }}
           >
             <Box
