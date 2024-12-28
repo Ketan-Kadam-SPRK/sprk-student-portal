@@ -368,6 +368,17 @@ function Sidebar() {
                     }}
                   />
                   <SidebarItem
+                    title="Courses"
+                    icon={PeopleAltIcon}
+                    open={open}
+                    isActive={activeTab === "Courses"}
+                    onClick={() => {
+                      navigate("/Courses");
+                      handleTabClick("Courses");
+                      handleDrawerClose();
+                    }}
+                  />
+                  <SidebarItem
                     title="Exam & Project"
                     icon={PeopleAltIcon}
                     open={open}
