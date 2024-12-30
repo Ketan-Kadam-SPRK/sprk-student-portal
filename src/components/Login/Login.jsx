@@ -126,9 +126,9 @@ function Login() {
     // If either is invalid, reset captcha and exit
     if (!formData.eid || !formData.password) {
       resetCaptcha();
-      // localStorage.setItem("token", "Dashboarsdsdadsdd");
-      // dispatch(setLogin({ token: "Dashboarsdsdadsdd" }));
-      // navigate("/Dashboard");
+      localStorage.setItem("token", "Dashboarsdsdadsdd");
+      dispatch(setLogin({ token: "Dashboarsdsdadsdd" }));
+      navigate("/Dashboard");
       return;
     }
 

@@ -13,7 +13,7 @@ const Breadcrumb = () => {
 
   const breadcrumbLinkStyle = {
     color: "white", // White text color
-    fontSize:  "var(--font-size-small)"    ,
+    fontSize: "var(--font-size-small)",
     fontWeight: "bold",
     textDecoration: "none",
     marginRight: "5px", // Adjust spacing between breadcrumbs
@@ -30,17 +30,22 @@ const Breadcrumb = () => {
   return (
     <div
       style={{
-        background:
-          "linear-gradient(139deg, var(--table-header-bg-color) 11.37%, var(--sidebar-bg-color) 64.56%)",
+        // background:
+        //   "linear-gradient(139deg, var(--table-header-bg-color) 11.37%, var(--sidebar-bg-color) 64.56%)",
         padding: "7px 5px",
-        color: "white",
-        position: "fixed",
+        color: "blue !important",
+        // position: "fixed",
         width: "100%",
         zIndex: 999,
       }}
     >
       {pathSegments.map((segment, index) => (
-        <span key={index}>
+        <span
+          key={index}
+          style={{
+            color: "blue !important",
+          }}
+        >
           <Link
             to={"/" + pathSegments.slice(0, index + 1).join("/")}
             style={{ ...breadcrumbLinkStyle }}

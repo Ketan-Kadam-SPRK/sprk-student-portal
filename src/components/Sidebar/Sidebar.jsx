@@ -160,313 +160,267 @@ function Sidebar() {
 
   return (
     <Box
-      className="sidebar-div"
+      // className="sidebar-div"
       sx={{
-        display: "grid",
-        height: "100vh",
-        gridTemplateRows: "64px 1fr",
+        display: "flex",
+        minHeight: "100vh",
+        gap: "0px",
         width: "100%",
       }}
     >
-      <CssBaseline />
-      <div style={{ width: "100%" }}>
-        <AppBar
-          position="fixed"
-          // open={open}
-          sx={{
-            backgroundColor: "white",
-            boxShadow: "0px 0px 0px 0px",
-            zIndex: (theme) => theme.zIndex.drawer + 1,
-          }}
+      <div className={open ? Styles.DrawerDiv : Styles.DrawerDiv2}>
+        <Drawer
+          variant="permanent"
+          open={open}
+          className={Styles.drawer}
+          // onMouseEnter={handleDrawerOpen}
+          // onMouseLeave={handleDrawerClose}
         >
-          <Toolbar className={Styles.toolbarStyle}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                // onClick={handleDrawerOpen }
-                onClick={handleToggleSidebar}
-                edge="start"
-                sx={{
-                  marginRight: 1,
-                  // ...(open && { display: 'none' }),
-                  color: "#e4e8ed",
-                  // display: { sx: "block", sm: "block", md: "none" },
-                  display: {
-                    xs: "block", // visible on extra small screens
-                    sm: "block", // visible on small screens
-                  },
-                  "@media (min-width: 769px)": {
-                    display: "none", // hide after 768px
-                  },
-                }}
-              >
-                {/* {open ? <ChevronLeftIcon /> : <ChevronRightIcon />} */}
-                {/* </IconButton> */}
-                <MenuIcon sx={{ color: "#888888" }} />
-              </IconButton>
-              <Box>
-                {/* Display the logo */}
-                <Image
-                  className={Styles.logo}
-                  publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg"
-                  cloudName="dxlzzgbfw"
-                />
-              </Box>
-            </Box>
-            <Box className={Styles.notificationBox}>
-              <IconButton
-                size="large"
-                edge="start"
-                aria-label="account of current user"
-                // aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleNotiMenuOpen}
-                color="auto"
-                className={Styles.styleNotification}
-              >
-                <Badge
-                  badgeContent={notificationsData?.unseenCount}
-                  color="error"
-                >
-                  <NotificationsIcon size="large" color="action" />
-                </Badge>
-              </IconButton>
-
-              <IconButton
-                size="large"
-                edge="start"
-                aria-label="account of current user"
-                // aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="auto"
-                className={Styles.profileMenuStyle}
-              >
-                {userProfilePic ? (
-                  <img
-                    src={userProfilePic}
-                    className={Styles.ProfileStyle}
-                    alt="profile-pic"
-                    // loading="lazy"
-                  />
-                ) : (
-                  <Avatar>
-                    <AccountCircleIcon className={Styles.avtarStyle} />
-                  </Avatar>
-                )}
-                <Box
-                  sx={{
-                    display: {
-                      xs: "none",
-                      sm: "flex",
-                      md: "flex",
-                      lg: "flex",
-                    },
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography className={Styles.empIdStyle}>
-                    {" "}
-                    {userDetails?.emp_id}
-                  </Typography>
-                  <KeyboardArrowDownIcon sx={{ color: "grey" }} />
-                </Box>
-              </IconButton>
-            </Box>
-          </Toolbar>
-        </AppBar>
-        <ProfileMenu
-          handleMenuClose={handleMenuClose}
-          isMenuOpen={isMenuOpen}
-        />
-        {/* <NotificationMenu
-          isNotiOpen={isNotiOpen}
-          handleNotiMenuClose={handleNotiMenuClose}
-        /> */}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          height: "100%",
-          overflowY: "auto",
-          // backgroundColor: "var(--secondry-color)",
-        }}
-      >
-        <div className={open ? Styles.DrawerDiv : Styles.DrawerDiv2}>
-          <Drawer
-            variant="permanent"
-            open={open}
-            className={Styles.drawer}
-            // onMouseEnter={handleDrawerOpen}
-            // onMouseLeave={handleDrawerClose}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "column",
-                height: "100%",
-              }}
-            >
-              <div>
-                <DrawerHeader>
-                  <IconButton onClick={handleDrawerClose}>
-                    {theme.direction === "rtl" ? (
-                      <ChevronRightIcon size="large" color="primary" />
-                    ) : (
-                      <ChevronLeftIcon size="large" color="primary" />
-                    )}
-                  </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <List
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    // gap:1
-                  }}
-                >
-                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
-                    Overview
-                  </Typography>
-                  <SidebarItem
-                    title="Dashboard"
-                    icon={PeopleAltIcon}
-                    open={open}
-                    isActive={activeTab === "Dashboard"}
-                    onClick={() => {
-                      navigate("/Dashboard");
-                      handleTabClick("Dashboard");
-                      handleDrawerClose();
-                    }}
-                  />
-
-                  <Typography
-                    sx={{
-                      fontSize: "var(--font-size-small)",
-                      fontWeight: "bold",
-                      color: "white",
-                      mt: 3,
-                    }}
-                  >
-                    My Schedule
-                  </Typography>
-                  <SidebarItem
-                    title="Batches"
-                    icon={PeopleAltIcon}
-                    open={open}
-                    isActive={activeTab === "Batches"}
-                    onClick={() => {
-                      navigate("/Batches");
-                      handleTabClick("Batches");
-                      handleDrawerClose();
-                    }}
-                  />
-                  <SidebarItem
-                    title="Courses"
-                    icon={PeopleAltIcon}
-                    open={open}
-                    isActive={activeTab === "Courses"}
-                    onClick={() => {
-                      navigate("/Courses");
-                      handleTabClick("Courses");
-                      handleDrawerClose();
-                    }}
-                  />
-                  <SidebarItem
-                    title="Exam & Project"
-                    icon={PeopleAltIcon}
-                    open={open}
-                    isActive={activeTab === "Exam"}
-                    onClick={() => {
-                      navigate("/Exam");
-                      handleTabClick("Exam");
-                      handleDrawerClose();
-                    }}
-                  />
-
-                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
-                    Course Details
-                  </Typography>
-                  <SidebarItem
-                    title="Payments"
-                    icon={PeopleAltIcon}
-                    open={open}
-                    isActive={activeTab === "Payments"}
-                    onClick={() => {
-                      navigate("/Payments");
-                      handleTabClick("Payments");
-                      handleDrawerClose();
-                    }}
-                  />
-
-                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
-                    Career
-                  </Typography>
-                  <SidebarItem
-                    title="Certificates"
-                    icon={PeopleAltIcon}
-                    open={open}
-                    isActive={activeTab === "Certificates"}
-                    onClick={() => {
-                      navigate("/Certificates");
-                      handleTabClick("Certificates");
-                      handleDrawerClose();
-                    }}
-                  />
-
-                  <SidebarItem
-                    title="Job Opportunities"
-                    icon={PeopleAltIcon}
-                    open={open}
-                    isActive={activeTab === "Job_Opportunities"}
-                    onClick={() => {
-                      navigate("/Job_Opportunities");
-                      handleTabClick("Job_Opportunities");
-                      handleDrawerClose();
-                    }}
-                  />
-                </List>
-              </div>
-              <div>
-                <Divider />
-              </div>
-            </div>
-          </Drawer>
-        </div>
-        <ToastContainer position="bottom-right" autoClose={3000} />
-
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            width: "100%",
-            height: "calc(100vh - 65px)",
-            //  width:`calc(100% - ${drawerWidth})`,
-            overflow: "auto",
-
-            zIndex: (theme) => theme.zIndex.drawer + 0,
-          }}
-        >
-          <Breadcrumb />
-          <Box
-            sx={{
-              mt: 4,
+          <div
+            style={{
               display: "flex",
+              justifyContent: "space-between",
               flexDirection: "column",
-              gap: "10px",
               height: "100%",
             }}
           >
-            <RoutesConfig />
-          </Box>
-        </Box>
+            <div>
+              <DrawerHeader>
+                <IconButton onClick={handleDrawerClose}>
+                  {theme.direction === "rtl" ? (
+                    <ChevronRightIcon size="large" color="primary" />
+                  ) : (
+                    <ChevronLeftIcon size="large" color="primary" />
+                  )}
+                </IconButton>
+              </DrawerHeader>
+              <Divider />
+              <List
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  // gap:1
+                }}
+              >
+                <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                  Overview
+                </Typography>
+                <SidebarItem
+                  title="Dashboard"
+                  icon={PeopleAltIcon}
+                  open={open}
+                  isActive={activeTab === "Dashboard"}
+                  onClick={() => {
+                    navigate("/Dashboard");
+                    handleTabClick("Dashboard");
+                    handleDrawerClose();
+                  }}
+                />
+
+                <Typography
+                  sx={{
+                    fontSize: "var(--font-size-small)",
+                    fontWeight: "bold",
+                    color: "white",
+                    mt: 3,
+                  }}
+                >
+                  My Schedule
+                </Typography>
+                <SidebarItem
+                  title="Batches"
+                  icon={PeopleAltIcon}
+                  open={open}
+                  isActive={activeTab === "Batches"}
+                  onClick={() => {
+                    navigate("/Batches");
+                    handleTabClick("Batches");
+                    handleDrawerClose();
+                  }}
+                />
+                <SidebarItem
+                  title="Courses"
+                  icon={PeopleAltIcon}
+                  open={open}
+                  isActive={activeTab === "Courses"}
+                  onClick={() => {
+                    navigate("/Courses");
+                    handleTabClick("Courses");
+                    handleDrawerClose();
+                  }}
+                />
+                <SidebarItem
+                  title="Exam & Project"
+                  icon={PeopleAltIcon}
+                  open={open}
+                  isActive={activeTab === "Exam"}
+                  onClick={() => {
+                    navigate("/Exam");
+                    handleTabClick("Exam");
+                    handleDrawerClose();
+                  }}
+                />
+
+                <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                  Course Details
+                </Typography>
+                <SidebarItem
+                  title="Payments"
+                  icon={PeopleAltIcon}
+                  open={open}
+                  isActive={activeTab === "Payments"}
+                  onClick={() => {
+                    navigate("/Payments");
+                    handleTabClick("Payments");
+                    handleDrawerClose();
+                  }}
+                />
+
+                <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                  Career
+                </Typography>
+                <SidebarItem
+                  title="Certificates"
+                  icon={PeopleAltIcon}
+                  open={open}
+                  isActive={activeTab === "Certificates"}
+                  onClick={() => {
+                    navigate("/Certificates");
+                    handleTabClick("Certificates");
+                    handleDrawerClose();
+                  }}
+                />
+
+                <SidebarItem
+                  title="Job Opportunities"
+                  icon={PeopleAltIcon}
+                  open={open}
+                  isActive={activeTab === "Job_Opportunities"}
+                  onClick={() => {
+                    navigate("/Job_Opportunities");
+                    handleTabClick("Job_Opportunities");
+                    handleDrawerClose();
+                  }}
+                />
+              </List>
+            </div>
+            <div>
+              <Divider />
+            </div>
+          </div>
+        </Drawer>
       </div>
+      <ToastContainer position="bottom-right" autoClose={3000} />
+
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          width: "100%",
+          // height: "calc(100vh - 65px)",
+          height: "100vh",
+          //  width:`calc(100% - ${drawerWidth})`,
+          overflow: "auto",
+
+          // zIndex: (theme) => theme.zIndex.drawer + 0,
+          position: "relative",
+          px: 3,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            // justifyContent: "flex-end",
+            alignItems: "center",
+            position: "sticky",
+            top: 0,
+            right: 0,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <IconButton
+              size="large"
+              edge="start"
+              aria-label="account of current user"
+              // aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleNotiMenuOpen}
+              color="auto"
+              className={Styles.styleNotification}
+            >
+              <Badge
+                badgeContent={notificationsData?.unseenCount}
+                color="error"
+              >
+                <NotificationsIcon size="large" color="action" />
+              </Badge>
+            </IconButton>
+
+            <IconButton
+              size="large"
+              edge="start"
+              aria-label="account of current user"
+              // aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="auto"
+              className={Styles.profileMenuStyle}
+            >
+              {userProfilePic ? (
+                <img
+                  src={userProfilePic}
+                  className={Styles.ProfileStyle}
+                  alt="profile-pic"
+                  // loading="lazy"
+                />
+              ) : (
+                <Avatar>
+                  <AccountCircleIcon className={Styles.avtarStyle} />
+                </Avatar>
+              )}
+              <Box
+                sx={{
+                  display: {
+                    xs: "none",
+                    sm: "flex",
+                    md: "flex",
+                    lg: "flex",
+                  },
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography className={Styles.empIdStyle}>
+                  {" "}
+                  {userDetails?.emp_id}
+                </Typography>
+                <KeyboardArrowDownIcon sx={{ color: "grey" }} />
+              </Box>
+            </IconButton>
+          </Box>
+          <Breadcrumb />
+        </Box>
+        <Box
+          sx={{
+            // mt: 4,
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            height: "100%",
+          }}
+        >
+          <RoutesConfig />
+        </Box>
+      </Box>
     </Box>
   );
 }
