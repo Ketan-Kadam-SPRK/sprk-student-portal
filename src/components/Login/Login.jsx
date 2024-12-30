@@ -1,4 +1,4 @@
-import { Backdrop, FormHelperText, Grid } from "@mui/material";
+import { Backdrop, FormHelperText, Grid2 } from "@mui/material";
 // import classes from "./Login.module.css";
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
@@ -25,6 +25,9 @@ import SprkLoader from "../../Lottie/SprkLoading.json";
 // import { rearrangeArray } from "../../Utils/tabsRearrangeArray";
 import { LogOut } from "../../Utils/LogOut";
 import { setLogin } from "./store/authSlice";
+import { Checkbox } from "@mui/material";
+import { loginUser } from "./store/login.actions";
+import TrimmedString from "../../Utils/TrimmedString";
 
 function modifyCapitalization(inputString) {
   return inputString
@@ -32,15 +35,6 @@ function modifyCapitalization(inputString) {
     .replace(/(?:^|_)(\w)/g, (match) => match.toUpperCase());
 }
 
-/**
- * @class Login
- * @function Login
- * @description This component renders the login form and its associated functionalities.
- * @param {object} props - Component props
- * @returns {object} JSX element
- * @example
- * <Login />
- */
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,20 +58,14 @@ function Login() {
   // State for managing password visibility
   const [showPassword, setShowPassword] = useState(false);
 
+  const [rememberMe, setRememberMe] = useState(false);
+
   const [captchaKey, setCaptchaKey] = useState(Date.now());
 
-  useEffect(() => {
-    logout();
-  }, []);
+  // useEffect(() => {
+  //   logout();
+  // }, []);
 
-  /**
-   * @memberof Login
-   * @function handleHcaptchaVerification
-   * @description This function is called when the user has successfully completed
-   * the hcaptcha challenge. It sets the isHuman state to true and sets the
-   * hcaptcha_response in the form data.
-   * @param {string} token - The token provided by hcaptcha.
-   */
   const handleHcaptchaVerification = (token) => {
     if (token) {
       setIsHuman(true);
@@ -95,11 +83,6 @@ function Login() {
     }
   };
 
-  /**
-   *  @memberof Login
-   * @function handleFormInputs
-   * @description Function to handle form input changes.
-   */
   const handleFormInputs = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => {
@@ -116,23 +99,10 @@ function Login() {
     }));
   };
 
-  // Function to toggle password visibility
-
-  /**
-   *  @memberof Login
-   * @function handlePasswordVisibility
-   * @description Toggles the visibility of the password input field.
-   */
   const handlePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  /**
-   *  @memberof Login
-   * Resets the HCaptcha state, error, and captchaKey state variables.
-   * This function is used when the user has not completed the HCaptcha challenge
-   * and wants to reset it.
-   */
   const resetCaptcha = () => {
     setIsHuman(false); // Reset the isHuman state
 
@@ -143,120 +113,117 @@ function Login() {
     setCaptchaKey(Date.now()); // Re-render the HCaptcha component to reset the challenge
   };
 
-  /**
-   *  @memberof Login
-   * @function handleSubmit
-   * @description Handles form submission by validating the inputs, resetting the CAPTCHA
-   *              state if either input is invalid, and dispatching the login action if both
-   *              inputs are valid. If the login action is successful, it sets the user
-   *              details in state and redirects to the main tab based on the entitlements.
-   * @param {Event} event - The form submission event.
-   */
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  //   setErrors((prev) => ({
-  //     ...prev,
-  //     isLoginIdValid: !formData.eid,
-  //     isPasswordValid: !formData.password,
-  //   }));
+    setErrors((prev) => ({
+      ...prev,
+      isLoginIdValid: !formData.eid,
+      isPasswordValid: !formData.password,
+    }));
 
-  //   // If either is invalid, reset captcha and exit
-  //   if (!formData.eid || !formData.password) {
-  //     resetCaptcha();
-  //     return;
-  //   }
+    console.log(formData);
+    // If either is invalid, reset captcha and exit
+    if (!formData.eid || !formData.password) {
+      resetCaptcha();
+      // localStorage.setItem("token", "Dashboarsdsdadsdd");
+      // dispatch(setLogin({ token: "Dashboarsdsdadsdd" }));
+      // navigate("/Dashboard");
+      return;
+    }
 
-  //   // Trim string values in the form data
-  //   // const updatedFormData = TrimmedString(formData);
+    // Trim string values in the form data
+    const updatedFormData = TrimmedString(formData);
 
-  //   if (isHuman) {
-  //     try {
-  //       setIsLoading(true);
+    // if (isHuman) {
+    try {
+      console.log("Form Data:", formData);
+      setIsLoading(true);
 
-  //       // Dispatch login action and handle the response
-  //       // const res = await dispatch(loginUser(updatedFormData));
-  //       const response = null;
-  //       // res.payload;
+      // Dispatch login action and handle the response
+      const response = await dispatch(loginUser({ updatedFormData }));
+      // const response = null;
+      // res.payload;
+      console.log(response);
 
-  //       if (response) {
-  //         const { status, error, data } = response;
-  //         setStatus(status);
+      if (response) {
+        const { status, error, data } = response;
+        setStatus(status);
 
-  //         setErrorMsg(error);
+        setErrorMsg(error);
 
-  //         if (data?.token) {
-  //           const accessToken = data.token;
-  //           localStorage.setItem("token", accessToken);
+        if (data?.token) {
+          const accessToken = data.token;
+          localStorage.setItem("token", accessToken);
 
-  //           const decodedToken = jwtDecode(accessToken);
-  //           const userId = decodedToken.sub;
+          const decodedToken = jwtDecode(accessToken);
+          const userId = decodedToken.sub;
 
-  //           // Dispatch getUser action and set user details in state
-  //           const userResponse = await dispatch(getUser({ accessToken }));
-  //           const userDetails = userResponse?.payload?.data;
-  //           const roles = userDetails?.authorities;
-  //           const entitlements = await rearrangeArray(
-  //             userDetails?.entitlements,
-  //             PermissionJson
-  //           );
+          // Dispatch getUser action and set user details in state
+          // const userResponse = await dispatch(getUser({ accessToken }));
+          // const userDetails = userResponse?.payload?.data;
+          // const roles = userDetails?.authorities;
+          // const entitlements = await rearrangeArray(
+          //   userDetails?.entitlements,
+          //   PermissionJson
+          // );
 
-  //           const uniqueNames = await [
-  //             ...new Set(
-  //               entitlements?.flatMap((item) => {
-  //                 return Array.isArray(item.sub)
-  //                   ? [item.name, ...item.sub.map((subItem) => subItem.name)]
-  //                   : [item.name];
-  //               })
-  //             ),
-  //           ];
+          // const uniqueNames = await [
+          //   ...new Set(
+          //     entitlements?.flatMap((item) => {
+          //       return Array.isArray(item.sub)
+          //         ? [item.name, ...item.sub.map((subItem) => subItem.name)]
+          //         : [item.name];
+          //     })
+          //   ),
+          // ];
 
-  //           // dispatch(
-  //           //   setUserDetails({
-  //           //     userDetails,
-  //           //     roles,
-  //           //     entitlements,
-  //           //     tabName: uniqueNames,
-  //           //   })
-  //           // );
+          // dispatch(
+          //   setUserDetails({
+          //     userDetails,
+          //     roles,
+          //     entitlements,
+          //     tabName: uniqueNames,
+          //   })
+          // );
 
-  //           // dispatch(
-  //           //   setLogin({
-  //           //     user: formData.eid,
-  //           //     token: accessToken,
-  //           //     userId,
-  //           //   })
-  //           // );
+          dispatch(
+            setLogin({
+              user: formData.eid,
+              token: accessToken,
+              userId,
+            })
+          );
 
-  //           // const mainTabName = await entitlements?.map((item) => item.name);
-  //           // const capitalizedTabNames = await mainTabName?.map((tabName) =>
-  //           //   modifyCapitalization(tabName)
-  //           // );
+          // const mainTabName = await entitlements?.map((item) => item.name);
+          // const capitalizedTabNames = await mainTabName?.map((tabName) =>
+          //   modifyCapitalization(tabName)
+          // );
 
-  //           // navigate(`/${capitalizedTabNames[0]}`);
-  //         } else {
-  //           resetCaptcha();
-  //         }
-  //       } else {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //     } catch (error) {
-  //       console.error("Login Failed:", error);
-  //       // setIsSubmitError(true);
-  //       resetCaptcha(); // Reset the CAPTCHA state
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   } else {
-  //     setErrors((prev) => ({
-  //       ...prev,
-  //       captchaError: true,
-  //     }));
-  //   }
-  // };
+          navigate(`/Dashboard`);
+        } else {
+          resetCaptcha();
+        }
+      } else {
+        throw new Error("Network response was not ok");
+      }
+    } catch (error) {
+      console.error("Login Failed:", error);
+      // setIsSubmitError(true);
+      resetCaptcha(); // Reset the CAPTCHA state
+    } finally {
+      setIsLoading(false);
+    }
+    // } else {
+    //   setErrors((prev) => ({
+    //     ...prev,
+    //     captchaError: true,
+    //   }));
+    // }
+  };
 
   return (
-    <Grid container component="main" sx={{ minHeight: "100vh" }}>
+    <Grid2 container component="main" sx={{ minHeight: "100vh" }}>
       {/* Left side panel */}
       <Backdrop
         sx={{
@@ -272,11 +239,12 @@ function Login() {
           style={{ width: "200px", height: "200px" }}
         />
       </Backdrop>
-      <Grid
-        item
-        xs={0}
-        sm={0}
-        md={6}
+      <Grid2
+        size={{
+          xs: 0,
+          sm: 0,
+          md: 6,
+        }}
         sx={{
           position: "relative",
           display: { xs: "none", sm: "none", md: "flex" },
@@ -326,14 +294,15 @@ function Login() {
             Get ready to Connect, Innovate, Inspire.
           </Typography>
         </Box> */}
-      </Grid>
+      </Grid2>
 
       {/* Right side panel */}
-      <Grid
-        item
-        xs={12}
-        sm={12}
-        md={6}
+      <Grid2
+        size={{
+          xs: 12,
+          sm: 12,
+          md: 6,
+        }}
         // component={Paper}
         elevation={6}
         sx={{
@@ -346,10 +315,7 @@ function Login() {
       >
         <Box sx={{ width: "300px", maxWidth: "90%" }}>
           {/* Login Form */}
-          <form
-            noValidate
-            // onSubmit={handleSubmit}
-          >
+          <form noValidate onSubmit={handleSubmit}>
             <Typography sx={{ fontSize: "28px", fontWeight: "600" }}>
               Log in to your account
             </Typography>
@@ -414,9 +380,17 @@ function Login() {
               helperText={errors.isPasswordValid && "Password is required"}
             />
 
+            <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+              <Checkbox
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                color="primary"
+              />
+              <Typography variant="body2"> Remember me</Typography>
+            </Box>
             {/* <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
               <HCaptcha
-                // sitekey={process.env.VITE_APP_CAPTCHA_SITE_KEY}
+                sitekey={import.meta.env.VITE_APP_CAPTCHA_SITE_KEY}
                 onVerify={handleHcaptchaVerification}
                 key={captchaKey}
               />
@@ -429,27 +403,19 @@ function Login() {
 
             {/* Login Button */}
             <Button
-              // type="submit"
+              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               sx={{ mt: 3 }}
               disabled={isLoading}
-              onClick={() => {
-                navigate("/");
-                dispatch(
-                  setLogin({
-                    token: "jlkjdlkjlkjdjljdlj",
-                  })
-                );
-              }}
             >
               {isLoading ? <CircularProgress size={24} /> : "Log In"}
             </Button>
           </form>
         </Box>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 }
 

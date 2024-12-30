@@ -5,7 +5,7 @@ import { store } from "../store";
 import { setLogout } from "../state/authState"; // Your logout action
 
 const axiosInstance = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}/api`,
+  baseURL: `${process.env.VITE_APP_BASE_URL}/api`,
 });
 
 const logout = async (errorMsg) => {

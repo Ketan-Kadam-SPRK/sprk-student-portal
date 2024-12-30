@@ -9,6 +9,7 @@
   --primary-color: #007bff;
   --secondry-color: #F0F4FF;
 
+
   /* sidebar colors*/
 
   --sidebar-bg-color: #0A2647;
@@ -39,6 +40,8 @@ body {
   font-size: var(--font-size-medium);
   background-color: var(--background-color);
   color: var(--text-color);
+  padding: 0;
+  margin: 0;
 }
 
 h1 {
