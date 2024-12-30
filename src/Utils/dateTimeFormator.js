@@ -37,3 +37,17 @@ export function getRemainingTime(targetTimeUTC) {
 // Example usage:
 const targetTimeUTC = "2026-04-16T05:30:00Z";
 console.log(getRemainingTime(targetTimeUTC));
+
+export function getWeekdayFromTimestamp(timestamp) {
+  const date = new Date(timestamp);
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  return weekdays[date.getUTCDay()];
+}

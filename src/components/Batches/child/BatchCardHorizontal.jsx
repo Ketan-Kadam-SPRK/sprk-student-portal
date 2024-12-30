@@ -5,11 +5,13 @@ import { Image } from "cloudinary-react";
 import StatusComponent from "./StatusComponent";
 import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
 import { useNavigate } from "react-router-dom";
+import { getWeekdayFromTimestamp } from "../../../Utils/dateTimeFormator";
 
 function BatchCardHorizontal({ item = {} }) {
   const navigate = useNavigate();
   return (
     <Box
+      key={item.bth_id}
       sx={{
         backgroundColor: "#EDF6FF",
         borderRadius: "10px",
@@ -108,48 +110,64 @@ function BatchCardHorizontal({ item = {} }) {
             flexWrap: "wrap",
           }}
         >
-          {item.week_days.map((day) => (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                px: 1,
-                py: 2,
-                gap: 1,
-                backgroundColor: "grey",
-                width: "90px",
-                borderRadius: "10px",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "var(--font-size-extra-small)",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-              >
-                {day.slice(0, 3)}
-              </Typography>
-
+          {item.session_week?.length > 0 ? (
+            item.session_week.map((item, index) => (
               <Box
+                key={index}
                 sx={{
-                  p: 0.5,
-                  backgroundColor: "white",
-                  borderRadius: "5px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  px: 1,
+                  py: 2,
+                  gap: 1,
+                  backgroundColor: item.isConducated ? "grey" : "#0073E6",
+                  width: "90px",
+                  borderRadius: "10px",
                 }}
               >
                 <Typography
                   sx={{
-                    fontSize: "10px",
+                    fontSize: "var(--font-size-extra-small)",
+                    color: "white",
                     fontWeight: "bold",
                   }}
                 >
-                  10:00 AM
+                  {getWeekdayFromTimestamp(item.start).slice(0, 3)}
                 </Typography>
+
+                <Box
+                  sx={{
+                    p: 0.5,
+                    backgroundColor: "white",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "10px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {` ${new Date(item.start).getHours()}:
+                  ${new Date(item.start).getMinutes()}  ${
+                      new Date(item.start).getHours() >= 12 ? "PM" : "AM"
+                    }`}
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-          ))}
+            ))
+          ) : (
+            <Typography
+              sx={{
+                fontSize: "var(--font-size-extra-small)",
+                color: "#909090",
+                fontWeight: "500",
+              }}
+            >
+              No sessions available on this week
+            </Typography>
+          )}
         </Box>
       </Box>
 
