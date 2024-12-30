@@ -7,7 +7,8 @@ import { useSelector } from "react-redux";
 
 function App() {
   const token = useSelector((state) => state.authSlice.token);
-  const isAuthenticated = token ? true : false;
+  // const isAuthenticated = token ? true : false;
+  const isAuthenticated =true;
   console.log(isAuthenticated);
   console.log(token);
   return (
