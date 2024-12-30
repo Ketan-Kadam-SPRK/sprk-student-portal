@@ -160,7 +160,6 @@ function Sidebar() {
 
   return (
     <Box
-      className="sidebar-div"
       sx={{
         display: "grid",
         height: "100vh",
@@ -293,7 +292,7 @@ function Sidebar() {
           width: "100%",
           height: "100%",
           overflowY: "auto",
-          // backgroundColor: "var(--secondry-color)",
+          backgroundColor: "var(--secondry-color)",
         }}
       >
         <div className={open ? Styles.DrawerDiv : Styles.DrawerDiv2}>

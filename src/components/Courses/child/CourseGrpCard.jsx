@@ -19,6 +19,7 @@ function CourseGrpCard({ item }) {
         borderRadius: "10px",
         p: 2,
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+        backgroundColor: "white",
       }}
     >
       <Box

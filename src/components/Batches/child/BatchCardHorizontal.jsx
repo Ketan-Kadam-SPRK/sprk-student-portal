@@ -3,8 +3,11 @@ import React from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { Image } from "cloudinary-react";
 import StatusComponent from "./StatusComponent";
+import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
+import { useNavigate } from "react-router-dom";
 
 function BatchCardHorizontal({ item = {} }) {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -17,7 +20,7 @@ function BatchCardHorizontal({ item = {} }) {
         gap: 4,
         flexWrap: "wrap",
         flexDirection: { xs: "column", sm: "column", md: "column", lg: "row" },
-        // height: "100px",
+        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
       }}
     >
       <Box
@@ -39,6 +42,10 @@ function BatchCardHorizontal({ item = {} }) {
             sx={{
               fontSize: "var(--font-size-small)",
               fontWeight: "bold",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate(`/Batches/${item?.bth_id}`);
             }}
           >
             {item?.bth_id}
@@ -52,9 +59,9 @@ function BatchCardHorizontal({ item = {} }) {
             sx={{
               fontSize: "var(--font-size-extra-small)",
               color: "#909090",
-              fontWeight: "bold",
+              fontWeight: "500",
             }}
-          >{`by ${item?.faculty_name}`}</Typography>
+          >{`By ${item?.faculty_name}`}</Typography>
         </Box>
       </Box>
 
@@ -146,7 +153,29 @@ function BatchCardHorizontal({ item = {} }) {
         </Box>
       </Box>
 
-      <StatusComponent value={item.bth_status} />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 3,
+          justifyContent: "space-between",
+        }}
+      >
+        <StatusComponent value={item.bth_status} />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            justifyContent: "center",
+          }}
+        >
+          <Typography fontSize={"var(--font-size-extra-small)"}>
+            Attendance
+          </Typography>
+          <CircularProgressWithLabel value={4} totalValue={5} />
+        </Box>
+      </Box>
     </Box>
   );
 }

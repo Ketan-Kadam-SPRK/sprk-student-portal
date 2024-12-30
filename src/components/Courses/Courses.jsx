@@ -209,7 +209,9 @@ const Courses = () => {
         gap: 2,
       }}
     >
-      <Typography variant="h4">Enrolled Courses </Typography>
+      <Typography variant="h4" fontWeight={"bold"}>
+        Enrolled Courses{" "}
+      </Typography>
       <Typography fontSize={"var(--font-size-small)"}>
         “Dive into your courses—every lesson is a tool for your dreams.”
       </Typography>

@@ -192,6 +192,7 @@ function Batches() {
           borderRadius: "10px",
           flex: 1,
           height: "100%",
+          backgroundColor: "white",
         }}
       >
         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
