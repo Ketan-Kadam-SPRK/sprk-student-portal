@@ -1,9 +1,10 @@
-import { Box, Button, colors, Grid, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, colors, Grid, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React from "react";
 import BoxCard from "../../Dashboard/Child/BoxCard";
 import { Image } from "cloudinary-react";
 import BatchDetailsTab from "./BatchDetailsTab/BatchDetailsTab";
+import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 
 function BatchDetails() {
   const getStatusStyle = (status) => {
@@ -27,13 +28,13 @@ function BatchDetails() {
   // const statusStyle = getStatusStyle(data?.status);
 
   return (
-    <Box sx={{height:'100vh'}}>
+    <Box sx={{ height: "100vh",}}>
       <Box
         sx={{
           backgroundColor: "white",
           display: "flex",
           justifyContent: "space-between",
-          padding: "10px 25px",
+          p: 2,
           gap: "20px",
         }}
       >
@@ -79,80 +80,83 @@ function BatchDetails() {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ p: 2 }}>
-        <Grid
-          container
-          spacing={2}
+      <Box sx={{ px:2,pt:2, display: "flex", gap:2,flexDirection:"column" }}>
+        <Box
           sx={{
             display: "flex",
-            alignItems: "center",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: 2,
           }}
         >
-          <Grid item xs={12} md={4} lg={4}>
-            <Box
+          <BoxCard
+            title="Sessions Completed"
+            number="5"
+            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
+            bgColor="#6560F0"
+          />
+
+          <BoxCard
+            title="Attended"
+            number="5"
+            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
+            bgColor="#5B9B39"
+          />
+
+          <BoxCard
+            title="Not Attended"
+            number="5"
+            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
+            bgColor="#DF5353"
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexWrap: "wrap",
+            gap: "10px",
+            backgroundColor: "white",
+            borderRadius: "10px",
+            p: 2,
+          }}
+        >
+        <Accordion>
+          <AccordionSummary
+            expandIcon={
+              <InfoRoundedIcon
+                sx={{ fontSize: "30px", color: "#CCCCCC !important" }}
+              />
+            }
+          >
+            <Image
+              publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1703153520/Vector_3_rnkyxa.svg"
+              cloudName="dxlzzgbfw"
+            />
+            <Typography
+              variant="h6"
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                flexWrap: "wrap",
-                gap: "10px",
-                backgroundColor: "white",
-                borderRadius: "10px",
-                p: 2,
+                fontSize: { xs: "20px", sm: "25px", md: "30px" },
+                fontWeight: "bold",
+                ml: 2,
               }}
             >
-              <Box sx={{ display: "flex", gap: "10px" }}>
-                <Image
-                  publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735558467/fluent_apps-list-detail-24-filled_hqp6d5.svg"
-                  cloudName="dxlzzgbfw"
-                />
-                <Typography sx={{ fontWeight: "bold", fontSize: "30px" }}>
-                  BTH24139
-                </Typography>
-              </Box>
-              <Box sx={{color:'#0074BD'}}>
-                <Typography>Course Name: React JS</Typography>
-                <Typography>Faculty Name: Vivek Mhatre</Typography>
-                <Typography>Days: MON | TUES | WED | THURS | FRI</Typography>
-                <Typography>Start Date: 02 Dec 2025</Typography>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={8} lg={8}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                //   justifyContent: "space-around",
-                gap: 2,
-              }}
-            >
-              <BoxCard
-                title="Sessions Completed"
-                number="5"
-                image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
-                bgColor="#6560F0"
-              />
-
-              <BoxCard
-                title="Attended"
-                number="5"
-                image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
-                bgColor="#5B9B39"
-              />
-
-              <BoxCard
-                title="Not Attended"
-                number="5"
-                image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
-                bgColor="#DF5353"
-              />
-            </Box>
-          </Grid>
-        </Grid>
+              BTH24139
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div>
+            <Typography>Course Name: React JS</Typography>
+            <Typography>Faculty Name: Vivek Mhatre</Typography>
+            <Typography>Days: MON | TUES | WED | THURS | FRI</Typography>
+            <Typography>Start Date: 02 Dec 2025</Typography>
+            </div>
+          </AccordionDetails>
+        </Accordion>
+        </Box>
       </Box>
-      <Box sx={{ px:2 }}>
-        <BatchDetailsTab/>
+      <Box sx={{ px: 2 }}>
+        <BatchDetailsTab />
       </Box>
     </Box>
   );

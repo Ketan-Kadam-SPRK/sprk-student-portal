@@ -1,4 +1,4 @@
-import {useState } from "react";
+import { useState } from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
@@ -32,12 +32,26 @@ function BatchDetailsTab() {
           onChange={handleTabChange}
           className={styles.tabsStyle}
           sx={{
-            fontSize: { xs: "14px", sm: "18px", md: "18px" },
-            fontWeight: 600,
+            "& .MuiTabs-indicator": {
+              display: "none",
+            },
+            "& .MuiTab-root": {
+              backgroundColor: "#E0DFFF",
+              color: "#3D37D5",
+              fontSize: { xs: "14px", sm: "16px", md: "16px" },
+              fontWeight: 600,
+              textTransform: "none",
+              borderRadius: "8px",
+              marginLeft: "8px",
+            },
+            "& .MuiTab-root.Mui-selected": {
+              backgroundColor: "#6560F0",
+              color: "#FFFFFF",
+            },
           }}
         >
-          {tabNames?.map((tabName, index) => (
-            <Tab key={index} label={tabName} className={styles.tabName} />
+          {tabNames.map((tabName, index) => (
+            <Tab key={index} label={tabName} />
           ))}
         </Tabs>
       </Box>
