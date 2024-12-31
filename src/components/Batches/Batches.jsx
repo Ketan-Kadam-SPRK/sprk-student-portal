@@ -3,8 +3,46 @@ import React from "react";
 import BoxCard from "../Dashboard/Child/BoxCard";
 import BatchCardHorizontal from "./child/BatchCardHorizontal";
 
+function getRandomDate(start, end) {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
+}
+
+function generateRandomSessionWeeks(count) {
+  const sessionWeeks = [];
+  for (let i = 0; i < count; i++) {
+    const start = getRandomDate(new Date(2024, 0, 30), new Date(2025, 1, 5)); // Random date in 2026
+    const end = new Date(start);
+    end.setHours(end.getHours() + 2); // Random session duration of 2 hours
+    sessionWeeks.push({
+      start: start.toISOString(),
+      end: end.toISOString(),
+      isConducated: Math.random() < 0.5, // Randomly true or false
+    });
+  }
+  return sessionWeeks;
+}
+
 function Batches() {
   const arrData = [
+    {
+      bth_id: "BTH24MARBEXL31",
+      faculty_id: "SPRK24DIS81",
+      faculty_name: "Disha Shah",
+      course_name: "Basic Excel",
+      course_color: "#239A60",
+      progress: 40,
+      course_img:
+        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
+      bth_status: "ONGOING",
+      est_start: "2026-02-26T05:30:00Z",
+      est_end: "2026-04-16T07:30:00Z",
+      students: 1,
+      zone: "Asia/Calcutta",
+      week_days: ["WEDNESDAY", "THURSDAY", "FRIDAY"],
+      session_week: generateRandomSessionWeeks(3),
+    },
     {
       bth_id: "BTH24FEBCJAV1",
       faculty_id: "SPRK24PANB5",
@@ -28,42 +66,11 @@ function Batches() {
         "SATURDAY",
         "SUNDAY",
       ],
-    },
-    {
-      bth_id: "BTH24MARBEXL31",
-      faculty_id: "SPRK24DIS81",
-      faculty_name: "Disha Shah",
-      course_name: "Basic Excel",
-      course_color: "#239A60",
-      progress: 40,
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      bth_status: "ONGOING",
-      est_start: "2026-02-26T05:30:00Z",
-      est_end: "2026-04-16T07:30:00Z",
-      students: 1,
-      zone: "Asia/Calcutta",
-      week_days: ["WEDNESDAY", "THURSDAY", "FRIDAY"],
-    },
-    {
-      bth_id: "BTH24MARBEXL31",
-      faculty_id: "SPRK24DIS81",
-      faculty_name: "Disha Shah",
-      course_name: "Basic Excel",
-      course_color: "#239A60",
-      progress: 56,
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      bth_status: "UPCOMING",
-      est_start: "2026-02-26T05:30:00Z",
-      est_end: "2026-04-16T07:30:00Z",
-      students: 1,
-      zone: "Asia/Calcutta",
-      week_days: ["WEDNESDAY", "FRIDAY"],
+      session_week: generateRandomSessionWeeks(5),
     },
 
     {
-      bth_id: "BTH24MARBEXL31",
+      bth_id: "BTH24MARBEXL312",
       faculty_id: "SPRK24DIS81",
       faculty_name: "Disha Shah",
       course_name: "Basic Excel",
@@ -76,10 +83,11 @@ function Batches() {
       students: 1,
       zone: "Asia/Calcutta",
       week_days: ["WEDNESDAY", "THURSDAY", "FRIDAY"],
+      session_week: generateRandomSessionWeeks(4),
     },
 
     {
-      bth_id: "BTH24MARBEXL31",
+      bth_id: "BTH24MASBEXL31",
       faculty_id: "SPRK24DIS81",
       faculty_name: "Disha Shah",
       course_name: "Basic Excel",
@@ -92,10 +100,11 @@ function Batches() {
       students: 1,
       zone: "Asia/Calcutta",
       week_days: ["WEDNESDAY", "THURSDAY", "FRIDAY"],
+      session_week: generateRandomSessionWeeks(1),
     },
 
     {
-      bth_id: "BTH24MARBEXL31",
+      bth_id: "BTH24MDDARBEXL31",
       faculty_id: "SPRK24DIS81",
       faculty_name: "Disha Shah",
       course_name: "Basic Excel",
@@ -108,13 +117,14 @@ function Batches() {
       students: 1,
       zone: "Asia/Calcutta",
       week_days: ["WEDNESDAY", "THURSDAY", "FRIDAY"],
+      session_week: generateRandomSessionWeeks(7),
     },
 
     {
-      bth_id: "BTH24MARBEXL31",
+      bth_id: "BTH24KARBEXL31",
       faculty_id: "SPRK24DIS81",
       faculty_name: "Disha Shah",
-      course_name: "Basic Excel",
+      course_name: "Basic Excel ",
       course_color: "#239A60",
       course_img:
         "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
@@ -124,6 +134,7 @@ function Batches() {
       students: 1,
       zone: "Asia/Calcutta",
       week_days: ["WEDNESDAY", "THURSDAY", "FRIDAY"],
+      session_week: [],
     },
   ];
 
@@ -209,7 +220,9 @@ function Batches() {
           }}
         >
           {arrData &&
-            arrData?.map((item) => <BatchCardHorizontal item={item} />)}
+            arrData?.map((item) => (
+              <BatchCardHorizontal key={item.bth_id} item={item} />
+            ))}
         </Box>
       </Box>
     </Box>

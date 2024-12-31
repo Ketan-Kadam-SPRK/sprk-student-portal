@@ -28,6 +28,7 @@ import { setLogin } from "./store/authSlice";
 import { Checkbox } from "@mui/material";
 import { loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
+import axios from "axios";
 
 function modifyCapitalization(inputString) {
   return inputString
@@ -141,9 +142,13 @@ function Login() {
       setIsLoading(true);
 
       // Dispatch login action and handle the response
-      const response = await dispatch(loginUser({ updatedFormData }));
+      // const response = await dispatch(loginUser({ updatedFormData }));
       // const response = null;
       // res.payload;
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/stu/login`,
+        updatedFormData
+      );
       console.log(response);
 
       if (response) {
