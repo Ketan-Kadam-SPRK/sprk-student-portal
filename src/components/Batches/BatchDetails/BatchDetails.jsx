@@ -92,21 +92,21 @@ function BatchDetails() {
           <BoxCard
             title="Sessions Completed"
             number="5"
-            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
+            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735795219/Vector_14_bf5n9j.svg"
             bgColor="#6560F0"
           />
 
           <BoxCard
             title="Attended"
             number="5"
-            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
+            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735795219/attended_srip3d.svg"
             bgColor="#5B9B39"
           />
 
           <BoxCard
             title="Not Attended"
             number="5"
-            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
+            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735795219/ic_round-cancel_mwritp.svg"
             bgColor="#DF5353"
           />
         </Box>
@@ -145,7 +145,7 @@ function BatchDetails() {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <div>
+            <div style={{color:"#0074BD",fontWeight:600}}>
             <Typography>Course Name: React JS</Typography>
             <Typography>Faculty Name: Vivek Mhatre</Typography>
             <Typography>Days: MON | TUES | WED | THURS | FRI</Typography>
