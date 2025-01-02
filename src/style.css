@@ -13,8 +13,10 @@
   /* sidebar colors*/
 
   --sidebar-bg-color: #0A2647;
-  --sidebar-acitve-tab: #DCEEFF;
-  --sidebar-active-tab-text: #0073E6;
+  --sidebar-acitve-tab: #0073E6;
+  --sidebar-onhover-tab: #9ccdff;
+  --sidebar-onhover-tab-text: #0073E6;
+  --sidebar-active-tab-text: white;
   --table-header-bg-color: #085186;
   --font-size-extra-small: clamp(12px, 1vw, 13px);
 

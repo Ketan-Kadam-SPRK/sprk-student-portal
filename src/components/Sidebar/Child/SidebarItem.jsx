@@ -9,17 +9,9 @@ import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import Styles from "../Sidebar.module.css";
 import { Image } from "cloudinary-react";
 
-const SidebarItem = ({
-  title,
-  icon: Icon,
-  open,
-  isActive,
-  onClick,
-
-}) => (
+const SidebarItem = ({ title, icon: Icon, open, isActive, onClick }) => (
   <ListItem
     disablePadding
-  
     onClick={() => {
       if (onClick) onClick();
     }}
@@ -31,53 +23,55 @@ const SidebarItem = ({
         justifyContent: "initial",
         // px: 2.5,
         // mr: 3,
-        borderRadius:'10px',
+        borderRadius: "10px",
         backgroundColor: isActive ? "var(--sidebar-acitve-tab)" : "inherit",
 
-        '&:hover': {
-          backgroundColor: isActive ? "var(--sidebar-acitve-tab)" : "inherit",
-          color: isActive ? "var(--sidebar-active-tab-text)" : "white",
+        "&:hover": {
+          backgroundColor: "var(--sidebar-onhover-tab)",
+          color: "var(--sidebar-onhover-tab-text) !important",
         },
-    
       }}
     >
-        <ListItemIcon
-          sx={{
-            minWidth: 0,
-            // mx: open ? 2 : 3.5,
-            ml: 1,
-            mr: 2,
-            justifyContent: "center",
-          }}
-        >
-          {typeof Icon === "string" ? (
-            <Image
-              className={Styles.Icons}
-              publicId={Icon}
-              cloudName="dxlzzgbfw"
-            />
-          ) : (
-            React.createElement(Icon, { sx: { color: isActive ? "var(--sidebar-active-tab-text)" : "white"} })
-          )}
-        </ListItemIcon>
-        <ListItemText
-  
-  slotProps={{
-    primary: {
-      style: {
-        color: isActive ? "var(--sidebar-active-tab-text)" : "white",
-        fontSize: "var(--font-size-small)",
-        fontWeight: 600,
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-        maxWidth: "100%",
-      },
-    },
-  }}
->
-  {title}
-</ListItemText>
+      <ListItemIcon
+        sx={{
+          minWidth: 0,
+          // mx: open ? 2 : 3.5,
+          ml: 1,
+          mr: 2,
+          justifyContent: "center",
+        }}
+      >
+        {typeof Icon === "string" ? (
+          <Image
+            className={Styles.Icons}
+            publicId={Icon}
+            cloudName="dxlzzgbfw"
+          />
+        ) : (
+          React.createElement(Icon, {
+            sx: {
+              color: isActive ? "var(--sidebar-active-tab-text)" : "white",
+            },
+          })
+        )}
+      </ListItemIcon>
+      <ListItemText
+        slotProps={{
+          primary: {
+            style: {
+              color: isActive ? "var(--sidebar-active-tab-text)" : "white",
+              fontSize: "var(--font-size-small)",
+              fontWeight: 600,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              maxWidth: "100%",
+            },
+          },
+        }}
+      >
+        {title}
+      </ListItemText>
     </ListItemButton>
   </ListItem>
 );
