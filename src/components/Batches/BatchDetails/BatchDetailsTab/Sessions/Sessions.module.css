@@ -1,0 +1,54 @@
+.mainBox {
+    height: 100vh !important;
+    background-color: white !important;
+    overflow: auto;
+}
+
+.infoBox {
+    display: flex !important;
+    flex-direction: column !important;
+    border-bottom: '2px solid #E9E9E9' !important;
+}
+
+.SummeryBox {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.iconStyle {
+    font-size: 19px;
+    color:#6560F0;
+}
+
+.sessionsNumb {
+    font-size: 16px !important;
+    color: #085186 !important;
+    font-weight: 500 !important;
+}
+
+.sessionInfo {
+    font-size: 12px !important;
+    color: #545454 !important;
+}
+
+.modules {
+    margin-left: 20px !important;
+    font-size: 14px !important;
+    align-items: center !important;
+    padding: 8px !important;
+    display: flex;
+    align-items: center;
+}
+
+.takenIcon {
+    font-size: 16px !important;
+    color: green !important;
+    margin-right: 5px !important;
+}
+
+.noData {
+    margin-left: 20px !important;
+    font-size: 14px !important;
+    color: gray !important;
+}

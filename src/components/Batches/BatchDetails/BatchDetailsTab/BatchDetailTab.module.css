@@ -1,0 +1,32 @@
+.mainBox {
+  background-color: var(--secondry-color) !important;
+  height: 100% !important;
+  position: relative !important;
+}
+
+.tabsStyle {
+  color: white !important;
+  width: 100% !important;
+  display: flex !important;
+  background-color: #ffffff !important;
+  margin-top: 10px !important;
+  padding: 8px 0px !important;
+}
+
+.tabName {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  /* margin-left: 15px !important; */
+}
+
+@media only screen and (max-width: 786px) {
+  .tabsStyle {
+    width: 90% !important;
+  }
+
+  .tabBox {
+    width: 100% !important;
+    padding-right: 40px !important;
+    background-color: #fff !important;
+  }
+}
