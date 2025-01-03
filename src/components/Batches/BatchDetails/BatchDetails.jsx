@@ -5,8 +5,10 @@ import BoxCard from "../../Dashboard/Child/BoxCard";
 import { Image } from "cloudinary-react";
 import BatchDetailsTab from "./BatchDetailsTab/BatchDetailsTab";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
+import { useParams } from "react-router-dom";
 
 function BatchDetails() {
+  const batchId = useParams().batchId || null;
   const getStatusStyle = (status) => {
     switch (status) {
       case "ONGOING":
@@ -141,7 +143,7 @@ function BatchDetails() {
                 ml: 2,
               }}
             >
-              BTH24139
+             {batchId}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
