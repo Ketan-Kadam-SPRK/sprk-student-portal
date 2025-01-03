@@ -176,7 +176,7 @@ function Sessions() {
       <Box sx={{ px: 3, py: 2 }}>
         {/* Map through SessionsData and render each session */}
         {SessionsData?.session_list?.map((sessionData) => (
-          <Accordion key={sessionData.session_id} sx={{ marginBottom: "25px" }}>
+          <Accordion key={sessionData?.session_id} sx={{ marginBottom: "25px" }}>
             {/* Accordion header */}
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -208,7 +208,7 @@ function Sessions() {
                     }}
                   >
                     Session <span>{sessionData.serial_no}</span>{" "}
-                    <span style={{ color: "grey", fontSize: "12px" }}>
+                    <span style={{ color: "grey", fontSize: "12px"}}>
                       {sessionData.type !== "REGULAR" && "(BACKUP)"}
                     </span>
                   </Typography>
@@ -218,7 +218,7 @@ function Sessions() {
                 <Typography className={styles.sessionInfo}>
                   Faculty: {sessionData.faculty_name}
                 </Typography>
-                <Box sx={{ display: "flex", gap: "50px", flexWrap: "wrap"}}>
+                <Box sx={{ display: "flex", gap: "50px", flexWrap: "wrap" }}>
                   <Box>
                     <Typography className={styles.sessionInfo}>
                       Session Date:{" "}
@@ -228,29 +228,37 @@ function Sessions() {
                       )}
                     </Typography>
                   </Box>
-
                 </Box>
               </Box>
-              <Box sx={{ display: "flex", flexWrap: "wrap",}}>
-                <Box >
-                    {sessionData?.attendance !== null && (
-                      <Typography
-                        sx={{
-                          backgroundColor:"#E2FDEC",
-                          p:"5px 10px",
-                          borderRadius:"15px",
-                          color:
-                            sessionData?.attendance === "Present"
-                              ? "#239A60"
-                              : "#A30000",
-                          fontSize: "12px",
-                        }}
-                      >
-                        {sessionData?.attendance}
-                      </Typography>
-                    )}
-                    </Box>
-               </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flex: 1,
+                }}
+              >
+                <Box>
+                  {sessionData?.attendance !== null && (
+                    <Typography
+                      sx={{
+                        backgroundColor: "#E2FDEC",
+                        p: "5px 15px",
+                        borderRadius: "15px",
+                        fontWeight: 600,
+                        color:
+                          sessionData?.attendance === "Present"
+                            ? "#239A60"
+                            : "#A30000",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {sessionData?.attendance}
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
             </AccordionSummary>
             {/* Accordion content */}
             <AccordionDetails>
