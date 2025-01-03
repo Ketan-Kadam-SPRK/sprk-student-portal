@@ -1,4 +1,4 @@
-import { Box, LinearProgress, Typography } from "@mui/material";
+import { Box, LinearProgress, Typography, Tooltip } from "@mui/material";
 import React from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { Image } from "cloudinary-react";
@@ -9,6 +9,13 @@ import { getWeekdayFromTimestamp } from "../../../Utils/dateTimeFormator";
 
 function BatchCardHorizontal({ item = {} }) {
   const navigate = useNavigate();
+
+  const returnFormatedtime = (timestamp) => {
+    return `${new Date(timestamp).getHours()}:
+    ${new Date(timestamp).getMinutes()}  ${
+      new Date(timestamp).getHours() >= 12 ? "PM" : "AM"
+    }`;
+  };
   return (
     <Box
       key={item.bth_id}
@@ -112,50 +119,56 @@ function BatchCardHorizontal({ item = {} }) {
         >
           {item.session_week?.length > 0 ? (
             item.session_week.map((item, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  px: 1,
-                  py: 2,
-                  gap: 1,
-                  backgroundColor: item.isConducated ? "grey" : "#0073E6",
-                  width: "90px",
-                  borderRadius: "10px",
-                }}
+              <Tooltip
+                title={`
+                 ${returnFormatedtime(item.start)} to  ${returnFormatedtime(
+                  item.end
+                )}
+              `}
+                arrow
               >
-                <Typography
-                  sx={{
-                    fontSize: "var(--font-size-extra-small)",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {getWeekdayFromTimestamp(item.start).slice(0, 3)}
-                </Typography>
-
                 <Box
+                  key={index}
                   sx={{
-                    p: 0.5,
-                    backgroundColor: "white",
-                    borderRadius: "5px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    px: 1,
+                    py: 2,
+                    gap: 1,
+                    backgroundColor: item.isConducated ? "grey" : "#0073E6",
+                    width: "90px",
+                    borderRadius: "10px",
                   }}
                 >
                   <Typography
                     sx={{
-                      fontSize: "10px",
+                      fontSize: "var(--font-size-extra-small)",
+                      color: "white",
                       fontWeight: "bold",
                     }}
                   >
-                    {` ${new Date(item.start).getHours()}:
-                  ${new Date(item.start).getMinutes()}  ${
-                      new Date(item.start).getHours() >= 12 ? "PM" : "AM"
-                    }`}
+                    {getWeekdayFromTimestamp(item.start).slice(0, 3)}
                   </Typography>
+
+                  <Box
+                    sx={{
+                      p: 0.5,
+                      backgroundColor: "white",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "10px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {returnFormatedtime(item.start)}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
+              </Tooltip>
             ))
           ) : (
             <Typography
