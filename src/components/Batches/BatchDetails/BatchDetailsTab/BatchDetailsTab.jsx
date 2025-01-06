@@ -4,6 +4,7 @@ import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
 import AbsentLog from "./AbsentLog/AbsentLog";
+import { useParams } from "react-router-dom";
 
 const TabPanel = ({ children, value, index }) => {
   return (
