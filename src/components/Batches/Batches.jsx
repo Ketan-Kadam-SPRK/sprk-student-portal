@@ -219,10 +219,24 @@ function Batches() {
             overflow: "auto",
           }}
         >
-          {arrData &&
+          {arrData?.length > 0 ? (
             arrData?.map((item) => (
               <BatchCardHorizontal key={item.bth_id} item={item} />
-            ))}
+            ))
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <Typography variant="h6" sx={{ color: "grey" }}>
+                No Batches Available
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
