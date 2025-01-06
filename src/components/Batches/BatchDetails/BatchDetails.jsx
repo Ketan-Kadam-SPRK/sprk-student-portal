@@ -1,4 +1,13 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, colors, Grid, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  colors,
+  Grid,
+  Typography,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React from "react";
 import BoxCard from "../../Dashboard/Child/BoxCard";
@@ -30,7 +39,7 @@ function BatchDetails() {
   // const statusStyle = getStatusStyle(data?.status);
 
   return (
-    <Box sx={{ height: "100vh",}}>
+    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <Box
         sx={{
           backgroundColor: "white",
@@ -82,7 +91,9 @@ function BatchDetails() {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ px:2,pt:2, display: "flex", gap:2,flexDirection:"column" }}>
+      <Box
+        sx={{ px: 2, pt: 2, display: "flex", gap: 2, flexDirection: "column" }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -123,41 +134,41 @@ function BatchDetails() {
             p: 2,
           }}
         >
-        <Accordion>
-          <AccordionSummary
-            expandIcon={
-              <InfoRoundedIcon
-                sx={{ fontSize: "30px", color: "#CCCCCC !important" }}
-              />
-            }
-          >
-            <Image
-              publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1703153520/Vector_3_rnkyxa.svg"
-              cloudName="dxlzzgbfw"
-            />
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: { xs: "20px", sm: "25px", md: "30px" },
-                fontWeight: "bold",
-                ml: 2,
-              }}
+          <Accordion>
+            <AccordionSummary
+              expandIcon={
+                <InfoRoundedIcon
+                  sx={{ fontSize: "30px", color: "#CCCCCC !important" }}
+                />
+              }
             >
-             {batchId}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <div style={{color:"#0074BD",fontWeight:600}}>
-            <Typography>Course Name: React JS</Typography>
-            <Typography>Faculty Name: Vivek Mhatre</Typography>
-            <Typography>Days: MON | TUES | WED | THURS | FRI</Typography>
-            <Typography>Start Date: 02 Dec 2025</Typography>
-            </div>
-          </AccordionDetails>
-        </Accordion>
+              <Image
+                publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1703153520/Vector_3_rnkyxa.svg"
+                cloudName="dxlzzgbfw"
+              />
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize: { xs: "20px", sm: "25px", md: "30px" },
+                  fontWeight: "bold",
+                  ml: 2,
+                }}
+              >
+                {batchId}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div style={{ color: "#0074BD", fontWeight: 600 }}>
+                <Typography>Course Name: React JS</Typography>
+                <Typography>Faculty Name: Vivek Mhatre</Typography>
+                <Typography>Days: MON | TUES | WED | THURS | FRI</Typography>
+                <Typography>Start Date: 02 Dec 2025</Typography>
+              </div>
+            </AccordionDetails>
+          </Accordion>
         </Box>
       </Box>
-      <Box sx={{ px: 2 }}>
+      <Box sx={{ px: 2, flex: 1 }}>
         <BatchDetailsTab />
       </Box>
     </Box>

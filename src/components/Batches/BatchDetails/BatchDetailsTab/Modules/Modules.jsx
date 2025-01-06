@@ -63,9 +63,20 @@ function Modules() {
   ];
 
   return (
-    <Box sx={{ height: "100vh", backgroundColor: "white", p: 2 }}>
-      <Box sx={{ display: "flex", flexDirection: "column",gap:2 }}>
-        {data?.map((item, index) => (
+    <Box
+      sx={{
+        height: "100%",
+        backgroundColor: "white",
+        p: 2,
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+        overflowY: "auto",
+        gap: "10px",
+      }}
+    >
+      {data?.length < 0 ? (
+        data?.map((item, index) => (
           <Box
             key={index}
             sx={{
@@ -77,7 +88,7 @@ function Modules() {
               borderRadius: "8px", // Rounds the corners
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: "10px",}}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <Box>
                 {item?.status === "COMPLETED" ? (
                   <CheckCircleIcon sx={{ color: "#3D37D5" }} />
@@ -86,7 +97,9 @@ function Modules() {
                 )}
               </Box>
               <Box>
-                <Typography sx={{color:"#085186",fontWeight:600}}>{item?.name}</Typography>
+                <Typography sx={{ color: "#085186", fontWeight: 600 }}>
+                  {item?.name}
+                </Typography>
               </Box>
             </Box>
             <Box
@@ -125,8 +138,22 @@ function Modules() {
               </Typography>
             </Box>
           </Box>
-        ))}
-      </Box>
+        ))
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "500px",
+            flex: 4,
+          }}
+        >
+          <Typography sx={{ color: "grey", fontSize: "12px" }}>
+            No Modules Found
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 }
