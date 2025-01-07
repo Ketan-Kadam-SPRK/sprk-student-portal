@@ -13,22 +13,18 @@ import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CircularProgress from "@mui/material/CircularProgress";
-// import { loginUser } from "./store/login.actions";
-// import { getUser } from "./store/login.actions";
+
 import { useDispatch } from "react-redux";
-// import { setLogin } from "../../state/authState";
-// import { setUserDetails } from "../../state/authState";
-// import TrimmedString from "../../Utils/TrimmedString";
+
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import Lottie from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
 // import { rearrangeArray } from "../../Utils/tabsRearrangeArray";
 import { LogOut } from "../../Utils/LogOut";
-import { setLogin } from "./store/authSlice";
+import { setLogin, setUserDetails } from "./store/authSlice";
 import { Checkbox } from "@mui/material";
-import { loginUser } from "./store/login.actions";
+import { loginUser, getUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
-import axios from "axios";
 
 function modifyCapitalization(inputString) {
   return inputString
@@ -127,9 +123,7 @@ function Login() {
     // If either is invalid, reset captcha and exit
     if (!formData.eid || !formData.password) {
       resetCaptcha();
-      // localStorage.setItem("token", "Dashboarsdsdadsdd");
-      // dispatch(setLogin({ token: "Dashboarsdsdadsdd" }));
-      // navigate("/Dashboard");
+
       return;
     }
 
@@ -141,56 +135,25 @@ function Login() {
       console.log("Form Data:", formData);
       setIsLoading(true);
 
-      // Dispatch login action and handle the response
-      // const response = await dispatch(loginUser({ updatedFormData }));
-      // const response = null;
-      // res.payload;
-      const response = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/stu/login`,
-        updatedFormData
-      );
-      console.log(response);
+      const response = await dispatch(loginUser({ updatedFormData })); // console
 
       if (response) {
-        const { status, error, data } = response;
+        const { status, error, data } = response?.payload;
         setStatus(status);
 
         setErrorMsg(error);
+        console.log("data.token:", data?.token);
 
         if (data?.token) {
-          const accessToken = data.token;
+          console.log("data.token:", data?.token);
+          const accessToken = data?.token;
           localStorage.setItem("token", accessToken);
 
           const decodedToken = jwtDecode(accessToken);
           const userId = decodedToken.sub;
-
-          // Dispatch getUser action and set user details in state
           // const userResponse = await dispatch(getUser({ accessToken }));
           // const userDetails = userResponse?.payload?.data;
-          // const roles = userDetails?.authorities;
-          // const entitlements = await rearrangeArray(
-          //   userDetails?.entitlements,
-          //   PermissionJson
-          // );
-
-          // const uniqueNames = await [
-          //   ...new Set(
-          //     entitlements?.flatMap((item) => {
-          //       return Array.isArray(item.sub)
-          //         ? [item.name, ...item.sub.map((subItem) => subItem.name)]
-          //         : [item.name];
-          //     })
-          //   ),
-          // ];
-
-          // dispatch(
-          //   setUserDetails({
-          //     userDetails,
-          //     roles,
-          //     entitlements,
-          //     tabName: uniqueNames,
-          //   })
-          // );
+          const userDetails = null;
 
           dispatch(
             setLogin({
@@ -199,6 +162,14 @@ function Login() {
               userId,
             })
           );
+
+          navigate(`/Dashboard`);
+
+          // dispatch(
+          //   setUserDetails({
+          //     userDetails: userDetails,
+          //   })
+          // );
 
           // const mainTabName = await entitlements?.map((item) => item.name);
           // const capitalizedTabNames = await mainTabName?.map((tabName) =>

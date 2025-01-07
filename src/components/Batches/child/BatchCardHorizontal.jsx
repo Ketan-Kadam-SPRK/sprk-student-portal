@@ -18,7 +18,7 @@ function BatchCardHorizontal({ item = {} }) {
   };
   return (
     <Box
-      key={item.bth_id}
+      key={item?.batch_uid}
       sx={{
         backgroundColor: "#EDF6FF",
         borderRadius: "10px",
@@ -42,7 +42,7 @@ function BatchCardHorizontal({ item = {} }) {
       >
         <Image
           cloudName="dxlzzgbfw"
-          publicId={item?.course_img}
+          publicId={item?.course_image_url}
           width="100"
           height="100"
         />
@@ -54,10 +54,10 @@ function BatchCardHorizontal({ item = {} }) {
               cursor: "pointer",
             }}
             onClick={() => {
-              navigate(`/Batches/${item?.bth_id}`);
+              navigate(`/Batches/${item?.batch_uid}`);
             }}
           >
-            {item?.bth_id}
+            {item?.batch_uid}
           </Typography>
           <StatusStyledComponent
             color="#085186"
@@ -95,7 +95,7 @@ function BatchCardHorizontal({ item = {} }) {
         >
           <LinearProgress
             variant="determinate"
-            value={item?.progress || 0} // Assuming `item.progress` is the percentage value
+            value={item?.batch_progress || 0} // Assuming `item.progress` is the percentage value
             sx={{ flex: 1 }}
           />
           <Typography
@@ -105,7 +105,7 @@ function BatchCardHorizontal({ item = {} }) {
               color: "#085186",
             }}
           >
-            {`${item?.progress || 0}%`}
+            {`${item?.batch_progress || 0}%`}
           </Typography>
         </Box>
 
@@ -117,11 +117,11 @@ function BatchCardHorizontal({ item = {} }) {
             flexWrap: "wrap",
           }}
         >
-          {item.session_week?.length > 0 ? (
-            item.session_week.map((item, index) => (
+          {item?.session_week?.length > 0 ? (
+            item?.session_week?.map((item, index) => (
               <Tooltip
                 title={`
-                 ${returnFormatedtime(item.start)} to  ${returnFormatedtime(
+                 ${returnFormatedtime(item?.start)} to  ${returnFormatedtime(
                   item.end
                 )}
               `}
@@ -136,7 +136,7 @@ function BatchCardHorizontal({ item = {} }) {
                     px: 1,
                     py: 2,
                     gap: 1,
-                    backgroundColor: item.isConducated ? "grey" : "#0073E6",
+                    backgroundColor: item?.isConducated ? "grey" : "#0073E6",
                     width: "90px",
                     borderRadius: "10px",
                   }}
@@ -148,7 +148,7 @@ function BatchCardHorizontal({ item = {} }) {
                       fontWeight: "bold",
                     }}
                   >
-                    {getWeekdayFromTimestamp(item.start).slice(0, 3)}
+                    {getWeekdayFromTimestamp(item?.start).slice(0, 3)}
                   </Typography>
 
                   <Box
@@ -164,7 +164,7 @@ function BatchCardHorizontal({ item = {} }) {
                         fontWeight: "bold",
                       }}
                     >
-                      {returnFormatedtime(item.start)}
+                      {returnFormatedtime(item?.start)}
                     </Typography>
                   </Box>
                 </Box>
@@ -192,7 +192,7 @@ function BatchCardHorizontal({ item = {} }) {
           justifyContent: "space-between",
         }}
       >
-        <StatusComponent value={item.bth_status} />
+        <StatusComponent value={item?.batch_status} />
         <Box
           sx={{
             display: "flex",

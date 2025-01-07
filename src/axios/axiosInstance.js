@@ -2,11 +2,15 @@
 import axios from "axios";
 import swal from "sweetalert";
 import { store } from "../store";
-import { setLogout } from "../state/authState"; // Your logout action
+import { setLogout } from "../components/Login/store/authSlice";
+import { headers } from "../Utils/apiHelpers";
 
 const axiosInstance = axios.create({
-  baseURL: `${process.env.VITE_APP_BASE_URL}/api`,
+  baseURL: `${import.meta.env.VITE_APP_BASE_URL}/api`,
+  headers: headers(),
 });
+
+console.log(headers());
 
 const logout = async (errorMsg) => {
   try {

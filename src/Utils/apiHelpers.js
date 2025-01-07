@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { showAlert } from "./SweatAlertModal";
 
 export const handleResponse = (data) => {
@@ -18,4 +19,13 @@ export const handleError = (error) => {
     error.response?.data?.error || "An error occurred. Please try again later.";
   showAlert("Error", errorMessage, "error", "OK", true);
   throw error;
+};
+
+export const headers = () => {
+  const rtoken = localStorage.getItem("token");
+  return {
+    "ngrok-skip-browser-warning": true,
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${rtoken}`,
+  };
 };
