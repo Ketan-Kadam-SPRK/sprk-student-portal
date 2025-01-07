@@ -5,9 +5,11 @@ import BatchCardHorizontal from "./child/BatchCardHorizontal";
 import { useDispatch } from "react-redux";
 import { getBatches } from "./action/batches.actions";
 import ErrorHandling from "../Common/ErrorHandling";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 
 function Batches() {
   const dispatch = useDispatch();
+  const headers = useAuthHeaders();
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +21,7 @@ function Batches() {
     console.log("getStudentBatches");
     setLoading(true);
     try {
-      const res = await dispatch(getBatches());
+      const res = await dispatch(getBatches({ headers }));
       const data = res?.payload?.data?.data || [];
       setBatches(data);
       setLoading(false);

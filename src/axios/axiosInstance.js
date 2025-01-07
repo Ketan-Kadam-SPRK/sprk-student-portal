@@ -7,7 +7,6 @@ import { headers } from "../Utils/apiHelpers";
 
 const axiosInstance = axios.create({
   baseURL: `${import.meta.env.VITE_APP_BASE_URL}/api`,
-  headers: headers(),
 });
 
 console.log(headers());

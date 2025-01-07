@@ -117,13 +117,13 @@ function BatchCardHorizontal({ item = {} }) {
             flexWrap: "wrap",
           }}
         >
-          {item?.session_week?.length > 0 ? (
-            item?.session_week?.map((item, index) => (
+          {item?.sessions?.length > 0 ? (
+            item?.sessions?.map((item, index) => (
               <Tooltip
                 title={`
-                 ${returnFormatedtime(item?.start)} to  ${returnFormatedtime(
-                  item.end
-                )}
+                 ${returnFormatedtime(
+                   item?.start_time
+                 )} to  ${returnFormatedtime(item.end_time)}
               `}
                 arrow
               >
@@ -136,7 +136,7 @@ function BatchCardHorizontal({ item = {} }) {
                     px: 1,
                     py: 2,
                     gap: 1,
-                    backgroundColor: item?.isConducated ? "grey" : "#0073E6",
+                    backgroundColor: item?.conducted ? "grey" : "#0073E6",
                     width: "90px",
                     borderRadius: "10px",
                   }}
@@ -148,7 +148,7 @@ function BatchCardHorizontal({ item = {} }) {
                       fontWeight: "bold",
                     }}
                   >
-                    {getWeekdayFromTimestamp(item?.start).slice(0, 3)}
+                    {getWeekdayFromTimestamp(item?.start_time).slice(0, 3)}
                   </Typography>
 
                   <Box
@@ -164,7 +164,7 @@ function BatchCardHorizontal({ item = {} }) {
                         fontWeight: "bold",
                       }}
                     >
-                      {returnFormatedtime(item?.start)}
+                      {returnFormatedtime(item?.start_time)}
                     </Typography>
                   </Box>
                 </Box>
