@@ -75,7 +75,7 @@ function Modules() {
         gap: "10px",
       }}
     >
-      {data?.length < 0 ? (
+      {data?.length > 0 ? (
         data?.map((item, index) => (
           <Box
             key={index}
