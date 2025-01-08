@@ -130,18 +130,18 @@ function Login() {
     // Trim string values in the form data
     const updatedFormData = TrimmedString(formData);
 
-    // if (isHuman) {
-    try {
-      console.log("Form Data:", formData);
-      setIsLoading(true);
+    if (isHuman) {
+      try {
+        console.log("Form Data:", formData);
+        setIsLoading(true);
 
-      const response = await dispatch(loginUser({ updatedFormData })); // console
+        const response = await dispatch(loginUser({ updatedFormData })); // console
+        console.log("response:", response);
 
-      if (response) {
-        const { status, error, data } = response?.payload;
+        const data = response?.payload?.data;
+        const status = response?.payload?.status;
         setStatus(status);
-
-        setErrorMsg(error);
+        // setErrorMsg(error);
         console.log("data.token:", data?.token);
 
         if (data?.token) {
@@ -176,26 +176,23 @@ function Login() {
           //   modifyCapitalization(tabName)
           // );
 
-          navigate(`/Dashboard`);
+          // navigate(`/Dashboard`);
         } else {
           resetCaptcha();
         }
-      } else {
-        throw new Error("Network response was not ok");
+      } catch (error) {
+        console.error("Login Failed:", error);
+        // setIsSubmitError(true);
+        resetCaptcha(); // Reset the CAPTCHA state
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Login Failed:", error);
-      // setIsSubmitError(true);
-      resetCaptcha(); // Reset the CAPTCHA state
-    } finally {
-      setIsLoading(false);
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        captchaError: true,
+      }));
     }
-    // } else {
-    //   setErrors((prev) => ({
-    //     ...prev,
-    //     captchaError: true,
-    //   }));
-    // }
   };
 
   return (
@@ -364,13 +361,13 @@ function Login() {
               />
               <Typography variant="body2"> Remember me</Typography>
             </Box>
-            {/* <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+            <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
               <HCaptcha
                 sitekey={import.meta.env.VITE_APP_CAPTCHA_SITE_KEY}
                 onVerify={handleHcaptchaVerification}
                 key={captchaKey}
               />
-            </Box> */}
+            </Box>
             {errors.captchaError && (
               <FormHelperText error>
                 Please complete the hCaptcha challenge.

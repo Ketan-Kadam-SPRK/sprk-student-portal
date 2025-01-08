@@ -1,21 +1,25 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../../../axios/axiosInstance";
+import axios from "axios";
 
 export const loginUser = createAsyncThunk(
   "login/loginUser",
   async ({ updatedFormData }) => {
     try {
       // Send a POST request to the login API endpoint with user data
-      const res = await axiosInstance.post(`/auth/stu/login`, updatedFormData, {
-        headers: {
-          "ngrok-skip-browser-warning": true,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/stu/login`,
+        updatedFormData,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
 
       const data = await res.data; // Corrected this line
-      // console.log(res.data)
+      console.log(res.data);
       return { data: data, status: res.status };
     } catch (err) {
       return { status: err.response.status, error: err.response.data.error };
@@ -29,13 +33,16 @@ export const getUser = createAsyncThunk(
   async ({ accessToken }) => {
     try {
       // Send a GET request to fetch user details using the access token and user ID
-      const res = await axiosInstance.get(`/auth/`, {
-        headers: {
-          "ngrok-skip-browser-warning": true,
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + accessToken,
-        },
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + accessToken,
+          },
+        }
+      );
 
       // Extract and return the data from the response
       const data = await res.data;
