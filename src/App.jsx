@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Login from "./components/Login/Login";
 import "./style.css";
 import { useSelector } from "react-redux";
+import ForgotPass from "./components/Forgot Password/ForgotPass";
 
 function App() {
   const token = useSelector((state) => state.authSlice.token);
@@ -21,6 +22,7 @@ function App() {
           path="/login"
           element={isAuthenticated ? <Navigate to="/" /> : <Login />}
         />
+        <Route path="/forgot-password" element={<ForgotPass />} />
       </Routes>
     </BrowserRouter>
   );
