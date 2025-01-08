@@ -388,6 +388,17 @@ function Sidebar() {
                       handleDrawerClose();
                     }}
                   />
+                  <SidebarItem
+                    title="Leaves"
+                    icon={PeopleAltIcon}
+                    open={open}
+                    isActive={activeTab === "Leaves"}
+                    onClick={() => {
+                      navigate("/Leaves");
+                      handleTabClick("Leaves");
+                      handleDrawerClose();
+                    }}
+                  />
 
                   <Typography sx={{ ...headingTextStyle, mt: 3 }}>
                     Course Details
