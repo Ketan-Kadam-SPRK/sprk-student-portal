@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import axiosInstance from "../../../axios/axiosInstance";
+import { handleResponse } from "../../../Utils/apiHelpers";
 
 export const loginUser = createAsyncThunk(
   "login/loginUser",
@@ -61,7 +63,7 @@ export const freshToken = createAsyncThunk(
   async ({ headers }) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/auth/logout`,
+        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/logout`,
         null,
         {
           headers: {
@@ -72,6 +74,29 @@ export const freshToken = createAsyncThunk(
       );
 
       return response.data;
+    } catch (error) {
+      handleError(error);
+    }
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  "login/forgotPassword",
+  async ({ payload }) => {
+    try {
+      const response = await axiosInstance.post(
+        `/auth/stu/forgot/pass`,
+        payload,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      return handleResponse(response.data);
     } catch (error) {
       handleError(error);
     }

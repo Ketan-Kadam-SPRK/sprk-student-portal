@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Image } from "cloudinary-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -385,6 +385,21 @@ function Login() {
             >
               {isLoading ? <CircularProgress size={24} /> : "Log In"}
             </Button>
+
+            <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
+              <Typography variant="body2">
+                <Link
+                  to="/forgot-password"
+                  style={{
+                    textDecoration: "none",
+                    color: "#0074BD",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Forgot Password?
+                </Link>
+              </Typography>
+            </Box>
           </form>
         </Box>
       </Grid2>

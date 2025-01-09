@@ -4,13 +4,20 @@ import {
   Typography,
   Button,
   FormHelperText,
+  CircularProgress,
 } from "@mui/material";
 import React, { useState, useRef } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { Image } from "cloudinary-react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { forgotPassword } from "../Login/store/login.actions";
 
 function ForgotPass() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({});
   const [isHuman, setIsHuman] = useState(false);
   const [errors, setErrors] = useState({
@@ -59,10 +66,15 @@ function ForgotPass() {
 
     if (isHuman) {
       try {
-        console.log("Form Data:", formData);
+        setIsLoading(true);
+        const res = await dispatch(forgotPassword({ payload: formData }));
+
+        console.log(res);
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
         resetCaptcha();
+        setIsLoading(false);
       }
     } else {
       setErrors((prev) => ({
@@ -156,8 +168,9 @@ function ForgotPass() {
           color="primary"
           onClick={handleSubmit}
           sx={{ width: "400px" }}
+          disabled={isLoading}
         >
-          Submit
+          {isLoading ? <CircularProgress size={24} /> : "Submit"}
         </Button>
 
         <Typography
@@ -171,6 +184,9 @@ function ForgotPass() {
             "&:hover": {
               color: "#3989B8",
             },
+          }}
+          onClick={() => {
+            navigate("/login");
           }}
         >
           <ArrowBackRoundedIcon /> Back to log in
