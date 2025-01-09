@@ -55,3 +55,25 @@ export const getUser = createAsyncThunk(
     }
   }
 );
+
+export const freshToken = createAsyncThunk(
+  "login/freshToken",
+  async ({ headers }) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_BASE_URL}/auth/logout`,
+        null,
+        {
+          headers: {
+            ...headers,
+            "logout-from-other-devices": false,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      handleError(error);
+    }
+  }
+);
