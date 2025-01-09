@@ -51,3 +51,22 @@ export function getWeekdayFromTimestamp(timestamp) {
   ];
   return weekdays[date.getUTCDay()];
 }
+
+export const formatDateTimeRange = (start, end, locale = "en-US") => {
+  const dateOptions = {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  };
+
+  const timeOptions = {
+    hour: "numeric",
+    minute: "numeric",
+  };
+
+  const formattedStartDate = new Date(start).toLocaleDateString("en-GB", dateOptions);
+  const formattedStartTime = new Date(start).toLocaleTimeString(locale, timeOptions);
+  const formattedEndTime = new Date(end).toLocaleTimeString(locale, timeOptions);
+
+  return `${formattedStartDate} | ${formattedStartTime} - ${formattedEndTime}`;
+};
