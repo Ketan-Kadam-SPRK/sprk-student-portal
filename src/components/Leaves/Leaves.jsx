@@ -79,36 +79,34 @@ function Leaves() {
     },
   ];
 
-  const columnDefs = [
-    {
-      headerName: "From",
-      field: "from",
-      minWidth: 200,
-      filterable: false,
-    },
+  const rows = rowData.map((item, index) => ({
+    ...item,
+    id: item.id || index,
+  }));
+
+  const columns = [
+    { 
+      headerName: "From", 
+      id: "from",   
+       minWidth: 200,
+       filterable: false },
     {
       headerName: "To",
-      field: "to",
+      id: "to",
       minWidth: 200,
-      cellStyle: { color: "#0074BD", fontWeight: 600 },
+      style: { color: "#0074BD", fontWeight: 600 },
     },
-    {
-      headerName: "Days",
-      field: "days",
-      minWidth: 175,
-    },
+    { headerName: "Days",id: "days",  minWidth: 175 },
     {
       headerName: "Status",
-      field: "status",
+      id: "status",
       minWidth: 200,
-      cellStyle: {
+      style: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       },
-      cellRenderer: (params) => {
-        const status = params?.value;
-
+      format: (status) => {
         const getColorAndBackground = (status) => {
           switch (status) {
             case "Approved":
@@ -125,26 +123,17 @@ function Leaves() {
         };
 
         const { color, backgroundColor } = getColorAndBackground(status);
-
-        return status ? (
+        return (
           <StatusStyledComponent
             color={color}
             backgroundColor={backgroundColor}
             value={status}
           />
-        ) : null;
+        );
       },
     },
-    {
-      headerName: "Action",
-      field: "action",
-      minWidth: 200,
-    },
-    {
-      headerName: "Reason",
-      field: "reason",
-      minWidth: 200,
-    },
+    { headerName: "Action", id: "action",  minWidth: 200 },
+    {headerName: "Reason", id: "reason",  minWidth: 200 },
   ];
 
   return (
@@ -173,8 +162,8 @@ function Leaves() {
       </Box>
       <Box>
         <CustomAgGrid
-          rowData={rowData}
-          columnDefs={columnDefs}
+          rows={rows}
+          columns={columns}
           paginationModel={{ page: 0, pageSize: 10 }}
           checkboxSelection={false}
         />

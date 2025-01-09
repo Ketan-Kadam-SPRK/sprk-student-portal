@@ -104,7 +104,7 @@ function PopupFilterComponent({
     const worker = new Worker("/FilterWorker.js");
 
     worker.onmessage = function (e) {
-      setFilterData(e.data);
+      // setFilterData(e.data);
       setLoading(false);
       handleClose();
     };
@@ -162,7 +162,7 @@ function PopupFilterComponent({
       selectedStatus: [],
       selectAll: false,
     });
-    setFilterData(rowData);
+    // setFilterData(rowData);
     handleClose();
     setDateError({
       startError: "",

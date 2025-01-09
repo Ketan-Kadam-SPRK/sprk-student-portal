@@ -37,7 +37,7 @@ function Modules() {
       status: "UPCOMING",
     },
     {
-      name: "Excel Worksheet - All Operations Related To Worksheet",
+      name: "Worksheet - All Operations Related To Worksheet Excel Worksheet - All Operations Related To Workshee",
       sessions: [],
       faculties: [],
       status: "UPCOMING",
@@ -102,6 +102,7 @@ function Modules() {
                 </Typography>
               </Box>
             </Box>
+
             <Box
               sx={{
                 display: "flex",

@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
 import AbsentLog from "./AbsentLog/AbsentLog";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../../../Hooks/useAuthHeaders";
+
 
 const TabPanel = ({ children, value, index }) => {
   return (
@@ -14,13 +17,15 @@ const TabPanel = ({ children, value, index }) => {
   );
 };
 
-function BatchDetailsTab() {
+function BatchDetailsTab({sessionData}) {
   const tabNames = ["SESSIONS", "MODULES", "ABSENT LOG"];
   const [activeTab, setActiveTab] = useState(0);
+  const batchId = useParams().batchId || null;
 
   const handleTabChange = (event, newTabIndex) => {
     setActiveTab(newTabIndex);
   };
+
 
   return (
     <Box className={styles.mainBox}>
@@ -58,13 +63,13 @@ function BatchDetailsTab() {
       </Box>
 
       <TabPanel value={activeTab} index={0}>
-        <Sessions />
+        <Sessions sessionData={sessionData}/>
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
         <Modules />
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
-        <AbsentLog />
+        <AbsentLog batchId={batchId} />
       </TabPanel>
     </Box>
   );
