@@ -6,7 +6,6 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import dateFormator from "../../../../../Utils/dateFormator";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
 import { getAbsentLogs } from "../../../action/batches.actions";
@@ -71,12 +70,14 @@ function AbsentLog({ batchId }) {
                 {item?.attendance !== null && (
                   <Typography
                     sx={{
+                      width: "100%",
                       backgroundColor:item?.studentAttendanceStatus === "ABSENT" ? "#FEECEC":"#FFF8C7",
                       p: "5px 15px",
                       borderRadius: "15px",
                       fontWeight: 600,
                       color:item?.studentAttendanceStatus === "ABSENT" ? "#A30000":"#B17C02",
                       fontSize: "14px",
+                      textWrap:"nowrap"
                     }}
                   >
                     {item?.studentAttendanceStatus.replace(/_/g, " ")}

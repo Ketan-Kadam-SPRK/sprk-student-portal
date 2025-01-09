@@ -9,15 +9,43 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BoxCard from "../../Dashboard/Child/BoxCard";
 import { Image } from "cloudinary-react";
 import BatchDetailsTab from "./BatchDetailsTab/BatchDetailsTab";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import { getSessionsDetails } from "../action/batches.actions";
+import dateFormator from "../../../Utils/dateFormator";
 
 function BatchDetails() {
   const batchId = useParams().batchId || null;
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [loading, setLoading] = useState(false);
+  const [sessionData, setSessionData] = useState([]);
+
+ const getSessionsDetail = async () => {
+    setLoading(true);
+    try {
+      const res = await dispatch(getSessionsDetails({ headers, batchId }));
+      const data = res?.payload?.data?.data || [];
+      console.log(data);
+      setSessionData(data);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+    }
+    console.log(res);
+  };
+
+    useEffect(() => {
+      getSessionsDetail();
+    }, [])
+
+  
   const getStatusStyle = (status) => {
     switch (status) {
       case "ONGOING":
@@ -104,21 +132,21 @@ function BatchDetails() {
         >
           <BoxCard
             title="Sessions Completed"
-            number="5"
+            number={sessionData?.completedSessions}
             image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735795219/Vector_14_bf5n9j.svg"
             bgColor="#6560F0"
           />
 
           <BoxCard
             title="Attended"
-            number="5"
+            number={sessionData?.attendedSessions}
             image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735795219/attended_srip3d.svg"
             bgColor="#5B9B39"
           />
 
           <BoxCard
             title="Not Attended"
-            number="5"
+            number={sessionData?.missedSessions}
             image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735795219/ic_round-cancel_mwritp.svg"
             bgColor="#DF5353"
           />
@@ -154,22 +182,22 @@ function BatchDetails() {
                   ml: 2,
                 }}
               >
-                {batchId}
+                {sessionData?.batch_uid}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <div style={{ color: "#0074BD", fontWeight: 600 }}>
-                <Typography>Course Name: React JS</Typography>
-                <Typography>Faculty Name: Vivek Mhatre</Typography>
-                <Typography>Days: MON | TUES | WED | THURS | FRI</Typography>
-                <Typography>Start Date: 02 Dec 2025</Typography>
+                <Typography>Course Name: {sessionData?.courseName}</Typography>
+                <Typography>Faculty Name: {sessionData?.facultyName}</Typography>
+                <Typography>Days: {sessionData?.daysOfWeek?.map((res) => res.slice(0, 3))?.join(" | ")}</Typography>
+                <Typography>Start Date: {dateFormator(sessionData?.startDate)}</Typography>
               </div>
             </AccordionDetails>
           </Accordion>
         </Box>
       </Box>
       <Box sx={{ px: 2, flex: 1 }}>
-        <BatchDetailsTab />
+        <BatchDetailsTab sessionData={sessionData} />
       </Box>
     </Box>
   );
