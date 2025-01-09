@@ -46,9 +46,9 @@ function Profile() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
+        minHeight: "100vh",
         p: {
-          xs: 2,
+          xs: 3,
           sm: 4,
         },
       }}
@@ -58,7 +58,6 @@ function Profile() {
           display: "flex",
           flexDirection: "column",
           borderRadius: "20px",
-          overflow: "hidden",
           boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
         }}
       >
@@ -66,9 +65,13 @@ function Profile() {
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: 10,
+            flexDirection: { xs: "column", sm: "column", md: "row" },
+            gap: 5,
             p: 3,
+            justifyContent: { xs: "center", sm: "center", md: "flex-start" },
             backgroundColor: "#6560F0",
+            flexWrap: "wrap",
+            borderRadius: "20px 20px 0px 0px",
           }}
         >
           <Box>
@@ -84,15 +87,19 @@ function Profile() {
             />
           </Box>
 
-          <Box>
-            <Typography variant="h4" color="white">
+          <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+            <Typography variant="h3" color="white">
               Hello,
             </Typography>
-            <Typography variant="h4" color="white">
+            <Typography variant="h3" color="white">
               User Name
             </Typography>
 
-            <Typography variant="h6" color="white" sx={{ mt: 2 }}>
+            <Typography
+              variant="h5"
+              color="white"
+              sx={{ mt: 2, textAlign: "center" }}
+            >
               "Education is the most powerful weapon which you can use to change
               the world."
             </Typography>
@@ -103,7 +110,7 @@ function Profile() {
             display: "flex",
             flexDirection: "column",
             gap: 4,
-            p: 2,
+            p: 3,
           }}
         >
           {renderBox({
