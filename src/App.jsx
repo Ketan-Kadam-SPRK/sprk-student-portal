@@ -10,8 +10,7 @@ import ResetPass from "./components/Forgot Password/ResetPass";
 function App() {
   const token = useSelector((state) => state.authSlice.token);
   const isAuthenticated = token ? true : false;
-  console.log(isAuthenticated);
-  console.log(token);
+
   return (
     <BrowserRouter>
       <Routes>

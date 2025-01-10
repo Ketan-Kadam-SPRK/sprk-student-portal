@@ -1,5 +1,4 @@
 import { Backdrop, FormHelperText, Grid2 } from "@mui/material";
-// import classes from "./Login.module.css";
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
@@ -13,29 +12,18 @@ import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CircularProgress from "@mui/material/CircularProgress";
-
 import { useDispatch } from "react-redux";
-
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import Lottie from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
-// import { rearrangeArray } from "../../Utils/tabsRearrangeArray";
-import { LogOut } from "../../Utils/LogOut";
-import { setLogin, setUserDetails } from "./store/authSlice";
+import { setLogin } from "./store/authSlice";
 import { Checkbox } from "@mui/material";
-import { loginUser, getUser } from "./store/login.actions";
+import { loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
-
-function modifyCapitalization(inputString) {
-  return inputString
-    .toLowerCase()
-    .replace(/(?:^|_)(\w)/g, (match) => match.toUpperCase());
-}
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const logout = LogOut();
   // State to manage form data
   const [formData, setFormData] = useState({
     eid: "",
@@ -58,10 +46,6 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const [captchaKey, setCaptchaKey] = useState(Date.now());
-
-  // useEffect(() => {
-  //   logout();
-  // }, []);
 
   const handleHcaptchaVerification = (token) => {
     if (token) {
