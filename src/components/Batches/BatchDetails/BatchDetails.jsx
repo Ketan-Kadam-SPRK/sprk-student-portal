@@ -14,18 +14,27 @@ import BoxCard from "../../Dashboard/Child/BoxCard";
 import { Image } from "cloudinary-react";
 import BatchDetailsTab from "./BatchDetailsTab/BatchDetailsTab";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import { getSessionsDetails } from "../action/batches.actions";
 import dateFormator from "../../../Utils/dateFormator";
+import RotateRightIcon from '@mui/icons-material/RotateRight';
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 function BatchDetails() {
   const batchId = useParams().batchId || null;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [sessionData, setSessionData] = useState([]);
+
+  const handleBackButtonClick = () => {
+    navigate(newBaseRoute);
+  };
 
  const getSessionsDetail = async () => {
     setLoading(true);
@@ -45,26 +54,42 @@ function BatchDetails() {
       getSessionsDetail();
     }, [])
 
-  
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case "ONGOING":
-        return { bgcolor: "#DDEBFF", color: "#1C4963" };
-      case "UPCOMING":
-        return { bgcolor: "#E0C8FF", color: "#2C004E" };
-      case "CANCELLED":
-        return { bgcolor: "#FFC0C0", color: "#A30000" };
-      case "COMPLETED":
-        return { bgcolor: "#B0F7CC", color: "#239A60" };
-      case "ON HOLD":
-        return { bgcolor: "#FFFFB8", color: "#783B09" };
-      case "BOOKED":
-        return { bgcolor: "#FFFFB8", color: "#783B09" };
-      default:
-        return { bgcolor: "#FFFFB8", color: "#783B09" };
-    }
-  };
-  // const statusStyle = getStatusStyle(data?.status);
+    const getStatusProperties = (status) => {
+      switch (status) {
+        case "ONGOING":
+          return {
+            style: { bgcolor: "#DDEBFF", color: "#1C4963" },
+            icon: <RotateRightIcon />,
+          };
+        case "UPCOMING":
+          return {
+            style: { bgcolor: "#E0C8FF", color: "#2C004E" },
+            icon: <ArrowCircleUpIcon />,
+          };
+        case "CANCELLED":
+          return {
+            style: { bgcolor: "#FFC0C0", color: "#A30000" },
+            icon: <PauseCircleOutlineIcon />,
+          };
+        case "COMPLETED":
+          return {
+            style: { bgcolor: "#B0F7CC", color: "#239A60" },
+            icon: <CheckCircleOutlineIcon />,
+          };
+        case "ON HOLD":
+        case "BOOKED":
+          return {
+            style: { bgcolor: "#FFFFB8", color: "#783B09" },
+            icon: <PauseCircleOutlineIcon />,
+          };
+        default:
+          return {
+            style: { bgcolor: "#FFFFB8", color: "#783B09" },
+            icon: <PauseCircleOutlineIcon />,
+          };
+      }
+    };
+    
 
   return (
     <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
@@ -82,42 +107,44 @@ function BatchDetails() {
           <Button
             variant="outlined"
             sx={{ color: "#747474" }}
-            // onClick={handleBackButtonClick}
+            onClick={() => navigate(-1)}
           >
             {<ArrowBackIcon />}
           </Button>
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography
-            sx={{
-              marginRight: "10px",
-              fontSize: "14px",
-              fontWeight: 700,
-            }}
-          >
-            BATCH STATUS:
-          </Typography>
-          {/* Display Batch Status with Styling */}
-          <Box
-            sx={{
-              width: "100px",
-              borderRadius: "25px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+  <Typography
+    sx={{
+      marginRight: "10px",
+      fontSize: "14px",
+      fontWeight: 700,
+    }}
+  >
+    BATCH STATUS:
+  </Typography>
+  {/* Display Batch Status with Styling */}
+  <Box
+    sx={{
+      width: "150px",
+      borderRadius: "25px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "5px", // Add spacing between icon and text
+      padding: "5px",
+      ...getStatusProperties(sessionData?.status).style,
+    }}
+  >
+    {getStatusProperties(sessionData?.status).icon} {/* Render the icon */}
+    <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
+      {sessionData?.status
+        ? sessionData?.status.replace("_", " ").toUpperCase()
+        : "NA"}
+    </Typography>
+  </Box>
+</Box>
 
-              padding: "5px",
-              // ...statusStyle,
-            }}
-          >
-            <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
-              {/* {data?.status
-                ? data.status.replace("_", " ").toUpperCase()
-                : "NA"} */}
-            </Typography>
-          </Box>
-        </Box>
       </Box>
       <Box
         sx={{ px: 2, pt: 2, display: "flex", gap: 2, flexDirection: "column" }}

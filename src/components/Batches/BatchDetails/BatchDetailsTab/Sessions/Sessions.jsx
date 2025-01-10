@@ -88,7 +88,7 @@ function Sessions({ sessionData }) {
 
                 {/* Additional session information */}
                 <Typography className={styles.sessionInfo}>
-                  Faculty: {sessionData.faculty_name}
+                  Faculty: {sessionData.faculty}
                 </Typography>
                 <Box sx={{ display: "flex", gap: "50px", flexWrap: "wrap" }}>
                   <Box>
