@@ -6,6 +6,7 @@ import Courses from "../components/Courses/Courses";
 import BatchDetails from "../components/Batches/BatchDetails/BatchDetails";
 import CoureseDetails from "../components/Courses/CourseDetails/CoureseDetails";
 import Leaves from "../components/Leaves/Leaves";
+import Profile from "../components/Profile/Profile";
 
 function RoutesConfig() {
   return (
@@ -35,6 +36,7 @@ function RoutesConfig() {
       <Route path="Payments" element={<Dashboard />} />
       <Route path="Certificates" element={<Dashboard />} />
       <Route path="Job_Opportunities" element={<Dashboard />} />
+      <Route path="/Profile" element={<Profile />} />
     </Routes>
   );
 }

@@ -1,5 +1,4 @@
 import { Backdrop, FormHelperText, Grid2 } from "@mui/material";
-// import classes from "./Login.module.css";
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
@@ -7,35 +6,24 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Image } from "cloudinary-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CircularProgress from "@mui/material/CircularProgress";
-
 import { useDispatch } from "react-redux";
-
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import Lottie from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
-// import { rearrangeArray } from "../../Utils/tabsRearrangeArray";
-import { LogOut } from "../../Utils/LogOut";
-import { setLogin, setUserDetails } from "./store/authSlice";
+import { setLogin } from "./store/authSlice";
 import { Checkbox } from "@mui/material";
-import { loginUser, getUser } from "./store/login.actions";
+import { loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
-
-function modifyCapitalization(inputString) {
-  return inputString
-    .toLowerCase()
-    .replace(/(?:^|_)(\w)/g, (match) => match.toUpperCase());
-}
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const logout = LogOut();
   // State to manage form data
   const [formData, setFormData] = useState({
     eid: "",
@@ -58,10 +46,6 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const [captchaKey, setCaptchaKey] = useState(Date.now());
-
-  // useEffect(() => {
-  //   logout();
-  // }, []);
 
   const handleHcaptchaVerification = (token) => {
     if (token) {
@@ -130,24 +114,23 @@ function Login() {
     // Trim string values in the form data
     const updatedFormData = TrimmedString(formData);
 
-    // if (isHuman) {
-    try {
-      console.log("Form Data:", formData);
-      setIsLoading(true);
+    if (isHuman) {
+      try {
+        console.log("Form Data:", formData);
+        setIsLoading(true);
 
-      const response = await dispatch(loginUser({ updatedFormData })); // console
+        const response = await dispatch(loginUser({ updatedFormData })); // console
+        console.log("response:", response);
 
-      if (response) {
-        const { status, error, data } = response?.payload;
+        const data = response?.payload?.data;
+        const status = response?.payload?.status;
         setStatus(status);
-
-        setErrorMsg(error);
+        // setErrorMsg(error);
         console.log("data.token:", data?.token);
 
         if (data?.token) {
           console.log("data.token:", data?.token);
           const accessToken = data?.token;
-          localStorage.setItem("token", accessToken);
 
           const decodedToken = jwtDecode(accessToken);
           const userId = decodedToken.sub;
@@ -176,26 +159,23 @@ function Login() {
           //   modifyCapitalization(tabName)
           // );
 
-          navigate(`/Dashboard`);
+          // navigate(`/Dashboard`);
         } else {
           resetCaptcha();
         }
-      } else {
-        throw new Error("Network response was not ok");
+      } catch (error) {
+        console.error("Login Failed:", error);
+        // setIsSubmitError(true);
+        resetCaptcha(); // Reset the CAPTCHA state
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Login Failed:", error);
-      // setIsSubmitError(true);
-      resetCaptcha(); // Reset the CAPTCHA state
-    } finally {
-      setIsLoading(false);
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        captchaError: true,
+      }));
     }
-    // } else {
-    //   setErrors((prev) => ({
-    //     ...prev,
-    //     captchaError: true,
-    //   }));
-    // }
   };
 
   return (
@@ -364,13 +344,13 @@ function Login() {
               />
               <Typography variant="body2"> Remember me</Typography>
             </Box>
-            {/* <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+            <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
               <HCaptcha
                 sitekey={import.meta.env.VITE_APP_CAPTCHA_SITE_KEY}
                 onVerify={handleHcaptchaVerification}
                 key={captchaKey}
               />
-            </Box> */}
+            </Box>
             {errors.captchaError && (
               <FormHelperText error>
                 Please complete the hCaptcha challenge.
@@ -388,6 +368,21 @@ function Login() {
             >
               {isLoading ? <CircularProgress size={24} /> : "Log In"}
             </Button>
+
+            <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
+              <Typography variant="body2">
+                <Link
+                  to="/forgot-password"
+                  style={{
+                    textDecoration: "none",
+                    color: "#0074BD",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Forgot Password?
+                </Link>
+              </Typography>
+            </Box>
           </form>
         </Box>
       </Grid2>

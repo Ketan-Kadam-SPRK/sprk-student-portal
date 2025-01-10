@@ -28,7 +28,6 @@ function Batches() {
     } catch (err) {
       setLoading(false);
     }
-    console.log(res);
   };
 
   if (loading) {
