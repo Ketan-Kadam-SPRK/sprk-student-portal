@@ -116,7 +116,7 @@ function Batches() {
         >
           {batches?.length > 0 ? (
             batches?.map((item) => (
-              <BatchCardHorizontal key={item.bth_id} item={item} />
+              <BatchCardHorizontal key={item.batch_uid} item={item} />
             ))
           ) : (
             <Box
