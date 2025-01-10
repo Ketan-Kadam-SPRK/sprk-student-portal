@@ -28,6 +28,7 @@ function PopupFilterComponent({
   dateKey = null,
   statusKey = null,
   tabName = "",
+  filterData
 }) {
   const location = useLocation();
   const searchQuery = location?.state?.searchQuery;
@@ -61,7 +62,9 @@ function PopupFilterComponent({
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+ console.log(statusOptions);
+ console.log(filterState)
+ console.log(filterData)
   useEffect(() => {
     const PersistFilterData = localStorage.getItem(`${tabName}Filter`);
     if (PersistFilterData && tabName !== "") {
@@ -91,10 +94,12 @@ function PopupFilterComponent({
 
   useEffect(() => {
     applyFilter();
-  }, [filterState?.quickFilter, rowData]);
+  }, [filterState?.quickFilter]);
 
   const applyFilter = () => {
+    console.log("im in apply filter");
     if (dateError.startError !== "" || dateError.endError !== "") {
+      console.log(dateError,"i n error");
       return;
     }
 
@@ -104,7 +109,8 @@ function PopupFilterComponent({
     const worker = new Worker("/FilterWorker.js");
 
     worker.onmessage = function (e) {
-      // setFilterData(e.data);
+      console.log(e.data)
+      setFilterData(e.data);
       setLoading(false);
       handleClose();
     };
@@ -162,7 +168,7 @@ function PopupFilterComponent({
       selectedStatus: [],
       selectAll: false,
     });
-    // setFilterData(rowData);
+    setFilterData(rowData);
     handleClose();
     setDateError({
       startError: "",
@@ -255,7 +261,6 @@ function PopupFilterComponent({
           aria-expanded={open ? "true" : undefined}
           variant="contained"
           disableElevation
-          size="small"
           sx={{
             width: "120px",
           }}
