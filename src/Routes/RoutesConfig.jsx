@@ -6,6 +6,7 @@ import Courses from "../components/Courses/Courses";
 import BatchDetails from "../components/Batches/BatchDetails/BatchDetails";
 import CoureseDetails from "../components/Courses/CourseDetails/CoureseDetails";
 import Leaves from "../components/Leaves/Leaves";
+import Profile from "../components/Profile/Profile";
 
 function RoutesConfig() {
   return (
