@@ -5,21 +5,38 @@ import {
   Button,
   FormHelperText,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { Image } from "cloudinary-react";
+import { resetPassword } from "../Login/store/login.actions";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../Login/store/authSlice";
 
 function ResetPass() {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const searchParams = new URLSearchParams(location.search);
+  const token = searchParams.get("id");
+
+  console.log(token);
+  useEffect(() => {
+    dispatch(setLogin({ user: null, token: null, userId: null }));
+  }, []);
+
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
     hcaptcha_response: "",
   });
   const [isHuman, setIsHuman] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({
     password: "",
     confirmPassword: "",
@@ -70,14 +87,13 @@ function ResetPass() {
     captchaRef.current.resetCaptcha();
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    let valid = true;
 
     if (!formData.password) {
       setErrors((prev) => ({ ...prev, password: "Password is required." }));
-      valid = false;
+      resetCaptcha();
+      return;
     }
 
     if (!formData.confirmPassword) {
@@ -85,7 +101,8 @@ function ResetPass() {
         ...prev,
         confirmPassword: "Confirm password is required.",
       }));
-      valid = false;
+      resetCaptcha();
+      return;
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -93,18 +110,39 @@ function ResetPass() {
         ...prev,
         confirmPassword: "Passwords do not match.",
       }));
-      valid = false;
+      resetCaptcha();
+      return;
     }
 
-    if (!isHuman) {
-      setErrors((prev) => ({ ...prev, captchaError: true }));
-      valid = false;
-    }
+    if (isHuman) {
+      try {
+        setIsLoading(true);
+        const res = await dispatch(
+          resetPassword({
+            payload: {
+              password: formData.password,
+              token: token,
+            },
+          })
+        );
 
-    if (valid) {
-      console.log("Form Data Submitted:", formData);
+        console.log(res);
+        if (res.payload) {
+          navigate("/login");
+          setFormData({});
+          resetCaptcha();
+        }
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+        resetCaptcha();
+        setIsLoading(false);
+      }
     } else {
-      //   resetCaptcha();
+      setErrors((prev) => ({
+        ...prev,
+        captchaError: true,
+      }));
     }
   };
 
@@ -233,9 +271,10 @@ function ResetPass() {
           variant="contained"
           color="primary"
           onClick={handleSubmit}
+          disabled={isLoading}
           sx={{ width: "400px" }}
         >
-          Submit
+          {isLoading ? <CircularProgress size={24} /> : "Submit"}
         </Button>
 
         <Typography
@@ -249,6 +288,9 @@ function ResetPass() {
             "&:hover": {
               color: "#3989B8",
             },
+          }}
+          onClick={() => {
+            navigate("/login");
           }}
         >
           <ArrowBackRoundedIcon /> Back to log in

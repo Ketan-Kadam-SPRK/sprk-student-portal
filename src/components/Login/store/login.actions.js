@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import axiosInstance from "../../../axios/axiosInstance";
-import { handleResponse } from "../../../Utils/apiHelpers";
+import { handleResponse, handleError } from "../../../Utils/apiHelpers";
 
 export const loginUser = createAsyncThunk(
   "login/loginUser",
@@ -98,6 +98,30 @@ export const forgotPassword = createAsyncThunk(
 
       return handleResponse(response.data);
     } catch (error) {
+      handleError(error);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "login/resetPassword",
+  async ({ payload }) => {
+    try {
+      const response = await axiosInstance.post(
+        `/auth/stu/reset/pass`,
+        payload,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": true,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      return handleResponse(response?.data);
+    } catch (error) {
+      console.log(error);
       handleError(error);
     }
   }

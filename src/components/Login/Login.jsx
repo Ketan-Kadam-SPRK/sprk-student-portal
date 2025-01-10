@@ -147,7 +147,6 @@ function Login() {
         if (data?.token) {
           console.log("data.token:", data?.token);
           const accessToken = data?.token;
-          localStorage.setItem("token", accessToken);
 
           const decodedToken = jwtDecode(accessToken);
           const userId = decodedToken.sub;

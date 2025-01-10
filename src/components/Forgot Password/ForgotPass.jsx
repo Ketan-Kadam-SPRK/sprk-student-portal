@@ -6,13 +6,14 @@ import {
   FormHelperText,
   CircularProgress,
 } from "@mui/material";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { Image } from "cloudinary-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { forgotPassword } from "../Login/store/login.actions";
+import { setLogin } from "../Login/store/authSlice";
 
 function ForgotPass() {
   const navigate = useNavigate();
@@ -26,6 +27,10 @@ function ForgotPass() {
   });
 
   const captchaRef = useRef(null); // Use a ref for better control over the HCaptcha component
+
+  useEffect(() => {
+    dispatch(setLogin({ user: null, token: null, userId: null }));
+  }, []);
 
   const handleHcaptchaVerification = (token) => {
     if (token) {
@@ -70,6 +75,11 @@ function ForgotPass() {
         const res = await dispatch(forgotPassword({ payload: formData }));
 
         console.log(res);
+        if (res.payload) {
+          navigate("/login");
+          setFormData({});
+          resetCaptcha();
+        }
         setIsLoading(false);
       } catch (err) {
         console.log(err);
