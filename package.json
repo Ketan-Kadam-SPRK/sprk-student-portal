@@ -12,13 +12,17 @@
     "vite": "^6.0.1"
   },
   "dependencies": {
+    "@ag-grid-community/client-side-row-model": "^32.3.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@hcaptcha/react-hcaptcha": "^1.11.0",
     "@mui/icons-material": "^6.2.0",
     "@mui/material": "^6.2.0",
+    "@mui/x-data-grid": "^7.23.5",
     "@reduxjs/toolkit": "^2.5.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "ag-grid-community": "^33.0.3",
+    "ag-grid-react": "^33.0.3",
     "axios": "^1.7.9",
     "cloudinary-react": "^1.8.1",
     "jwt-decode": "^4.0.0",

@@ -22,12 +22,13 @@
 
 @media only screen and (max-width: 786px) {
   .tabsStyle {
-    width: 90% !important;
+    width: 100% !important;
   }
 
   .tabBox {
     width: 100% !important;
-    padding-right: 40px !important;
+    padding-right: 10px !important;
+    padding-left: 10px !important;
     background-color: #fff !important;
   }
 }
