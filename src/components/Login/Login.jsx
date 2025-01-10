@@ -16,9 +16,9 @@ import { useDispatch } from "react-redux";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import Lottie from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
-import { setLogin } from "./store/authSlice";
+import { setLogin, setUserDetails } from "./store/authSlice";
 import { Checkbox } from "@mui/material";
-import { loginUser } from "./store/login.actions";
+import { getUser, loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
 
 function Login() {
@@ -134,9 +134,8 @@ function Login() {
 
           const decodedToken = jwtDecode(accessToken);
           const userId = decodedToken.sub;
-          // const userResponse = await dispatch(getUser({ accessToken }));
-          // const userDetails = userResponse?.payload?.data;
-          const userDetails = null;
+          const userResponse = await dispatch(getUser({ accessToken }));
+          const userDetails = userResponse?.payload?.data || null;
 
           dispatch(
             setLogin({
@@ -146,20 +145,13 @@ function Login() {
             })
           );
 
+          dispatch(
+            setUserDetails({
+              userDetails: userDetails,
+            })
+          );
+
           navigate(`/Dashboard`);
-
-          // dispatch(
-          //   setUserDetails({
-          //     userDetails: userDetails,
-          //   })
-          // );
-
-          // const mainTabName = await entitlements?.map((item) => item.name);
-          // const capitalizedTabNames = await mainTabName?.map((tabName) =>
-          //   modifyCapitalization(tabName)
-          // );
-
-          // navigate(`/Dashboard`);
         } else {
           resetCaptcha();
         }

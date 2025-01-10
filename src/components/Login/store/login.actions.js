@@ -36,7 +36,7 @@ export const getUser = createAsyncThunk(
     try {
       // Send a GET request to fetch user details using the access token and user ID
       const res = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/stu/profile`,
         {
           headers: {
             "ngrok-skip-browser-warning": true,
