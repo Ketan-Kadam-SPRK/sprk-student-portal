@@ -23,6 +23,10 @@ import RotateRightIcon from '@mui/icons-material/RotateRight';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 
 function BatchDetails() {
   const batchId = useParams().batchId || null;
@@ -160,21 +164,21 @@ function BatchDetails() {
           <BoxCard
             title="Sessions Completed"
             number={sessionData?.completedSessions}
-            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735795219/Vector_14_bf5n9j.svg"
+            image={<CheckCircleIcon style={{ fontSize: 30, color: "white" }}/>}
             bgColor="#6560F0"
           />
 
           <BoxCard
             title="Attended"
             number={sessionData?.attendedSessions}
-            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735795219/attended_srip3d.svg"
+            image={<HowToRegIcon style={{ fontSize: 30, color: "white" }}/>}
             bgColor="#5B9B39"
           />
 
           <BoxCard
             title="Not Attended"
             number={sessionData?.missedSessions}
-            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735795219/ic_round-cancel_mwritp.svg"
+            image={<CancelIcon style={{ fontSize: 30, color: "white" }}/>}
             bgColor="#DF5353"
           />
         </Box>

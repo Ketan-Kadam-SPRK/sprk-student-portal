@@ -15,13 +15,22 @@ function BoxCard({
 
       <Box className={styles.boxContent}>
         <Typography className={styles.boxNumber}>{number}</Typography>
-        <Image
-          className={styles.imageContainer}
-          cloudName="dxlzzgbfw"
-          publicId={image}
-          width="30"
-          height="30"
-        />
+        {typeof image === "string" ? (
+          <Image
+            className={styles.imageContainer}
+            cloudName="dxlzzgbfw"
+            publicId={image}
+            width="30"
+            height="30"
+            style={{
+              width: "30px",
+              height: "30px",
+              objectFit: "contain", // Ensures proper scaling
+            }}
+          />
+        ) : (
+          <Box className={styles.imageContainer}>{image}</Box>
+        )}
       </Box>
     </Box>
   );
