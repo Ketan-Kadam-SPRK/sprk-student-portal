@@ -197,13 +197,14 @@ function BatchDetails() {
             <AccordionSummary
               expandIcon={
                 <InfoRoundedIcon
-                  sx={{ fontSize: "30px", color: "#CCCCCC !important" }}
+                  sx={{ fontSize: "30px", color: "#0073E6 !important" }}
                 />
               }
             >
               <Image
                 publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1703153520/Vector_3_rnkyxa.svg"
                 cloudName="dxlzzgbfw"
+                style={{ color: "#0073E6 !important" }}
               />
               <Typography
                 variant="h6"
