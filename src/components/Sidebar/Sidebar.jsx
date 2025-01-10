@@ -60,10 +60,7 @@ function Sidebar() {
   // useConvertImgToBase64();
 
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
-  // const userProfilePic = useSelector((state) => state.profile.userProfilePic) || {};
-  // const headers = useAuthHeaders() ||;
-  const tabName = useSelector((state) => state.authSlice.tabName);
-  const notificationsData = useSelector((state) => state.authSlice?.notifiData);
+
   const userProfilePic = null;
   // State to manage the main sidebar open/close state
   const [open, setOpen] = useState(false);
@@ -128,10 +125,6 @@ function Sidebar() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  // useEffect(() => {
-  //   getProfilePic();
-  // }, [userDetails]);
 
   /**
    * @memberof Sidebar
@@ -214,7 +207,7 @@ function Sidebar() {
               </Box>
             </Box>
             <Box className={Styles.notificationBox}>
-              <IconButton
+              {/* <IconButton
                 size="large"
                 edge="start"
                 aria-label="account of current user"
@@ -230,7 +223,7 @@ function Sidebar() {
                 >
                   <NotificationsIcon size="large" color="action" />
                 </Badge>
-              </IconButton>
+              </IconButton> */}
 
               <IconButton
                 size="large"

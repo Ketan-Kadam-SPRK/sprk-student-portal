@@ -13,7 +13,7 @@ import { Image } from "cloudinary-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { forgotPassword } from "../Login/store/login.actions";
-import { setLogin } from "../Login/store/authSlice";
+import { setLogout } from "../Login/store/authSlice";
 
 function ForgotPass() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function ForgotPass() {
   const captchaRef = useRef(null); // Use a ref for better control over the HCaptcha component
 
   useEffect(() => {
-    dispatch(setLogin({ user: null, token: null, userId: null }));
+    dispatch(setLogout());
   }, []);
 
   const handleHcaptchaVerification = (token) => {

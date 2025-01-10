@@ -16,7 +16,7 @@ import { Image } from "cloudinary-react";
 import { resetPassword } from "../Login/store/login.actions";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin } from "../Login/store/authSlice";
+import { setLogout } from "../Login/store/authSlice";
 
 function ResetPass() {
   const location = useLocation();
@@ -27,7 +27,7 @@ function ResetPass() {
 
   console.log(token);
   useEffect(() => {
-    dispatch(setLogin({ user: null, token: null, userId: null }));
+    dispatch(setLogout());
   }, []);
 
   const [formData, setFormData] = useState({
