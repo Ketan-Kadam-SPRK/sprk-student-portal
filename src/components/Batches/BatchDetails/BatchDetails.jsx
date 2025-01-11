@@ -26,6 +26,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import CancelIcon from '@mui/icons-material/Cancel';
+import ErrorHandling from "../../Common/ErrorHandling";
 
 
 function BatchDetails() {
@@ -93,7 +94,9 @@ function BatchDetails() {
           };
       }
     };
-    
+    if (loading) {
+      return <ErrorHandling error500={false} loadData={loading} />;
+    } 
 
   return (
     <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>

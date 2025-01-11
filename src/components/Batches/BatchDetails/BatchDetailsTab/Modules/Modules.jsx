@@ -6,6 +6,7 @@ import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
 import { getModulesDetails } from "../../../action/batches.actions";
+import ErrorHandling from "../../../../Common/ErrorHandling";
 
 function Modules({batchId}) {
   const dispatch = useDispatch();
@@ -32,6 +33,10 @@ function Modules({batchId}) {
   useEffect(() => {
     getModules();
   }, []);
+
+  if (loading) {
+    return <ErrorHandling error500={false} loadData={loading} />;
+  } 
 
   return (
     <Box

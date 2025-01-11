@@ -191,20 +191,21 @@ function Sessions({ sessionData }) {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              gap:2
+              gap:1
             }}
           >
             <Box sx={{mt:2}}>
             <Image
               publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736514777/Brainstorming_session_with_notepad_and_chat_bubble_bnqa9f.svg"
               cloudName="dxlzzgbfw"
+              style={{ width: "212px", height: "212px" }}
             />
             </Box>
             <Box>
-            <Typography sx={{fontSize: "20px",color: "#3E2347", fontWeight: "bold" }}>Sessions are yet to be conducted!</Typography>
+            <Typography sx={{fontSize: "24px",color: "#3E2347", fontWeight: "bold" }}>Sessions are yet to be conducted!</Typography>
             </Box>
-            <Box sx={{mb:4}}>
-            <Typography>Your sessions will appear here once they are completed. </Typography>
+            <Box sx={{mb:5}}>
+            <Typography sx={{fontSize: "20px",color: "#775383"}}>Your sessions will appear here once they are completed. </Typography>
             </Box>
           </Box>
         </Box>
