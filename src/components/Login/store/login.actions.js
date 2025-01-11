@@ -126,3 +126,25 @@ export const resetPassword = createAsyncThunk(
     }
   }
 );
+
+export const changePassword = createAsyncThunk(
+  "login/changePassword",
+  async ({ payload, headers }) => {
+    try {
+      const response = await axiosInstance.post(
+        `/auth/stu/change/pass`,
+        payload,
+        {
+          headers: headers,
+        }
+      );
+
+      const data = await response?.data;
+
+      return handleResponse(data);
+    } catch (error) {
+      console.log(error);
+      handleError(error);
+    }
+  }
+);

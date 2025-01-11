@@ -317,12 +317,19 @@ function Login() {
               placeholder="Enter your password"
               onChange={handleFormInputs}
               value={formData.password}
-              InputProps={{
-                endAdornment: (
-                  <IconButton onClick={handlePasswordVisibility} edge="end">
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
-                ),
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <IconButton onClick={handlePasswordVisibility} edge="end">
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  ),
+                  autoComplete: "new-password",
+                },
               }}
               error={!!errors.isPasswordValid}
               helperText={errors.isPasswordValid && "Password is required"}

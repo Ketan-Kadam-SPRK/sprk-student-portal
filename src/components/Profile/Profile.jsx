@@ -147,7 +147,11 @@ function Profile() {
               gap: 3,
             }}
           >
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleToogleChangePassword}
+            >
               Change Password
             </Button>
             <Button variant="contained" color="primary">
