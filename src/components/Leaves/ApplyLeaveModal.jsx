@@ -19,6 +19,8 @@ import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 
 function ApplyLeaveModal({
   handleClose,
+  formData,
+  setFormData,
   leaveId,
 }) {
   const dispatch = useDispatch();
@@ -26,13 +28,6 @@ function ApplyLeaveModal({
   const [days, setDays] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [proofFile, setProofFile] = useState(null);
-  const initialState = {
-    start: "",
-    end: "",
-    reason: "",
-    id: "",
-  };
-  const [formData, setFormData] = useState(initialState);
   const [validationErrors, setValidationErrors] = useState({
     start: "",
     end: "",

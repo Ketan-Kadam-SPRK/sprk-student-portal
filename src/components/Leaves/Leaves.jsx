@@ -1,12 +1,12 @@
 import { Box, Button, Dialog, IconButton, Typography } from "@mui/material";
 import React, { useState } from "react";
-import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
-import StatusStyledComponent from "../Common/StatusStyledComponent/StatusStyledComponent";
-import dateFormator from "../../Utils/dateFormator";
-import PopupFilterComponent from "../Common/FilterMenuComponent/PopupFilterComponent";
-import ApplyLeaveModal from "./ApplyLeaveModal";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
+import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
+import StatusStyledComponent from "../Common/StatusStyledComponent/StatusStyledComponent";
+import PopupFilterComponent from "../Common/FilterMenuComponent/PopupFilterComponent";
+import dateFormator from "../../Utils/dateFormator";
+import ApplyLeaveModal from "./ApplyLeaveModal";
 
 function Leaves() {
   const [filterData, setFilterData] = useState([]);
@@ -14,78 +14,105 @@ function Leaves() {
   const handleClose = () => setOpen(!open);
   const [openWidrow, setOpenWidrow] = useState(false);
   const handleCloseWidrow = () => setOpenWidrow(!openWidrow);
+  const initialState = {
+    start: "",
+    end: "",
+    reason: "",
+    id: "",
+  };
+  const [formData, setFormData] = useState(initialState);
+
+  const handleEdit = (rowData) => {
+    console.log(rowData, "rowData");
+    setOpen(true);
+    const startDate = new Date(rowData?.start);
+    startDate.setDate(startDate.getDate() + 1);
+    const modifiedStart = startDate.toISOString().split("T")[0];
+
+    // Extract the date part from end date
+    const modifiedEnd = rowData?.end.split("T")[0];
+
+    const modifiedData = {
+      ...rowData,
+      start: modifiedStart, // Update start date with added 1 day
+      end: modifiedEnd,
+    };
+    console.log(modifiedData, "modifiedData");
+    setFormData(modifiedData);
+    console.log("Edit action clicked for row:", rowData);
+    // Perform your edit logic here, such as opening a modal with row data
+  };
+
+  console.log(formData);
+  const handleWithdraw = (rowData) => {
+    setOpenWidrow(true);
+    console.log("Withdraw action clicked for row:", rowData);
+    // Perform your withdraw logic here
+  };
 
   const rowData = [
     {
       id: 1,
-      from: "2025-01-01T12:00:00Z",
-      to: "2025-01-07T12:00:00Z",
+      start: "2025-01-01T12:00:00Z",
+      end: "2025-01-07T12:00:00Z",
       days: 7,
       status: "Approved",
-      action: "Edit",
       reason: "Annual Leave",
     },
     {
       id: 2,
-      from: "2025-02-15T12:00:00Z",
-      to: "2025-02-20T12:00:00Z",
+      start: "2025-02-15T12:00:00Z",
+      end: "2025-02-20T12:00:00Z",
       days: 5,
       status: "Pending",
-      action: "Cancel",
       reason: "Medical Leave",
     },
     {
       id: 3,
-      from: "2025-03-10T12:00:00Z",
-      to: "2025-03-12T12:00:00Z",
+      start: "2025-03-10T12:00:00Z",
+      end: "2025-03-12T12:00:00Z",
       days: 3,
       status: "Declined",
-      action: "Reapply",
       reason: "Emergency Leave",
     },
     {
       id: 4,
-      from: "2025-04-01T12:00:00Z",
-      to: "2025-04-05T12:00:00Z",
+      start: "2025-04-01T12:00:00Z",
+      end: "2025-04-05T12:00:00Z",
       days: 5,
       status: "Withdrew",
-      action: "Edit",
       reason: "Personal Reasons",
     },
     {
       id: 5,
-      from: "2025-01-01T12:00:00Z",
-      to: "2025-01-07T12:00:00Z",
+      start: "2025-01-01T12:00:00Z",
+      end: "2025-01-07T12:00:00Z",
       days: 7,
       status: "Approved",
-      action: "Edit",
       reason: "Annual Leave",
     },
     {
       id: 6,
-      from: "2025-02-15T12:00:00Z",
-      to: "2025-02-20T12:00:00Z",
+      start: "2025-02-15T12:00:00Z",
+      end: "2025-02-20T12:00:00Z",
       days: 5,
       status: "Pending",
-      action: "Cancel",
       reason: "Medical Leave",
     },
     {
       id: 7,
-      from: "2025-03-10T12:00:00Z",
-      to: "2025-03-12T12:00:00Z",
+      start: "2025-03-10T12:00:00Z",
+      end: "2025-03-12T12:00:00Z",
       days: 3,
       status: "Declined",
-      action: "Reapply",
       reason: "Emergency Leave",
     },
     {
       id: 8,
-      from: "2025-04-01T12:00:00Z",
-      to: "2025-04-05T12:00:00Z",
+      start: "2025-04-01T12:00:00Z",
+      end: "2025-04-05T12:00:00Z",
       days: 5,
       status: "Withdrew",
-      action: "Edit",
       reason: "Personal Reasons",
     },
   ];
@@ -98,14 +125,14 @@ function Leaves() {
   const columns = [
     {
       headerName: "From",
-      id: "from",
+      id: "start",
       minWidth: 200,
       filterable: false,
       format: (value) => dateFormator(value),
     },
     {
       headerName: "To",
-      id: "to",
+      id: "end",
       minWidth: 200,
       style: { color: "#0074BD", fontWeight: 600 },
       format: (value) => dateFormator(value),
@@ -146,27 +173,35 @@ function Leaves() {
         );
       },
     },
+    { headerName: "Reason", id: "reason", minWidth: 250 },
     {
       headerName: "Action",
       id: "action",
       width: 100,
       format: (action, row) => {
         return (
-          <Button
-            variant="contained"
-            size="small"
-            onClick={handleCloseWidrow}
-            disabled={row.status !== "Pending"}
-          >
-            Withdraw
-          </Button>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Button
+              style={{ marginRight: "10px" }}
+              variant="contained"
+              onClick={() => handleEdit(row)}
+              disabled={row.status !== "Pending"}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => handleWithdraw(row)}
+              disabled={row.status !== "Pending"}
+            >
+              Withdraw
+            </Button>
+          </Box>
         );
       },
     },
-    { headerName: "Reason", id: "reason", minWidth: 250 },
   ];
 
-  console.log(filterData);
   return (
     <Box
       sx={{
@@ -193,7 +228,7 @@ function Leaves() {
               statusOptions={["Approved", "Pending", "Declined", "Withdrew"]}
               setFilterData={setFilterData}
               filterData={filterData}
-              dateKey="from"
+              dateKey="start"
               statusKey="status"
               // tabName="enrollments"
             />
@@ -214,10 +249,14 @@ function Leaves() {
         />
       </Box>
 
-      <Dialog open={open} scroll={"body"}  fullWidth={true}>
-        <ApplyLeaveModal handleClose={handleClose} />
+      <Dialog open={open} scroll={"body"} fullWidth={true}>
+        <ApplyLeaveModal
+          formData={formData}
+          setFormData={setFormData}
+          handleClose={handleClose}
+        />
       </Dialog>
-      <Dialog open={openWidrow} scroll={"body"}  maxWidth="sm">
+      <Dialog open={openWidrow} scroll={"body"} maxWidth="sm">
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 3 }}>
           <Box
             sx={{
@@ -227,9 +266,9 @@ function Leaves() {
               justifyContent: "space-between",
             }}
           >
-            <Box sx={{ display: "flex", gap: 1,pt:1}}>
+            <Box sx={{ display: "flex", gap: 1, pt: 1 }}>
               <ErrorIcon sx={{ color: "#FF0000" }} />
-              <Typography sx={{fontSize:'18px',fontWeight:600}}>
+              <Typography sx={{ fontSize: "18px", fontWeight: 600 }}>
                 Are you sure you want to withdraw your leave request?
               </Typography>
             </Box>
@@ -241,7 +280,12 @@ function Leaves() {
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
             <Box sx={{ display: "flex", gap: 2 }}>
-              <Button variant="outlined" color="error" sx={{ px: 6 }} onClick={() => setOpenWidrow(false)}>
+              <Button
+                variant="outlined"
+                color="error"
+                sx={{ px: 6 }}
+                onClick={() => setOpenWidrow(false)}
+              >
                 No
               </Button>
               <Button variant="contained" color="error" sx={{ px: 6 }}>
