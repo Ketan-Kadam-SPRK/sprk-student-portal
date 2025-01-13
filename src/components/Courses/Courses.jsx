@@ -196,7 +196,6 @@ const Courses = () => {
           display: "flex",
           gap: 4,
           flexWrap: "wrap",
-
           flex: 1,
         }}
       >
