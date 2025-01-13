@@ -5,8 +5,10 @@ import { Image } from "cloudinary-react";
 import { modifyEventJson } from "../../Utils/ModifyEventJson";
 import CircularWithValueLabel from "../Common/CircularProgressWithLable";
 import BoxCard from "./Child/BoxCard";
+import { useSelector } from "react-redux";
 
 function Dashboard() {
+  const userDetails = useSelector((state) => state.authSlice.userDetails);
   const EventJson = [
     {
       bth_id: "BTH24MARBEXL31",
@@ -218,7 +220,7 @@ function Dashboard() {
         }}
       >
         <Typography sx={{ fontSize: "var(--font-size-large)", color: "white" }}>
-          Welcome, Pooja Verma!
+          {`Welcome, ${userDetails?.name}!`}
         </Typography>
         <Typography sx={{ fontSize: "var(--font-size-small)", color: "white" }}>
           Ready to achieve your next milestone?

@@ -374,10 +374,10 @@ function Sidebar() {
                     title="Exams"
                     icon={AssignmentRoundedIcon}
                     open={open}
-                    isActive={activeTab === "Exam"}
+                    isActive={activeTab === "Exams"}
                     onClick={() => {
-                      navigate("/Exam");
-                      handleTabClick("Exam");
+                      navigate("/Exams");
+                      handleTabClick("Exams");
                       handleDrawerClose();
                     }}
                   />
