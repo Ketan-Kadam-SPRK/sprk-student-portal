@@ -262,7 +262,7 @@ function Sidebar() {
                 >
                   <Typography className={Styles.empIdStyle}>
                     {" "}
-                    {userDetails?.emp_id}
+                    {userDetails?.name}
                   </Typography>
                   <KeyboardArrowDownIcon sx={{ color: "grey" }} />
                 </Box>
@@ -270,10 +270,7 @@ function Sidebar() {
             </Box>
           </Toolbar>
         </AppBar>
-        <ProfileMenu
-          handleMenuClose={handleMenuClose}
-          isMenuOpen={isMenuOpen}
-        />
+        <ProfileMenu handleMenuClose={handleMenuClose} isMenuOpen={anchorEl} />
         {/* <NotificationMenu
           isNotiOpen={isNotiOpen}
           handleNotiMenuClose={handleNotiMenuClose}

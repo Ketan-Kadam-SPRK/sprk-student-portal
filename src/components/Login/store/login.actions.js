@@ -36,7 +36,7 @@ export const getUser = createAsyncThunk(
     try {
       // Send a GET request to fetch user details using the access token and user ID
       const res = await axios.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/`,
+        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/stu/profile`,
         {
           headers: {
             "ngrok-skip-browser-warning": true,
@@ -120,6 +120,28 @@ export const resetPassword = createAsyncThunk(
       );
 
       return handleResponse(response?.data);
+    } catch (error) {
+      console.log(error);
+      handleError(error);
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "login/changePassword",
+  async ({ payload, headers }) => {
+    try {
+      const response = await axiosInstance.post(
+        `/auth/stu/change/pass`,
+        payload,
+        {
+          headers: headers,
+        }
+      );
+
+      const data = await response?.data;
+
+      return handleResponse(data);
     } catch (error) {
       console.log(error);
       handleError(error);

@@ -1,10 +1,18 @@
-import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, Dialog, Typography } from "@mui/material";
+import React, { useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
+import { useSelector } from "react-redux";
+import ChangePassword from "./Modal/ChangePassword";
 
 function Profile() {
+  const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
+  const [openChangePassword, setOpenChangePassword] = useState(false);
+  const handleToogleChangePassword = () => {
+    setOpenChangePassword(!openChangePassword);
+  };
+
   const renderBox = ({ Icon, title, value }) => {
     return (
       <Box
@@ -59,6 +67,7 @@ function Profile() {
           flexDirection: "column",
           borderRadius: "20px",
           boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+          backgroundColor: "white",
         }}
       >
         <Box
@@ -92,7 +101,7 @@ function Profile() {
               Hello,
             </Typography>
             <Typography variant="h3" color="white">
-              User Name
+              {userDetails?.name || ""}
             </Typography>
 
             <Typography
@@ -116,17 +125,17 @@ function Profile() {
           {renderBox({
             Icon: PersonIcon,
             title: "Student ID",
-            value: "STD457896255",
+            value: `${userDetails?.student_id || ""}`,
           })}
           {renderBox({
             Icon: CallIcon,
             title: "Contact Number",
-            value: "1234567890",
+            value: `${userDetails?.phone || ""}`,
           })}
           {renderBox({
             Icon: EmailIcon,
             title: "Email",
-            value: "9s2m8@example.com",
+            value: `${userDetails?.email || ""}`,
           })}
 
           <Box
@@ -135,12 +144,23 @@ function Profile() {
               justifyContent: "center",
               alignItems: "center",
               p: 2,
+              gap: 3,
             }}
           >
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleToogleChangePassword}
+            >
               Change Password
             </Button>
+            <Button variant="contained" color="primary">
+              Sign Out All
+            </Button>
           </Box>
+          <Dialog open={openChangePassword} maxWidth="sm">
+            <ChangePassword handleClose={handleToogleChangePassword} />
+          </Dialog>
         </Box>
       </Box>
     </Box>

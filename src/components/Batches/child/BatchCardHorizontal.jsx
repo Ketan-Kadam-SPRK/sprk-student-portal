@@ -1,4 +1,4 @@
-import { Box, LinearProgress, Typography, Tooltip } from "@mui/material";
+import { Box, LinearProgress, Typography } from "@mui/material";
 import React from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { Image } from "cloudinary-react";
@@ -6,15 +6,39 @@ import StatusComponent from "./StatusComponent";
 import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
 import { useNavigate } from "react-router-dom";
 import { getWeekdayFromTimestamp } from "../../../Utils/dateTimeFormator";
-
+import LightTooltip from "../../Common/LightTooltip";
 function BatchCardHorizontal({ item = {} }) {
   const navigate = useNavigate();
 
   const returnFormatedtime = (timestamp) => {
     return `${new Date(timestamp).getHours()}:
-    ${new Date(timestamp).getMinutes()}  ${
-      new Date(timestamp).getHours() >= 12 ? "PM" : "AM"
-    }`;
+    ${
+      new Date(timestamp).getMinutes() === 0
+        ? "00"
+        : new Date(timestamp).getMinutes()
+    }  ${new Date(timestamp).getHours() >= 12 ? "PM" : "AM"}`;
+  };
+
+  const renderTooltip = ({ data }) => {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+          p: 1,
+        }}
+      >
+        <Typography sx={{ fontSize: "var(--font-size-small)" }}>
+          {new Date(data?.start_time).toDateString()}
+        </Typography>
+        <Typography sx={{ fontSize: "var(--font-size-small)" }}>{`
+                 ${returnFormatedtime(
+                   data?.start_time
+                 )}   to  ${returnFormatedtime(data.end_time)}
+              `}</Typography>
+      </Box>
+    );
   };
   return (
     <Box
@@ -119,16 +143,12 @@ function BatchCardHorizontal({ item = {} }) {
         >
           {item?.sessions?.length > 0 ? (
             item?.sessions?.map((item, index) => (
-              <Tooltip
-                title={`
-                 ${returnFormatedtime(
-                   item?.start_time
-                 )} to  ${returnFormatedtime(item.end_time)}
-              `}
+              <LightTooltip
+                key={index}
+                title={renderTooltip({ data: item })}
                 arrow
               >
                 <Box
-                  key={index}
                   sx={{
                     display: "flex",
                     flexDirection: "column",
@@ -168,7 +188,7 @@ function BatchCardHorizontal({ item = {} }) {
                     </Typography>
                   </Box>
                 </Box>
-              </Tooltip>
+              </LightTooltip>
             ))
           ) : (
             <Typography
