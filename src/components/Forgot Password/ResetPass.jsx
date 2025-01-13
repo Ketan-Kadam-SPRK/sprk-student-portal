@@ -128,7 +128,7 @@ function ResetPass() {
 
         console.log(res);
         if (res.payload) {
-          navigate("/login");
+          navigate("/Login");
           setFormData({});
           resetCaptcha();
         }
@@ -290,7 +290,7 @@ function ResetPass() {
             },
           }}
           onClick={() => {
-            navigate("/login");
+            navigate("/Login");
           }}
         >
           <ArrowBackRoundedIcon /> Back to log in

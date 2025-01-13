@@ -22,6 +22,7 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -80,7 +81,7 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
-
+    setLoading(true);
     try {
       const res = await dispatch(
         changePassword({
@@ -91,8 +92,13 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
           headers,
         })
       );
+      setLoading(false);
+      if (res.payload) {
+        handleClose();
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setLoading(false);
     }
   };
 
@@ -124,8 +130,13 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
       >
         <Grid2 sx={{ pt: 2 }} container spacing={2}>
           <Grid2 size={12}>
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Typography sx={{ fontSize: "24px" }}>
+            <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
+              <Typography
+                sx={{
+                  fontSize: "var(--font-size-medium)",
+                  fontWeight: "bold",
+                }}
+              >
                 Change Your Password
               </Typography>
             </Box>
@@ -137,7 +148,14 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
               md: 4,
             }}
           >
-            <Typography>Current Password :</Typography>
+            <Typography
+              sx={{
+                fontSize: "var(--font-size-small)",
+                fontWeight: "600",
+              }}
+            >
+              Current Password :
+            </Typography>
           </Grid2>
           <Grid2
             size={{
@@ -187,7 +205,14 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
               md: 4,
             }}
           >
-            <Typography>New Password :</Typography>
+            <Typography
+              sx={{
+                fontSize: "var(--font-size-small)",
+                fontWeight: "600",
+              }}
+            >
+              New Password :
+            </Typography>
           </Grid2>
           <Grid2
             size={{
@@ -237,7 +262,14 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
               md: 4,
             }}
           >
-            <Typography>Confirm Password :</Typography>
+            <Typography
+              sx={{
+                fontSize: "var(--font-size-small)",
+                fontWeight: "600",
+              }}
+            >
+              Confirm Password :
+            </Typography>
           </Grid2>
           <Grid2
             size={{
@@ -282,8 +314,8 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
           </Grid2>
           <Grid2 size={12}>
             <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-              <Button type="submit" variant="contained">
-                Change Password
+              <Button type="submit" variant="contained" disabled={loading}>
+                {loading ? <CircularProgress size={20} /> : "Change Password"}
               </Button>
             </Box>
           </Grid2>

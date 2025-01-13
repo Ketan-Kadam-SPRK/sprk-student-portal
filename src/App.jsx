@@ -16,10 +16,10 @@ function App() {
       <Routes>
         <Route
           path="/*"
-          element={isAuthenticated ? <Sidebar /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <Sidebar /> : <Navigate to="/Login" />}
         />
         <Route
-          path="/login"
+          path="/Login"
           element={isAuthenticated ? <Navigate to="/" /> : <Login />}
         />
         <Route path="/forgot-password" element={<ForgotPass />} />

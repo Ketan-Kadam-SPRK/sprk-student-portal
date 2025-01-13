@@ -5,12 +5,18 @@ import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
 import { useSelector } from "react-redux";
 import ChangePassword from "./Modal/ChangePassword";
+import LogoutAll from "./Modal/LogoutAll";
 
 function Profile() {
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const handleToogleChangePassword = () => {
     setOpenChangePassword(!openChangePassword);
+  };
+
+  const [openLogout, setOpenLogout] = useState(false);
+  const handleLogoutModal = () => {
+    setOpenLogout(!openLogout);
   };
 
   const renderBox = ({ Icon, title, value }) => {
@@ -154,12 +160,20 @@ function Profile() {
             >
               Change Password
             </Button>
-            <Button variant="contained" color="primary">
-              Sign Out All
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleLogoutModal}
+            >
+              Logout All
             </Button>
           </Box>
           <Dialog open={openChangePassword} maxWidth="sm">
             <ChangePassword handleClose={handleToogleChangePassword} />
+          </Dialog>
+
+          <Dialog open={openLogout} maxWidth="sm">
+            <LogoutAll handleClose={handleLogoutModal} />
           </Dialog>
         </Box>
       </Box>

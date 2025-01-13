@@ -40,7 +40,9 @@ const useCheckTokenExpiration = () => {
   const refreshToken = async () => {
     setLoading(true); // Set loading state
     try {
-      const data = await dispatch(freshToken({ headers })).unwrap(); // Use `.unwrap()` to handle the returned payload directly
+      const data = await dispatch(
+        freshToken({ headers, isLogoutAll: false })
+      ).unwrap(); // Use `.unwrap()` to handle the returned payload directly
       const newAccessToken = data?.token;
 
       const decodedToken = jwtDecode(newAccessToken);

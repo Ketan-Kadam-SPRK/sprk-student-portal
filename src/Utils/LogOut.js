@@ -7,7 +7,7 @@ export const LogOut = () => {
   const navigate = useNavigate();
 
   const logout = () => {
-    navigate("/login");
+    navigate("/Login");
     window.localStorage.clear();
     localStorage.clear();
     localStorage.removeItem("persist:auth");

@@ -60,15 +60,15 @@ export const getUser = createAsyncThunk(
 
 export const freshToken = createAsyncThunk(
   "login/freshToken",
-  async ({ headers }) => {
+  async ({ headers, isLogoutAll = false }) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/logout`,
+        `${import.meta.env.VITE_APP_BASE_URL}/api/auth/stu/logout`,
         null,
         {
           headers: {
             ...headers,
-            "logout-from-other-devices": false,
+            "logout-from-other-devices": isLogoutAll,
           },
         }
       );

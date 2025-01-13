@@ -76,7 +76,7 @@ function ForgotPass() {
 
         console.log(res);
         if (res.payload) {
-          navigate("/login");
+          navigate("/Login");
           setFormData({});
           resetCaptcha();
         }
@@ -103,6 +103,12 @@ function ForgotPass() {
         alignItems: "center",
         backgroundColor: "white",
         overflow: "auto",
+        // backgroundColor: "#e5e5f7",
+        // opacity: "0.8",
+        // backgroundImage:
+        //   "radial-gradient(#444cf7 0.75px, transparent 0.75px), radial-gradient(#444cf7 0.75px, #e5e5f7 0.75px)",
+        // backgroundSize: "30px 30px",
+        // backgroundPosition: " 0 0,15px 15px",
       }}
     >
       <Box
@@ -196,7 +202,7 @@ function ForgotPass() {
             },
           }}
           onClick={() => {
-            navigate("/login");
+            navigate("/Login");
           }}
         >
           <ArrowBackRoundedIcon /> Back to log in

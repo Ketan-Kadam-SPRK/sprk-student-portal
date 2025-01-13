@@ -10,20 +10,21 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
 import { Typography } from "@mui/material";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SearchIcon from "@mui/icons-material/Search";
 import { Image } from "cloudinary-react";
 import Styles from "./Sidebar.module.css";
 import { useNavigate } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useSelector, useDispatch } from "react-redux";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-
-import { Collapse } from "@mui/material";
+import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
+import AutoStoriesRoundedIcon from "@mui/icons-material/AutoStoriesRounded";
+import EventNoteRoundedIcon from "@mui/icons-material/EventNoteRounded";
+import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
+import PaymentsRoundedIcon from "@mui/icons-material/PaymentsRounded";
+import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded";
+import WorkRoundedIcon from "@mui/icons-material/WorkRounded";
 import Breadcrumb from "./Child/Breadcrumb";
 import { Avatar } from "@mui/material";
 // import { setUserProfilePic } from "../Profile/store/profileSlice";
@@ -46,6 +47,7 @@ import SidebarItem from "./Child/SidebarItem";
 // import NotificationMenu from "./Child/NotificationMenu";
 import ProfileMenu from "./Child/ProfileMenu";
 import RoutesConfig from "../../Routes/RoutesConfig";
+import { EventBusyRounded } from "@mui/icons-material";
 
 /**
  * @class Sidebar
@@ -325,7 +327,7 @@ function Sidebar() {
                   </Typography>
                   <SidebarItem
                     title="Dashboard"
-                    icon={PeopleAltIcon}
+                    icon={DashboardRoundedIcon}
                     open={open}
                     isActive={activeTab === "Dashboard"}
                     onClick={() => {
@@ -343,22 +345,12 @@ function Sidebar() {
                       mt: 3,
                     }}
                   >
-                    My Schedule
+                    Academics
                   </Typography>
-                  <SidebarItem
-                    title="Batches"
-                    icon={PeopleAltIcon}
-                    open={open}
-                    isActive={activeTab === "Batches"}
-                    onClick={() => {
-                      navigate("/Batches");
-                      handleTabClick("Batches");
-                      handleDrawerClose();
-                    }}
-                  />
+
                   <SidebarItem
                     title="Courses"
-                    icon={PeopleAltIcon}
+                    icon={AutoStoriesRoundedIcon}
                     open={open}
                     isActive={activeTab === "Courses"}
                     onClick={() => {
@@ -368,8 +360,19 @@ function Sidebar() {
                     }}
                   />
                   <SidebarItem
-                    title="Exam & Project"
-                    icon={PeopleAltIcon}
+                    title="Batches"
+                    icon={EventNoteRoundedIcon}
+                    open={open}
+                    isActive={activeTab === "Batches"}
+                    onClick={() => {
+                      navigate("/Batches");
+                      handleTabClick("Batches");
+                      handleDrawerClose();
+                    }}
+                  />
+                  <SidebarItem
+                    title="Exams"
+                    icon={AssignmentRoundedIcon}
                     open={open}
                     isActive={activeTab === "Exam"}
                     onClick={() => {
@@ -380,7 +383,7 @@ function Sidebar() {
                   />
                   <SidebarItem
                     title="Leaves"
-                    icon={PeopleAltIcon}
+                    icon={EventBusyRounded}
                     open={open}
                     isActive={activeTab === "Leaves"}
                     onClick={() => {
@@ -391,11 +394,11 @@ function Sidebar() {
                   />
 
                   <Typography sx={{ ...headingTextStyle, mt: 3 }}>
-                    Course Details
+                    Booking Details
                   </Typography>
                   <SidebarItem
                     title="Payments"
-                    icon={PeopleAltIcon}
+                    icon={PaymentsRoundedIcon}
                     open={open}
                     isActive={activeTab === "Payments"}
                     onClick={() => {
@@ -410,7 +413,7 @@ function Sidebar() {
                   </Typography>
                   <SidebarItem
                     title="Certificates"
-                    icon={PeopleAltIcon}
+                    icon={WorkspacePremiumRoundedIcon}
                     open={open}
                     isActive={activeTab === "Certificates"}
                     onClick={() => {
@@ -422,7 +425,7 @@ function Sidebar() {
 
                   <SidebarItem
                     title="Job Opportunities"
-                    icon={PeopleAltIcon}
+                    icon={WorkRoundedIcon}
                     open={open}
                     isActive={activeTab === "Job_Opportunities"}
                     onClick={() => {
