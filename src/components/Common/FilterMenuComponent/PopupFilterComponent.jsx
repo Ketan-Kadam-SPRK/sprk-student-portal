@@ -24,7 +24,7 @@ function modifyCapitalization(inputString) {
 function PopupFilterComponent({
   statusOptions = [],
   setFilterData,
-  rowData = [],
+  rowData ,
   dateKey = null,
   statusKey = null,
   tabName = "",
@@ -45,6 +45,13 @@ function PopupFilterComponent({
           selectedStatus: [],
         };
   });
+  // const [filterState, setFilterState] = useState({
+  //   quickFilter: "",
+  //   selectAll: false,
+  //   startDate: null,
+  //   endDate: null,
+  //   selectedStatus: [],
+  // })
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -65,6 +72,7 @@ function PopupFilterComponent({
  console.log(statusOptions);
  console.log(filterState)
  console.log(filterData)
+
   useEffect(() => {
     const PersistFilterData = localStorage.getItem(`${tabName}Filter`);
     if (PersistFilterData && tabName !== "") {
@@ -133,7 +141,7 @@ function PopupFilterComponent({
       ...prevState,
       selectAll: prevState.selectedStatus.length === statusOptions.length,
     }));
-  }, [filterState.selectedStatus, statusOptions]);
+  }, [filterState.selectedStatus, statusOptions,]);
 
   const handleStatusToggle = (status) => () => {
     const currentIndex = filterState.selectedStatus.indexOf(status);

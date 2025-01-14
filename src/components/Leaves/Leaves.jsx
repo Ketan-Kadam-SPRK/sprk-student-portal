@@ -1,5 +1,5 @@
 import { Box, Button, Dialog, IconButton, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
 import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
@@ -7,13 +7,17 @@ import StatusStyledComponent from "../Common/StatusStyledComponent/StatusStyledC
 import PopupFilterComponent from "../Common/FilterMenuComponent/PopupFilterComponent";
 import dateFormator from "../../Utils/dateFormator";
 import ApplyLeaveModal from "./ApplyLeaveModal";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { getAllLeaves } from "./action/leaves.action";
 
 function Leaves() {
   const [filterData, setFilterData] = useState([]);
   const [open, setOpen] = useState(false);
-  const handleClose = () => setOpen(!open);
+  
   const [openWidrow, setOpenWidrow] = useState(false);
   const handleCloseWidrow = () => setOpenWidrow(!openWidrow);
+  const [leaveId, setLeaveId] = useState(null);
   const initialState = {
     start: "",
     end: "",
@@ -21,6 +25,35 @@ function Leaves() {
     id: "",
   };
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [loading, setLoading] = useState(false);
+  const [leaveData, setleaveData] = useState([]);
+  const [proofFile, setProofFile] = useState(null);
+  const handleClose = () =>{ 
+    setOpen(!open)
+    setFormData(initialState);
+    setProofFile(null);
+    setLeaveId(null);
+  };
+
+    const getAllLeavesData = async () => {
+      setLoading(true);
+      try {
+        const res = await dispatch(getAllLeaves({ headers}));
+        const data = res?.payload?.data?.data || [];
+        console.log(data);
+        setleaveData(data); 
+        setFilterData(data);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
+    };
+  
+    useEffect(() => {
+      getAllLeavesData();
+    }, []);
 
   const handleEdit = (rowData) => {
     console.log(rowData, "rowData");
@@ -39,6 +72,8 @@ function Leaves() {
     };
     console.log(modifiedData, "modifiedData");
     setFormData(modifiedData);
+    setProofFile(rowData?.file);
+    setLeaveId(rowData?.leaveRequestUid);
     console.log("Edit action clicked for row:", rowData);
     // Perform your edit logic here, such as opening a modal with row data
   };
@@ -50,77 +85,24 @@ function Leaves() {
     // Perform your withdraw logic here
   };
 
-  const rowData = [
-    {
-      id: 1,
-      start: "2025-01-01T12:00:00Z",
-      end: "2025-01-07T12:00:00Z",
-      days: 7,
-      status: "Approved",
-      reason: "Annual Leave",
-    },
-    {
-      id: 2,
-      start: "2025-02-15T12:00:00Z",
-      end: "2025-02-20T12:00:00Z",
-      days: 5,
-      status: "Pending",
-      reason: "Medical Leave",
-    },
-    {
-      id: 3,
-      start: "2025-03-10T12:00:00Z",
-      end: "2025-03-12T12:00:00Z",
-      days: 3,
-      status: "Declined",
-      reason: "Emergency Leave",
-    },
-    {
-      id: 4,
-      start: "2025-04-01T12:00:00Z",
-      end: "2025-04-05T12:00:00Z",
-      days: 5,
-      status: "Withdrew",
-      reason: "Personal Reasons",
-    },
-    {
-      id: 5,
-      start: "2025-01-01T12:00:00Z",
-      end: "2025-01-07T12:00:00Z",
-      days: 7,
-      status: "Approved",
-      reason: "Annual Leave",
-    },
-    {
-      id: 6,
-      start: "2025-02-15T12:00:00Z",
-      end: "2025-02-20T12:00:00Z",
-      days: 5,
-      status: "Pending",
-      reason: "Medical Leave",
-    },
-    {
-      id: 7,
-      start: "2025-03-10T12:00:00Z",
-      end: "2025-03-12T12:00:00Z",
-      days: 3,
-      status: "Declined",
-      reason: "Emergency Leave",
-    },
-    {
-      id: 8,
-      start: "2025-04-01T12:00:00Z",
-      end: "2025-04-05T12:00:00Z",
-      days: 5,
-      status: "Withdrew",
-      reason: "Personal Reasons",
-    },
-  ];
+  const [rows, setRows] = useState([]);
 
-  const rows = rowData.map((item, index) => ({
-    ...item,
-    id: item.id || index,
-  }));
+  useEffect(() => {
+    const data = Array.isArray(leaveData)
+      ? filterData.map((item, index) => ({
+          ...item,
+          id:index,
+        }))
+      : [];
+  
+    setRows(data);
+    // setFilterData(data);
+  }, [leaveData]);
+  
+  
+console.log(filterData, "filterData");
+console.log(leaveData, "leaveData");
+console.log(rows, "rows");
 
   const columns = [
     {
@@ -135,9 +117,9 @@ function Leaves() {
       id: "end",
       minWidth: 200,
       style: { color: "#0074BD", fontWeight: 600 },
-      format: (value) => dateFormator(value),
+      format: (value) => dateFormator(value, 1),
     },
-    { headerName: "Days", id: "days", minWidth: 100 },
+    { headerName: "Days", id: "noOfDays", minWidth: 100 },
     {
       headerName: "Status",
       id: "status",
@@ -150,13 +132,13 @@ function Leaves() {
       format: (status) => {
         const getColorAndBackground = (status) => {
           switch (status) {
-            case "Approved":
+            case "APPROVED":
               return { color: "#1F5200", backgroundColor: "#CBFFAC" };
-            case "Pending":
+            case "PENDING":
               return { color: "#755200", backgroundColor: "#FFF3A4" };
-            case "Declined":
+            case "DECLINED":
               return { color: "#9F0000", backgroundColor: "#FFB5B5" };
-            case "Withdrew":
+            case "WITHDREW":
               return { color: "#0038A8", backgroundColor: "#C1D6FF" };
             default:
               return { color: "", backgroundColor: "" };
@@ -176,7 +158,7 @@ function Leaves() {
     { headerName: "Reason", id: "reason", minWidth: 250 },
     {
       headerName: "Action",
-      id: "action",
+      id: "leaveRequestUid",
       width: 100,
       format: (action, row) => {
         return (
@@ -185,14 +167,14 @@ function Leaves() {
               style={{ marginRight: "10px" }}
               variant="contained"
               onClick={() => handleEdit(row)}
-              disabled={row.status !== "Pending"}
+              disabled={row.status !== "PENDING"}
             >
               Edit
             </Button>
             <Button
               variant="contained"
               onClick={() => handleWithdraw(row)}
-              disabled={row.status !== "Pending"}
+              disabled={row.status !== "PENDING"}
             >
               Withdraw
             </Button>
@@ -225,12 +207,12 @@ function Leaves() {
           <Box>
             <PopupFilterComponent
               rowData={rows}
-              statusOptions={["Approved", "Pending", "Declined", "Withdrew"]}
+              statusOptions={["APPROVED", "PENDING", "DECLINED", "WITHDREW"]}
               setFilterData={setFilterData}
               filterData={filterData}
               dateKey="start"
               statusKey="status"
-              // tabName="enrollments"
+              tabName="leave"
             />
           </Box>
           <Box>
@@ -254,6 +236,13 @@ function Leaves() {
           formData={formData}
           setFormData={setFormData}
           handleClose={handleClose}
+          initialState={initialState}
+          proofFile={proofFile}
+          setProofFile={setProofFile}
+          leaveId={leaveId}
+         setLeaveId={setLeaveId}
+         getAllLeavesData={getAllLeavesData}
+
         />
       </Dialog>
       <Dialog open={openWidrow} scroll={"body"} maxWidth="sm">
