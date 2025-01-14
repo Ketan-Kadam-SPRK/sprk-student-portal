@@ -15,24 +15,28 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { applyForLeave, editStudentLeave } from "./action/leaves.action";
 
 
 function ApplyLeaveModal({
   handleClose,
   formData,
   setFormData,
+  initialState,
+  proofFile,
+  setProofFile,
   leaveId,
+  getAllLeavesData
 }) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [days, setDays] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [proofFile, setProofFile] = useState(null);
+
   const [validationErrors, setValidationErrors] = useState({
     start: "",
     end: "",
     reason: "",
-    id: "",
   });
 
 
@@ -232,6 +236,8 @@ function ApplyLeaveModal({
     return formattedDate;
   }
 
+  console.log(initialState, "initialState");
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -249,25 +255,32 @@ function ApplyLeaveModal({
       file: proofFile,
     };
     
-    // setIsLoading(true);
-    // const action = applyForLeave({ headers, leaveData: newData });
+    setIsLoading(true);
+    const action =
+      leaveId !== null
+        ? editStudentLeave({ headers, leaveId, leaveData: newData })
+        : applyForLeave({ headers, leaveData: newData });
 
-    // dispatch(action)
-    //   .then((res) => {
-    //     if (res.payload !== undefined) {
-    //       setFormData(initialState);
-    //       setProofFile(null);
-    //       setValidationErrors({});
-    //       handleClose();
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     // console.log(error);
-    //     setIsLoading(false);
-    //   })
-    //   .finally(() => {
-    //     setIsLoading(false);
-    //   });
+    dispatch(action)
+      .then((res) => {
+        
+        if (res.payload !== undefined) {
+          console.log(res, "res");
+          setFormData(initialState);
+          handleClearFile();
+          setProofFile(null);
+          setValidationErrors({});
+          handleClose();
+          getAllLeavesData();
+        }
+      })
+      .catch((error) => {
+        // console.log(error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const sixMonthsAgo = new Date();
@@ -447,7 +460,9 @@ function ApplyLeaveModal({
         >
           {isLoading ? (
             <CircularProgress size={24} />
-          ) :(
+          ) : leaveId !== null ? (
+            "Update"
+          ) : (
             "Submit"
           )}
         </Button>
