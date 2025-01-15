@@ -14,7 +14,7 @@ const dateFormator = (timestamp, daysToSubtract = 0) => {
       return "";
     }
   
-    return `${day}/${month}/${year}`;
+    return `${day} ${month} ${year}`;
   };
   
   export default dateFormator;

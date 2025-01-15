@@ -24,25 +24,20 @@ function modifyCapitalization(inputString) {
 function PopupFilterComponent({
   statusOptions = [],
   setFilterData,
-  rowData = [],
+  rowData,
   dateKey = null,
   statusKey = null,
-  tabName = "",
 }) {
   const location = useLocation();
   const searchQuery = location?.state?.searchQuery;
   const bookingCode = location?.state?.bcode;
-  const [filterState, setFilterState] = useState(() => {
-    const savedFilter = localStorage.getItem(`${tabName}Filter`);
-    return savedFilter
-      ? JSON.parse(savedFilter)
-      : {
-          quickFilter: "",
-          selectAll: false,
-          startDate: null,
-          endDate: null,
-          selectedStatus: [],
-        };
+
+  const [filterState, setFilterState] = useState({
+    quickFilter: "",
+    selectAll: false,
+    startDate: null,
+    endDate: null,
+    selectedStatus: [],
   });
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -63,24 +58,6 @@ function PopupFilterComponent({
   };
 
   useEffect(() => {
-    const PersistFilterData = localStorage.getItem(`${tabName}Filter`);
-    if (PersistFilterData && tabName !== "") {
-      try {
-        const retrievedObject = JSON.parse(PersistFilterData);
-        setFilterState(retrievedObject);
-      } catch (error) {
-        console.error("Error parsing localStorage data:", error);
-      }
-    }
-  }, [tabName]);
-
-  useEffect(() => {
-    if (tabName !== "") {
-      localStorage.setItem(`${tabName}Filter`, JSON.stringify(filterState));
-    }
-  }, [filterState, tabName]);
-
-  useEffect(() => {
     if (searchQuery || bookingCode) {
       setFilterState((prev) => ({
         ...prev,
@@ -91,7 +68,7 @@ function PopupFilterComponent({
 
   useEffect(() => {
     applyFilter();
-  }, [filterState?.quickFilter, rowData]);
+  }, [filterState?.quickFilter,rowData]);
 
   const applyFilter = () => {
     if (dateError.startError !== "" || dateError.endError !== "") {
@@ -100,26 +77,28 @@ function PopupFilterComponent({
 
     setLoading(true);
 
-    // Initialize worker and pass data
-    const worker = new Worker("/FilterWorker.js");
+    const filteredData = rowData.filter((item) => {
+      const matchesQuickFilter =
+        !filterState.quickFilter ||
+        Object.values(item).some((value) =>
+          String(value).toLowerCase().includes(filterState.quickFilter.toLowerCase())
+        );
 
-    worker.onmessage = function (e) {
-      // setFilterData(e.data);
-      setLoading(false);
-      handleClose();
-    };
+      const matchesStatus =
+        filterState.selectedStatus.length === 0 ||
+        (statusKey && filterState.selectedStatus.includes(item[statusKey]));
 
-    worker.onerror = function (error) {
-      console.error("Error in worker:", error);
-      setLoading(false);
-    };
+      const matchesDateRange = dateKey
+        ? (!filterState.startDate || new Date(item[dateKey]) >= new Date(filterState.startDate)) &&
+          (!filterState.endDate || new Date(item[dateKey]) <= new Date(filterState.endDate))
+        : true;
 
-    worker.postMessage({
-      rowData,
-      filterState,
-      dateKey,
-      statusKey,
+      return matchesQuickFilter && matchesStatus && matchesDateRange;
     });
+
+    setFilterData(filteredData);
+    setLoading(false);
+    handleClose();
   };
 
   useEffect(() => {
@@ -153,7 +132,6 @@ function PopupFilterComponent({
     }));
   };
 
-
   const handleClearFilter = () => {
     setFilterState({
       quickFilter: "",
@@ -162,7 +140,7 @@ function PopupFilterComponent({
       selectedStatus: [],
       selectAll: false,
     });
-    // setFilterData(rowData);
+    setFilterData(rowData);
     handleClose();
     setDateError({
       startError: "",
@@ -172,13 +150,12 @@ function PopupFilterComponent({
 
   const isValidDateFormat = (date) => {
     if (date === null || date === "") {
-      return true; // Treat null or empty as valid
+      return true;
     }
 
     const regex = /^\d{4}-\d{2}-\d{2}$/;
     return regex.test(date) && !isNaN(new Date(date).getTime());
   };
-
 
   const handleDateChange = (e) => {
     const { name, value } = e.target;
@@ -193,7 +170,6 @@ function PopupFilterComponent({
       [name]: isValidDateFormat(value) ? value : null,
     }));
   };
-
 
   const validateDates = (startDate, endDate) => {
     const error = {};
@@ -255,7 +231,6 @@ function PopupFilterComponent({
           aria-expanded={open ? "true" : undefined}
           variant="contained"
           disableElevation
-          size="small"
           sx={{
             width: "120px",
           }}
@@ -349,7 +324,7 @@ function PopupFilterComponent({
                     shrink: true,
                   }}
                   inputProps={{
-                    max: "9999-12-31", // Replace with your desired maximum date
+                    max: "9999-12-31",
                   }}
                   error={!!dateError.startError}
                   helperText={dateError.startError}
@@ -362,7 +337,7 @@ function PopupFilterComponent({
                 <Typography
                   sx={{ fontSize: "14px", fontWeight: "bold", mr: 2 }}
                 >
-                  To:{" "}
+                  To:
                 </Typography>
                 <TextField
                   type="date"
@@ -375,7 +350,7 @@ function PopupFilterComponent({
                     shrink: true,
                   }}
                   inputProps={{
-                    max: "9999-12-31", // Replace with your desired maximum date
+                    max: "9999-12-31",
                   }}
                   error={!!dateError.endError}
                   helperText={dateError.endError}
@@ -408,4 +383,4 @@ function PopupFilterComponent({
   );
 }
 
-export default PopupFilterComponent
+export default PopupFilterComponent;

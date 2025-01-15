@@ -66,7 +66,7 @@ function BatchDetailsTab({sessionData}) {
         <Sessions sessionData={sessionData}/>
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        <Modules />
+        <Modules batchId={batchId}/>
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
         <AbsentLog batchId={batchId} />

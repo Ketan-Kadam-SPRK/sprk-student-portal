@@ -1,66 +1,42 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { Image } from "cloudinary-react";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
+import { getModulesDetails } from "../../../action/batches.actions";
+import ErrorHandling from "../../../../Common/ErrorHandling";
 
-function Modules() {
-  const data = [
-    {
-      name: "Introduction To Excel - Ribbons & Tabs",
-      sessions: [],
-      faculties: [],
-      status: "COMPLETED",
-    },
-    {
-      name: "Introduction To Excel - Quick Access Toolbar",
-      sessions: [],
-      faculties: [],
-      status: "COMPLETED",
-    },
-    {
-      name: "Introduction To Excel - Mini Toolbar",
-      sessions: [],
-      faculties: [],
-      status: "UPCOMING",
-    },
-    {
-      name: "Introduction To Excel - Title, Help, Zoom, View",
-      sessions: [],
-      faculties: [],
-      status: "UPCOMING",
-    },
-    {
-      name: "Excel Worksheet - Moving On Worksheet",
-      sessions: [],
-      faculties: [],
-      status: "UPCOMING",
-    },
-    {
-      name: "Worksheet - All Operations Related To Worksheet Excel Worksheet - All Operations Related To Workshee",
-      sessions: [],
-      faculties: [],
-      status: "UPCOMING",
-    },
-    {
-      name: "Excel Calculation - Addition ",
-      sessions: [],
-      faculties: [],
-      status: "UPCOMING",
-    },
-    {
-      name: "Excel Calculation - Sigma Addition",
-      sessions: [],
-      faculties: [],
-      status: "UPCOMING",
-    },
-    {
-      name: "Excel Calculation - Subtraction",
-      sessions: [],
-      faculties: [],
-      status: "UPCOMING",
-    },
-  ];
+function Modules({batchId}) {
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [loading, setLoading] = useState(false);
+  const [modules, setModules] = useState([]);
+  console.log(batchId);
+
+  const getModules = async () => {
+    setLoading(true);
+    try {
+      const res = await dispatch(getModulesDetails({ headers, batchId }));
+      const data = res?.payload?.data?.data || [];
+      console.log(data);
+      setModules(data); // Ensure the sorted data is set
+      setLoading(false);
+    } catch (err) {
+      console.error(err); // Log error for debugging
+      setLoading(false);
+    }
+  };
+  
+
+  useEffect(() => {
+    getModules();
+  }, []);
+
+  if (loading) {
+    return <ErrorHandling error500={false} loadData={loading} />;
+  } 
 
   return (
     <Box
@@ -75,8 +51,8 @@ function Modules() {
         gap: "10px",
       }}
     >
-      {data?.length > 0 ? (
-        data?.map((item, index) => (
+      {modules?.length > 0 ? (
+        modules?.map((item, index) => (
           <Box
             key={index}
             sx={{
@@ -90,7 +66,7 @@ function Modules() {
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <Box>
-                {item?.status === "COMPLETED" ? (
+                {item?.moduleCompletionStatus === "COMPLETED" ? (
                   <CheckCircleIcon sx={{ color: "#3D37D5" }} />
                 ) : (
                   <CircleOutlinedIcon />
@@ -98,7 +74,7 @@ function Modules() {
               </Box>
               <Box>
                 <Typography sx={{ color: "#085186", fontWeight: 600 }}>
-                  {item?.name}
+                  {item?.module}
                 </Typography>
               </Box>
             </Box>
@@ -110,13 +86,13 @@ function Modules() {
                 px: 3,
                 gap: "5px",
                 backgroundColor:
-                  item?.status === "COMPLETED" ? "#CDFEE1" : "#E4AEFF",
+                  item?.moduleCompletionStatus === "COMPLETED" ? "#CDFEE1" : "#E4AEFF",
                 py: 1,
                 borderRadius: "25px",
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                {item?.status === "COMPLETED" ? (
+                {item?.moduleCompletionStatus === "COMPLETED" ? (
                   <Image
                     publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735798457/fluent-mdl2_completed_x9l58k.svg"
                     cloudName="dxlzzgbfw"
@@ -132,10 +108,10 @@ function Modules() {
                 sx={{
                   fontSize: { xs: "10px", sm: "13px", md: "13px" },
                   fontWeight: "600",
-                  color: item?.status === "COMPLETED" ? "#12472E" : "#52007A",
+                  color: item?.moduleCompletionStatus === "COMPLETED" ? "#12472E" : "#52007A",
                 }}
               >
-                {item?.status}
+                {item?.moduleCompletionStatus === "COMPLETED" ? "COMPLETED" : "Upcoming"}
               </Typography>
             </Box>
           </Box>

@@ -10,9 +10,9 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
+import { Image } from "cloudinary-react";
 
 function Sessions({ sessionData }) {
-
   const [show, setShow] = useState(false);
   const [showAttendanceDrawer, setShowAttendanceDrawer] = useState(false);
 
@@ -44,121 +44,173 @@ function Sessions({ sessionData }) {
         };
     }
   };
-  
 
   console.log(sessionData);
+  // console.log(sessionData?.list.length);
   return (
-    <Box className={styles.mainBox}>
-      <Box sx={{ px: 3, py: 2 }}>
-        {/* Map through sessionData and render each session */}
-        {sessionData?.list?.map((sessionData) => (
-          <Accordion
-            key={sessionData?.session_id}
-            sx={{ marginBottom: "25px" }}
-          >
-            {/* Accordion header */}
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              {/* Session information */}
-
-              <Box className={styles.infoBox}>
-                <Box
-                  className={styles.SummeryBox}
-                  onClick={() => setShow(!show)}
+    <>
+      {sessionData?.list?.length > 0 ? (
+        <Box className={styles.mainBox}>
+          <Box sx={{ px: 3, py: 2 }}>
+            {/* Map through sessionData and render each session */}
+            {sessionData?.list?.map((sessionData) => (
+              <Accordion
+                key={sessionData?.session_id}
+                sx={{ marginBottom: "25px" }}
+              >
+                {/* Accordion header */}
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
                 >
-                  {/* Icon indicating if the session is taken */}
+                  {/* Session information */}
 
-                  <CheckCircleIcon className={styles.iconStyle} />
+                  <Box className={styles.infoBox}>
+                    <Box
+                      className={styles.SummeryBox}
+                      onClick={() => setShow(!show)}
+                    >
+                      {/* Icon indicating if the session is taken */}
 
-                  {/* Session details */}
-                  <Typography
-                    className={styles.sessionsNumb}
-                    onClick={() => {
-                      if (!isBAtchScheduling) {
-                        handleToggleDrawer();
-                      }
+                      <CheckCircleIcon className={styles.iconStyle} />
+
+                      {/* Session details */}
+                      <Typography
+                        className={styles.sessionsNumb}
+                        onClick={() => {
+                          if (!isBAtchScheduling) {
+                            handleToggleDrawer();
+                          }
+                        }}
+                      >
+                        Session <span>{sessionData.serial_number}</span>{" "}
+                        <span style={{ color: "grey", fontSize: "12px" }}>
+                          {sessionData.type !== "REGULAR" && "(BACKUP)"}
+                        </span>
+                      </Typography>
+                    </Box>
+
+                    {/* Additional session information */}
+                    <Typography className={styles.sessionInfo}>
+                      Faculty: {sessionData.faculty}
+                    </Typography>
+                    <Box
+                      sx={{ display: "flex", gap: "50px", flexWrap: "wrap" }}
+                    >
+                      <Box>
+                        <Typography className={styles.sessionInfo}>
+                          Session Date:{" "}
+                          {formatDateTimeRange(
+                            sessionData.start_time,
+                            sessionData.end_time
+                          )}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flex: 1,
                     }}
                   >
-                    Session <span>{sessionData.serial_number}</span>{" "}
-                  </Typography>
-                </Box>
-
-                {/* Additional session information */}
-                <Typography className={styles.sessionInfo}>
-                  Faculty: {sessionData.faculty}
-                </Typography>
-                <Box sx={{ display: "flex", gap: "50px", flexWrap: "wrap" }}>
-                  <Box>
-                    <Typography className={styles.sessionInfo}>
-                      Session Date:{" "}
-                      {formatDateTimeRange(
-                        sessionData.start_time,
-                        sessionData.end_time
+                    <Box>
+                      {sessionData?.attendance !== null && (
+                        <Typography
+                          sx={{
+                            p: "5px 15px",
+                            borderRadius: "15px",
+                            fontWeight: 600,
+                            fontSize: "14px",
+                            ...getStatusStyles(
+                              sessionData?.studentAttendanceStatus
+                            ),
+                          }}
+                        >
+                          {formatForDisplay(
+                            sessionData?.studentAttendanceStatus
+                          )}
+                        </Typography>
                       )}
-                    </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flex: 1,
-                }}
-              >
-                <Box>
-                  {sessionData?.attendance !== null && (
-                    <Typography
-                      sx={{
-                        p: "5px 15px",
-                        borderRadius: "15px",
-                        fontWeight: 600,
-                        fontSize: "14px",
-                        ...getStatusStyles(sessionData?.studentAttendanceStatus),
-                      }}
-                    >
-                      {formatForDisplay(sessionData?.studentAttendanceStatus)}
-                    </Typography>
-                  )}
-                </Box>
-              </Box>
-            </AccordionSummary>
-            {/* Accordion content */}
+                </AccordionSummary>
+                {/* Accordion content */}
 
-            <AccordionDetails>
-              {/* Display modules for the session */}
-              <Typography>
-                {sessionData?.moduleDetails?.length ? (
-                  sessionData.moduleDetails
-                    .filter((module) => module.status !== "PENDING")
-                    .map((module, index) => (
-                      <Typography key={index} className={styles.modules}>
-                        {/* Icon indicating if the module is taken */}
-                        {module.moduleCompletionStatus === "COMPLETED" ? (
-                          <CheckCircleIcon className={styles.takenIcon} />
-                        ) : (
-                          <RotateRightIcon className={styles.takenIcon} />
-                        )}
-                        {module.module}
+                <AccordionDetails>
+                  {/* Display modules for the session */}
+                  <Typography>
+                    {sessionData?.moduleDetails?.length ? (
+                      sessionData.moduleDetails
+                        .filter((module) => module.status !== "PENDING")
+                        .map((module, index) => (
+                          <Typography key={index} className={styles.modules}>
+                            {/* Icon indicating if the module is taken */}
+                            {module.moduleCompletionStatus === "COMPLETED" ? (
+                              <CheckCircleIcon className={styles.takenIcon} />
+                            ) : (
+                              <RotateRightIcon className={styles.takenIcon} />
+                            )}
+                            {module.module}
+                          </Typography>
+                        ))
+                    ) : (
+                      // Displayed when no modules are available for the session
+                      <Typography className={styles.noData}>
+                        No data available
                       </Typography>
-                    ))
-                ) : (
-                  // Displayed when no modules are available for the session
-                  <Typography className={styles.noData}>
-                    No data available
+                    )}
                   </Typography>
-                )}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </Box>
-    </Box>
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Box>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            backgroundColor: "white",
+            height: "auto",
+            display: "flex",
+            justifyContent: "center",
+            px: 2,
+            pb: 4,
+            pt:2
+          }}
+        >
+          <Box
+            sx={{
+              backgroundColor: "#E6E5FF",
+              width: "100%",
+              borderRadius: "5px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap:1
+            }}
+          >
+            <Box sx={{mt:2}}>
+            <Image
+              publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736514777/Brainstorming_session_with_notepad_and_chat_bubble_bnqa9f.svg"
+              cloudName="dxlzzgbfw"
+              style={{ width: "212px", height: "212px" }}
+            />
+            </Box>
+            <Box>
+            <Typography sx={{fontSize: "24px",color: "#3E2347", fontWeight: "bold" }}>Sessions are yet to be conducted!</Typography>
+            </Box>
+            <Box sx={{mb:5}}>
+            <Typography sx={{fontSize: "20px",color: "#775383"}}>Your sessions will appear here once they are completed. </Typography>
+            </Box>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 }
 

@@ -8,7 +8,7 @@ function StatusStyledComponent({ color, backgroundColor, value }) {
         backgroundColor: backgroundColor,
         textAlign: "center",
         borderRadius: "20px",
-        height: "30px",
+        height: "35px",
         padding: "15px",
         minWidth: "150px",
         fontWeight: "bold",
