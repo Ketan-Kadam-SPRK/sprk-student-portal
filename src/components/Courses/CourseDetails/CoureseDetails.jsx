@@ -7,110 +7,45 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import RotateRightIcon from '@mui/icons-material/RotateRight';
-import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import RotateRightIcon from "@mui/icons-material/RotateRight";
+import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { Image } from "cloudinary-react";
 import { useNavigate } from "react-router-dom";
-
-
+import { useDispatch } from "react-redux";
+import { getCourseGrpDetails } from "../course.actions";
+import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 
 function CoureseDetails() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const headers = useAuthHeaders();
+  const [data, setData] = useState([]);
 
-  const dummyData = {
-    courseGroupName: "Web Development",
-    courseGroupLogo: "",
-    course_Status: "ONGOING",
-    courseOverview:
-      "The Full Stack Development - Java course offers a thorough exploration of both front-end and back-end development using Java technologies. It covers essential aspects of building dynamic web applications, including Java-based server-side programming with Spring Boot, creating responsive user interfaces with HTML, CSS, and JavaScript, and managing databases with JPA and Hibernate.",
-    courseKeyFeatures: [
-      "Full Stack Development",
-      "Java Programming",
-      "Spring Boot",
-      "React",
-      "Node.js",
-      "Angular",
-    ],
-    courseGroupId: "CGN45DDF50",
-    courses: [
-      {
-        name: "HTML & CSS",
-        courseId: "CN45DDF51",
-        color: "red",
-        bookings: ["BCN45DDF55", "BCN45DDF56", "BCN45DDF57"],
-        modules: [
-          "Introduction to HTML",
-          "CSS Fundamentals",
-          "Responsive Web Design",
-        ],
-      },
-      {
-        name: "JavaScript",
-        courseId: "CN45DDF52",
-        color: "blue",
-        bookings: ["BCN45DDF58", "BCN45DDF59", "BCN45DDF60"],
-        modules: ["JavaScript Basics", "DOM Manipulation", "ES6 Features"],
-      },
-      {
-        name: "PHP & MySQL",
-        courseId: "CN45DDF53",
-        color: "green",
-        bookings: ["BCN45DDF61", "BCN45DDF62", "BCN45DDF63"],
-        modules: [
-          "Introduction to PHP",
-          "MySQL Database Management",
-          "Building Dynamic Websites",
-        ],
-      },
-      {
-        name: "React",
-        courseId: "CN45DDF54",
-        color: "orange",
-        bookings: ["BCN45DDF64", "BCN45DDF65", "BCN45DDF66"],
-        modules: [
-          "Getting Started with React",
-          "React Components",
-          "State Management with Redux",
-        ],
-      },
-      {
-        name: "Node.js",
-        courseId: "CN45DDF55",
-        color: "purple",
-        bookings: ["BCN45DDF67", "BCN45DDF68", "BCN45DDF69"],
-        modules: [
-          "Introduction to Node.js",
-          "Building RESTful APIs",
-          "Working with MongoDB",
-        ],
-      },
-    ],
-  };
-  const [data, setData] = useState(dummyData);
+  // const [data, setData] = useState(dummyData);
   const [expandedCourseId, setExpandedCourseId] = useState(null); // Track expanded course
 
-  // const getCourseDetailsAPi = async () => {
-  //   try {
-  //     const res = await axios.get("https://www.jsondataai.com/api/KV4Vh80");
-  //     const data = await res.data;
-  //     setData(data);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const getCourseDetailsAPi = async () => {
+    try {
+      const res = await dispatch(getCourseGrpDetails({ headers }));
+      const data = await res.payload.data;
+      setData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  // useEffect(() => {
-  //   getCourseDetailsAPi();
-  // }, []);
+  useEffect(() => {
+    getCourseDetailsAPi();
+  }, []);
 
   const getStatusProperties = (status) => {
     switch (status) {
       case "ONGOING":
         return {
           style: { bgcolor: "#DDEBFF", color: "#0038A8" },
-          icon: <RotateRightIcon sx={{ color: "#0038A8" }}/>,
+          icon: <RotateRightIcon sx={{ color: "#0038A8" }} />,
         };
       case "COMPLETED":
         return {
@@ -120,7 +55,7 @@ function CoureseDetails() {
       case "EXPIRED":
         return {
           style: { bgcolor: "#D1D1D1", color: "#3D3D3D" },
-          icon: <InfoRoundedIcon sx={{ color: "#3D3D3D" }}/>,
+          icon: <InfoRoundedIcon sx={{ color: "#3D3D3D" }} />,
         };
       default:
         return {

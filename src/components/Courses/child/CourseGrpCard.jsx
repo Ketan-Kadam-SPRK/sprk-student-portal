@@ -4,9 +4,41 @@ import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyl
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
+import dateFormator from "../../../Utils/dateFormator";
 
 function CourseGrpCard({ item }) {
   const navigate = useNavigate();
+
+  const getStatusColor = (status) => {
+    let color = "";
+    let backgroundColor = "";
+    switch (status) {
+      case "ON_GOING":
+        color = "#0038A8";
+        backgroundColor = "#C1D6FF";
+        break;
+      case "COMPLETED":
+        color = "#368C00";
+        backgroundColor = "#CBFFAC";
+        break;
+      case "EXPIRED":
+        color = "#3D3D3D";
+        backgroundColor = "#D1D1D1";
+        break;
+      case "PENDING":
+        color = "#755200";
+        backgroundColor = "#FFF3A4";
+        break;
+      default:
+        color = "black";
+        backgroundColor = "white";
+        break;
+    }
+    return { color, backgroundColor };
+  };
+
+  const { color, backgroundColor } = getStatusColor(item?.status);
+
   return (
     <Box
       sx={{
@@ -30,6 +62,7 @@ function CourseGrpCard({ item }) {
           backgroundColor: "#7570FC",
           borderRadius: "10px",
           alignItems: "center",
+          height: "130px",
           justifyContent: "space-between",
         }}
       >
@@ -40,14 +73,16 @@ function CourseGrpCard({ item }) {
             fontSize: "var(--font-size-medium)",
             textTransform: "capitalize",
             width: "200px",
+            maxWidth: "100%",
+            wordBreak: "break-word",
           }}
         >
-          {item?.course_group_name || "Web Dpment"}
+          {item?.course_group || ""}
         </Typography>
 
         <img
-          src={item?.img_url}
-          alt={item?.course_group_name}
+          src={item?.logo}
+          alt={item?.course_group || ""}
           style={{
             width: "100px",
             height: "50px",
@@ -65,6 +100,7 @@ function CourseGrpCard({ item }) {
             fontWeight: "bold",
             display: "flex",
             alignItems: "center",
+            justifyContent: "flex-start",
             gap: "5px",
             color: "#1976D2",
           }}
@@ -73,41 +109,54 @@ function CourseGrpCard({ item }) {
           : {item?.total_courses}
         </Typography>
 
-        <StatusStyledComponent value={item?.status} />
+        <Typography
+          sx={{ fontSize: "var(--font-size-small)", fontWeight: "bold", mt: 3 }}
+        >
+          {item?.bcn}
+        </Typography>
 
         <Typography
           sx={{ fontSize: "var(--font-size-extra-small)" }}
-        >{`Booking Date : ${item?.booked_at}`}</Typography>
+        >{`Booking Date : ${dateFormator(item?.booking_date)}`}</Typography>
 
         <Typography
           sx={{ fontSize: "var(--font-size-extra-small)" }}
-        >{`Course Start Date : ${item?.course_start_date}`}</Typography>
+        >{`Course Group Start : ${dateFormator(
+          item?.course_start_date
+        )}`}</Typography>
 
-        <Typography
-          sx={{ fontSize: "var(--font-size-extra-small)" }}
-        >{`Tentative End Date : ${item?.tentative_end_date}`}</Typography>
-
-        <Typography
-          sx={{ fontSize: "var(--font-size-extra-small)" }}
-        >{`BCN : ${item?.bcn}`}</Typography>
-
-        <Typography
-          onClick={() => {
-            navigate(`/courses/${item?.course_group_id}`);
-          }}
-          color="primary"
-          fontSize={"var(--font-size-extra-small)"}
-          fontWeight={"bold"}
+        <Box
           sx={{
-            cursor: "pointer",
             display: "flex",
             alignItems: "center",
-            gap: "5px",
+            justifyContent: "space-between",
+            gap: "10px",
+            flexWrap: "wrap",
           }}
         >
-          View Course Details{" "}
-          <ArrowForwardIosRoundedIcon color="primary" fontSize="inherit" />
-        </Typography>
+          <Typography
+            onClick={() => {
+              navigate(`/Course_Groups/${item?.course_group_id}`);
+            }}
+            color="primary"
+            fontSize={"var(--font-size-extra-small)"}
+            fontWeight={"bold"}
+            sx={{
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+            }}
+          >
+            View Details{" "}
+            <ArrowForwardIosRoundedIcon color="primary" fontSize="inherit" />
+          </Typography>
+          <StatusStyledComponent
+            value={item?.status}
+            color={color}
+            backgroundColor={backgroundColor}
+          />
+        </Box>
       </Box>
     </Box>
   );

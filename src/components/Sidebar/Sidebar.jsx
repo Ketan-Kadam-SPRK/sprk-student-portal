@@ -349,13 +349,13 @@ function Sidebar() {
                   </Typography>
 
                   <SidebarItem
-                    title="Courses"
+                    title="Course Groups"
                     icon={AutoStoriesRoundedIcon}
                     open={open}
-                    isActive={activeTab === "Courses"}
+                    isActive={activeTab === "Course_Groups"}
                     onClick={() => {
-                      navigate("/Courses");
-                      handleTabClick("Courses");
+                      navigate("/Course_Groups");
+                      handleTabClick("Course_Groups");
                       handleDrawerClose();
                     }}
                   />

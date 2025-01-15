@@ -1,180 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import CourseGrpCard from "./child/CourseGrpCard";
+import { getCourseGrpDetails } from "./course.actions";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 
 const Courses = () => {
-  const data = [
-    {
-      course_group_name: "FULL STACK JAVA DEVELOPMENT",
-      course_group_id: 3,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://www.achieversit.com/management/uploads/course_image/jfs11.png",
-    },
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [courseData, setCourseData] = useState([]);
 
-    {
-      course_group_name: "Full stack Mern Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-    {
-      course_group_name: "Web Development",
-      course_group_id: 2,
-      total_courses: 3,
-      status: "ONGOING",
-      booked_at: "2023-06-01",
-      course_start_date: "2023-06-01",
-      tentative_end_date: "2023-06-01",
-      bcn: "BCN14556D5D",
-      persentage: 50,
-      img_url:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    },
-  ];
+  const getCourseDetailsAPi = async () => {
+    try {
+      const res = await dispatch(getCourseGrpDetails({ headers }));
+      const data = await res.payload.data;
+      setCourseData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getCourseDetailsAPi();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -185,10 +34,11 @@ const Courses = () => {
       }}
     >
       <Typography variant="h4" fontWeight={"bold"}>
-        Enrolled Courses{" "}
+        Your Programs at a Glance{" "}
       </Typography>
-      <Typography fontSize={"var(--font-size-small)"}>
-        “Dive into your courses—every lesson is a tool for your dreams.”
+      <Typography fontSize={"var(--font-size-medium)"}>
+        The road to mastery is through continuous learning. Stay curious, stay
+        inspired.{" "}
       </Typography>
 
       <Box
@@ -199,7 +49,7 @@ const Courses = () => {
           flex: 1,
         }}
       >
-        {data.map((item, index) => (
+        {courseData.map((item, index) => (
           <CourseGrpCard key={index} item={item} />
         ))}
       </Box>

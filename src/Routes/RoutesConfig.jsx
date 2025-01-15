@@ -28,7 +28,7 @@ function RoutesConfig() {
         <Route index element={<Batches />} />
         <Route path=":batchId" element={<BatchDetails />} />
       </Route>
-      <Route path="Courses" element={<Outlet />}>
+      <Route path="Course_Groups" element={<Outlet />}>
         <Route index element={<Courses />} />
         <Route path=":courseId" element={<CoureseDetails />} />
       </Route>
