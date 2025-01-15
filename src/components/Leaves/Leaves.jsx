@@ -3,15 +3,17 @@ import React, { use, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
 import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
-import StatusStyledComponent from "../Common/StatusStyledComponent/StatusStyledComponent";
 import PopupFilterComponent from "../Common/FilterMenuComponent/PopupFilterComponent";
 import dateFormator from "../../Utils/dateFormator";
 import ApplyLeaveModal from "./ApplyLeaveModal";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { getAllLeaves } from "./action/leaves.action";
+import { getAllLeaves, getWithdrawnLeaves } from "./action/leaves.action";
 import ErrorHandling from "../Common/ErrorHandling";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import { formatForDisplay } from "../../Utils/formateForDisplay";
+import InfoIcon from '@mui/icons-material/Info';
+import { LightTooltip } from "../../Utils/LightToolTip";
 
 function Leaves() {
   const [filterData, setFilterData] = useState([]);
@@ -45,7 +47,8 @@ function Leaves() {
       const res = await dispatch(getAllLeaves({ headers }));
       const data = res?.payload?.data?.data || [];
       console.log(data);
-      setleaveData(data);
+      const modifiedData = data.reverse();
+      setleaveData(modifiedData);
       // setFilterData(data);
       setLoading(false);
     } catch (err) {
@@ -81,19 +84,26 @@ function Leaves() {
   };
 
   console.log(formData);
+
   const handleWithdraw = (rowData) => {
     setOpenWidrow(true);
-    console.log("Withdraw action clicked for row:", rowData);
+    setLeaveId(rowData?.leaveRequestUid);
+    console.log("Withdraw action clicked for row:", rowData?.leaveRequestUid
+    );
     // Perform your withdraw logic here
   };
+  const handleWithdrawConfirm = () => {
+    dispatch(getWithdrawnLeaves({ headers, leaveId })).then((res) => {
+      console.log(res);
+    });
+  }
 
   const handleOpenFile = (rowData) => {
     console.log("Row Data:", rowData); // Debugging
     const fileUrl = rowData;
     window.open(encodeURI(fileUrl), "_blank", "noopener,noreferrer");
   };
-  
-  
+
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
@@ -107,6 +117,19 @@ function Leaves() {
     setRows(data);
     setFilterData(data);
   }, [leaveData]);
+
+  const getInformation = (rowData) => {
+    console.log(rowData?.denyReason
+    );
+    return (
+      <Box sx={{ p: 2, maxWidth: { xs: "250px", sm: "280px", md: "400px" } }}>
+        <Typography sx={{ fontWeight: "bold" }}>Deny Reason</Typography>
+        <Typography sx={{ color: "#9E9E9E", pt: 1 }}>
+         {rowData?.denyReason}
+        </Typography>
+      </Box>
+    );
+  };
 
   const columns = [
     {
@@ -135,7 +158,7 @@ function Leaves() {
         alignItems: "center",
         justifyContent: "center",
       },
-      format: (status) => {
+      format: (status, rowData) => {
         const getColorAndBackground = (status) => {
           switch (status) {
             case "APPROVED":
@@ -153,11 +176,32 @@ function Leaves() {
 
         const { color, backgroundColor } = getColorAndBackground(status);
         return (
-          <StatusStyledComponent
-            color={color}
-            backgroundColor={backgroundColor}
-            value={status}
-          />
+          <div
+            style={{
+              color: color,
+              backgroundColor: backgroundColor,
+              textAlign: "center",
+              borderRadius: "20px",
+              height: "35px",
+              padding: "15px",
+              minWidth: "150px",
+              fontWeight: "bold",
+              display: "flex",
+              fontSize: "14px",
+              alignItems: "center",
+              justifyContent: "center",
+              maxWidth: "200px",
+            }}
+          >
+            {formatForDisplay(status)}
+            {status === "DECLINED" && (
+              <LightTooltip title={getInformation(rowData)} arrow>
+              <InfoIcon
+                sx={{ color: "#9F0000", marginLeft: "10px", fontSize: "16px",cursor:"pointer" }}
+              />
+              </LightTooltip>
+            )}
+          </div>
         );
       },
     },
@@ -177,7 +221,9 @@ function Leaves() {
               onClick={() => handleOpenFile(row)}
               disabled={row === null}
             >
-              <InsertDriveFileIcon sx={{ color:row === null ? "#9B9B9B" : "#0074BD" }} />
+              <InsertDriveFileIcon
+                sx={{ color: row === null ? "#9B9B9B" : "#0074BD" }}
+              />
             </IconButton>
           </Box>
         );
@@ -201,7 +247,8 @@ function Leaves() {
             </Button>
             <Button
               variant="contained"
-              onClick={() => handleWithdraw(row)}
+              onClick={() => 
+                handleWithdraw(row)}
               disabled={row.status !== "PENDING"}
             >
               Withdraw
@@ -305,7 +352,7 @@ function Leaves() {
               >
                 No
               </Button>
-              <Button variant="contained" color="error" sx={{ px: 6 }}>
+              <Button variant="contained" color="error" sx={{ px: 6 }} onClick={handleWithdrawConfirm}>
                 Yes
               </Button>
             </Box>

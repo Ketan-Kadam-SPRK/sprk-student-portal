@@ -16,6 +16,7 @@ function StatusStyledComponent({ color, backgroundColor, value }) {
         fontSize: "14px",
         alignItems: "center",
         justifyContent: "center",
+        maxWidth: "200px",
       }}
     >
       {formatForDisplay(value)}
