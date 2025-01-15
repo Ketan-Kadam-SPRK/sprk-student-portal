@@ -10,11 +10,13 @@ import ApplyLeaveModal from "./ApplyLeaveModal";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { getAllLeaves } from "./action/leaves.action";
+import ErrorHandling from "../Common/ErrorHandling";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 function Leaves() {
   const [filterData, setFilterData] = useState([]);
   const [open, setOpen] = useState(false);
-  
+
   const [openWidrow, setOpenWidrow] = useState(false);
   const handleCloseWidrow = () => setOpenWidrow(!openWidrow);
   const [leaveId, setLeaveId] = useState(null);
@@ -30,30 +32,30 @@ function Leaves() {
   const [loading, setLoading] = useState(false);
   const [leaveData, setleaveData] = useState([]);
   const [proofFile, setProofFile] = useState(null);
-  const handleClose = () =>{ 
-    setOpen(!open)
+  const handleClose = () => {
+    setOpen(!open);
     setFormData(initialState);
     setProofFile(null);
     setLeaveId(null);
   };
 
-    const getAllLeavesData = async () => {
-      setLoading(true);
-      try {
-        const res = await dispatch(getAllLeaves({ headers}));
-        const data = res?.payload?.data?.data || [];
-        console.log(data);
-        setleaveData(data); 
-        setFilterData(data);
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-      }
-    };
-  
-    useEffect(() => {
-      getAllLeavesData();
-    }, []);
+  const getAllLeavesData = async () => {
+    setLoading(true);
+    try {
+      const res = await dispatch(getAllLeaves({ headers }));
+      const data = res?.payload?.data?.data || [];
+      console.log(data);
+      setleaveData(data);
+      // setFilterData(data);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllLeavesData();
+  }, []);
 
   const handleEdit = (rowData) => {
     console.log(rowData, "rowData");
@@ -85,41 +87,45 @@ function Leaves() {
     // Perform your withdraw logic here
   };
 
+  const handleOpenFile = (rowData) => {
+    console.log("Row Data:", rowData); // Debugging
+    const fileUrl = rowData;
+    window.open(encodeURI(fileUrl), "_blank", "noopener,noreferrer");
+  };
+  
+  
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const data = Array.isArray(leaveData)
-      ? filterData.map((item, index) => ({
+      ? leaveData.map((item, index) => ({
           ...item,
-          id:index,
+          id: item?.leaveRequestUid || index,
         }))
       : [];
-  
+
     setRows(data);
-    // setFilterData(data);
+    setFilterData(data);
   }, [leaveData]);
-  
-  
-console.log(filterData, "filterData");
-console.log(leaveData, "leaveData");
-console.log(rows, "rows");
 
   const columns = [
     {
       headerName: "From",
       id: "start",
-      minWidth: 200,
+      minWidth: 150,
       filterable: false,
       format: (value) => dateFormator(value),
     },
     {
       headerName: "To",
       id: "end",
-      minWidth: 200,
+      minWidth: 150,
       style: { color: "#0074BD", fontWeight: 600 },
       format: (value) => dateFormator(value, 1),
     },
+
     { headerName: "Days", id: "noOfDays", minWidth: 100 },
+    { headerName: "Reason", id: "reason", minWidth: 250 },
     {
       headerName: "Status",
       id: "status",
@@ -155,7 +161,29 @@ console.log(rows, "rows");
         );
       },
     },
-    { headerName: "Reason", id: "reason", minWidth: 250 },
+    {
+      headerName: "Managed By",
+      id: "managedBy",
+      minWidth: 200,
+    },
+    {
+      headerName: "View Document",
+      id: "file",
+      minWidth: 150,
+      format: (row) => {
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              onClick={() => handleOpenFile(row)}
+              disabled={row === null}
+            >
+              <InsertDriveFileIcon sx={{ color:row === null ? "#9B9B9B" : "#0074BD" }} />
+            </IconButton>
+          </Box>
+        );
+      },
+    },
+
     {
       headerName: "Action",
       id: "leaveRequestUid",
@@ -183,7 +211,9 @@ console.log(rows, "rows");
       },
     },
   ];
-
+  if (loading) {
+    return <ErrorHandling error500={false} loadData={loading} />;
+  }
   return (
     <Box
       sx={{
@@ -209,7 +239,6 @@ console.log(rows, "rows");
               rowData={rows}
               statusOptions={["APPROVED", "PENDING", "DECLINED", "WITHDREW"]}
               setFilterData={setFilterData}
-              filterData={filterData}
               dateKey="start"
               statusKey="status"
               tabName="leave"
@@ -240,9 +269,8 @@ console.log(rows, "rows");
           proofFile={proofFile}
           setProofFile={setProofFile}
           leaveId={leaveId}
-         setLeaveId={setLeaveId}
-         getAllLeavesData={getAllLeavesData}
-
+          setLeaveId={setLeaveId}
+          getAllLeavesData={getAllLeavesData}
         />
       </Dialog>
       <Dialog open={openWidrow} scroll={"body"} maxWidth="sm">
