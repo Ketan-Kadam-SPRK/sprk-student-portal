@@ -11,6 +11,7 @@ import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
 import { Image } from "cloudinary-react";
+import NoDataPage from "../../../../../Utils/NoDataPage";
 
 function Sessions({ sessionData }) {
   const [show, setShow] = useState(false);
@@ -171,44 +172,15 @@ function Sessions({ sessionData }) {
           </Box>
         </Box>
       ) : (
-        <Box
-          sx={{
-            backgroundColor: "white",
-            height: "auto",
-            display: "flex",
-            justifyContent: "center",
-            px: 2,
-            pb: 4,
-            pt:2
-          }}
-        >
-          <Box
-            sx={{
-              backgroundColor: "#E6E5FF",
-              width: "100%",
-              borderRadius: "5px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap:1
-            }}
-          >
-            <Box sx={{mt:2}}>
-            <Image
-              publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736514777/Brainstorming_session_with_notepad_and_chat_bubble_bnqa9f.svg"
-              cloudName="dxlzzgbfw"
-              style={{ width: "212px", height: "212px" }}
-            />
-            </Box>
-            <Box>
-            <Typography sx={{fontSize: "24px",color: "#3E2347", fontWeight: "bold" }}>Sessions are yet to be conducted!</Typography>
-            </Box>
-            <Box sx={{mb:5}}>
-            <Typography sx={{fontSize: "20px",color: "#775383"}}>Your sessions will appear here once they are completed. </Typography>
-            </Box>
-          </Box>
-        </Box>
+        <NoDataPage
+          errorImgPublicId={
+            "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736514777/Brainstorming_session_with_notepad_and_chat_bubble_bnqa9f.svg"
+          }
+          errorHeading={"Sessions are yet to be conducted!"}
+          errorDescription={
+            "Your sessions will appear here once they are completed."
+          }
+        />
       )}
     </>
   );

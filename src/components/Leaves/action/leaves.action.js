@@ -75,3 +75,29 @@ export const applyForLeave = createAsyncThunk(
       }
     }
   );
+
+  export const getWithdrawnLeaves = createAsyncThunk(
+    "getWithdrawnLeaves",
+    async ({ headers, leaveId }) => {
+      console.log(headers, leaveId);
+      try {
+        // Send a POST request to the API endpoint with headers properly set
+        const res = await axiosInstance.post(
+          `/student-portal/withdraw/${leaveId}`,
+          null, // Request body is null since no data is sent
+          {
+            headers: headers, // Set headers here
+          }
+        );
+  
+        const data = await res.data; // Access response data
+        console.log(data);
+  
+        return handleResponse(data);
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    }
+  );
+  
