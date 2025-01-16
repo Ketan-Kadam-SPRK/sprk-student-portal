@@ -1,8 +1,21 @@
-import { Box, duration, Typography } from "@mui/material";
-import React from "react";
+import { Box, duration, IconButton, Typography } from "@mui/material";
+import React, { useState } from "react";
 import ExamCard from "./ExamCard";
-
+import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
+import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 function Theory() {
+  const [toggle, setToggle] = useState({
+    practice: true,
+    internal: false,
+    final: false,
+  });
+
+  const handleToggle = (name) => {
+    setToggle((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
   const data = [
     {
       course_name: "Basic Excel",
@@ -123,15 +136,123 @@ function Theory() {
     >
       <Box
         sx={{
+          backgroundColor: "#6560F0",
+          color: "white",
           display: "flex",
-          gap: 2,
-          flexWrap: "wrap",
+          px: 1,
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "400px",
+          maxWidth: "100%",
+          borderRadius: "5px",
         }}
       >
-        {data.map((item, index) => (
-          <ExamCard key={index} item={item} />
-        ))}
+        <Typography fontSize={"var(--font-size-small)"} fontWeight={600}>
+          Practice
+        </Typography>{" "}
+        {
+          <IconButton onClick={() => handleToggle("practice")}>
+            {toggle?.practice ? (
+              <KeyboardArrowDownRoundedIcon sx={{ color: "white" }} />
+            ) : (
+              <KeyboardArrowUpRoundedIcon sx={{ color: "white" }} />
+            )}
+          </IconButton>
+        }
       </Box>
+      {toggle?.practice && (
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexWrap: "wrap",
+          }}
+        >
+          {data.map((item, index) => (
+            <ExamCard key={index} item={item} />
+          ))}
+        </Box>
+      )}
+
+      <Box
+        sx={{
+          backgroundColor: "#6560F0",
+          color: "white",
+          display: "flex",
+          px: 1,
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "400px",
+          maxWidth: "100%",
+          borderRadius: "5px",
+        }}
+      >
+        <Typography fontSize={"var(--font-size-small)"} fontWeight={600}>
+          Internal
+        </Typography>{" "}
+        {
+          <IconButton onClick={() => handleToggle("internal")}>
+            {toggle?.internal ? (
+              <KeyboardArrowDownRoundedIcon sx={{ color: "white" }} />
+            ) : (
+              <KeyboardArrowUpRoundedIcon sx={{ color: "white" }} />
+            )}
+          </IconButton>
+        }
+      </Box>
+      {toggle?.internal && (
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexWrap: "wrap",
+          }}
+        >
+          {data.map((item, index) => (
+            <ExamCard key={index} item={item} />
+          ))}
+        </Box>
+      )}
+
+      <Box
+        sx={{
+          backgroundColor: "#6560F0",
+          color: "white",
+          display: "flex",
+          px: 1,
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "400px",
+          maxWidth: "100%",
+          borderRadius: "5px",
+        }}
+      >
+        <Typography fontSize={"var(--font-size-small)"} fontWeight={600}>
+          Final
+        </Typography>{" "}
+        {
+          <IconButton onClick={() => handleToggle("final")}>
+            {toggle?.final ? (
+              <KeyboardArrowDownRoundedIcon sx={{ color: "white" }} />
+            ) : (
+              <KeyboardArrowUpRoundedIcon sx={{ color: "white" }} />
+            )}
+          </IconButton>
+        }
+      </Box>
+      {toggle?.final && (
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexWrap: "wrap",
+          }}
+        >
+          {data.map((item, index) => (
+            <ExamCard key={index} item={item} />
+          ))}
+        </Box>
+      )}
     </Box>
   );
 }

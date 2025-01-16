@@ -64,9 +64,31 @@ export const formatDateTimeRange = (start, end, locale = "en-US") => {
     minute: "numeric",
   };
 
-  const formattedStartDate = new Date(start).toLocaleDateString("en-GB", dateOptions);
-  const formattedStartTime = new Date(start).toLocaleTimeString(locale, timeOptions);
-  const formattedEndTime = new Date(end).toLocaleTimeString(locale, timeOptions);
+  const formattedStartDate = new Date(start).toLocaleDateString(
+    "en-GB",
+    dateOptions
+  );
+  const formattedStartTime = new Date(start).toLocaleTimeString(
+    locale,
+    timeOptions
+  );
+  const formattedEndTime = new Date(end).toLocaleTimeString(
+    locale,
+    timeOptions
+  );
 
   return `${formattedStartDate} | ${formattedStartTime} - ${formattedEndTime}`;
 };
+
+export function formatDateTime(timestamp) {
+  const date = new Date(timestamp);
+  const options = { day: "2-digit", month: "short", year: "numeric" };
+  const formattedDate = date.toLocaleDateString("en-GB", options);
+
+  let hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12;
+
+  return `${formattedDate.replace(/ /g, " ")} | ${hours}:${minutes} ${ampm}`;
+}

@@ -8,7 +8,8 @@ const buttonStyle = {
   borderRadius: "5px",
   padding: "10px",
   width: "150px",
-  boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+  // boxShadow:
+  //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
   backgroundColor: "white",
   color: "#6560F0",
   fontWeight: "bold",
@@ -54,7 +55,7 @@ function Exams() {
           <Button
             sx={{
               ...buttonStyle,
-              backgroundColor: activeTab === 0 && "#6560F0",
+              backgroundColor: activeTab === 0 ? "#6560F0" : "#E0DFFF",
               color: activeTab === 0 && "white",
             }}
             onClick={() => handleTabChange(0)}
@@ -65,7 +66,7 @@ function Exams() {
           <Button
             sx={{
               ...buttonStyle,
-              backgroundColor: activeTab === 1 && "#6560F0",
+              backgroundColor: activeTab === 1 ? "#6560F0" : "#E0DFFF",
               color: activeTab === 1 && "white",
             }}
             onClick={() => handleTabChange(1)}
@@ -76,7 +77,7 @@ function Exams() {
           <Button
             sx={{
               ...buttonStyle,
-              backgroundColor: activeTab === 2 && "#6560F0",
+              backgroundColor: activeTab === 2 ? "#6560F0" : "#E0DFFF",
               color: activeTab === 2 && "white",
             }}
             onClick={() => handleTabChange(2)}

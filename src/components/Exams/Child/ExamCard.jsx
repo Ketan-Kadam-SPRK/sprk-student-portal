@@ -1,6 +1,8 @@
 import { Box, Typography, Button } from "@mui/material";
 import React from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
+import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
+import { formatDateTime } from "../../../Utils/dateTimeFormator";
 
 function ExamCard({ item }) {
   return (
@@ -55,8 +57,24 @@ function ExamCard({ item }) {
         <Typography
           sx={{
             fontSize: "var(--font-size-extra-small)",
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            fontWeight: "bold",
           }}
-        >{`Duration - ${item?.duration}`}</Typography>
+          color="primary"
+        >
+          {<AccessAlarmRoundedIcon color="primary" />}{" "}
+          {`Duration - ${item?.duration} mins`}
+        </Typography>
+
+        <Typography
+          sx={{
+            fontSize: "var(--font-size-extra-small)",
+            fontWeight: "bold",
+          }}
+          color="primary"
+        >{`BTHCKJSLJS4`}</Typography>
 
         <Typography
           sx={{
@@ -68,13 +86,13 @@ function ExamCard({ item }) {
           sx={{
             fontSize: "var(--font-size-extra-small) !important",
           }}
-        >{`Start Date - ${item?.start}`}</Typography>
+        >{`Start Date - ${formatDateTime(item?.start)}`}</Typography>
 
         <Typography
           sx={{
             fontSize: "var(--font-size-extra-small)",
           }}
-        >{`End Date - ${item?.end}`}</Typography>
+        >{`End Date - ${formatDateTime(item?.end)}`}</Typography>
 
         <Box
           sx={{
@@ -85,7 +103,19 @@ function ExamCard({ item }) {
         >
           <StatusStyledComponent value={item?.exam_status} />
 
-          <Button variant="contained">Start</Button>
+          <Button
+            sx={{
+              backgroundColor: "#3C36EC",
+              color: "white",
+              ":hover": {
+                backgroundColor: "#3C36EC",
+              },
+              borderRadius: "30px",
+              width: "100px",
+            }}
+          >
+            Start
+          </Button>
         </Box>
       </Box>
     </Box>

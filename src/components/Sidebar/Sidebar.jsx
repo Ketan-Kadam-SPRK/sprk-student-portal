@@ -449,7 +449,9 @@ function Sidebar() {
           sx={{
             flexGrow: 1,
             width: "100%",
-            height: "calc(100vh - 65px)",
+            // height: "calc(100vh - 65px)",
+            minHeight: "100vh",
+            // minHeight: "100vh",
             //  width:`calc(100% - ${drawerWidth})`,
             overflow: "auto",
 

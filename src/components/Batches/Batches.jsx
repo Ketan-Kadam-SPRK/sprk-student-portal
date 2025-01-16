@@ -41,7 +41,9 @@ function Batches() {
         flexDirection: "column",
         gap: 2,
         p: 2,
-        minHeight: "100vh",
+        // minHeight: "100vh",
+        height: "100%",
+        // overflow: "auto",
       }}
     >
       <Box
@@ -90,20 +92,33 @@ function Batches() {
 
       <Box
         sx={{
-          padding: 2,
           display: "flex",
           flexDirection: "column",
           gap: 2,
-          border: "1px solid grey",
-          borderRadius: "10px",
           flex: 1,
-          height: "100%",
           backgroundColor: "white",
+          borderTopLeftRadius: "10px",
+          borderTopRightRadius: "10px",
         }}
       >
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          My Batches
-        </Typography>
+        <Box
+          sx={{
+            p: 2,
+            backgroundColor: "#6560F0",
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontWeight: "600",
+              fontSize: "var(--font-size-medium)",
+            }}
+          >
+            My Batches
+          </Typography>
+        </Box>
         <Box
           sx={{
             display: "flex",
@@ -111,6 +126,7 @@ function Batches() {
             gap: 2,
             height: "100%",
             flex: 1,
+            p: 2,
             overflow: "auto",
           }}
         >
@@ -134,6 +150,7 @@ function Batches() {
           )}
         </Box>
       </Box>
+      {/* </Box> */}
     </Box>
   );
 }
