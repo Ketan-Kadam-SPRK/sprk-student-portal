@@ -12,6 +12,7 @@ import { getAbsentLogs } from "../../../action/batches.actions";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
 import { Image } from "cloudinary-react";
 import ErrorHandling from "../../../../Common/ErrorHandling";
+import NoDataPage from "../../../../../Utils/NoDataPage";
 
 function AbsentLog({ batchId }) {
   const dispatch = useDispatch();
@@ -107,47 +108,13 @@ function AbsentLog({ batchId }) {
           ))}
         </Box>
       ) : (
-        <Box
-          sx={{
-            backgroundColor: "white",
-            height: "auto",
-            display: "flex",
-            justifyContent: "center",
-            px: 2,
-            pb: 4,
-            pt: 2,
-          }}
-        >
-          <Box
-            sx={{
-              backgroundColor: "#E6E5FF",
-              width: "100%",
-              borderRadius: "5px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 1,
-            }}
-          >
-            <Box sx={{ mt: 2 }}>
-              <Image
-                publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736572101/Medal_and_trophy_awarded_for_success_zzn9iq.png"
-                cloudName="dxlzzgbfw"
-                style={{ width: "212px", height: "212px" }}
-              />
-            </Box>
-            <Box sx={{ display: "flex", justifyContent: "center", px: 2 }}>
-              <Typography sx={{ fontSize: "24px", color: "#3E2347", fontWeight: "bold" }}>
-              Attendance Goals Unlocked! You’re on a Roll! 🌟
-              </Typography>
-            </Box>
-            <Box sx={{ mb: 5, display: "flex", justifyContent: "center", px: 2 }}>
-              <Typography sx={{ fontSize: "20px", color: "#775383" }}>
-              No absences or leaves recorded. Keep up the great attendance streak!              </Typography>
-            </Box>
-          </Box>
-        </Box>
+
+          <NoDataPage
+          errorImgPublicId={"https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736572101/Medal_and_trophy_awarded_for_success_zzn9iq.png"}
+          errorHeading={"Attendance Goals Unlocked! You’re on a Roll! 🌟"}
+          errorDescription={"No absences or leaves recorded. Keep up the great attendance streak!"}
+          />
+   
       )}
     </>
   );

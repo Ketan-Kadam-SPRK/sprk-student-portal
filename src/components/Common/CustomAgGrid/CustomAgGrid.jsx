@@ -7,6 +7,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { Box, Typography } from "@mui/material";
+import { Image } from "cloudinary-react";
+import NoDataPage from "../../../Utils/NoDataPage";
 
 const CustomAgGrid = ({
   rows = [],
@@ -14,6 +17,9 @@ const CustomAgGrid = ({
   paginationModel,
   height = 500,
   checkboxSelection,
+  errorImgPublicId,
+  errorHeading,
+  errorDescription,
 }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -28,7 +34,7 @@ const CustomAgGrid = ({
   };
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <Paper sx={{ width: "100%", overflow: "hidden", height }}>
       <TableContainer sx={{ maxHeight: height }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -50,22 +56,36 @@ const CustomAgGrid = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}  sx={{ padding: "12px 20px" }}>
-                        {column.format
-                          ? column.format(value, row) // Call format function if provided
-                          : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
+            {rows.length > 0 ? (
+              rows
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          sx={{ padding: "12px 20px" }}
+                        >
+                          {column.format ? column.format(value, row) : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} align="center">
+                  <NoDataPage
+                    errorImgPublicId={errorImgPublicId}
+                    errorHeading={errorHeading}
+                    errorDescription={errorDescription}
+                  />
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
