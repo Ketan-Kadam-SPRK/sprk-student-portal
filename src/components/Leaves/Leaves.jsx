@@ -1,4 +1,11 @@
-import { Box, Button, Dialog, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import React, { use, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -12,8 +19,9 @@ import { getAllLeaves, getWithdrawnLeaves } from "./action/leaves.action";
 import ErrorHandling from "../Common/ErrorHandling";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
-import InfoIcon from '@mui/icons-material/Info';
+import InfoIcon from "@mui/icons-material/Info";
 import { LightTooltip } from "../../Utils/LightToolTip";
+import { Image } from "cloudinary-react";
 
 function Leaves() {
   const [filterData, setFilterData] = useState([]);
@@ -34,6 +42,8 @@ function Leaves() {
   const [loading, setLoading] = useState(false);
   const [leaveData, setleaveData] = useState([]);
   const [proofFile, setProofFile] = useState(null);
+  const [rows, setRows] = useState([]);
+  const [withdrawnLoad, setWithdrawnLoad] = useState(false);
   const handleClose = () => {
     setOpen(!open);
     setFormData(initialState);
@@ -88,23 +98,28 @@ function Leaves() {
   const handleWithdraw = (rowData) => {
     setOpenWidrow(true);
     setLeaveId(rowData?.leaveRequestUid);
-    console.log("Withdraw action clicked for row:", rowData?.leaveRequestUid
-    );
+    console.log("Withdraw action clicked for row:", rowData?.leaveRequestUid);
     // Perform your withdraw logic here
   };
-  const handleWithdrawConfirm = () => {
-    dispatch(getWithdrawnLeaves({ headers, leaveId })).then((res) => {
+  const handleWithdrawConfirm = async () => {
+    setWithdrawnLoad(true);
+    try {
+      const res = await dispatch(getWithdrawnLeaves({ headers, leaveId }));
       console.log(res);
-    });
-  }
+      handleCloseWidrow();
+      getAllLeavesData();
+      setWithdrawnLoad(false);
+    } catch (error) {
+      console.error("Error withdrawing leave:", error);
+      setWithdrawnLoad(false);
+    }
+  };
 
   const handleOpenFile = (rowData) => {
     console.log("Row Data:", rowData); // Debugging
     const fileUrl = rowData;
     window.open(encodeURI(fileUrl), "_blank", "noopener,noreferrer");
   };
-
-  const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const data = Array.isArray(leaveData)
@@ -119,13 +134,12 @@ function Leaves() {
   }, [leaveData]);
 
   const getInformation = (rowData) => {
-    console.log(rowData?.denyReason
-    );
+    console.log(rowData?.denyReason);
     return (
       <Box sx={{ p: 2, maxWidth: { xs: "250px", sm: "280px", md: "400px" } }}>
         <Typography sx={{ fontWeight: "bold" }}>Deny Reason</Typography>
         <Typography sx={{ color: "#9E9E9E", pt: 1 }}>
-         {rowData?.denyReason}
+          {rowData?.denyReason}
         </Typography>
       </Box>
     );
@@ -196,9 +210,14 @@ function Leaves() {
             {formatForDisplay(status)}
             {status === "DECLINED" && (
               <LightTooltip title={getInformation(rowData)} arrow>
-              <InfoIcon
-                sx={{ color: "#9F0000", marginLeft: "10px", fontSize: "16px",cursor:"pointer" }}
-              />
+                <InfoIcon
+                  sx={{
+                    color: "#9F0000",
+                    marginLeft: "10px",
+                    fontSize: "16px",
+                    cursor: "pointer",
+                  }}
+                />
               </LightTooltip>
             )}
           </div>
@@ -247,8 +266,7 @@ function Leaves() {
             </Button>
             <Button
               variant="contained"
-              onClick={() => 
-                handleWithdraw(row)}
+              onClick={() => handleWithdraw(row)}
               disabled={row.status !== "PENDING"}
             >
               Withdraw
@@ -262,104 +280,115 @@ function Leaves() {
     return <ErrorHandling error500={false} loadData={loading} />;
   }
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        p: 3,
-        gap: 2,
-      }}
-    >
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Typography variant="h4" fontWeight={600}>
-          Your Leaves
-        </Typography>
-        <Typography sx={{ color: "#4D535A" }}>
-          Track your leave history and apply for new leaves easily.
-        </Typography>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-          <Box>
-            <PopupFilterComponent
-              rowData={rows}
-              statusOptions={["APPROVED", "PENDING", "DECLINED", "WITHDREW"]}
-              setFilterData={setFilterData}
-              dateKey="start"
-              statusKey="status"
-              tabName="leave"
-            />
-          </Box>
-          <Box>
-            <Button variant="contained" onClick={() => setOpen(true)}>
-              Apply Leave
-            </Button>
-          </Box>
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+          p: 3,
+          gap: 2,
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          <Typography variant="h4" fontWeight={600}>
+            Your Leaves
+          </Typography>
+          <Typography sx={{ color: "#4D535A" }}>
+            Track your leave history and apply for new leaves easily.
+          </Typography>
         </Box>
-      </Box>
-      <Box>
-        <CustomAgGrid
-          rows={filterData}
-          columns={columns}
-          paginationModel={{ page: 0, pageSize: 10 }}
-          checkboxSelection={false}
-        />
-      </Box>
-
-      <Dialog open={open} scroll={"body"} fullWidth={true}>
-        <ApplyLeaveModal
-          formData={formData}
-          setFormData={setFormData}
-          handleClose={handleClose}
-          initialState={initialState}
-          proofFile={proofFile}
-          setProofFile={setProofFile}
-          leaveId={leaveId}
-          setLeaveId={setLeaveId}
-          getAllLeavesData={getAllLeavesData}
-        />
-      </Dialog>
-      <Dialog open={openWidrow} scroll={"body"} maxWidth="sm">
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 3 }}>
-          <Box
-            sx={{
-              display: "flex",
-              gap: 1,
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box sx={{ display: "flex", gap: 1, pt: 1 }}>
-              <ErrorIcon sx={{ color: "#FF0000" }} />
-              <Typography sx={{ fontSize: "18px", fontWeight: 600 }}>
-                Are you sure you want to withdraw your leave request?
-              </Typography>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+            <Box>
+              <PopupFilterComponent
+                rowData={rows}
+                statusOptions={["APPROVED", "PENDING", "DECLINED", "WITHDREW"]}
+                setFilterData={setFilterData}
+                dateKey="start"
+                statusKey="status"
+                tabName="leave"
+              />
             </Box>
             <Box>
-              <IconButton onClick={() => setOpenWidrow(false)}>
-                <CloseIcon />
-              </IconButton>
-            </Box>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <Button
-                variant="outlined"
-                color="error"
-                sx={{ px: 6 }}
-                onClick={() => setOpenWidrow(false)}
-              >
-                No
-              </Button>
-              <Button variant="contained" color="error" sx={{ px: 6 }} onClick={handleWithdrawConfirm}>
-                Yes
+              <Button variant="contained" onClick={() => setOpen(true)}>
+                Apply Leave
               </Button>
             </Box>
           </Box>
         </Box>
-      </Dialog>
-    </Box>
+        <Box>
+          <CustomAgGrid
+            rows={filterData}
+            columns={columns}
+            paginationModel={{ page: 0, pageSize: 10 }}
+            checkboxSelection={false}
+            errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737008545/calendar_with_marks_uh7eeu.svg"
+            errorHeading="No leaves applied yet. "
+            errorDescription="Click 'Apply Leave' to get started."
+          />
+        </Box>
+
+        <Dialog open={open} scroll={"body"} fullWidth={true}>
+          <ApplyLeaveModal
+            formData={formData}
+            setFormData={setFormData}
+            handleClose={handleClose}
+            initialState={initialState}
+            proofFile={proofFile}
+            setProofFile={setProofFile}
+            leaveId={leaveId}
+            setLeaveId={setLeaveId}
+            getAllLeavesData={getAllLeavesData}
+          />
+        </Dialog>
+        <Dialog open={openWidrow} scroll={"body"} maxWidth="sm">
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 3 }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 1,
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box sx={{ display: "flex", gap: 1, pt: 1 }}>
+                <ErrorIcon sx={{ color: "#FF0000" }} />
+                <Typography sx={{ fontSize: "18px", fontWeight: 600 }}>
+                  Are you sure you want to withdraw your leave request?
+                </Typography>
+              </Box>
+              <Box>
+                <IconButton onClick={() => setOpenWidrow(false)}>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  sx={{ px: 6 }}
+                  onClick={() => setOpenWidrow(false)}
+                >
+                  No
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  sx={{ px: 6 }}
+                  onClick={handleWithdrawConfirm}
+                  disabled={withdrawnLoad}
+                >
+                  {withdrawnLoad ? <CircularProgress size={20} /> : "Yes"}
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        </Dialog>
+      </Box>
+    </>
   );
 }
 
