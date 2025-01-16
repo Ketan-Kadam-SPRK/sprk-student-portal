@@ -187,8 +187,9 @@ function Leaves() {
               return { color: "", backgroundColor: "" };
           }
         };
-
+    
         const { color, backgroundColor } = getColorAndBackground(status);
+    
         return (
           <div
             style={{
@@ -208,7 +209,7 @@ function Leaves() {
             }}
           >
             {formatForDisplay(status)}
-            {status === "DECLINED" && (
+            {status === "DECLINED" && rowData?.denyReason && (
               <LightTooltip title={getInformation(rowData)} arrow>
                 <InfoIcon
                   sx={{
@@ -224,6 +225,7 @@ function Leaves() {
         );
       },
     },
+    
     {
       headerName: "Managed By",
       id: "managedBy",

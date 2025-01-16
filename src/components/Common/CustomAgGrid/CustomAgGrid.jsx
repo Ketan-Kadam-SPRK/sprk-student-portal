@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,22 +8,20 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, Typography } from "@mui/material";
-import { Image } from "cloudinary-react";
 import NoDataPage from "../../../Utils/NoDataPage";
 
 const CustomAgGrid = ({
   rows = [],
   columns,
   paginationModel,
-  height = 500,
+  height = 600,
   checkboxSelection,
   errorImgPublicId,
   errorHeading,
   errorDescription,
 }) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -34,8 +33,8 @@ const CustomAgGrid = ({
   };
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden", height }}>
-      <TableContainer sx={{ maxHeight: height }}>
+    <Paper sx={{ width: "100%", overflow: "hidden", height}}>
+      <TableContainer sx={{ maxHeight:(height-50) }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
