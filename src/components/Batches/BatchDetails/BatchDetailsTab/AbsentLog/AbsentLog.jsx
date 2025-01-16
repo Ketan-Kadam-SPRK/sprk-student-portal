@@ -41,7 +41,7 @@ function AbsentLog({ batchId }) {
 
   if (loading) {
     return <ErrorHandling error500={false} loadData={loading} />;
-  } 
+  }
 
   return (
     <>
@@ -55,14 +55,20 @@ function AbsentLog({ batchId }) {
                 id={`panel${item?.serialNumber}-header`}
               >
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                  <Box
+                    sx={{ display: "flex", gap: "10px", alignItems: "center" }}
+                  >
                     <CheckCircleIcon sx={{ color: "#3D37D5" }} />
                     <Typography sx={{ color: "#085186", fontWeight: 600 }}>
                       Session {item?.serialNumber}
                     </Typography>
                   </Box>
                   <Typography sx={{ pl: 4, color: "#6E6E6E" }}>
-                    Session Date: {formatDateTimeRange(item?.startDateTime, item?.endDateTime)}
+                    Session Date:{" "}
+                    {formatDateTimeRange(
+                      item?.startDateTime,
+                      item?.endDateTime
+                    )}
                   </Typography>
                 </Box>
                 <Box
@@ -79,11 +85,17 @@ function AbsentLog({ batchId }) {
                       <Typography
                         sx={{
                           width: "100%",
-                          backgroundColor: item?.studentAttendanceStatus === "ABSENT" ? "#FEECEC" : "#FFF8C7",
+                          backgroundColor:
+                            item?.studentAttendanceStatus === "ABSENT"
+                              ? "#FEECEC"
+                              : "#FFF8C7",
                           p: "5px 15px",
                           borderRadius: "15px",
                           fontWeight: 600,
-                          color: item?.studentAttendanceStatus === "ABSENT" ? "#A30000" : "#B17C02",
+                          color:
+                            item?.studentAttendanceStatus === "ABSENT"
+                              ? "#A30000"
+                              : "#B17C02",
                           fontSize: "14px",
                           textWrap: "nowrap",
                         }}
@@ -97,8 +109,12 @@ function AbsentLog({ batchId }) {
               <AccordionDetails>
                 {item?.reason && (
                   <Box sx={{ display: "flex", pl: 4 }}>
-                    <Typography sx={{ color: "#085186", fontWeight: 600 }}>Reason: </Typography>
-                    <Typography sx={{ color: "#6E6E6E", textWrap: "wrap", pl: 1 }}>
+                    <Typography sx={{ color: "#085186", fontWeight: 600 }}>
+                      Reason:{" "}
+                    </Typography>
+                    <Typography
+                      sx={{ color: "#6E6E6E", textWrap: "wrap", pl: 1 }}
+                    >
                       {item?.reason}
                     </Typography>
                   </Box>
@@ -108,18 +124,18 @@ function AbsentLog({ batchId }) {
           ))}
         </Box>
       ) : (
-
-          <NoDataPage
-          errorImgPublicId={"https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736572101/Medal_and_trophy_awarded_for_success_zzn9iq.png"}
+        <NoDataPage
+          errorImgPublicId={
+            "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736572101/Medal_and_trophy_awarded_for_success_zzn9iq.png"
+          }
           errorHeading={"Attendance Goals Unlocked! You’re on a Roll! 🌟"}
-          errorDescription={"No absences or leaves recorded. Keep up the great attendance streak!"}
-          />
-   
+          errorDescription={
+            "No absences or leaves recorded. Keep up the great attendance streak!"
+          }
+        />
       )}
     </>
   );
-  
-  
 }
 
 export default AbsentLog;
