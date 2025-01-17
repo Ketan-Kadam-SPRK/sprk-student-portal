@@ -466,6 +466,7 @@ function Sidebar() {
               flexDirection: "column",
               gap: "10px",
               height: "100%",
+              flex: 1,
             }}
           >
             <RoutesConfig />
