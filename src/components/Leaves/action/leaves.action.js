@@ -39,7 +39,6 @@ export const applyForLeave = createAsyncThunk(
         });
   
         const data = await res.data; // Corrected this line
-        console.log(res.data);
         return { data: data, status: res.status };
       } catch (err) {
         return { status: err.response.status, error: err.response.data.error };

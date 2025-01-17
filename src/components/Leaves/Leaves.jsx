@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -6,39 +7,42 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React, { use, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
+//mui icons
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
+import InfoIcon from "@mui/icons-material/Info";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+
+//common component, utils and hooks
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
 import PopupFilterComponent from "../Common/FilterMenuComponent/PopupFilterComponent";
 import dateFormator from "../../Utils/dateFormator";
-import ApplyLeaveModal from "./ApplyLeaveModal";
-import { useDispatch } from "react-redux";
-import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { getAllLeaves, getWithdrawnLeaves } from "./action/leaves.action";
 import ErrorHandling from "../Common/ErrorHandling";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
-import InfoIcon from "@mui/icons-material/Info";
 import { LightTooltip } from "../../Utils/LightToolTip";
-import { Image } from "cloudinary-react";
+
+//child components and actions
+import ApplyLeaveModal from "./ApplyLeaveModal";
+import { getAllLeaves, getWithdrawnLeaves } from "./action/leaves.action";
 
 function Leaves() {
-  const [filterData, setFilterData] = useState([]);
-  const [open, setOpen] = useState(false);
-
-  const [openWidrow, setOpenWidrow] = useState(false);
-  const handleCloseWidrow = () => setOpenWidrow(!openWidrow);
-  const [leaveId, setLeaveId] = useState(null);
   const initialState = {
     start: "",
     end: "",
     reason: "",
     id: "",
   };
-  const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
+  const [filterData, setFilterData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [openWidrow, setOpenWidrow] = useState(false);
+  const handleCloseWidrow = () => setOpenWidrow(!openWidrow);
+  const [leaveId, setLeaveId] = useState(null);
+  const [formData, setFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [leaveData, setleaveData] = useState([]);
   const [proofFile, setProofFile] = useState(null);
@@ -56,10 +60,8 @@ function Leaves() {
     try {
       const res = await dispatch(getAllLeaves({ headers }));
       const data = res?.payload?.data?.data || [];
-      console.log(data);
       const modifiedData = data.reverse();
       setleaveData(modifiedData);
-      // setFilterData(data);
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -69,57 +71,6 @@ function Leaves() {
   useEffect(() => {
     getAllLeavesData();
   }, []);
-
-  const handleEdit = (rowData) => {
-    console.log(rowData, "rowData");
-    setOpen(true);
-    const startDate = new Date(rowData?.start);
-    startDate.setDate(startDate.getDate() + 1);
-    const modifiedStart = startDate.toISOString().split("T")[0];
-
-    // Extract the date part from end date
-    const modifiedEnd = rowData?.end.split("T")[0];
-
-    const modifiedData = {
-      ...rowData,
-      start: modifiedStart, // Update start date with added 1 day
-      end: modifiedEnd,
-    };
-    console.log(modifiedData, "modifiedData");
-    setFormData(modifiedData);
-    setProofFile(rowData?.file);
-    setLeaveId(rowData?.leaveRequestUid);
-    console.log("Edit action clicked for row:", rowData);
-    // Perform your edit logic here, such as opening a modal with row data
-  };
-
-  console.log(formData);
-
-  const handleWithdraw = (rowData) => {
-    setOpenWidrow(true);
-    setLeaveId(rowData?.leaveRequestUid);
-    console.log("Withdraw action clicked for row:", rowData?.leaveRequestUid);
-    // Perform your withdraw logic here
-  };
-  const handleWithdrawConfirm = async () => {
-    setWithdrawnLoad(true);
-    try {
-      const res = await dispatch(getWithdrawnLeaves({ headers, leaveId }));
-      console.log(res);
-      handleCloseWidrow();
-      getAllLeavesData();
-      setWithdrawnLoad(false);
-    } catch (error) {
-      console.error("Error withdrawing leave:", error);
-      setWithdrawnLoad(false);
-    }
-  };
-
-  const handleOpenFile = (rowData) => {
-    console.log("Row Data:", rowData); // Debugging
-    const fileUrl = rowData;
-    window.open(encodeURI(fileUrl), "_blank", "noopener,noreferrer");
-  };
 
   useEffect(() => {
     const data = Array.isArray(leaveData)
@@ -133,8 +84,46 @@ function Leaves() {
     setFilterData(data);
   }, [leaveData]);
 
+  const handleEdit = (rowData) => {
+    setOpen(true);
+    const startDate = new Date(rowData?.start);
+    startDate.setDate(startDate.getDate() + 1);
+    const modifiedStart = startDate.toISOString().split("T")[0];
+    const modifiedEnd = rowData?.end.split("T")[0];
+
+    const modifiedData = {
+      ...rowData,
+      start: modifiedStart, // Update start date with added 1 day
+      end: modifiedEnd,
+    };
+    setFormData(modifiedData);
+    setProofFile(rowData?.file);
+    setLeaveId(rowData?.leaveRequestUid);
+  };
+
+  const handleWithdraw = (rowData) => {
+    setOpenWidrow(true);
+    setLeaveId(rowData?.leaveRequestUid);
+  };
+  const handleWithdrawConfirm = async () => {
+    setWithdrawnLoad(true);
+    try {
+      const res = await dispatch(getWithdrawnLeaves({ headers, leaveId }));
+      handleCloseWidrow();
+      getAllLeavesData();
+      setWithdrawnLoad(false);
+    } catch (error) {
+      console.error("Error withdrawing leave:", error);
+      setWithdrawnLoad(false);
+    }
+  };
+
+  const handleOpenFile = (rowData) => {
+    const fileUrl = rowData;
+    window.open(encodeURI(fileUrl), "_blank", "noopener,noreferrer");
+  };
+
   const getInformation = (rowData) => {
-    console.log(rowData?.denyReason);
     return (
       <Box sx={{ p: 2, maxWidth: { xs: "250px", sm: "280px", md: "400px" } }}>
         <Typography sx={{ fontWeight: "bold" }}>Deny Reason</Typography>
@@ -187,9 +176,9 @@ function Leaves() {
               return { color: "", backgroundColor: "" };
           }
         };
-    
+
         const { color, backgroundColor } = getColorAndBackground(status);
-    
+
         return (
           <div
             style={{
@@ -225,7 +214,7 @@ function Leaves() {
         );
       },
     },
-    
+
     {
       headerName: "Managed By",
       id: "managedBy",
@@ -278,9 +267,11 @@ function Leaves() {
       },
     },
   ];
+
   if (loading) {
     return <ErrorHandling error500={false} loadData={loading} />;
   }
+
   return (
     <>
       <Box
