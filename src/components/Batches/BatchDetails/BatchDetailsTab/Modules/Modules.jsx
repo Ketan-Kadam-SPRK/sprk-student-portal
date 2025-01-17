@@ -1,26 +1,28 @@
 import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
+
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+
 import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
-import { getModulesDetails } from "../../../action/batches.actions";
 import ErrorHandling from "../../../../Common/ErrorHandling";
+
+import { getModulesDetails } from "../../../action/batches.actions";
+
 
 function Modules({batchId}) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [modules, setModules] = useState([]);
-  console.log(batchId);
 
   const getModules = async () => {
     setLoading(true);
     try {
       const res = await dispatch(getModulesDetails({ headers, batchId }));
       const data = res?.payload?.data?.data || [];
-      console.log(data);
       setModules(data); // Ensure the sorted data is set
       setLoading(false);
     } catch (err) {

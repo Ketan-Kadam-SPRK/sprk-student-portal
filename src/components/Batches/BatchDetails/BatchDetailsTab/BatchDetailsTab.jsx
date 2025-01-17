@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Tabs, Tab, Box } from "@mui/material";
 import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
 import AbsentLog from "./AbsentLog/AbsentLog";
-import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useAuthHeaders } from "../../../../Hooks/useAuthHeaders";
 
 
 const TabPanel = ({ children, value, index }) => {

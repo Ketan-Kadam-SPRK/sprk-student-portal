@@ -1,38 +1,37 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useDispatch } from "react-redux";
+
 import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
-import { getAbsentLogs } from "../../../action/batches.actions";
-import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
-import { Image } from "cloudinary-react";
 import ErrorHandling from "../../../../Common/ErrorHandling";
 import NoDataPage from "../../../../../Utils/NoDataPage";
+import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
+
+import { getAbsentLogs } from "../../../action/batches.actions";
 
 function AbsentLog({ batchId }) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  console.log(batchId);
 
   const getAbsentLog = async () => {
     setLoading(true);
     try {
       const res = await dispatch(getAbsentLogs({ headers, batchId }));
       const data = res?.payload?.data?.data || [];
-      console.log(data);
       setData(data);
       setLoading(false);
     } catch (err) {
       setLoading(false);
     }
-    console.log(res);
   };
 
   useEffect(() => {
