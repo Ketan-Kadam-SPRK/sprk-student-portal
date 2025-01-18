@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { getBatches } from "./action/batches.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import NoDataPage from "../../Utils/NoDataPage";
 
 function Batches() {
   const dispatch = useDispatch();
@@ -42,8 +43,8 @@ function Batches() {
         gap: 2,
         p: 2,
         // minHeight: "100vh",
-        height: "100%",
-        // overflow: "auto",
+        overflow: "auto",
+        flex: 1,
       }}
     >
       <Box
@@ -135,18 +136,11 @@ function Batches() {
               <BatchCardHorizontal key={item.batch_uid} item={item} />
             ))
           ) : (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <Typography variant="h6" sx={{ color: "grey" }}>
-                No Batches Available
-              </Typography>
-            </Box>
+            <NoDataPage
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737177335/%D0%A1omplete_purchases_r80r2b.svg"
+              errorHeading="No batch has been assigned yet!"
+              errorDescription="Your batches will appear here once they are assigned to you."
+            />
           )}
         </Box>
       </Box>
