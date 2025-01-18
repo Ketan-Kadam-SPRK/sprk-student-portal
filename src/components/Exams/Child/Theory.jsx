@@ -1,9 +1,18 @@
-import { Box, duration, IconButton, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Box, IconButton, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import ExamCard from "./ExamCard";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import { useDispatch } from "react-redux";
+import { getTheoryExams } from "../exams.actions";
+import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import ErrorHandling from "../../Common/ErrorHandling";
 function Theory() {
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [toggle, setToggle] = useState({
     practice: true,
     internal: false,
@@ -16,112 +25,134 @@ function Theory() {
       [name]: !prev[name],
     }));
   };
-  const data = [
-    {
-      course_name: "Basic Excel",
-      course_color: "#239A60",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      exam_status: "SCHEDULED",
-      start: "2026-02-26T05:30:00Z",
-      end: "2026-04-16T07:30:00Z",
-      assigned_by: "Disha Shah",
-      duration: "60",
-      exam_id: "EX24DDEA7A",
-      assentment_type: "FINAL",
-    },
-    {
-      course_name: "Advance Excel",
-      course_color: "#239A60",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      exam_status: "ONGOING",
-      start: "2026-02-26T05:30:00Z",
-      end: "2026-04-16T07:30:00Z",
-      assigned_by: "Disha Shah",
-      duration: "60",
-      exam_id: "EX24DooA7A",
-      assentment_type: "INTERNAL",
-    },
-    {
-      course_name: "Core Java",
-      course_color: "#239A60",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      exam_status: "Evaluating",
-      start: "2026-02-26T05:30:00Z",
-      end: "2026-04-16T07:30:00Z",
-      assigned_by: "Disha Shah",
-      duration: "160",
-      exam_id: "EX24DkEA7A",
-      assentment_type: "PRACTICE",
-    },
-    {
-      course_name: "Core Java",
-      course_color: "#239A60",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      exam_status: "Evaluating",
-      start: "2026-02-26T05:30:00Z",
-      end: "2026-04-16T07:30:00Z",
-      assigned_by: "Disha Shah",
-      duration: "160",
-      exam_id: "EX24DkEA7A",
-      assentment_type: "PRACTICE",
-    },
-    {
-      course_name: "Core Java",
-      course_color: "#239A60",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      exam_status: "Evaluating",
-      start: "2026-02-26T05:30:00Z",
-      end: "2026-04-16T07:30:00Z",
-      assigned_by: "Disha Shah",
-      duration: "160",
-      exam_id: "EX24DkEA7A",
-      assentment_type: "PRACTICE",
-    },
-    {
-      course_name: "Core Java",
-      course_color: "#239A60",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      exam_status: "Evaluating",
-      start: "2026-02-26T05:30:00Z",
-      end: "2026-04-16T07:30:00Z",
-      assigned_by: "Disha Shah",
-      duration: "160",
-      exam_id: "EX24DkEA7A",
-      assentment_type: "PRACTICE",
-    },
-    {
-      course_name: "Core Java",
-      course_color: "#239A60",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      exam_status: "Evaluating",
-      start: "2026-02-26T05:30:00Z",
-      end: "2026-04-16T07:30:00Z",
-      assigned_by: "Disha Shah",
-      duration: "160",
-      exam_id: "EX24DkEA7A",
-      assentment_type: "PRACTICE",
-    },
-    {
-      course_name: "Core Java",
-      course_color: "#239A60",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      exam_status: "Evaluating",
-      start: "2026-02-26T05:30:00Z",
-      end: "2026-04-16T07:30:00Z",
-      assigned_by: "Disha Shah",
-      duration: "160",
-      exam_id: "EX24DkEA7A",
-      assentment_type: "PRACTICE",
-    },
-  ];
+
+  useEffect(() => {
+    getAllTheoryExams();
+  }, []);
+
+  const getAllTheoryExams = async () => {
+    try {
+      setLoading(true);
+
+      const res = await dispatch(getTheoryExams({ headers }));
+      console.log(res);
+      setLoading(false);
+      setData(res?.payload?.data?.data || []);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (loading) {
+    return <ErrorHandling error500={false} loadData={loading} />;
+  }
+
+  // const data = [
+  //   {
+  //     course_name: "Basic Excel",
+  //     course_color: "#239A60",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
+  //     exam_status: "SCHEDULED",
+  //     start: "2026-02-26T05:30:00Z",
+  //     end: "2026-04-16T07:30:00Z",
+  //     assigned_by: "Disha Shah",
+  //     duration: "60",
+  //     exam_id: "EX24DDEA7A",
+  //     assentment_type: "FINAL",
+  //   },
+  //   {
+  //     course_name: "Advance Excel",
+  //     course_color: "#239A60",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
+  //     exam_status: "ONGOING",
+  //     start: "2026-02-26T05:30:00Z",
+  //     end: "2026-04-16T07:30:00Z",
+  //     assigned_by: "Disha Shah",
+  //     duration: "60",
+  //     exam_id: "EX24DooA7A",
+  //     assentment_type: "INTERNAL",
+  //   },
+  //   {
+  //     course_name: "Core Java",
+  //     course_color: "#239A60",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
+  //     exam_status: "Evaluating",
+  //     start: "2026-02-26T05:30:00Z",
+  //     end: "2026-04-16T07:30:00Z",
+  //     assigned_by: "Disha Shah",
+  //     duration: "160",
+  //     exam_id: "EX24DkEA7A",
+  //     assentment_type: "PRACTICE",
+  //   },
+  //   {
+  //     course_name: "Core Java",
+  //     course_color: "#239A60",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
+  //     exam_status: "Evaluating",
+  //     start: "2026-02-26T05:30:00Z",
+  //     end: "2026-04-16T07:30:00Z",
+  //     assigned_by: "Disha Shah",
+  //     duration: "160",
+  //     exam_id: "EX24DkEA7A",
+  //     assentment_type: "PRACTICE",
+  //   },
+  //   {
+  //     course_name: "Core Java",
+  //     course_color: "#239A60",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
+  //     exam_status: "Evaluating",
+  //     start: "2026-02-26T05:30:00Z",
+  //     end: "2026-04-16T07:30:00Z",
+  //     assigned_by: "Disha Shah",
+  //     duration: "160",
+  //     exam_id: "EX24DkEA7A",
+  //     assentment_type: "PRACTICE",
+  //   },
+  //   {
+  //     course_name: "Core Java",
+  //     course_color: "#239A60",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
+  //     exam_status: "Evaluating",
+  //     start: "2026-02-26T05:30:00Z",
+  //     end: "2026-04-16T07:30:00Z",
+  //     assigned_by: "Disha Shah",
+  //     duration: "160",
+  //     exam_id: "EX24DkEA7A",
+  //     assentment_type: "PRACTICE",
+  //   },
+  //   {
+  //     course_name: "Core Java",
+  //     course_color: "#239A60",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
+  //     exam_status: "Evaluating",
+  //     start: "2026-02-26T05:30:00Z",
+  //     end: "2026-04-16T07:30:00Z",
+  //     assigned_by: "Disha Shah",
+  //     duration: "160",
+  //     exam_id: "EX24DkEA7A",
+  //     assentment_type: "PRACTICE",
+  //   },
+  //   {
+  //     course_name: "Core Java",
+  //     course_color: "#239A60",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
+  //     exam_status: "Evaluating",
+  //     start: "2026-02-26T05:30:00Z",
+  //     end: "2026-04-16T07:30:00Z",
+  //     assigned_by: "Disha Shah",
+  //     duration: "160",
+  //     exam_id: "EX24DkEA7A",
+  //     assentment_type: "PRACTICE",
+  //   },
+  // ];
   return (
     <Box
       sx={{
