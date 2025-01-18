@@ -116,14 +116,16 @@ function BatchCardHorizontal({ item = {} }) {
             alignItems: "center",
             gap: 1,
             width: "100%",
-            justifyContent: "center",
+            justifyContent: "space-between",
           }}
         >
-          <LinearProgress
-            variant="determinate"
-            value={item?.batch_progress || 0} // Assuming `item.progress` is the percentage value
-            sx={{ flex: 1 }}
-          />
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-extra-small)",
+            }}
+          >
+            Module Progress
+          </Typography>
           <Typography
             sx={{
               fontSize: "var(--font-size-small)",
@@ -133,6 +135,22 @@ function BatchCardHorizontal({ item = {} }) {
           >
             {`${item?.batch_progress || 0}%`}
           </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            // flexDirection: "column",
+            gap: 1,
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <LinearProgress
+            variant="determinate"
+            value={item?.batch_progress || 0} // Assuming `item.progress` is the percentage value
+            sx={{ flex: 1, width: "100%" }}
+          />
         </Box>
 
         <Box

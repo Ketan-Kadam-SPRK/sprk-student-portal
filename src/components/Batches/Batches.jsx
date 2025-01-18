@@ -7,6 +7,11 @@ import { getBatches } from "./action/batches.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import NoDataPage from "../../Utils/NoDataPage";
+import PauseCircleOutlineRoundedIcon from "@mui/icons-material/PauseCircleOutlineRounded";
+import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
+import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import BookIcon from "@mui/icons-material/Book";
 
 function Batches() {
   const dispatch = useDispatch();
@@ -59,34 +64,48 @@ function Batches() {
         <BoxCard
           title="Ongoing Batches"
           number="5"
-          image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_fipttr.svg"
+          image={
+            <RotateLeftOutlinedIcon sx={{ color: "white", fontSize: "40px" }} />
+          }
           bgColor="#6560F0"
         />
 
         <BoxCard
           title="Upcoming Batches"
           number="5"
-          image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
+          image={
+            <ArrowCircleUpOutlinedIcon
+              sx={{ color: "white", fontSize: "40px" }}
+            />
+          }
           bgColor="#8B06B7"
         />
         <BoxCard
           title="Onhold Batches"
           number="5"
-          image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_2_himwuf.svg"
+          image={
+            <PauseCircleOutlineRoundedIcon
+              sx={{ color: "white", fontSize: "40px" }}
+            />
+          }
           bgColor="#EFC400"
         />
 
         <BoxCard
           title="Completed Batches"
           number="5"
-          image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_fipttr.svg"
+          image={
+            <CheckCircleOutlineOutlinedIcon
+              sx={{ color: "white", fontSize: "40px" }}
+            />
+          }
           bgColor="#1F7C20"
         />
 
         <BoxCard
           title="Total"
           number="203"
-          image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
+          image={<BookIcon sx={{ color: "white", fontSize: "40px" }} />}
           bgColor="#EB7300"
         />
       </Box>

@@ -90,6 +90,7 @@ const Courses = () => {
             flex: 1,
             p: 2,
             overflow: "auto",
+            height: "100vh",
           }}
         >
           {courseData.map((item, index) => (
