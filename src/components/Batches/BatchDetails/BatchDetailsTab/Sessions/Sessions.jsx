@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import React, {useState } from "react";
 import styles from "./Sessions.module.css";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
+import { Box, Typography } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
+
 import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
-import { Image } from "cloudinary-react";
 import NoDataPage from "../../../../../Utils/NoDataPage";
 
 function Sessions({ sessionData }) {
@@ -46,8 +44,6 @@ function Sessions({ sessionData }) {
     }
   };
 
-  console.log(sessionData);
-  // console.log(sessionData?.list.length);
   return (
     <>
       {sessionData?.list?.length > 0 ? (
@@ -144,20 +140,20 @@ function Sessions({ sessionData }) {
 
                 <AccordionDetails>
                   {/* Display modules for the session */}
-                  <Typography>
+                  <div>
                     {sessionData?.moduleDetails?.length ? (
                       sessionData.moduleDetails
                         .filter((module) => module.status !== "PENDING")
                         .map((module, index) => (
-                          <Typography key={index} className={styles.modules}>
+                          <div key={index} className={styles.modules}>
                             {/* Icon indicating if the module is taken */}
                             {module.moduleCompletionStatus === "COMPLETED" ? (
                               <CheckCircleIcon className={styles.takenIcon} />
                             ) : (
                               <RotateRightIcon className={styles.takenIcon} />
                             )}
-                            {module.module}
-                          </Typography>
+                            <Typography>{module.module}</Typography>
+                          </div>
                         ))
                     ) : (
                       // Displayed when no modules are available for the session
@@ -165,7 +161,7 @@ function Sessions({ sessionData }) {
                         No data available
                       </Typography>
                     )}
-                  </Typography>
+                  </div>
                 </AccordionDetails>
               </Accordion>
             ))}

@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Image } from "cloudinary-react";
+import { useDispatch } from "react-redux";
+
+//mui components
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Box,
   Button,
-  colors,
-  Grid,
   Typography,
 } from "@mui/material";
+
+//mui icons
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
@@ -17,16 +22,17 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import CancelIcon from "@mui/icons-material/Cancel";
-import BatchDetailsTab from "./BatchDetailsTab/BatchDetailsTab";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
-import { useNavigate, useParams } from "react-router-dom";
-import { Image } from "cloudinary-react";
-import { useDispatch } from "react-redux";
+
+//common component, utils and hooks
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
-import { getSessionsDetails } from "../action/batches.actions";
 import dateFormator from "../../../Utils/dateFormator";
 import BoxCard from "../../Dashboard/Child/BoxCard";
 import ErrorHandling from "../../Common/ErrorHandling";
+
+//child components, actions
+import BatchDetailsTab from "./BatchDetailsTab/BatchDetailsTab";
+import { getSessionsDetails } from "../action/batches.actions";
 
 function BatchDetails() {
   const batchId = useParams().batchId || null;
@@ -35,10 +41,6 @@ function BatchDetails() {
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [sessionData, setSessionData] = useState([]);
-
-  const handleBackButtonClick = () => {
-    navigate(newBaseRoute);
-  };
 
   const getSessionsDetail = async () => {
     setLoading(true);
@@ -51,7 +53,6 @@ function BatchDetails() {
     } catch (err) {
       setLoading(false);
     }
-    console.log(res);
   };
 
   useEffect(() => {
@@ -93,6 +94,7 @@ function BatchDetails() {
         };
     }
   };
+  
   if (loading) {
     return <ErrorHandling error500={false} loadData={loading} />;
   }

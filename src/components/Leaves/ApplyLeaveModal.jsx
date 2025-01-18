@@ -1,22 +1,24 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
   Typography,
-  Autocomplete,
   TextField,
   IconButton,
   InputAdornment,
   CircularProgress,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
 import swal from "sweetalert";
+
+//mui icons
 import CloseIcon from "@mui/icons-material/Close";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+
+//common component, hooks,actions
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { applyForLeave, editStudentLeave } from "./action/leaves.action";
-
 
 function ApplyLeaveModal({
   handleClose,
@@ -38,8 +40,6 @@ function ApplyLeaveModal({
     end: "",
     reason: "",
   });
-
-
 
   // Calculate the number of days of leave
   useEffect(() => {
