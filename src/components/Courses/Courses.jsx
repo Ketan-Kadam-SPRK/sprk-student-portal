@@ -39,8 +39,11 @@ const Courses = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        p: 3,
         gap: 2,
+        p: 2,
+        // minHeight: "100vh",
+        overflow: "auto",
+        flex: 1,
       }}
     >
       <Typography variant="h4" fontWeight={"bold"}>

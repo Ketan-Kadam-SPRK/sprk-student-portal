@@ -28,9 +28,11 @@ function Exams() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 3,
+        gap: 2,
         p: 2,
-        height: "100vh",
+        // minHeight: "100vh",
+        overflow: "auto",
+        flex: 1,
       }}
     >
       <Box sx={{ mt: 3 }}>
