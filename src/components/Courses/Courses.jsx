@@ -5,6 +5,7 @@ import { getCourseGrpDetails } from "./course.actions";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import ErrorHandling from "../Common/ErrorHandling";
+import NoDataPage from "../../Utils/NoDataPage";
 
 const Courses = () => {
   const dispatch = useDispatch();
@@ -91,11 +92,20 @@ const Courses = () => {
             p: 2,
             overflow: "auto",
             height: "100vh",
+            width: "100%",
           }}
         >
-          {courseData.map((item, index) => (
-            <CourseGrpCard key={index} item={item} />
-          ))}
+          {courseData?.length > 0 ? (
+            courseData?.map((item, index) => (
+              <CourseGrpCard key={index} item={item} />
+            ))
+          ) : (
+            <NoDataPage
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737363456/Online_education_with_laptop_and_books_zsko0t.svg"
+              errorHeading="No Course Groups Yet!"
+              errorDescription="Looks like you’re not enrolled in any course groups yet.  Once you join a course, all the details will show up here. "
+            />
+          )}
         </Box>
       </Box>
     </Box>

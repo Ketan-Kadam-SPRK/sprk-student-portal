@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { getTheoryExams } from "../exams.actions";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../Common/ErrorHandling";
+import NoDataPage from "../../../Utils/NoDataPage";
 function Theory() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
@@ -199,9 +200,15 @@ function Theory() {
             flexWrap: "wrap",
           }}
         >
-          {data.map((item, index) => (
-            <ExamCard key={index} item={item} />
-          ))}
+          {data?.length > 0 ? (
+            data.map((item, index) => <ExamCard key={index} item={item} />)
+          ) : (
+            <NoDataPage
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg"
+              errorHeading="No exams assigned yet!"
+              errorDescription="Your exams will appear here once they are scheduled. Stay prepared and keep learning!"
+            />
+          )}
         </Box>
       )}
 
@@ -239,9 +246,15 @@ function Theory() {
             flexWrap: "wrap",
           }}
         >
-          {data.map((item, index) => (
-            <ExamCard key={index} item={item} />
-          ))}
+          {data?.length > 0 ? (
+            data.map((item, index) => <ExamCard key={index} item={item} />)
+          ) : (
+            <NoDataPage
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg"
+              errorHeading="No exams assigned yet!"
+              errorDescription="Your exams will appear here once they are scheduled. Stay prepared and keep learning!"
+            />
+          )}
         </Box>
       )}
 
@@ -279,9 +292,15 @@ function Theory() {
             flexWrap: "wrap",
           }}
         >
-          {data.map((item, index) => (
-            <ExamCard key={index} item={item} />
-          ))}
+          {data?.length > 0 ? (
+            data.map((item, index) => <ExamCard key={index} item={item} />)
+          ) : (
+            <NoDataPage
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg"
+              errorHeading="No exams assigned yet!"
+              errorDescription="Your exams will appear here once they are scheduled. Stay prepared and keep learning!"
+            />
+          )}
         </Box>
       )}
     </Box>

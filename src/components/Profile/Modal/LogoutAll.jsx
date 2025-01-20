@@ -11,6 +11,8 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+import { setLogin } from "../../Login/store/authSlice";
+import { jwtDecode } from "jwt-decode";
 
 function LogoutAll({ handleClose }) {
   const dispatch = useDispatch();
@@ -22,10 +24,13 @@ function LogoutAll({ handleClose }) {
     setIsSigningOut(true);
     dispatch(freshToken({ headers, isLogoutAll: true }))
       .then((res) => {
+        console.log(res);
         if (res.payload !== undefined) {
           const newAccessToken = res.payload.token;
           const decodedToken = jwtDecode(newAccessToken);
           const userId = decodedToken.sub;
+          handleClose();
+          console.log(newAccessToken);
 
           // console.log(data.token)
           localStorage.setItem("token", newAccessToken);
@@ -35,7 +40,6 @@ function LogoutAll({ handleClose }) {
               userId: userId,
             })
           );
-          handleClose();
         }
         setIsSigningOut(false);
       })

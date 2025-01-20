@@ -21,6 +21,7 @@ function NoDataPage({ errorImgPublicId, errorHeading, errorDescription }) {
         display: "flex",
         justifyContent: "center",
         p: 2,
+        width: "100%",
       }}
     >
       <Box
@@ -65,6 +66,7 @@ function NoDataPage({ errorImgPublicId, errorHeading, errorDescription }) {
             fontSize: { xs: "14px", sm: "16px", md: "20px" },
             color: "#775383",
             textAlign: "center",
+            maxWidth: "800px",
           }}
         >
           {errorDescription}
