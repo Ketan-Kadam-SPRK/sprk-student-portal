@@ -28,7 +28,7 @@ function CircularProgressWithLabel({ value, totalValue }) {
         <Typography
           variant="caption"
           component="div"
-          sx={{ color: "text.secondary" }}
+          sx={{ color: "#1976D2" }}
         >
           {`${value}/${totalValue}`}
         </Typography>

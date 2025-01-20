@@ -8,6 +8,7 @@ import CoureseDetails from "../components/Courses/CourseDetails/CoureseDetails";
 import Leaves from "../components/Leaves/Leaves";
 import Profile from "../components/Profile/Profile";
 import Exams from "../components/Exams/Exams";
+import Payments from "../components/Booking Details/Payments";
 
 function RoutesConfig() {
   return (
@@ -34,7 +35,7 @@ function RoutesConfig() {
       </Route>
       <Route path="Exams" element={<Exams />} />
       <Route path="Leaves" element={<Leaves />} />
-      <Route path="Payments" element={<Dashboard />} />
+      <Route path="Payments" element={<Payments/>} />
       <Route path="Certificates" element={<Dashboard />} />
       <Route path="Job_Opportunities" element={<Dashboard />} />
       <Route path="/Profile" element={<Profile />} />
