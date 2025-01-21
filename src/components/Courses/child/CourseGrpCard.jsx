@@ -44,8 +44,8 @@ function CourseGrpCard({ item }) {
       sx={{
         minWidth: "250px",
         display: "flex",
-        flex: 1,
-        flexBasis: "auto",
+        // f: 4,
+        // flex: 1,
         flexDirection: "column",
         gap: "20px",
         borderRadius: "10px",
