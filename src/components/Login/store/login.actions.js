@@ -72,7 +72,7 @@ export const freshToken = createAsyncThunk(
           },
         }
       );
-
+      
       return response.data;
     } catch (error) {
       handleError(error);
