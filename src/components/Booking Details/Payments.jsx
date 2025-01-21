@@ -95,7 +95,7 @@ function Payments() {
           <Button variant="contained">All</Button>
         </Box>
         <Box sx={{ display: "flex", gap: 2,flexWrap:"wrap" }}>
-        {courseData.map((item, index) => (
+        {courseData?.map((item, index) => (
             <BookingDetailsCard
             key={index}
             item={item}

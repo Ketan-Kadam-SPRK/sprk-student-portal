@@ -160,9 +160,9 @@ function BookingDetailsCard({ item }) {
           }}
         >
           <Typography
-            // onClick={() => {
-            //   navigate(`/Course_Groups/${item?.course_group_id}`);
-            // }}
+            onClick={() => {
+              navigate(`/Payments/${item?.bcn_no}`);
+            }}
             color="primary"
             fontSize={"var(--font-size-extra-small)"}
             fontWeight={"bold"}
