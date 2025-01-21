@@ -27,7 +27,8 @@ function Practical() {
 
       const res = await dispatch(getPracticalExams({ headers }));
       const status = res?.payload?.status;
-      const examsData = res?.payload?.data?.data || [];
+      const examsData = res?.payload?.data || [];
+      console.log(res);
 
       if (status === 500 || status === 503) {
         setError500(true);
@@ -50,17 +51,18 @@ function Practical() {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
+        // flexDirection: "column",
         gap: 2,
         p: 2,
         height: "80vh",
         overflowY: "auto",
+        flexWrap: "wrap",
         flex: 1,
       }}
     >
-      {data.length > 0 ? (
-        data.map((item, index) => (
-          <ExamCard key={item.id || index} item={item} />
+      {data?.length > 0 ? (
+        data?.map((item, index) => (
+          <ExamCard key={item.exam_uid || index} item={item} />
         ))
       ) : (
         <NoDataPage

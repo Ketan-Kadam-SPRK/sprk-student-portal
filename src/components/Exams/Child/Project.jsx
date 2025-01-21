@@ -27,7 +27,7 @@ function Project() {
 
       const res = await dispatch(getProjectExams({ headers }));
       const status = res?.payload?.status;
-      const examsData = res?.payload?.data?.data || [];
+      const examsData = res?.payload?.data || [];
 
       if (status === 500 || status === 503) {
         setError500(true);
@@ -58,8 +58,8 @@ function Project() {
         flex: 1,
       }}
     >
-      {data.length > 0 ? (
-        data.map((item, index) => (
+      {data?.length > 0 ? (
+        data?.map((item, index) => (
           <ExamCard key={item.id || index} item={item} />
         ))
       ) : (

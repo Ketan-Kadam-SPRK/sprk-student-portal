@@ -48,7 +48,7 @@ export const getProjectExams = createAsyncThunk(
   async ({ headers }) => {
     try {
       // Send a GET request to fetch user details using the access token and user ID
-      const res = await axiosInstance.get(`/student-portal/exams/project`, {
+      const res = await axiosInstance.get(`/student-portal/exams/projects`, {
         headers,
       });
 

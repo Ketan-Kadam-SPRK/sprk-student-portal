@@ -60,7 +60,10 @@ function Profile() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "100vh",
+        gap: 2,
+        // minHeight: "100vh",
+        overflow: "auto",
+        flex: 1,
         p: {
           xs: 3,
           sm: 4,

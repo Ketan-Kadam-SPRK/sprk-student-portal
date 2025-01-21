@@ -24,7 +24,7 @@ function ExamCard({ item }) {
           display: "flex",
           justifyContent: "space-between",
           gap: 1,
-          backgroundColor: item.course_color,
+          backgroundColor: item?.course_color,
           p: 2,
           borderRadius: "10px",
         }}
@@ -41,32 +41,35 @@ function ExamCard({ item }) {
           </Typography>
           <Typography
             sx={{ color: "white" }}
-          >{`Exam ID : ${item?.exam_id}`}</Typography>
+          >{`Exam ID : ${item?.exam_uid}`}</Typography>
         </Box>
         <img
-          src={item?.course_img}
-          alt="course_img"
+          src={item?.course_logo}
+          alt="course_logo"
           style={{
             width: "50px",
             height: "50px",
             objectFit: "cover",
+            filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
           }}
         />
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Typography
-          sx={{
-            fontSize: "var(--font-size-extra-small)",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            fontWeight: "bold",
-          }}
-          color="primary"
-        >
-          {<AccessAlarmRoundedIcon color="primary" />}{" "}
-          {`Duration - ${item?.duration} mins`}
-        </Typography>
+        {item?.duration >= 0 && item?.duration !== null && (
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-extra-small)",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              fontWeight: "bold",
+            }}
+            color="primary"
+          >
+            {<AccessAlarmRoundedIcon color="primary" />}{" "}
+            {`Duration - ${item?.duration || 0} mins`}
+          </Typography>
+        )}
 
         <Typography
           sx={{
@@ -74,7 +77,9 @@ function ExamCard({ item }) {
             fontWeight: "bold",
           }}
           color="primary"
-        >{`BTHCKJSLJS4`}</Typography>
+        >
+          {item?.batch_uid}
+        </Typography>
 
         <Typography
           sx={{
@@ -86,13 +91,13 @@ function ExamCard({ item }) {
           sx={{
             fontSize: "var(--font-size-extra-small) !important",
           }}
-        >{`Start Date - ${formatDateTime(item?.start)}`}</Typography>
+        >{`Start Date - ${formatDateTime(item?.start_date)}`}</Typography>
 
         <Typography
           sx={{
             fontSize: "var(--font-size-extra-small)",
           }}
-        >{`End Date - ${formatDateTime(item?.end)}`}</Typography>
+        >{`End Date - ${formatDateTime(item?.end_date)}`}</Typography>
 
         <Box
           sx={{
