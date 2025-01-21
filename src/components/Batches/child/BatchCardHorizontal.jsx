@@ -11,12 +11,21 @@ function BatchCardHorizontal({ item = {} }) {
   const navigate = useNavigate();
 
   const returnFormatedtime = (timestamp) => {
-    return `${new Date(timestamp).getHours()}:
-    ${
-      new Date(timestamp).getMinutes() === 0
-        ? "00"
-        : new Date(timestamp).getMinutes()
-    }  ${new Date(timestamp).getHours() >= 12 ? "PM" : "AM"}`;
+    const date = new Date(timestamp);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12;
+
+    // Add leading zeros
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+
+    // Determine AM/PM
+    const period = date.getHours() >= 12 ? "PM" : "AM";
+
+    return `${formattedHours}:${formattedMinutes} ${period}`;
   };
 
   const renderTooltip = ({ data }) => {
