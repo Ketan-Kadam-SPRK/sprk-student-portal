@@ -693,6 +693,41 @@ function Dashboard() {
     },
   ];
 
+  const recentJob = [
+    {
+      job_uid: "JOc96e973843",
+      comp_uid: "COMP5f44c46714",
+      comp_name: "Tech Innovations Pvt Ltd",
+      job_title: "react dev",
+      location: "Mumbai",
+      location_uid: null,
+      required_skills: ["Ca7817df73"],
+      vacancies: null,
+      job_description: null,
+      job_status: "CLOSE",
+      expiration_date: null,
+      companylogo:
+        "http://res.cloudinary.com/duttop4n6/image/upload/v1732712053/z3ajilj63ixshygxkptc.png",
+      updatedAt: "2024-11-28T06:13:42.393498Z",
+    },
+    {
+      job_uid: "JOc96e973843",
+      comp_uid: "COMP5f44c46714",
+      comp_name: "Tech Innovations Pvt Ltd",
+      job_title: "react dev",
+      location: "Mumbai",
+      location_uid: null,
+      required_skills: ["Ca7817df73"],
+      vacancies: null,
+      job_description: null,
+      job_status: "CLOSE",
+      expiration_date: null,
+      companylogo:
+        "http://res.cloudinary.com/duttop4n6/image/upload/v1732712053/z3ajilj63ixshygxkptc.png",
+      updatedAt: "2024-11-28T06:13:42.393498Z",
+    },
+  ];
+
   return (
     <Box
       sx={{
@@ -717,6 +752,7 @@ function Dashboard() {
             display: "flex",
             flexDirection: "column",
             gap: 1,
+            boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
             backgroundColor: "#0073E6",
             color: "white",
             borderRadius: "10px",
@@ -967,9 +1003,9 @@ function Dashboard() {
           <Typography
             sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
           >
-            Exams
+            Recently Added Jobs
           </Typography>
-          {latestExams?.map((res, index) => (
+          {recentJob?.map((res, index) => (
             <Box
               key={index}
               sx={{
@@ -983,8 +1019,8 @@ function Dashboard() {
             >
               <Image
                 style={{ width: "80px", height: "80px", objectFit: "cover" }}
-                publicId={res?.course_logo}
-                cloudName={res?.course_logo?.split("/")[2]}
+                publicId={res?.companylogo}
+                cloudName={res?.companylogo?.split("/")[2]}
               />
 
               <Box
@@ -994,7 +1030,7 @@ function Dashboard() {
                   gap: 1,
                 }}
               >
-                <Typography variant="h6">{`${res.course_name} | Exam ID: ${res.exam_uid}`}</Typography>
+                <Typography variant="h6">{`${res.job_title} `}</Typography>
 
                 <Typography
                   sx={{
@@ -1002,15 +1038,14 @@ function Dashboard() {
                     color: "grey",
                   }}
                 >
-                  {res.batch_uid}
+                  {res.comp_name}
                 </Typography>
 
                 <Typography
                   sx={{
                     fontSize: "var(--font-size-extra-small)",
-                    color: "red",
                   }}
-                >{`Submit before : ${res.end_date}`}</Typography>
+                >{`Posted On: ${res.updatedAt}`}</Typography>
               </Box>
             </Box>
           ))}
