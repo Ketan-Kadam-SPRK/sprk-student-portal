@@ -17,6 +17,7 @@ import { formatForDisplay } from "../../Utils/formateForDisplay";
 import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
 import { AmountFormat } from "../../Utils/AmountFormat";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import Receipt from "../Common/Reciept/Receipt";
 
 function PaymentDetails() {
   const navigate = useNavigate();
@@ -115,13 +116,13 @@ function PaymentDetails() {
     return date.toLocaleString("en-US", { month: "long" }); // Returns full month name (e.g., "January")
   };
   const columns = [
-    {
-      headerName: "Month",
-      id: "due_at",
-      minWidth: 150,
-      filterable: false,
-      format: (value) => getMonthName(value),
-    },
+    // {
+    //   headerName: "Month",
+    //   id: "due_at",
+    //   minWidth: 150,
+    //   filterable: false,
+    //   format: (value) => getMonthName(value),
+    // },
     {
       headerName: "Due Date",
       id: "due_at",
@@ -388,7 +389,9 @@ function PaymentDetails() {
       </Box>
       <Dialog open={openReciept} onClose={handleClosePayment } maxWidth="md" fullWidth={true}>
               <Box>
-                <Typography>my reciept</Typography>
+                <Receipt
+                handleClosePayment={handleClosePayment}
+                />
               </Box>
       </Dialog>
     </Box>
