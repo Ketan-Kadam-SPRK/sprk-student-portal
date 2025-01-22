@@ -13,9 +13,7 @@ import NoDataPage from "../../../Utils/NoDataPage";
 const CustomAgGrid = ({
   rows = [],
   columns,
-  paginationModel,
   height = 600,
-  checkboxSelection,
   errorImgPublicId,
   errorHeading,
   errorDescription,
@@ -33,8 +31,21 @@ const CustomAgGrid = ({
   };
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden", height}}>
-      <TableContainer sx={{ maxHeight:(height-50) }}>
+    <Paper
+      sx={{
+        width: "100%",
+        overflow: "hidden",
+        height: height,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <TableContainer
+        sx={{
+          maxHeight: height - 50,
+          flex: 1, // This makes the table container take all available space
+        }}
+      >
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

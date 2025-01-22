@@ -292,7 +292,7 @@ function Leaves() {
           </Typography>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center",flexWrap:"wrap" }}>
             <Box>
               <PopupFilterComponent
                 rowData={rows}
