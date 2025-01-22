@@ -17,19 +17,37 @@ const ProgressBar = ({ steps, title = "Progress" }) => {
         {title}
       </Typography>
       {/* Steps Section */}
-      <Box display="flex" alignItems="center">
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         {steps.map((step, index) => (
-          <React.Fragment key={index}>
-            <Box textAlign="center" sx={{ minWidth: "60px" }}>
-              {/* Show the appropriate icon based on completion status */}
-              {step.completed ? (
-                <CheckCircleIcon style={{ color: "purple" }} />
-              ) : (
-                <RadioButtonUncheckedIcon style={{ color: "gray" }} />
-              )}
-              <Typography variant="caption">{step.label}</Typography>
+          <div key={index} style={{ display: "flex", alignItems: "center" }}>
+            <Box
+              sx={{
+                minWidth: "60px",
+                display: "flex",
+                flexDirection: "column", // Align the icon and label vertically
+                alignItems: "center",
+              }}
+            >
+              {/* Icon Box */}
+              <Box>
+                {step.completed ? (
+                  <CheckCircleIcon style={{ color: "purple" }} />
+                ) : (
+                  <RadioButtonUncheckedIcon style={{ color: "gray" }} />
+                )}
+              </Box>
+
+              {/* Label Box */}
+              <Box>
+                <Typography
+                  variant="caption"
+                  sx={{ marginTop: "4px", textAlign: "center" }}
+                >
+                  {step.label}
+                </Typography>
+              </Box>
             </Box>
-            {/* Connector line between steps */}
+
             {index < steps.length - 1 && (
               <Box
                 sx={{
@@ -40,7 +58,7 @@ const ProgressBar = ({ steps, title = "Progress" }) => {
                 }}
               />
             )}
-          </React.Fragment>
+          </div>
         ))}
       </Box>
     </Box>
