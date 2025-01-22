@@ -448,28 +448,37 @@ function Sidebar() {
           component="main"
           sx={{
             flexGrow: 1,
-            width: "100%",
+            // width: "100%",
             // height: "calc(100vh - 65px)",
-            minHeight: "100vh",
             // minHeight: "100vh",
-            //  width:`calc(100% - ${drawerWidth})`,
-            overflow: "auto",
+            // minHeight: "100vh",
+            // width: `calc(100% - ${drawerWidth})`,
+            // overflow: "auto",
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+            flex: 1,
+            overflow: "hidden",
+            position: "relative",
 
             zIndex: (theme) => theme.zIndex.drawer + 0,
           }}
         >
           <Breadcrumb />
-          <Box
-            sx={{
-              mt: 4,
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              height: "100%",
-            }}
-          >
-            <RoutesConfig />
-          </Box>
+          {/* <Box
+            sx={
+              {
+                // mt: 4,
+                // display: "flex",
+                // flexDirection: "column",
+                // gap: "10px",
+                // height: "100%",
+                // flex: 1,
+              }
+            }
+          > */}
+          <RoutesConfig />
+          {/* </Box> */}
         </Box>
       </div>
     </Box>

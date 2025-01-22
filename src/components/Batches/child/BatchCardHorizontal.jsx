@@ -11,12 +11,21 @@ function BatchCardHorizontal({ item = {} }) {
   const navigate = useNavigate();
 
   const returnFormatedtime = (timestamp) => {
-    return `${new Date(timestamp).getHours()}:
-    ${
-      new Date(timestamp).getMinutes() === 0
-        ? "00"
-        : new Date(timestamp).getMinutes()
-    }  ${new Date(timestamp).getHours() >= 12 ? "PM" : "AM"}`;
+    const date = new Date(timestamp);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12;
+
+    // Add leading zeros
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+
+    // Determine AM/PM
+    const period = date.getHours() >= 12 ? "PM" : "AM";
+
+    return `${formattedHours}:${formattedMinutes} ${period}`;
   };
 
   const renderTooltip = ({ data }) => {
@@ -116,14 +125,16 @@ function BatchCardHorizontal({ item = {} }) {
             alignItems: "center",
             gap: 1,
             width: "100%",
-            justifyContent: "center",
+            justifyContent: "space-between",
           }}
         >
-          <LinearProgress
-            variant="determinate"
-            value={item?.batch_progress || 0} // Assuming `item.progress` is the percentage value
-            sx={{ flex: 1 }}
-          />
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-extra-small)",
+            }}
+          >
+            Module Progress
+          </Typography>
           <Typography
             sx={{
               fontSize: "var(--font-size-small)",
@@ -133,6 +144,22 @@ function BatchCardHorizontal({ item = {} }) {
           >
             {`${item?.batch_progress || 0}%`}
           </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            // flexDirection: "column",
+            gap: 1,
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <LinearProgress
+            variant="determinate"
+            value={item?.batch_progress || 0} // Assuming `item.progress` is the percentage value
+            sx={{ flex: 1, width: "100%" }}
+          />
         </Box>
 
         <Box

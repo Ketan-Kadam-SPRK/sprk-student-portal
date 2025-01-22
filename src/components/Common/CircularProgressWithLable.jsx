@@ -30,7 +30,7 @@ function CircularProgressWithLabel({ value, totalValue }) {
           component="div"
           sx={{ color: "#1976D2" }}
         >
-          {`${value}/${totalValue}`}
+          {`${Math.round((value / totalValue) * 100)}%`}
         </Typography>
       </Box>
     </Box>

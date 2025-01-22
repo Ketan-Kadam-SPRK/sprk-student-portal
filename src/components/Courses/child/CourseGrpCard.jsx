@@ -44,8 +44,8 @@ function CourseGrpCard({ item }) {
       sx={{
         minWidth: "250px",
         display: "flex",
-        flex: 1,
-        flexBasis: "auto",
+        // f: 4,
+        // flex: 1,
         flexDirection: "column",
         gap: "20px",
         borderRadius: "10px",
@@ -136,7 +136,7 @@ function CourseGrpCard({ item }) {
         >
           <Typography
             onClick={() => {
-              navigate(`/Course_Groups/${item?.course_group_id}`);
+              navigate(`/Course_Groups/${item?.cg_uid}`);
             }}
             color="primary"
             fontSize={"var(--font-size-extra-small)"}

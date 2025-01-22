@@ -10,6 +10,7 @@ import Profile from "../components/Profile/Profile";
 import Exams from "../components/Exams/Exams";
 import Payments from "../components/Booking Details/Payments";
 import PaymentDetails from "../components/Booking Details/PaymentDetails";
+import JobOpportunities from "../components/Jobs/JobOpportunities";
 
 function RoutesConfig() {
   return (
@@ -38,10 +39,10 @@ function RoutesConfig() {
       <Route path="Leaves" element={<Leaves />} />
       <Route path="Payments" element={<Outlet />}>
         <Route index element={<Payments />} />
-        <Route path=":paymentId" element={<PaymentDetails/>} />
+        <Route path=":paymentId" element={<PaymentDetails />} />
       </Route>
       <Route path="Certificates" element={<Dashboard />} />
-      <Route path="Job_Opportunities" element={<Dashboard />} />
+      <Route path="Job_Opportunities" element={<JobOpportunities />} />
       <Route path="/Profile" element={<Profile />} />
     </Routes>
   );

@@ -94,13 +94,22 @@ function BatchDetails() {
         };
     }
   };
-  
+
   if (loading) {
     return <ErrorHandling error500={false} loadData={loading} />;
   }
 
   return (
-    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        // minHeight: "100vh",
+        overflow: "auto",
+        flex: 1,
+      }}
+    >
       <Box
         sx={{
           backgroundColor: "white",
