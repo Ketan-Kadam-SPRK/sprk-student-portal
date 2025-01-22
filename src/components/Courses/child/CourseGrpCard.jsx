@@ -136,7 +136,7 @@ function CourseGrpCard({ item }) {
         >
           <Typography
             onClick={() => {
-              navigate(`/Course_Groups/${item?.course_group_id}`);
+              navigate(`/Course_Groups/${item?.cg_uid}`);
             }}
             color="primary"
             fontSize={"var(--font-size-extra-small)"}

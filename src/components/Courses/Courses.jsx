@@ -97,7 +97,10 @@ const Courses = () => {
         >
           {courseData?.length > 0 ? (
             courseData?.map((item, index) => (
-              <CourseGrpCard key={index} item={item} />
+              <CourseGrpCard
+                key={`${index}-${item.cg_uid}-${item.bcn}`}
+                item={item}
+              />
             ))
           ) : (
             <NoDataPage

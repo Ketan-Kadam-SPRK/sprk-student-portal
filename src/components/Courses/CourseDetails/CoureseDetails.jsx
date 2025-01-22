@@ -17,11 +17,80 @@ import { useDispatch } from "react-redux";
 import { getCourseGrpDetails } from "../course.actions";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 
+const dummyData = {
+  courseGroupName: "Web Development",
+  courseGroupLogo: "",
+  course_Status: "ONGOING",
+  courseOverview:
+    "The Full Stack Development - Java course offers a thorough exploration of both front-end and back-end development using Java technologies. It covers essential aspects of building dynamic web applications, including Java-based server-side programming with Spring Boot, creating responsive user interfaces with HTML, CSS, and JavaScript, and managing databases with JPA and Hibernate.",
+  courseKeyFeatures: [
+    "Full Stack Development",
+    "Java Programming",
+    "Spring Boot",
+    "React",
+    "Node.js",
+    "Angular",
+  ],
+  courseGroupId: "CGN45DDF50",
+  courses: [
+    {
+      name: "HTML & CSS",
+      courseId: "CN45DDF51",
+      color: "red",
+      bookings: ["BCN45DDF55", "BCN45DDF56", "BCN45DDF57"],
+      modules: [
+        "Introduction to HTML",
+        "CSS Fundamentals",
+        "Responsive Web Design",
+      ],
+    },
+    {
+      name: "JavaScript",
+      courseId: "CN45DDF52",
+      color: "blue",
+      bookings: ["BCN45DDF58", "BCN45DDF59", "BCN45DDF60"],
+      modules: ["JavaScript Basics", "DOM Manipulation", "ES6 Features"],
+    },
+    {
+      name: "PHP & MySQL",
+      courseId: "CN45DDF53",
+      color: "green",
+      bookings: ["BCN45DDF61", "BCN45DDF62", "BCN45DDF63"],
+      modules: [
+        "Introduction to PHP",
+        "MySQL Database Management",
+        "Building Dynamic Websites",
+      ],
+    },
+    {
+      name: "React",
+      courseId: "CN45DDF54",
+      color: "orange",
+      bookings: ["BCN45DDF64", "BCN45DDF65", "BCN45DDF66"],
+      modules: [
+        "Getting Started with React",
+        "React Components",
+        "State Management with Redux",
+      ],
+    },
+    {
+      name: "Node.js",
+      courseId: "CN45DDF55",
+      color: "purple",
+      bookings: ["BCN45DDF67", "BCN45DDF68", "BCN45DDF69"],
+      modules: [
+        "Introduction to Node.js",
+        "Building RESTful APIs",
+        "Working with MongoDB",
+      ],
+    },
+  ],
+};
 function CoureseDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const headers = useAuthHeaders();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({ ...dummyData });
 
   // const [data, setData] = useState(dummyData);
   const [expandedCourseId, setExpandedCourseId] = useState(null); // Track expanded course
@@ -30,7 +99,7 @@ function CoureseDetails() {
     try {
       const res = await dispatch(getCourseGrpDetails({ headers }));
       const data = await res.payload.data;
-      setData(data);
+      // setData(data);
     } catch (err) {
       console.log(err);
     }
@@ -71,7 +140,16 @@ function CoureseDetails() {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        // minHeight: "100vh",
+        overflow: "auto",
+        flex: 1,
+      }}
+    >
       <Box
         sx={{
           backgroundColor: "white",
@@ -141,10 +219,9 @@ function CoureseDetails() {
             gap: "10px",
             backgroundColor: "white",
             borderRadius: "10px",
-            p: 2,
           }}
         >
-          <Accordion>
+          <Accordion sx={{ p: 2 }}>
             <AccordionSummary
               expandIcon={
                 <InfoRoundedIcon
@@ -204,135 +281,179 @@ function CoureseDetails() {
           </Accordion>
         </Box>
 
-        <Box sx={{ display: "flex", gap: "20px", flexDirection: "column" }}>
-          {data?.courses?.map((item) => (
-            <Box
-              key={item?.courseId}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            flex: 1,
+            backgroundColor: "white",
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px",
+          }}
+        >
+          <Box
+            sx={{
+              p: 2,
+              backgroundColor: "#6560F0",
+              borderTopLeftRadius: "10px",
+              borderTopRightRadius: "10px",
+            }}
+          >
+            <Typography
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "20px",
-                borderRadius: "10px",
-                p: 2,
-                boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
-                backgroundColor: `${item?.color}`,
-                cursor: "pointer",
+                color: "white",
+                fontWeight: "600",
+                fontSize: "var(--font-size-medium)",
               }}
-              onClick={() => handleExpandToggle(item?.courseId)} // Handle card click
             >
+              Here’s the list of courses in this course group
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              p: 2,
+            }}
+          >
+            {data?.courses?.map((item) => (
               <Box
+                key={item?.courseId}
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  flexDirection: "column",
+                  gap: "20px",
+                  borderRadius: "10px",
+                  p: 2,
+                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+                  backgroundColor: `${item?.color}`,
+                  cursor: "pointer",
                 }}
+                onClick={() => handleExpandToggle(item?.courseId)} // Handle card click
               >
                 <Box
                   sx={{
                     display: "flex",
-                    gap: "20px",
+                    justifyContent: "space-between",
                     alignItems: "center",
+                    position: "relative",
                   }}
                 >
-                  <Box>
-                    <img
-                      src={
-                        item?.img ||
-                        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg"
-                      }
-                      alt={item?.name || "Course Image"}
-                      style={{
-                        width: "70px",
-                        height: "auto",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </Box>
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: "column",
-                      gap: "10px",
+                      gap: "20px",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                      mr: 4,
                     }}
                   >
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: "var(--font-size-medium)",
-                        fontWeight: "700",
-                      }}
-                    >
-                      {item?.name}
-                    </Typography>
+                    <Box>
+                      <img
+                        src={
+                          item?.img ||
+                          "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg"
+                        }
+                        alt={item?.name || "Course Image"}
+                        style={{
+                          width: "70px",
+                          height: "auto",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </Box>
                     <Box
                       sx={{
                         display: "flex",
+                        flexDirection: "column",
                         gap: "10px",
-                        // p: 2,
-                        borderRadius: "10px",
-                        alignItems: "center",
-                        flexWrap: "wrap",
                       }}
                     >
-                      {item?.bookings?.map((module, index) => (
-                        <StatusStyledComponent
-                          key={index}
-                          value={module}
-                          color={item?.color}
-                          backgroundColor={"white"}
-                        />
-                      ))}
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: "var(--font-size-medium)",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {item?.name}
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "10px",
+                          // p: 2,
+                          borderRadius: "10px",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        {item?.bookings?.map((module, index) => (
+                          <StatusStyledComponent
+                            key={index}
+                            value={module}
+                            color={item?.color}
+                            backgroundColor={"white"}
+                          />
+                        ))}
+                      </Box>
                     </Box>
                   </Box>
+                  <Box
+                    sx={{
+                      transform: `rotate(${
+                        expandedCourseId === item?.courseId ? 180 : 0
+                      }deg)`,
+                      transition: "transform 0.3s ease",
+                      cursor: "pointer",
+                      position: "absolute",
+                      top: "50%",
+                      right: "10px",
+                    }}
+                  >
+                    <ArrowDropDownCircleIcon sx={{ color: "white" }} />
+                  </Box>
                 </Box>
-                <Box
-                  sx={{
-                    transform: `rotate(${
-                      expandedCourseId === item?.courseId ? 180 : 0
-                    }deg)`,
-                    transition: "transform 0.3s ease",
-                    cursor: "pointer",
-                  }}
-                >
-                  <ArrowDropDownCircleIcon sx={{ color: "white" }} />
-                </Box>
+                {expandedCourseId === item?.courseId && (
+                  <Box
+                    sx={{
+                      // maxHeight:
+                      //   expandedCourseId === item?.courseId ? "200px" : "0px",
+                      transition: "max-height 0.3s ease",
+                      backgroundColor: "white",
+                      p: 2,
+                      borderRadius: "10px",
+                      gap: "10px",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    {item?.modules?.map((module, index) => (
+                      <Typography
+                        key={index}
+                        sx={{
+                          color: "var(--sidebar-bg-color)",
+                          fontWeight: "600",
+                          p: 2,
+                          fontSize: "var(--font-size-small)",
+                          borderRadius: "10px",
+                          boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+                        }}
+                      >
+                        {`${index + 1}. ${module}`}
+                      </Typography>
+                    ))}
+                  </Box>
+                )}
               </Box>
-              {expandedCourseId === item?.courseId && (
-                <Box
-                  sx={{
-                    // maxHeight:
-                    //   expandedCourseId === item?.courseId ? "200px" : "0px",
-                    transition: "max-height 0.3s ease",
-                    backgroundColor: "white",
-                    p: 2,
-                    borderRadius: "10px",
-                    gap: "10px",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  {item?.modules?.map((module, index) => (
-                    <Typography
-                      key={index}
-                      sx={{
-                        color: "var(--sidebar-bg-color)",
-                        fontWeight: "600",
-                        p: 2,
-                        fontSize: "var(--font-size-small)",
-                        borderRadius: "10px",
-                        boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
-                      }}
-                    >
-                      {`${index + 1}. ${module}`}
-                    </Typography>
-                  ))}
-                </Box>
-              )}
-            </Box>
-          ))}
+            ))}
+          </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }
 
