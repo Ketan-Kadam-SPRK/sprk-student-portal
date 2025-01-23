@@ -275,13 +275,15 @@ function Leaves() {
   return (
     <>
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100vh",
-          p: 3,
-          gap: 2,
-        }}
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+      p: 2,
+      // minHeight: "100vh",
+      overflow: "auto",
+      flex: 1,
+    }}
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <Typography variant="h4" fontWeight={600}>
@@ -291,6 +293,7 @@ function Leaves() {
             Track your leave history and apply for new leaves easily.
           </Typography>
         </Box>
+        <Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Box sx={{ display: "flex", gap: 2, alignItems: "center",flexWrap:"wrap" }}>
             <Box>
@@ -320,6 +323,7 @@ function Leaves() {
             errorHeading="No leaves applied yet. "
             errorDescription="Click 'Apply Leave' to get started."
           />
+        </Box>
         </Box>
 
         <Dialog open={open} scroll={"body"} fullWidth={true}>
