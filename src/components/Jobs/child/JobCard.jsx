@@ -48,7 +48,7 @@ function JobCard({ item }) {
   return (
     <Box
       sx={{
-        minWidth: "250px",
+        width: "370px",
         display: "flex",
         // f: 4,
         // flex: 1,
@@ -65,37 +65,57 @@ function JobCard({ item }) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          height: "120px",
-          borderRadius: "8px 8px 0 0",
+          borderRadius: "10px",
           // width: "100%",
           color: "white",
           background:
             "conic-gradient(from 270deg at 33.39% 0%, #0A2647 -53.54deg, #6560F0 192.88deg, #0A2647 306.46deg, #6560F0 552.88deg)",
-          p: 2,
-          gap: 2,
+          p: 3,
+          gap: 3,
           overflow: "hidden",
         }}
       >
-        <Box sx={{ flex: 1, overflow: "hidden", gap: 1 }}>
-          <Box>
-            <Typography
-              fontSize={20}
-              fontWeight={400}
-              sx={{
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                maxWidth: "100%",
-              }}
-              title={item?.comp_name}
-            >
-              {item?.comp_name}
-            </Typography>
-          </Box>
+        <Box
+          sx={{
+            flex: 1,
+            overflow: "hidden",
+            gap: 1,
+            flexDirection: "column",
+            display: "flex",
+          }}
+        >
+          <Typography
+            sx={{
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              color: "#505050",
+              fontSize: "var(--font-size-medium)",
+              // color: "white",
+            }}
+            title={item?.job_title}
+          >
+            {item?.job_title}
+          </Typography>
+          <Typography
+            fontWeight={400}
+            sx={{
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              maxWidth: "100%",
+              fontSize: "var(--font-size-small)",
+            }}
+            title={item?.comp_name}
+          >
+            {item?.comp_name}
+          </Typography>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <LocationOnIcon />
-            <Typography>{item?.location}</Typography>
+            <LocationOnIcon fontSize="14" />
+            <Typography sx={{ fontSize: "var(--font-size-small)" }}>
+              {item?.location}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -123,30 +143,20 @@ function JobCard({ item }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          p: 2,
+          px: 2,
           borderRadius: "0 0 10px 10px",
           backgroundColor: "white",
           gap: 0.5,
         }}
       >
-        <Box>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography
             sx={{
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              pl: 1,
-              color: "#505050",
-              fontSize: "18px",
               fontWeight: "600",
+              mr: 1,
+              fontSize: "var(--font-size-small)",
             }}
-            title={item?.job_title}
           >
-            {item?.job_title}
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center", pl: 1 }}>
-          <Typography sx={{ fontWeight: "600", mr: 1, color: "#505050" }}>
             Skills:
           </Typography>
           <Box
@@ -165,6 +175,7 @@ function JobCard({ item }) {
                   overflow: "hidden",
                   maxWidth: "300px",
                   display: "inline-block",
+                  fontSize: "var(--font-size-small)",
                 }}
                 title={item?.required_skills.join(", ")}
               >
@@ -173,11 +184,33 @@ function JobCard({ item }) {
             )}
           </Box>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center", pl: 1 }}>
-          <Typography sx={{ fontWeight: "600", mr: 1, color: "#505050" }}>
-            Post Date:
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{
+              fontWeight: "600",
+              mr: 1,
+              fontSize: "var(--font-size-small)",
+            }}
+          >
+            Posted On:
           </Typography>
-          <Typography>{formatDateTime(item?.updatedAt)}</Typography>
+          <Typography sx={{ fontSize: "var(--font-size-small)" }}>
+            {formatDateTime(item?.updatedAt)}
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{
+              fontWeight: "600",
+              mr: 1,
+              fontSize: "var(--font-size-small)",
+            }}
+          >
+            Closing Date:
+          </Typography>
+          <Typography sx={{ fontSize: "var(--font-size-small)" }}>
+            {formatDateTime(item?.updatedAt)}
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -185,25 +218,27 @@ function JobCard({ item }) {
             flexWrap: "wrap",
             justifyContent: "space-between",
             width: "100%",
+            alignItems: "center",
             mt: 2,
           }}
         >
-          <Box>
-            <IconButton
-            // onClick={() => {
-            //   navigate(
-            //     `/Placement/Job_Postings/${item?.job_uid}`, // Navigate to the URL
-            //     {
-            //       state: {
-            //         job_uid: item?.job_uid,
-            //       },
-            //     }
-            //   );
-            // }}
-            >
-              View Details
-            </IconButton>
-          </Box>
+          <Typography
+            onClick={() => {
+              navigate(`/Course_Groups/${item?.cg_uid}`);
+            }}
+            color="primary"
+            fontSize={"var(--font-size-extra-small)"}
+            fontWeight={"bold"}
+            sx={{
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+            }}
+          >
+            View Details{" "}
+            <ArrowForwardIosRoundedIcon color="primary" fontSize="inherit" />
+          </Typography>
           <Box
             sx={{
               borderRadius: "25px",
@@ -221,6 +256,7 @@ function JobCard({ item }) {
               sx={{
                 color: item?.job_status === "OPEN" ? "#239A60" : "#414141",
                 fontWeight: 600,
+                fontSize: "var(--font-size-small)",
               }}
             >
               {item?.job_status}
