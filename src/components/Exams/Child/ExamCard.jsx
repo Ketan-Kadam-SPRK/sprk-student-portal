@@ -1,10 +1,66 @@
-import { Box, Typography, Button } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+} from "@mui/material";
+import React, { useState } from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
 import { formatDateTime } from "../../../Utils/dateTimeFormator";
+import { Close } from "@mui/icons-material";
+import ReportPreviewModal from "./ReportPreviewModal";
 
 function ExamCard({ item }) {
+  const [responseID, setResponseID] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const handleDialog = (id) => {
+    setResponseID(id);
+    setOpen(!open);
+  };
+  const getStatusColor = (status) => {
+    let color = "";
+    let bgColor = "";
+
+    switch (status) {
+      case "SCHEDULED":
+        color = "#52007A";
+        bgColor = "#E4AEFF";
+        break;
+      case "ONGOING":
+        color = "#0038A8";
+        bgColor = "#C1D6FF";
+        break;
+      case "CANCELLED":
+        color = "#3D3D3D";
+        bgColor = "#D1D1D1";
+        break;
+      case "NOT_ATTEMPTED":
+        color = "#755200";
+        bgColor = "#FFF3A4";
+        break;
+      case "EVALUATING":
+        color = "#A54700";
+        bgColor = "#FFCDA7";
+        break;
+      case "PASS":
+        color = "#1F5200";
+        bgColor = "#CBFFAC";
+        break;
+      case "FAIL":
+        color = "#9F0000";
+        bgColor = "#FFB5B5";
+        break;
+    }
+
+    return { color, bgColor };
+  };
+
+  const { color, bgColor } = getStatusColor(item?.status);
   return (
     <Box
       sx={{
@@ -104,25 +160,68 @@ function ExamCard({ item }) {
             display: "flex",
             justifyContent: "space-between",
             gap: 1,
+            mt: 2,
           }}
         >
-          <StatusStyledComponent value={item?.exam_status} />
+          <StatusStyledComponent
+            color={color}
+            backgroundColor={bgColor}
+            value={item?.status}
+          />
 
-          <Button
-            sx={{
-              backgroundColor: "#3C36EC",
-              color: "white",
-              ":hover": {
+          {["SCHEDULED", "ONGOING"].includes(item?.status) && (
+            <Button
+              sx={{
                 backgroundColor: "#3C36EC",
-              },
-              borderRadius: "30px",
-              width: "100px",
-            }}
-          >
-            Start
-          </Button>
+                color: "white",
+                ":hover": {
+                  backgroundColor: "#3C36EC",
+                },
+                borderRadius: "30px",
+                width: "100px",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+              }}
+              onClick={() => {
+                window.open(item?.exam_link, "_blank");
+              }}
+              disabled={item?.status === "NOT_ATTEMPTED"}
+            >
+              Start
+            </Button>
+          )}
+
+          {["FAIL", "PASS"].includes(item?.status) && (
+            <Button
+              sx={{
+                backgroundColor: "#3C36EC",
+                color: "white",
+                ":hover": {
+                  backgroundColor: "#3C36EC",
+                },
+                borderRadius: "30px",
+                width: "100px",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+              }}
+              onClick={() => {
+                handleDialog(item?.exam_user_uid);
+              }}
+            >
+              RESULT
+            </Button>
+          )}
         </Box>
       </Box>
+
+      <Dialog open={open} onClose={handleDialog} fullWidth maxWidth="md">
+        <DialogTitle sx={{ display: "flex", justifyContent: "flex-end", p: 0 }}>
+          <IconButton onClick={() => handleDialog()}>
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <ReportPreviewModal id={responseID} />
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }
