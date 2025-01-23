@@ -1,0 +1,44 @@
+.textWrap {
+    overflow-wrap: break-word !important;
+    word-break: break-all !important;
+    /* Forces breaking of words at any point */
+    white-space: normal !important;
+    /* text-align: justify !important; */
+}
+
+
+.mainDiv {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #131E26;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    padding: 2;
+}
+
+.headContain {
+    display: flex;
+    justify-content: space-between;
+    color: #797979;
+}
+
+.questionStyle {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    /* Adjust the value as needed */
+    max-width: 100%;
+}
+
+.TypoStyle {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.NoAvailable {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
