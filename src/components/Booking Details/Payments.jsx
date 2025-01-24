@@ -64,12 +64,13 @@ function Payments() {
   return (
     <Box
       sx={{
-        height: "100vh",
-        p: 3,
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "#EDF6FF",
         gap: 2,
+        p: 2,
+        // minHeight: "100vh",
+        overflow: "auto",
+        flex: 1,
       }}
     >
       <Box>
@@ -91,9 +92,6 @@ function Payments() {
           gap: 2,
         }}
       >
-        <Box>
-          <Button variant="contained">All</Button>
-        </Box>
         <Box sx={{ display: "flex", gap: 2,flexWrap:"wrap" }}>
         {courseData?.map((item, index) => (
             <BookingDetailsCard
