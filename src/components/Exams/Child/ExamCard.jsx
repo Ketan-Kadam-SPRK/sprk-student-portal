@@ -123,7 +123,7 @@ function ExamCard({ item }) {
             color="primary"
           >
             {<AccessAlarmRoundedIcon color="primary" />}{" "}
-            {`Duration - ${item?.duration || 0} mins`}
+            {`Duration : ${item?.duration || 0} mins`}
           </Typography>
         )}
 
@@ -141,19 +141,19 @@ function ExamCard({ item }) {
           sx={{
             fontSize: "var(--font-size-extra-small)",
           }}
-        >{`Assigned by - ${item?.assigned_by}`}</Typography>
+        >{`Assigned by : ${item?.assigned_by}`}</Typography>
 
         <Typography
           sx={{
             fontSize: "var(--font-size-extra-small) !important",
           }}
-        >{`Start Date - ${formatDateTime(item?.start_date)}`}</Typography>
+        >{`Start Date : ${formatDateTime(item?.start_date)}`}</Typography>
 
         <Typography
           sx={{
             fontSize: "var(--font-size-extra-small)",
           }}
-        >{`End Date - ${formatDateTime(item?.end_date)}`}</Typography>
+        >{`End Date : ${formatDateTime(item?.end_date)}`}</Typography>
 
         <Box
           sx={{

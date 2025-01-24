@@ -89,9 +89,9 @@ function JobCard({ item }) {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               overflow: "hidden",
-              color: "#505050",
+              // color: "#505050",
               fontSize: "var(--font-size-medium)",
-              // color: "white",
+              color: "white",
             }}
             title={item?.job_title}
           >

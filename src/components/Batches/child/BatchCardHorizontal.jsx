@@ -253,7 +253,11 @@ function BatchCardHorizontal({ item = {} }) {
           <Typography fontSize={"var(--font-size-extra-small)"}>
             Attendance
           </Typography>
-          <CircularProgressWithLabel value={4} totalValue={5} />
+          <CircularProgressWithLabel
+            value={item?.attendance}
+            totalValue={100}
+            progress={`${Math.round(item?.attendance)}%`}
+          />
         </Box>
       </Box>
     </Box>

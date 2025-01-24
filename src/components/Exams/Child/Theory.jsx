@@ -44,13 +44,13 @@ function Theory() {
         setError500(true);
       } else {
         const modified = {
-          practice: examsData.filter(
+          practice: examsData?.filter(
             (item) => item.assessment_type === "PRACTICE"
           ),
-          internal_assessment: examsData.filter(
+          internal_assessment: examsData?.filter(
             (item) => item.assessment_type === "INTERNAL_ASSESSMENT"
           ),
-          final: examsData.filter((item) => item.assessment_type === "FINAL"),
+          final: examsData?.filter((item) => item.assessment_type === "FINAL"),
         };
         setData(modified);
       }

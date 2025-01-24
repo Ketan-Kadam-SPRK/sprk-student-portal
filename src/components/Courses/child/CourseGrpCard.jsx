@@ -1,10 +1,11 @@
-import { Typography, Box, Button } from "@mui/material";
+import { Typography, Box, Button, CircularProgress } from "@mui/material";
 import React from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import dateFormator from "../../../Utils/dateFormator";
+import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
 
 function CourseGrpCard({ item }) {
   const navigate = useNavigate();
@@ -93,21 +94,34 @@ function CourseGrpCard({ item }) {
         />
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <Typography
+      <Box
+        sx={{ display: "flex", flexDirection: "column", gap: "10px", px: 2 }}
+      >
+        <Box
           sx={{
-            fontSize: "var(--font-size-extra-small)",
-            fontWeight: "bold",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            gap: "5px",
-            color: "#1976D2",
+            flexDirection: "row",
+            gap: 1,
+            justifyContent: "space-between",
           }}
         >
-          <MenuBookRoundedIcon color="primary" fontSize="small" /> Total Courses
-          : {item?.total_courses}
-        </Typography>
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-extra-small)",
+              fontWeight: "bold",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              gap: "5px",
+              color: "#1976D2",
+            }}
+          >
+            <MenuBookRoundedIcon color="primary" fontSize="small" /> Total
+            Courses : {item?.total_courses}
+          </Typography>
+
+          <CircularProgressWithLabel value={4} totalValue={8} progress="4/8" />
+        </Box>
 
         <Typography
           sx={{ fontSize: "var(--font-size-small)", fontWeight: "bold", mt: 3 }}
