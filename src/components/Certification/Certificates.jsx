@@ -21,8 +21,6 @@ function Certificates() {
     setExpanded((prev) => (prev === id ? null : id));
   };
 
-  const [activeStep, setActiveStep] = useState(0);
-
   const data = [
     {
       Booking_id: "BCN10180540",
