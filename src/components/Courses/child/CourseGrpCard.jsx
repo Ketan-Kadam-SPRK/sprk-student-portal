@@ -120,7 +120,11 @@ function CourseGrpCard({ item }) {
             Courses : {item?.total_courses}
           </Typography>
 
-          <CircularProgressWithLabel value={4} totalValue={8} progress="4/8" />
+          <CircularProgressWithLabel
+            value={item?.total_courses > 1 ? item?.total_courses - 1 : 0}
+            totalValue={item?.total_courses}
+            progress={`${item?.total_courses - 1}/${item?.total_courses}`}
+          />
         </Box>
 
         <Typography
