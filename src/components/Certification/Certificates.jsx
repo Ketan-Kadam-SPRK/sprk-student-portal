@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Box,
   Typography,
@@ -6,19 +6,33 @@ import {
   AccordionSummary,
   AccordionDetails,
   Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
+  IconButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import ProgressBar from "../Common/ProgressBar/ProgressBar";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { Close } from "@mui/icons-material";
 import { Image } from "cloudinary-react";
+import CertificateModal from "./CertificateModal";
 
 function Certificates() {
   const [expanded, setExpanded] = useState(null);
+  const targetRef = useRef(null);
 
   const handleToggle = (id) => {
     setExpanded((prev) => (prev === id ? null : id));
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const data = [
@@ -67,6 +81,32 @@ function Certificates() {
       fees: true,
     },
   ];
+
+  const previewData = {
+    cou_gro_name: "Python Programming",
+    status: "READY",
+    count: null,
+    theory: true,
+    project: true,
+    attend: true,
+    start: "2024-12-17T07:20:00Z",
+    end: null,
+    release_by: null,
+    preview: {
+      cer_sts_id:
+        "a3b413fd978d4ea780d9651c277b2d0ce688c45df3944916a70b1d35274f402a",
+      cer_id: null,
+      stu_name: "Karan Pol",
+      grade: "O+",
+      ear_rls_rsn: null,
+      rls_at: null,
+      end: "2025-01-24T08:51:43.390571236Z",
+      duration: 18,
+    },
+  };
+
+  const sprkLogo =
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjEzOSIgaGVpZ2h0PSI2OTUiIGZpbGw9Im5vbmUiIHhtbG5zOnY9Imh0dHBzOi8vdmVjdGEuaW8vbmFubyI+PGcgZmlsbD0iIzNhOGJiYSI+PGNpcmNsZSBjeD0iMzQ4LjIiIGN5PSIzNDkiIHI9IjUwIi8+PHBhdGggZD0iTTY3NS43MjggMzgyLjg1OWMxMS4wMzQuNTA2IDIwLjM4OC04LjAyOSAyMC44OTQtMTkuMDYzcy04LjAyOS0yMC4zODktMTkuMDYzLTIwLjg5NWMtOS42Ny0uNDQzLTE4LjA1IDYuMDU3LTIwLjMxNSAxNS4wOTdhNy4xMiA3LjEyIDAgMCAwLS4zOTctLjAyOWMtNi40OTMtLjI5Ny0yMzkuOTMxLTYuOTktMjM5LjkzMS02Ljk5bDIzOS41NjUgMTQuOTgyYTcuNjYgNy42NiAwIDAgMCAuMzk4LjAwOGMxLjQyOSA5LjIwOSA5LjE3OSAxNi40NDcgMTguODQ5IDE2Ljg5em0tNTcuNjU1IDE1NS45OThjOS4zOTEgNS44MTQgMjEuNzE4IDIuOTEzIDI3LjUzMi02LjQ3OXMyLjkxMy0yMS43MTktNi40NzktMjcuNTMyYy04LjIzMS01LjA5NS0xOC43MTQtMy40OTgtMjUuMDk0IDMuMjk2LS4xMDctLjA3NC0uMjE4LS4xNDctLjMzMy0uMjE4LTUuNTI3LTMuNDIyLTIwNi4xNzMtMTIyLjkxOC0yMDYuMTczLTEyMi45MThsMjAxLjk2MiAxMjkuNzJjLjExNS4wNzEuMjMuMTM4LjM0NC4yMDFhMjAuMDEgMjAuMDEgMCAwIDAgOC4yNDEgMjMuOTN6TTQ5MS4wNCA2NDUuMzg1YzUuMzg5IDkuNjQyIDE3LjU3NCAxMy4wOSAyNy4yMTYgNy43MDJzMTMuMDktMTcuNTc0IDcuNzAxLTI3LjIxNmMtNC43MjItOC40NS0xNC42NjQtMTIuMTQyLTIzLjUzOS05LjMtLjA1Ny0uMTE3LS4xMTktLjIzNS0uMTg1LS4zNTMtMy4xNzEtNS42NzQtMTIwLjU3OC0yMDcuNTUtMTIwLjU3OC0yMDcuNTVsMTEzLjU5NCAyMTEuNDUzYTcuOTIgNy45MiAwIDAgMCAuMjA0LjM0MiAyMC4wMSAyMC4wMSAwIDAgMC00LjQxMyAyNC45MjJ6bS0xODYuNDk2IDI1LjgzOWMtLjg1MyAxMS4wMTMgNy4zODMgMjAuNjMyIDE4LjM5NiAyMS40ODRzMjAuNjMyLTcuMzgzIDIxLjQ4NC0xOC4zOTZjLjc0OC05LjY1MS01LjQ4NS0xOC4yMzEtMTQuNDQ5LTIwLjc4LjAxNy0uMTI4LjAzMS0uMjYuMDQxLS4zOTYuNTAyLTYuNDggMTQuNTQtMjM5LjU5MiAxNC41NC0yMzkuNTkyTDMyMi4wNCA2NTIuNTE5Yy0uMDEuMTM1LS4wMTcuMjY4LS4wMi4zOTctOS4yNSAxLjEzOS0xNi43MjkgOC42NTctMTcuNDc2IDE4LjMwOHptLTE3OC44OTMtODAuODQ3Yy02Ljk4NyA4LjU1NS01LjcxNSAyMS4xNTUgMi44NCAyOC4xNDFzMjEuMTU0IDUuNzE2IDI4LjE0MS0yLjgzOWM2LjEyMy03LjQ5NyA1LjkwNC0xOC4xLS4wMDEtMjUuMzEuMDg3LS4wOTYuMTc0LS4xOTcuMjU5LS4zMDEgNC4xMTItNS4wMzUgMTQ4LjcxMi0xODguNDE3IDE0OC43MTItMTg4LjQxN0wxNTAuNjk0IDU4NS4wMDdhOC4zNyA4LjM3IDAgMCAwLS4yNDQuMzE1Yy04LjI0NC00LjM0Ni0xOC42NzYtMi40NDItMjQuNzk5IDUuMDU1ek0zNi41NjggNDUxLjYxYy0xMC4yNTUgNC4xMDUtMTUuMjQxIDE1Ljc0NS0xMS4xMzYgMjZzMTUuNzQ1IDE1LjI0MSAyNiAxMS4xMzdhMjAuMDEgMjAuMDEgMCAwIDAgMTIuMjQ5LTIyLjE0OGMuMTIzLS4wNDIuMjQ4LS4wODguMzczLS4xMzggNi4wMzUtMi40MTYgMjIxLjMzLTkyLjg5MyAyMjEuMzMtOTIuODkzTDYxLjA4MSA0NTkuMDMzYTcuODYgNy44NiAwIDAgMC0uMzY2LjE1OGMtNS4xMTEtNy43OTMtMTUuMTYxLTExLjE3Ny0yNC4xNDgtNy41ODF6bS0xMS41OC0xNjUuMDMzYy0xMC45NTMtMS40MjMtMjAuOTg3IDYuMzAzLTIyLjQxMSAxNy4yNTZzNi4zMDIgMjAuOTg3IDE3LjI1NiAyMi40MTFjOS41OTkgMS4yNDcgMTguNDkxLTQuNTMxIDIxLjUwMi0xMy4zNTFhNy42MiA3LjYyIDAgMCAwIC4zOTMuMDYyYzYuNDQ2LjgzNyAyMzguNTE1IDI2Ljk2MyAyMzguNTE1IDI2Ljk2M0w0Mi43NTkgMzA1LjAyMWE4LjE3IDguMTcgMCAwIDAtLjM5Ni0uMDQxYy0uNjU3LTkuMjk2LTcuNzc2LTE3LjE1NS0xNy4zNzUtMTguNDAzem03Mi4xMjgtMTQ5LjkyYy04Ljg2MS02LjU5NS0yMS4zOS00Ljc1OC0yNy45ODUgNC4xMDNzLTQuNzU4IDIxLjM5IDQuMTAzIDI3Ljk4NWEyMC4wMSAyMC4wMSAwIDAgMCAyNS4yODQtMS4xNGMuMS4wODMuMjA0LjE2NS4zMTMuMjQ2IDUuMjE1IDMuODgxIDE5NC45MTYgMTQwLjA4NiAxOTQuOTE2IDE0MC4wODZsLTE5MC4xNC0xNDYuNTAzYy0uMTA5LS4wODEtLjIxNy0uMTU4LS4zMjYtLjIzIDMuOTcxLTguNDMxIDEuNi0xOC43NjctNi4xNjUtMjQuNTQ3em0tNTYyLjg3NCAxNi44NzZ6bTg2Mi4zMjggMjcuMjM0eiIgaWQ9ImM0YWZkM2FhY2Y1ZTgwIn0+PC9nPjwvc3ZnPg==";
 
   const getStepFromStatus = (status) => {
     switch (status) {
@@ -238,7 +278,9 @@ function Certificates() {
                     </Box>
 
                     <Box sx={{ display: "flex", gap: 2, mr: 2 }}>
-                      <Button variant="contained">Preview</Button>
+                      <Button variant="contained" onClick={() => setOpen(true)}>
+                        Preview
+                      </Button>
                       <Button variant="contained">
                         <SaveAltIcon />
                       </Button>
@@ -283,6 +325,47 @@ function Certificates() {
           })}
         </Box>
       </Box>
+
+      <Dialog open={open} fullwidth maxWidth="md">
+        <DialogTitle>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <IconButton onClick={handleClose}>
+              <Close />
+            </IconButton>
+          </Box>
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            px: 2,
+            display: "flex",
+            justifyContent: "center",
+            overflow: "auto", // Enable scrolling
+            maxHeight: "80vh", // Limit height for scrolling
+            width: "100%",
+            boxSizing: "border-box",
+          }}
+        >
+          <Box
+            sx={{
+              maxWidth: "100%",
+              overflowX: "auto", // Horizontal scrolling
+            }}
+          >
+            <CertificateModal
+              targetRef={targetRef}
+              previewData={previewData}
+              sprkLogo={sprkLogo}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Box sx={{ display: "flex", px: 2,py:1 ,width:"100%"}}>
+            <Typography>
+              Released on 03 July 2024 by Kavita Suryawanshi.
+            </Typography>
+          </Box>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
