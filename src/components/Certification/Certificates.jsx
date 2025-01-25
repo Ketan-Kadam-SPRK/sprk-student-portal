@@ -20,6 +20,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { Close } from "@mui/icons-material";
 import { Image } from "cloudinary-react";
 import CertificateModal from "./CertificateModal";
+import NoDataPage from "../../Utils/NoDataPage";
 
 function Certificates() {
   const [expanded, setExpanded] = useState(null);
@@ -132,241 +133,265 @@ function Certificates() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        p: 2,
-        // minHeight: "100vh",
-        overflow: "auto",
-        flex: 1,
-      }}
-    >
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Typography variant="h4" fontWeight={600}>
-          Your Certificates
-        </Typography>
-        <Typography sx={{ color: "#4D535A" }}>
-          Every achievement tells the story of your determination.
-        </Typography>
-      </Box>
-      <Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            mt: 2,
-          }}
-        >
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          p: 2,
+          // minHeight: "100vh",
+          overflow: "auto",
+          flex: 1,
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          <Typography variant="h4" fontWeight={600}>
+            Your Certificates
+          </Typography>
+          <Typography sx={{ color: "#4D535A" }}>
+            Every achievement tells the story of your determination.
+          </Typography>
+        </Box>
+        <Box>
           <Box
             sx={{
               display: "flex",
-              backgroundColor: "#6560F0",
-              p: 2,
-              borderRadius: "10px 10px 0px 0px",
+              flexDirection: "column",
+              mt: 2,
             }}
           >
-            <Typography sx={{ color: "white" }}>
-              Track Your Certificate Updates
-            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                backgroundColor: "#6560F0",
+                p: 2,
+                borderRadius: "10px 10px 0px 0px",
+              }}
+            >
+              <Typography sx={{ color: "white" }}>
+                Track Your Certificate Updates
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            backgroundColor: "white",
-            minHeight: "60vh",
-            p: 2,
-            gap: 5,
-          }}
-        >
-          {data.map((item, index) => {
-            const activeStep = getStepFromStatus(item.certificate_status); // Get activeStep for each item
-
-            return (
-              <Accordion
-                key={item.Booking_id}
-                expanded={expanded === item.Booking_id}
-                sx={{ p: 2 }}
-              >
-                <AccordionSummary
-                  expandIcon={
-                    <ExpandMoreIcon
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleToggle(item.Booking_id);
-                      }}
-                    />
-                  }
-                  aria-controls={`${item.Booking_id}-content`}
-                  id={`${item.Booking_id}-header`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: {
-                        xs: "column",
-                        sm: "column",
-                        md: "column",
-                        lg: "row",
-                      },
-                      justifyContent: {
-                        lg: "space-between",
-                        md: "center",
-                        sm: "center",
-                        xs: "center",
-                      },
-                      alignItems: "center",
-                      width: "100%",
-                      gap: { lg: null, md: 2, sm: 2, xs: 2 },
-                    }}
+          {data?.length > 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                backgroundColor: "white",
+                minHeight: "60vh",
+                p: 2,
+                gap: 5,
+              }}
+            >
+              {data.map((item, index) => {
+                const activeStep = getStepFromStatus(item.certificate_status); // Get activeStep for each item
+                return (
+                  <Accordion
+                    key={item.Booking_id}
+                    expanded={expanded === item.Booking_id}
+                    sx={{ p: 2 }}
                   >
-                    <Box sx={{ display: "flex", gap: 3, width: "300px" }}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          width: "80px",
-                          height: "80px",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          p: 2,
-                          borderRadius: "5px",
-                          backgroundColor: "white",
-                          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                        }}
-                      >
-                        <Image
-                          publicId={item.course_img}
-                          cloudName="dxlzzgbfw"
-                          style={{
-                            width: "60px",
-                            height: "60px",
-                            objectFit: "contain",
+                    <AccordionSummary
+                      expandIcon={
+                        <ExpandMoreIcon
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleToggle(item.Booking_id);
                           }}
                         />
-                      </Box>
+                      }
+                      aria-controls={`${item.Booking_id}-content`}
+                      id={`${item.Booking_id}-header`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <Box
                         sx={{
                           display: "flex",
-                          flexDirection: "column",
+                          flexDirection: {
+                            xs: "column",
+                            sm: "column",
+                            md: "column",
+                            lg: "row",
+                          },
+                          justifyContent: {
+                            lg: "space-between",
+                            md: "center",
+                            sm: "center",
+                            xs: "center",
+                          },
+                          alignItems: "center",
                           width: "100%",
+                          gap: { lg: null, md: 2, sm: 2, xs: 2 },
                         }}
                       >
-                        <Typography variant="h6" fontWeight={600}>
-                          {item.course_Name}
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: "#4D535A" }}>
-                          {item.Booking_id}
-                        </Typography>
+                        <Box sx={{ display: "flex", gap: 3, width: "300px" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              width: "80px",
+                              height: "80px",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              p: 2,
+                              borderRadius: "5px",
+                              backgroundColor: "white",
+                              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                            }}
+                          >
+                            <Image
+                              publicId={item.course_img}
+                              cloudName="dxlzzgbfw"
+                              style={{
+                                width: "60px",
+                                height: "60px",
+                                objectFit: "contain",
+                              }}
+                            />
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              width: "100%",
+                            }}
+                          >
+                            <Typography variant="h6" fontWeight={600}>
+                              {item.course_Name}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "#4D535A" }}
+                            >
+                              {item.Booking_id}
+                            </Typography>
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            width: {
+                              lg: "60%",
+                              md: "100%",
+                              sm: "100%",
+                              xs: "100%",
+                            },
+                          }}
+                        >
+                          {/* Pass activeStep to ProgressBar */}
+                          <ProgressBar activeStep={activeStep} />
+                        </Box>
+
+                        <Box sx={{ display: "flex", gap: 2, mr: 2 }}>
+                          <Button
+                            variant="contained"
+                            onClick={() => setOpen(true)}
+                          >
+                            Preview
+                          </Button>
+                          <Button variant="contained">
+                            <SaveAltIcon />
+                          </Button>
+                        </Box>
                       </Box>
-                    </Box>
-                    <Box
-                      sx={{
-                        width: {
-                          lg: "60%",
-                          md: "100%",
-                          sm: "100%",
-                          xs: "100%",
-                        },
-                      }}
-                    >
-                      {/* Pass activeStep to ProgressBar */}
-                      <ProgressBar activeStep={activeStep} />
-                    </Box>
-
-                    <Box sx={{ display: "flex", gap: 2, mr: 2 }}>
-                      <Button variant="contained" onClick={() => setOpen(true)}>
-                        Preview
-                      </Button>
-                      <Button variant="contained">
-                        <SaveAltIcon />
-                      </Button>
-                    </Box>
-                  </Box>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: {
-                        lg: "row",
-                        md: "row",
-                        sm: "row",
-                        xs: "column",
-                      },
-                      gap: { lg: "100px", md: "50px", sm: "30px", xs: "20px" },
-                      justifyContent: "center",
-                      py: 3,
-                    }}
-                  >
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography>Theory Exam</Typography>
-                      {renderStatusIcon(item.theoryExam)}
-                    </Box>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography>Project Exam</Typography>
-                      {renderStatusIcon(item.ProjectExam)}
-                    </Box>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography>Attendance</Typography>
-                      {renderStatusIcon(item.Attendance)}
-                    </Box>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Typography>Fees Paid</Typography>
-                      {renderStatusIcon(item.fees)}
-                    </Box>
-                  </Box>
-                </AccordionDetails>
-              </Accordion>
-            );
-          })}
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: {
+                            lg: "row",
+                            md: "row",
+                            sm: "row",
+                            xs: "column",
+                          },
+                          gap: {
+                            lg: "100px",
+                            md: "50px",
+                            sm: "30px",
+                            xs: "20px",
+                          },
+                          justifyContent: "center",
+                          py: 3,
+                        }}
+                      >
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                          <Typography>Theory Exam</Typography>
+                          {renderStatusIcon(item.theoryExam)}
+                        </Box>
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                          <Typography>Project Exam</Typography>
+                          {renderStatusIcon(item.ProjectExam)}
+                        </Box>
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                          <Typography>Attendance</Typography>
+                          {renderStatusIcon(item.Attendance)}
+                        </Box>
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                          <Typography>Fees Paid</Typography>
+                          {renderStatusIcon(item.fees)}
+                        </Box>
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
+                );
+              })}
+            </Box>
+          ) : (
+            <NoDataPage
+              errorImgPublicId={
+                "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737804838/Certificate_medal_and_graduation_cap_u3nply.svg"
+              }
+              errorHeading={"No Certificates yes"}
+              errorDescription={
+                "Your certificates will appear here once they are issued."
+              }
+            />
+          )}
         </Box>
-      </Box>
 
-      <Dialog open={open} fullwidth maxWidth="md">
-        <DialogTitle>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <IconButton onClick={handleClose}>
-              <Close />
-            </IconButton>
-          </Box>
-        </DialogTitle>
-        <DialogContent
-          sx={{
-            px: 2,
-            display: "flex",
-            justifyContent: "center",
-            overflow: "auto", // Enable scrolling
-            maxHeight: "80vh", // Limit height for scrolling
-            width: "100%",
-            boxSizing: "border-box",
-          }}
-        >
-          <Box
+        <Dialog open={open} fullwidth maxWidth="md">
+          <DialogTitle>
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <IconButton onClick={handleClose}>
+                <Close />
+              </IconButton>
+            </Box>
+          </DialogTitle>
+          <DialogContent
             sx={{
-              maxWidth: "100%",
-              overflowX: "auto", // Horizontal scrolling
+              px: 2,
+              display: "flex",
+              justifyContent: "center",
+              overflow: "auto", // Enable scrolling
+              maxHeight: "80vh", // Limit height for scrolling
+              width: "100%",
+              boxSizing: "border-box",
             }}
           >
-            <CertificateModal
-              targetRef={targetRef}
-              previewData={previewData}
-              sprkLogo={sprkLogo}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Box sx={{ display: "flex", px: 2,py:1 ,width:"100%"}}>
-            <Typography>
-              Released on 03 July 2024 by Kavita Suryawanshi.
-            </Typography>
-          </Box>
-        </DialogActions>
-      </Dialog>
-    </Box>
+            <Box
+              sx={{
+                maxWidth: "100%",
+                overflowX: "auto", // Horizontal scrolling
+              }}
+            >
+              <CertificateModal
+                targetRef={targetRef}
+                previewData={previewData}
+                sprkLogo={sprkLogo}
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Box sx={{ display: "flex", px: 2, py: 1, width: "100%" }}>
+              <Typography>
+                Released on 03 July 2024 by Kavita Suryawanshi.
+              </Typography>
+            </Box>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    </>
   );
 }
 
