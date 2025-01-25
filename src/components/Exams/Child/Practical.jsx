@@ -51,8 +51,8 @@ function Practical() {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
-        gap: 2,
+        gap: 3,
+        flexWrap: "wrap",
         p: 2,
         height: "80vh",
         overflowY: "auto",

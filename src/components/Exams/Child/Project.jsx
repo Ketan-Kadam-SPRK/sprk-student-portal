@@ -50,8 +50,10 @@ function Project() {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
-        gap: 2,
+        // flexDirection: "column",
+        flexWrap: "wrap",
+
+        gap: 3,
         p: 2,
         height: "80vh",
         overflowY: "auto",
