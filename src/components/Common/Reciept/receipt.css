@@ -1,0 +1,12 @@
+/* Add a media query to hide the print button when printing */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+@media print {
+    .print-button {
+      display: none;
+    }
+  }
+  
+.receipt *{
+ font-family: "Calibri" !important;
+ letter-spacing: -.10px;
+}

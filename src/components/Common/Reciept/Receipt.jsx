@@ -1,12 +1,10 @@
-import React, { useRef, useState, useEffect, forwardRef } from "react";
+import React, { useRef, useState, forwardRef, useEffect } from "react";
 import { Button, Typography, Box, Grid, CircularProgress } from "@mui/material";
-import { Image } from "cloudinary-react";
+
 import { useReactToPrint } from "react-to-print";
-import { useSelector, useDispatch } from "react-redux";
 import { ToWords } from "to-words";
 import "./receipt.css";
-import { printReceipt } from "./receipt.action";
-import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import { Image } from "cloudinary-react";
 
 const text1 = {
   fontSize: "12px",
@@ -19,23 +17,81 @@ const text2 = {
   marginRight: "5px",
 };
 
-const Receipt = forwardRef(({ handleCloseRecipt, getPayData }, ref) => {
-  const dispatch = useDispatch();
-  const headers = useAuthHeaders();
-
+const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
   // Get receipt data from the Redux store
 
-
+  const receiptData = {
+    receipt_id: 1791,
+    receipt_code: "R2501218144D46",
+    booked_id: 2187,
+    booked_code: "B2501KHAR5D5C18A",
+    enquiry_id: 834,
+    student_id: 657,
+    student_code: "S2501KHARE872754",
+    student_name: "Namdev Pise",
+    student_address: "859, Solapur, Maharashtra, 851458, India",
+    booked_course: [
+      {
+        course_group_id: 2,
+        course_group_name: "Basic MS-office",
+        courses: [
+          {
+            course_id: 2,
+            course_name: "Basic Excel",
+          },
+          {
+            course_id: 3,
+            course_name: "Word",
+          },
+          {
+            course_id: 4,
+            course_name: "PowerPoint",
+          },
+          {
+            course_id: 5,
+            course_name: "Outlook",
+          },
+        ],
+      },
+    ],
+    receipt_status: "ACTIVE",
+    paid_amount: 8300,
+    payment_mode: "CREDIT_CARD",
+    transaction_id: null,
+    cheque_number: null,
+    cheque_date: null,
+    bank_name: null,
+    branch_name: null,
+    authorization_code: "4444555648",
+    initiated_at: "21/Jan/2025",
+    paid_at: "2025-01-21T00:00:00Z",
+    initiated_by: "Kavita Pankaj Pawar",
+    cancellation_reason: null,
+    printed_receipts: [
+      {
+        receipt_id: 1791,
+        receipt_code: "R2501218144D46",
+        generated_at: "2025-01-21T13:24:34.948436Z",
+        printed_at: "2025-01-22T04:55:23.409124Z",
+        printed_by: "Kavita Pankaj Pawar",
+      },
+    ],
+    booked_course2: "Basic MS-office",
+  };
   // Initialize loading state
   const [isLoading, setIsLoading] = useState(false);
 
   // Create a reference to the component for printing
-  const componentRef = useRef(null);
+  const printRef = useRef();
 
   // Define a function to handle printing using useReactToPrint hook
+  // const handlePrint = useReactToPrint({
+  //   content: () => componentRef.current,
+  //   documentTitle:`Payment_Receipt_${receiptData?.receipt_code || "N/A"}`,
+  // });
+
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: `Sprk_Payment_Receipt`,
+    contentRef: printRef, // Pass the ref directly to contentRef
   });
 
   useEffect(() => {
@@ -43,7 +99,7 @@ const Receipt = forwardRef(({ handleCloseRecipt, getPayData }, ref) => {
       if (event.ctrlKey && event.key === "p") {
         event.preventDefault(); // Prevent the default browser print dialog
         handlePrint(); // Trigger the print function from useReactToPrint
-        handlePrintReceipt();
+        // handlePrintReceipt();
       }
     };
 
@@ -79,18 +135,18 @@ const Receipt = forwardRef(({ handleCloseRecipt, getPayData }, ref) => {
       toWords.convert(Number(String(paidAmount).split(".")[1])) +
       " Paise";
 
-//   const handlePrintReceipt = async () => {
-//     setIsLoading(true);
-//     try {
-//       const receiptId = receiptData?.receipt_id;
-//       await dispatch(printReceipt({ receiptId, headers }));
-//       getPayData();
-//     } finally {
-//       setTimeout(() => {
-//         handleCloseRecipt();
-//       }, 1000);
-//     }
-//   };
+  //   const handlePrintReceipt = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const receiptId = receiptData?.receipt_id;
+  //       await dispatch(printReceipt({ receiptId, headers }));
+  //       getPayData();
+  //     } finally {
+  //       setTimeout(() => {
+  //         handleCloseRecipt();
+  //       }, 1000);
+  //     }
+  //   };
 
   return (
     <Box>
@@ -112,11 +168,8 @@ const Receipt = forwardRef(({ handleCloseRecipt, getPayData }, ref) => {
           variant="contained"
           disabled={isLoading}
           onClick={() => {
+            console.log("Printing started...");
             handlePrint();
-            // handlePrintReceipt();
-            setTimeout(() => {
-              handleCloseRecipt();
-            }, 1000);
           }}
           sx={{
             px: 3,
@@ -129,7 +182,7 @@ const Receipt = forwardRef(({ handleCloseRecipt, getPayData }, ref) => {
         <Button
           variant="outlined"
           onClick={() => {
-            handleCloseRecipt();
+            handleClosePayment();
           }}
           sx={{
             px: 3,
@@ -141,6 +194,7 @@ const Receipt = forwardRef(({ handleCloseRecipt, getPayData }, ref) => {
           Cancel
         </Button>
       </Box>
+
       <Box sx={{ width: "800px", overflow: "auto" }}>
         <Box
           sx={{
@@ -149,7 +203,7 @@ const Receipt = forwardRef(({ handleCloseRecipt, getPayData }, ref) => {
             height: "100%",
             overFlow: "scroll",
           }}
-          ref={componentRef}
+          ref={printRef}
         >
           <Box
             className="header"
@@ -240,7 +294,11 @@ const Receipt = forwardRef(({ handleCloseRecipt, getPayData }, ref) => {
                 </Box>
               )}
               <Box
-                sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  mt: 1,
+                }}
               >
                 <Box sx={{ display: "flex" }}>
                   <Typography style={text1}>Receipt No:</Typography>
@@ -413,4 +471,4 @@ const Receipt = forwardRef(({ handleCloseRecipt, getPayData }, ref) => {
   );
 });
 
-export default Receipt
+export default Receipt;

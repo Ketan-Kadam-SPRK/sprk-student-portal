@@ -131,9 +131,10 @@ function BookingDetailsCard({ item }) {
             Total Installments : {item?.NumberOfInstallments}
           </Typography>
           <Box>
-            <CircularProgressWithLabel
+          <CircularProgressWithLabel
               value={item.numberOfInstallmentPaid}
               totalValue={item.NumberOfInstallments}
+              progress={`${item.numberOfInstallmentPaid}/${item.NumberOfInstallments}`}
             />
           </Box>
         </Box>

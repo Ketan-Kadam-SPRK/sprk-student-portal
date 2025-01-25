@@ -28,7 +28,7 @@ function Sessions({ sessionData }) {
         };
       case "ABSENT":
         return {
-          color: "#DA0E0E",
+          color: "#A30000",
           backgroundColor: "#FEECEC",
         };
       case "ON_LEAVE":
