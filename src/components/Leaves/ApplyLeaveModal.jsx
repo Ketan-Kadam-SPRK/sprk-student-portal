@@ -84,7 +84,7 @@ function ApplyLeaveModal({
     if (!data?.end) {
       errors.end = "Please enter a valid end date";
     } else if (data.start && endDate < startDate) {
-      errors.end = "End date cannot be start date";
+      errors.end = "End date cannot be before start date";
     }
 
     if (!data?.reason) {

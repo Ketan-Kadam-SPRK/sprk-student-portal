@@ -313,7 +313,7 @@ function Leaves() {
             </Box>
           </Box>
         </Box>
-        <Box>
+        <Box sx={{ mt: 2 }}>
           <CustomAgGrid
             rows={filterData}
             columns={columns}
