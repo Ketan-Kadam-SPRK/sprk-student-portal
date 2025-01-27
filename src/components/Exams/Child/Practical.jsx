@@ -12,7 +12,6 @@ function Practical() {
   const headers = useAuthHeaders();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false); // Added error state
   const [error500, setError500] = useState(false);
 
   useEffect(() => {
@@ -22,8 +21,6 @@ function Practical() {
   const getExams = async () => {
     try {
       setLoading(true);
-      setError(false);
-      setError500(false);
 
       const res = await dispatch(getPracticalExams({ headers }));
       const status = res?.payload?.status;
@@ -37,13 +34,12 @@ function Practical() {
       }
     } catch (err) {
       console.error("Error fetching practical exams:", err);
-      setError(true);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading || error) {
+  if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
   }
 

@@ -121,9 +121,11 @@ function CourseGrpCard({ item }) {
           </Typography>
 
           <CircularProgressWithLabel
-            value={item?.total_courses > 1 ? item?.total_courses - 1 : 0}
+            value={item?.completed_courses || 0}
             totalValue={item?.total_courses}
-            progress={`${item?.total_courses - 1}/${item?.total_courses}`}
+            progress={`${item?.completed_courses || 0}/${
+              item?.total_courses || 0
+            }`}
           />
         </Box>
 
@@ -139,9 +141,9 @@ function CourseGrpCard({ item }) {
 
         <Typography
           sx={{ fontSize: "var(--font-size-extra-small)" }}
-        >{`Course Group Start : ${dateFormator(
-          item?.course_start_date
-        )}`}</Typography>
+        >{`Course Group Start : ${
+          item?.course_start_date ? dateFormator(item?.course_start_date) : "NA"
+        }`}</Typography>
 
         <Box
           sx={{
@@ -154,7 +156,7 @@ function CourseGrpCard({ item }) {
         >
           <Typography
             onClick={() => {
-              navigate(`/Course_Groups/${item?.cg_uid}`);
+              navigate(`/Course_Groups/${item?.cg_id}`);
             }}
             color="primary"
             fontSize={"var(--font-size-extra-small)"}

@@ -12,6 +12,7 @@ import Payments from "../components/Booking Details/Payments";
 import PaymentDetails from "../components/Booking Details/PaymentDetails";
 import JobOpportunities from "../components/Jobs/JobOpportunities";
 import Certificates from "../components/Certification/Certificates";
+import JobDetails from "../components/Jobs/child/JobDetails";
 
 function RoutesConfig() {
   return (
@@ -42,8 +43,11 @@ function RoutesConfig() {
         <Route index element={<Payments />} />
         <Route path=":paymentId" element={<PaymentDetails />} />
       </Route>
-      <Route path="Certificates" element={<Certificates/>} />
-      <Route path="Job_Opportunities" element={<JobOpportunities />} />
+      <Route path="Certificates" element={<Certificates />} />
+      <Route path="Job_Opportunities" element={<Outlet />}>
+        <Route index element={<JobOpportunities />} />
+        <Route path=":jobid" element={<JobDetails />} />
+      </Route>
       <Route path="/Profile" element={<Profile />} />
     </Routes>
   );

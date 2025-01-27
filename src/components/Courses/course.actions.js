@@ -14,10 +14,34 @@ export const getCourseGrpDetails = createAsyncThunk(
       const data = await res.data;
 
       // Return the user details
-      return data;
+      return { data: data, status: res.status };
     } catch (err) {
       console.log(err);
-      throw err; // Throw an error if there's an issue with the request
+      return { status: err.response.status, error: err.response.data.error };
+    }
+  }
+);
+
+export const getCourseGrpDetailsBYId = createAsyncThunk(
+  "course/getCourseGrpDetailsBYId",
+  async ({ headers, id }) => {
+    try {
+      // Send a GET request to fetch user details using the access token and user ID
+      const res = await axiosInstance.get(
+        `/student-portal/course-group/${id}`,
+        {
+          headers,
+        }
+      );
+
+      // Extract and return the data from the response
+      const data = await res.data;
+
+      // Return the user details
+      return { data: data, status: res.status };
+    } catch (err) {
+      console.log(err);
+      return { status: err.response.status, error: err.response.data.error };
     }
   }
 );

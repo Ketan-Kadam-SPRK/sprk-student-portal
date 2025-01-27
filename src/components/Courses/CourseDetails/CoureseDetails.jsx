@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Box, Button, Typography } from "@mui/material";
 import ArrowDropDownCircleIcon from "@mui/icons-material/ArrowDropDownCircle";
 import Accordion from "@mui/material/Accordion";
@@ -12,102 +11,56 @@ import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { Image } from "cloudinary-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getCourseGrpDetails } from "../course.actions";
+import { getCourseGrpDetailsBYId } from "../course.actions";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import ErrorHandling from "../../Common/ErrorHandling";
 
-const dummyData = {
-  courseGroupName: "Web Development",
-  courseGroupLogo: "",
-  course_Status: "ONGOING",
-  courseOverview:
-    "The Full Stack Development - Java course offers a thorough exploration of both front-end and back-end development using Java technologies. It covers essential aspects of building dynamic web applications, including Java-based server-side programming with Spring Boot, creating responsive user interfaces with HTML, CSS, and JavaScript, and managing databases with JPA and Hibernate.",
-  courseKeyFeatures: [
-    "Full Stack Development",
-    "Java Programming",
-    "Spring Boot",
-    "React",
-    "Node.js",
-    "Angular",
-  ],
-  courseGroupId: "CGN45DDF50",
-  courses: [
-    {
-      name: "HTML & CSS",
-      courseId: "CN45DDF51",
-      color: "red",
-      bookings: ["BCN45DDF55", "BCN45DDF56", "BCN45DDF57"],
-      modules: [
-        "Introduction to HTML",
-        "CSS Fundamentals",
-        "Responsive Web Design",
-      ],
-    },
-    {
-      name: "JavaScript",
-      courseId: "CN45DDF52",
-      color: "blue",
-      bookings: ["BCN45DDF58", "BCN45DDF59", "BCN45DDF60"],
-      modules: ["JavaScript Basics", "DOM Manipulation", "ES6 Features"],
-    },
-    {
-      name: "PHP & MySQL",
-      courseId: "CN45DDF53",
-      color: "green",
-      bookings: ["BCN45DDF61", "BCN45DDF62", "BCN45DDF63"],
-      modules: [
-        "Introduction to PHP",
-        "MySQL Database Management",
-        "Building Dynamic Websites",
-      ],
-    },
-    {
-      name: "React",
-      courseId: "CN45DDF54",
-      color: "orange",
-      bookings: ["BCN45DDF64", "BCN45DDF65", "BCN45DDF66"],
-      modules: [
-        "Getting Started with React",
-        "React Components",
-        "State Management with Redux",
-      ],
-    },
-    {
-      name: "Node.js",
-      courseId: "CN45DDF55",
-      color: "purple",
-      bookings: ["BCN45DDF67", "BCN45DDF68", "BCN45DDF69"],
-      modules: [
-        "Introduction to Node.js",
-        "Building RESTful APIs",
-        "Working with MongoDB",
-      ],
-    },
-  ],
-};
 function CoureseDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const headers = useAuthHeaders();
-  const [data, setData] = useState({ ...dummyData });
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error500, setError500] = useState(false);
+  const [error404, setError404] = useState(false);
+  const { courseId } = useParams();
+  console.log(courseId);
 
   // const [data, setData] = useState(dummyData);
   const [expandedCourseId, setExpandedCourseId] = useState(null); // Track expanded course
 
   const getCourseDetailsAPi = async () => {
     try {
-      const res = await dispatch(getCourseGrpDetails({ headers }));
-      const data = await res.payload.data;
-      // setData(data);
+      setLoading(true);
+
+      const res = await dispatch(
+        getCourseGrpDetailsBYId({ headers, id: courseId })
+      );
+      const status = res?.payload?.status;
+      const data = res?.payload?.data?.data || {};
+      console.log(res);
+
+      if (status === 500 || status === 503) {
+        setError500(true);
+      } else if (status === 404 || status === 400) {
+        setError404(true);
+      } else {
+        setData(data);
+      }
+      setLoading(false);
+
+      console.log(res);
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     getCourseDetailsAPi();
-  }, []);
+  }, [courseId]);
 
   const getStatusProperties = (status) => {
     switch (status) {
@@ -138,6 +91,16 @@ function CoureseDetails() {
     // Toggle the expanded state of the course
     setExpandedCourseId((prev) => (prev === courseId ? null : courseId));
   };
+
+  if (loading || error500 || error404) {
+    return (
+      <ErrorHandling
+        error500={error500}
+        loadData={loading}
+        notFound={error404}
+      />
+    );
+  }
 
   return (
     <Box
@@ -190,16 +153,16 @@ function CoureseDetails() {
               alignItems: "center",
               gap: "5px", // Add spacing between icon and text
               padding: "5px",
-              ...getStatusProperties(data.course_Status).style,
+              // ...getStatusProperties(data.course_Status).style,
             }}
           >
-            {getStatusProperties(data.course_Status).icon}{" "}
+            {/* {getStatusProperties(data.course_Status).icon}{" "} */}
             {/* Render the icon */}
-            <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
+            {/* <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
               {data.course_Status
                 ? data.course_Status.replace("_", " ").toUpperCase()
                 : "NA"}
-            </Typography>
+            </Typography> */}
           </Box>
         </Box>
       </Box>
@@ -209,6 +172,9 @@ function CoureseDetails() {
           flexDirection: "column",
           gap: "20px",
           p: 2,
+          // minHeight: "100vh",
+          flex: 1,
+          // overflow: "hidden",
         }}
       >
         <Box
@@ -242,7 +208,7 @@ function CoureseDetails() {
                   ml: 2,
                 }}
               >
-                {data.courseGroupName}
+                {data?.cg_name || "NA"}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -257,7 +223,7 @@ function CoureseDetails() {
                     Course Overview
                   </Typography>
                   <Typography sx={{ color: "#6E6E6E" }}>
-                    {data.courseOverview}
+                    {data?.cg_overview || "No Description"}
                   </Typography>
                 </Box>
                 <Box>
@@ -267,14 +233,26 @@ function CoureseDetails() {
                   >
                     Key Features
                   </Typography>
-                  {data?.courseKeyFeatures?.map((item, index) => (
+                  {data?.key_features?.length > 0 ? (
+                    data?.key_features?.map((item, featureIndex) => (
+                      <Typography
+                        key={item.id}
+                        sx={{
+                          marginLeft: 2,
+                          fontSize: "16px",
+                          color: "#6E6E6E",
+                        }}
+                      >
+                        {`${featureIndex + 1}. ${item?.feature}`}
+                      </Typography>
+                    ))
+                  ) : (
                     <Typography
-                      key={index}
                       sx={{ marginLeft: 2, fontSize: "16px", color: "#6E6E6E" }}
                     >
-                      {`${index + 1}. ${item}`}
+                      No Key Features Available
                     </Typography>
-                  ))}
+                  )}
                 </Box>
               </Box>
             </AccordionDetails>
@@ -287,6 +265,7 @@ function CoureseDetails() {
             flexDirection: "column",
             gap: 2,
             flex: 1,
+            // height: "100%",
             backgroundColor: "white",
             borderTopLeftRadius: "10px",
             borderTopRightRadius: "10px",
@@ -317,11 +296,12 @@ function CoureseDetails() {
               flexDirection: "column",
               gap: 2,
               p: 2,
+              overflowY: "auto",
             }}
           >
-            {data?.courses?.map((item) => (
+            {data?.courses?.map((item, index) => (
               <Box
-                key={item?.courseId}
+                key={index}
                 sx={{
                   display: "flex",
                   flexDirection: "column",
@@ -329,10 +309,11 @@ function CoureseDetails() {
                   borderRadius: "10px",
                   p: 2,
                   boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
-                  backgroundColor: `${item?.color}`,
+                  backgroundColor: `${item?.course_color}`,
                   cursor: "pointer",
+                  overflow: "hidden",
                 }}
-                onClick={() => handleExpandToggle(item?.courseId)} // Handle card click
+                onClick={() => handleExpandToggle(item?.course_uid)} // Handle card click
               >
                 <Box
                   sx={{
@@ -347,24 +328,18 @@ function CoureseDetails() {
                       display: "flex",
                       gap: "20px",
                       alignItems: "center",
-                      flexWrap: "wrap",
-                      mr: 4,
+                      // flexWrap: "wrap",
                     }}
                   >
-                    <Box>
-                      <img
-                        src={
-                          item?.img ||
-                          "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg"
-                        }
-                        alt={item?.name || "Course Image"}
-                        style={{
-                          width: "70px",
-                          height: "auto",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </Box>
+                    <Image
+                      publicId={item?.course_logo}
+                      style={{
+                        width: "70px",
+                        height: "auto",
+                        objectFit: "cover",
+                      }}
+                      cloudName={item?.course_logo?.split("/")[0]}
+                    />
                     <Box
                       sx={{
                         display: "flex",
@@ -379,7 +354,7 @@ function CoureseDetails() {
                           fontWeight: "700",
                         }}
                       >
-                        {item?.name}
+                        {item?.course_name}
                       </Typography>
                       <Box
                         sx={{
@@ -388,14 +363,15 @@ function CoureseDetails() {
                           // p: 2,
                           borderRadius: "10px",
                           alignItems: "center",
-                          flexWrap: "wrap",
+                          overflow: "auto",
+                          maxWidth: "60vw",
                         }}
                       >
-                        {item?.bookings?.map((module, index) => (
+                        {item?.batches?.map((batch, batchIndex) => (
                           <StatusStyledComponent
-                            key={index}
-                            value={module}
-                            color={item?.color}
+                            key={batchIndex}
+                            value={batch}
+                            color={"black"}
                             backgroundColor={"white"}
                           />
                         ))}
@@ -405,7 +381,7 @@ function CoureseDetails() {
                   <Box
                     sx={{
                       transform: `rotate(${
-                        expandedCourseId === item?.courseId ? 180 : 0
+                        expandedCourseId === item?.course_uid ? 180 : 0
                       }deg)`,
                       transition: "transform 0.3s ease",
                       cursor: "pointer",
@@ -414,10 +390,10 @@ function CoureseDetails() {
                       right: "10px",
                     }}
                   >
-                    <ArrowDropDownCircleIcon sx={{ color: "white" }} />
+                    <ArrowDropDownCircleIcon sx={{ color: "black" }} />
                   </Box>
                 </Box>
-                {expandedCourseId === item?.courseId && (
+                {expandedCourseId === item?.course_uid && (
                   <Box
                     sx={{
                       // maxHeight:
@@ -429,11 +405,13 @@ function CoureseDetails() {
                       gap: "10px",
                       display: "flex",
                       flexDirection: "column",
+                      maxHeight: "300px",
+                      overflow: "auto",
                     }}
                   >
-                    {item?.modules?.map((module, index) => (
+                    {item?.modules?.map((module, moduleIndex) => (
                       <Typography
-                        key={index}
+                        key={moduleIndex}
                         sx={{
                           color: "var(--sidebar-bg-color)",
                           fontWeight: "600",
@@ -443,7 +421,7 @@ function CoureseDetails() {
                           boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
                         }}
                       >
-                        {`${index + 1}. ${module}`}
+                        {`${moduleIndex + 1}. ${module}`}
                       </Typography>
                     ))}
                   </Box>

@@ -17,7 +17,7 @@ const Courses = () => {
     try {
       setLoading(true);
       const res = await dispatch(getCourseGrpDetails({ headers }));
-      const data = (await res.payload.data) || [];
+      const data = (await res.payload.data?.data) || [];
       const sorted = data?.sort((a, b) => b.booking_date - a.booking_date);
       setCourseData(sorted);
       setLoading(false);
