@@ -15,35 +15,6 @@ function JobCard({ item }) {
   const navigate = useNavigate();
 
   console.log(item);
-  const getStatusColor = (status) => {
-    let color = "";
-    let backgroundColor = "";
-    switch (status) {
-      case "Paid":
-        color = "#1F5200";
-        backgroundColor = "#CBFFAC";
-        break;
-      case "Pending":
-        color = "#755200";
-        backgroundColor = "#FFF3A4";
-        break;
-      case "Due":
-        color = "#52007A";
-        backgroundColor = "#E4AEFF";
-        break;
-      case "Overdue":
-        color = "#9F0000";
-        backgroundColor = "#FFB5B5";
-        break;
-      default:
-        color = "black";
-        backgroundColor = "white";
-        break;
-    }
-    return { color, backgroundColor };
-  };
-
-  const { color, backgroundColor } = getStatusColor(item?.PaymentStatus);
 
   return (
     <Box
@@ -106,15 +77,15 @@ function JobCard({ item }) {
               maxWidth: "100%",
               fontSize: "var(--font-size-small)",
             }}
-            title={item?.comp_name}
+            title={item?.company_name}
           >
-            {item?.comp_name}
+            {item?.company_name}
           </Typography>
 
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <LocationOnIcon fontSize="14" />
             <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-              {item?.location}
+              {item?.job_location}
             </Typography>
           </Box>
         </Box>
@@ -132,9 +103,9 @@ function JobCard({ item }) {
               objectFit: "contain",
               borderRadius: "5px",
             }}
-            publicId={item?.companylogo || ""}
+            publicId={item?.company_logo || ""}
             cloudName={
-              item?.companylogo?.split("cloudinary.com/")[1]?.split("/")[0]
+              item?.company_logo?.split("cloudinary.com/")[1]?.split("/")[0]
             }
           />
         </Box>
@@ -166,7 +137,7 @@ function JobCard({ item }) {
               overflow: "hidden",
             }}
           >
-            {item?.required_skills && item.required_skills.length > 0 && (
+            {item?.courses && item?.courses?.length > 0 && (
               <Typography
                 sx={{
                   color: "black",
@@ -177,9 +148,9 @@ function JobCard({ item }) {
                   display: "inline-block",
                   fontSize: "var(--font-size-small)",
                 }}
-                title={item?.required_skills.join(", ")}
+                title={item?.courses.join(", ")}
               >
-                {item?.required_skills.join(", ")}
+                {item?.courses.join(", ")}
               </Typography>
             )}
           </Box>
@@ -195,7 +166,7 @@ function JobCard({ item }) {
             Posted On:
           </Typography>
           <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-            {formatDateTime(item?.updatedAt)}
+            {formatDateTime(item?.posted_on)}
           </Typography>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -209,7 +180,7 @@ function JobCard({ item }) {
             Closing Date:
           </Typography>
           <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-            {formatDateTime(item?.updatedAt)}
+            {formatDateTime(item?.closing_date)}
           </Typography>
         </Box>
         <Box
@@ -224,7 +195,7 @@ function JobCard({ item }) {
         >
           <Typography
             onClick={() => {
-              navigate(`/Course_Groups/${item?.cg_uid}`);
+              navigate(`/Job_Opportunities/${item?.job_uid}`);
             }}
             color="primary"
             fontSize={"var(--font-size-extra-small)"}

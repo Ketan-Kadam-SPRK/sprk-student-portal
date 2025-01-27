@@ -1,91 +1,49 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import JobCard from "./child/JobCard";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { getAllJobs } from "./jobs.actions";
+import ErrorHandling from "../Common/ErrorHandling";
 
 function JobOpportunities() {
-  const data = [
-    {
-      job_uid: "JOWJEQ4P4LUELQ",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "Software Engineer",
-      location: "Springfield",
-      location_uid: null,
-      required_skills: ["HTML", "CSS", "JavaScript"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-12-09T10:50:44.833283Z",
-    },
-    {
-      job_uid: "JOZQAT68LFL4Y3",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "To test edit",
-      location: "New York",
-      location_uid: null,
-      required_skills: ["HTML", "CSS", "JavaScript"],
-      vacancies: null,
-      job_description: null,
-      job_status: "OPEN",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-11-24T08:14:21.587598Z",
-    },
-    {
-      job_uid: "JO0S3298HHSTF7",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "Software Engineer",
-      location: "Springfield",
-      location_uid: null,
-      required_skills: ["HTML"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-12-16T13:34:49.432812Z",
-    },
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error500, setError500] = useState(false);
 
-    {
-      job_uid: "JO0S3298HHSTF7",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "Software Engineer",
-      location: "Springfield",
-      location_uid: null,
-      required_skills: ["Cpp"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-12-16T13:34:49.432812Z",
-    },
-    {
-      job_uid: "JO0S3298HHSTF7",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "Software Engineer",
-      location: "Springfield",
-      location_uid: null,
-      required_skills: ["java"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-12-16T13:34:49.432812Z",
-    },
-  ];
+  useEffect(() => {
+    getJobs();
+  }, []);
+
+  const getJobs = async () => {
+    try {
+      setLoading(true);
+
+      const res = await dispatch(getAllJobs({ headers }));
+      const status = res?.payload?.status;
+      const data = res?.payload?.data || [];
+      const jobData = data?.sort(
+        (a, b) => new Date(b?.posted_on) - new Date(a?.posted_on)
+      );
+      console.log(res);
+
+      if (status === 500 || status === 503) {
+        setError500(true);
+      } else {
+        setData(jobData);
+      }
+    } catch (err) {
+      console.error("Error fetching practical exams:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading || error500) {
+    return <ErrorHandling error500={error500} loadData={loading} />;
+  }
   return (
     <Box
       sx={{
