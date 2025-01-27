@@ -1,6 +1,5 @@
 import React, { useRef, useState, forwardRef, useEffect } from "react";
 import { Button, Typography, Box, Grid, CircularProgress } from "@mui/material";
-
 import { useReactToPrint } from "react-to-print";
 import { ToWords } from "to-words";
 import "./receipt.css";
@@ -9,7 +8,6 @@ import { Image } from "cloudinary-react";
 const text1 = {
   fontSize: "12px",
   fontWeight: "600",
-
   marginRight: "5px",
 };
 const text2 = {
@@ -84,14 +82,9 @@ const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
   // Create a reference to the component for printing
   const printRef = useRef();
 
-  // Define a function to handle printing using useReactToPrint hook
-  // const handlePrint = useReactToPrint({
-  //   content: () => componentRef.current,
-  //   documentTitle:`Payment_Receipt_${receiptData?.receipt_code || "N/A"}`,
-  // });
-
   const handlePrint = useReactToPrint({
     contentRef: printRef, // Pass the ref directly to contentRef
+    documentTitle:`payment_Receipt_${receiptData?.receipt_code || "N/A"}`
   });
 
   useEffect(() => {
@@ -168,7 +161,6 @@ const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
           variant="contained"
           disabled={isLoading}
           onClick={() => {
-            console.log("Printing started...");
             handlePrint();
           }}
           sx={{
@@ -195,7 +187,7 @@ const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
         </Button>
       </Box>
 
-      <Box sx={{ width: "800px", overflow: "auto" }}>
+      <Box sx={{ width: "900px", overflow: "auto" }}>
         <Box
           sx={{
             px: 4,
