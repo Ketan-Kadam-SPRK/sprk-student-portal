@@ -69,8 +69,8 @@ const CustomAgGrid = ({
             {rows.length > 0 ? (
               rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                .map((row,rowIndex) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id || rowIndex}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
