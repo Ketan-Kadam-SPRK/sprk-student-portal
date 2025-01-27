@@ -112,6 +112,7 @@
   .buttons {
     width: 120px !important;
   }
+
   
   /* Media Query for Mobile View */
   @media (max-width: 767px) {

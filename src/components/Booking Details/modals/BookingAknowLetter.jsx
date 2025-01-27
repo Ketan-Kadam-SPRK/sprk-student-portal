@@ -15,9 +15,8 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useReactToPrint } from "react-to-print";
-import { usePDF } from "react-to-pdf";
-import FormatDate from "../../../Utils/FormateDate";
-import { getBookingDatabyId } from "../Admissions/StudentDetailsTab/CourseEnrollment/CourseEnrolled/store/course.actions";
+// import { usePDF } from "react-to-pdf";
+import FormatDate from "../../../Utils/FormatDate";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import Styles from "./booking.module.css";
 
@@ -42,61 +41,237 @@ const textStyle = {
   fontSize: "14px",
 };
 
-/**
- * @class BookingAknowLetter
- * Function to generate a booking acknowledgment letter in PDF format.
- * @param {function} handleDetailModal - Function to call when the user clicks on the cancel button.
- */
+
 const BookingAknowLetter = forwardRef(({ handleDetailModal }, ref) => {
   const headers = useAuthHeaders();
-  const data = useSelector((state) => state.booking.bookingAkData); // Redux state selector
+  // const data = useSelector((state) => state.booking.bookingAkData);
   const dispatch = useDispatch();
-  const [bookingData, setBookingData] = useState(null);
+  // const [bookingData, setBookingData] = useState(null);
   const toWords = new ToWords();
   const [loading, setLoading] = useState(false);
 
-//   useEffect(() => {
-//     fetchBookingData();
-//   }, [data]);
 
-//   const fetchBookingData = async () => {
-//     if (data !== null) {
-//       setLoading(true);
-//       // Function to fetch course enrollment data using Redux
-//       await dispatch(
-//         getBookingDatabyId({ headers, bookingId: data?.booked_id })
-//       )
-//         .then((res) => {
-//           const data = res?.payload?.data;
-//           setLoading(false);
-//           setBookingData(data);
-//         })
-//         .catch((err) => {
-//           setLoading(false);
-//         });
-//     }
-//   };
+  const bookingData = {
+    enq_id: 820,
+    booked_id: 2240,
+    booking_code: "B2501KHARDF84BBA",
+    booked_at: "2025-01-27T06:13:52.671928Z",
+    booked_by: "Kavita Pankaj Pawar",
+    booked_course: [
+      {
+        course_group_id: 33,
+        course_group_name: "Full Stack Development - Java",
+        course_group_inst_fees: 57999.4,
+        course_group_inst_discount: 38.948,
+        course_group_lump_fees: 51999.97,
+        course_group_lump_discount: 45.2632,
+        course_group_duration: 250,
+        courses: [
+          {
+            course_id: 11,
+            course_name: "C Programming",
+            course_fees: 7800,
+            course_sessions: 30,
+          },
+          {
+            course_id: 12,
+            course_name: "C++ Programming",
+            course_fees: 7800,
+            course_sessions: 22,
+          },
+          {
+            course_id: 13,
+            course_name: "HTML5",
+            course_fees: 3000,
+            course_sessions: 8,
+          },
+          {
+            course_id: 14,
+            course_name: "CSS3",
+            course_fees: 7700,
+            course_sessions: 20,
+          },
+          {
+            course_id: 15,
+            course_name: "Bootstrap",
+            course_fees: 2000,
+            course_sessions: 12,
+          },
+          {
+            course_id: 16,
+            course_name: "Javascript",
+            course_fees: 10000,
+            course_sessions: 20,
+          },
+          {
+            course_id: 17,
+            course_name: "MySQL",
+            course_fees: 12700,
+            course_sessions: 25,
+          },
+          {
+            course_id: 19,
+            course_name: "Core Java",
+            course_fees: 15700,
+            course_sessions: 30,
+          },
+          {
+            course_id: 20,
+            course_name: "JSP & Servlet",
+            course_fees: 8000,
+            course_sessions: 26,
+          },
+          {
+            course_id: 21,
+            course_name: "Spring Framework",
+            course_fees: 14000,
+            course_sessions: 50,
+          },
+          {
+            course_id: 22,
+            course_name: "Hibernate",
+            course_fees: 5000,
+            course_sessions: 4,
+          },
+          {
+            course_id: 41,
+            course_name: "Introduction to Data Structure",
+            course_fees: 1300,
+            course_sessions: 3,
+          },
+        ],
+      },
+    ],
+    student: {
+      student_id: 646,
+      student_code: "S2501KHAR58D9AFC",
+      student_name: "Siddhesh Thapa",
+      student_address: "navrang road, Navi Mumbai, Maharashtra, 410210, India",
+    },
+    converted: null,
+    booking_status: "CANCELLED",
+    payment_term: "INSTALLMENT",
+    duration: 250,
+    total_fees: 58000,
+    pending_fees: 0,
+    paid_fees: 0,
+    course_fees: 58000,
+    other_fees: 0,
+    discount_amount: 0,
+    discount_reason: null,
+    rea_fee: null,
+    rea_rsn: null,
+    credit: null,
+    credit_amount: 0,
+    generated_credits: 0,
+    gst: 0,
+    payments: {
+      exp: [
+        {
+          sdl: "WEEKDAY",
+          exp: "2026-07-07T06:14:51.536Z",
+          upt: "2026-07-07T06:14:51.536Z",
+        },
+      ],
+      instal: [
+        {
+          due_at: "2025-01-27",
+          paid_at: "2025-01-27T00:00:00Z",
+          payment_id: 1850,
+          receipt_code: "R25012764EBB3C",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST2501271143be36",
+        },
+        {
+          due_at: "2025-02-27",
+          paid_at: "2025-01-27T00:00:00Z",
+          payment_id: 1853,
+          receipt_code: "R250127E0B2F28",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST25012711437313",
+        },
+        {
+          due_at: "2025-03-27",
+          paid_at: "2025-01-22T00:00:00Z",
+          payment_id: 1854,
+          receipt_code: "R250127BB79B69",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST250127114382da",
+        },
+        {
+          due_at: "2025-04-27",
+          paid_at: "2025-01-26T00:00:00Z",
+          payment_id: 1855,
+          receipt_code: "R250127ECB9E6C",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST2501271143623f",
+        },
+        {
+          due_at: "2025-05-27",
+          paid_at: "2025-01-13T00:00:00Z",
+          payment_id: 1856,
+          receipt_code: "R250127CA54160",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST2501271143f652",
+        },
+      ],
+    },
+    number_of_installments: 5,
+    registration_amount: 0,
+    registration_payment: [],
+    rbc: false,
+    previous_course: null,
+    new_course: null,
+    is_lump_sum: true,
+    start_date: "2025-01-28T06:14:51.536Z",
+  };
 
-  const componentRef = useRef(null); // Create a ref to a component
-  // console.log(data);
+  //   useEffect(() => {
+  //     fetchBookingData();
+  //   }, [data]);
+
+  //   const fetchBookingData = async () => {
+  //     if (data !== null) {
+  //       setLoading(true);
+  //       // Function to fetch course enrollment data using Redux
+  //       await dispatch(
+  //         getBookingDatabyId({ headers, bookingId: data?.booked_id })
+  //       )
+  //         .then((res) => {
+  //           const data = res?.payload?.data;
+  //           setLoading(false);
+  //           setBookingData(data);
+  //         })
+  //         .catch((err) => {
+  //           setLoading(false);
+  //         });
+  //     }
+  //   };
+
+  const printRef = useRef();
+
   const handlePrint = useReactToPrint({
-    content: () => targetRef.current, // Define what to print using the ref
+    contentRef: printRef, // Pass the ref directly to contentRef
     documentTitle: `Sprk_Booking_Acknowledgment_${bookingData?.booking_code}`,
   });
 
+
   useEffect(() => {
-    /**
-     * @function handleKeyDown
-     * @memberof BookingAknowLetter
-     * Listens for the Ctrl + P key press event and prevents the default browser
-     * print dialog from popping up. Instead, it triggers the print function from
-     * useReactToPrint to print the component.
-     * @param {KeyboardEvent} event - The key press event.
-     */
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.key === "p") {
         event.preventDefault(); // Prevent the default browser print dialog
         handlePrint(); // Trigger the print function from useReactToPrint
+        // handlePrintReceipt();
       }
     };
 
@@ -107,11 +282,12 @@ const BookingAknowLetter = forwardRef(({ handleDetailModal }, ref) => {
       // Remove the event listener when the component unmounts
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handlePrint]); // This effect depends on the handlePrint function
+  }, [handlePrint]);
 
-  const { targetRef } = usePDF({
-    filename: `sprk_booking_aknowledgement-${new Date().toISOString()}.pdf`,
-  });
+  // const { targetRef } = usePDF({
+  //   filename: `sprk_booking_aknowledgement-${new Date().toISOString()}.pdf`,
+  // });
+
 
   const courseNames = bookingData?.booked_course?.map(
     (course) => course.course_group_name
@@ -153,7 +329,7 @@ const BookingAknowLetter = forwardRef(({ handleDetailModal }, ref) => {
   const totalBalanceInWords = toWords?.convert(totalBalance);
 
   return (
-    <Box className={Styles.style4}>
+    <Box className={Styles.border}>
       <Backdrop open={loading} sx={{ zIndex: 999 }}>
         <CircularProgress />
       </Backdrop>
@@ -203,7 +379,7 @@ const BookingAknowLetter = forwardRef(({ handleDetailModal }, ref) => {
           Cancel
         </Button>
       </Box>
-      <Box ref={targetRef} sx={{ height: "100%", overFlow: "auto" }}>
+      <Box ref={printRef} sx={{ height: "100%", overFlow: "auto"}}>
         <table className="printTable">
           <thead className="header">
             <tr>
@@ -382,8 +558,6 @@ const BookingAknowLetter = forwardRef(({ handleDetailModal }, ref) => {
                           </TableCell>
                           <TableCell
                             sx={{
-                              // py: "5px", // Padding on the Y-axis
-                              // px: 1, // Padding on the X-axis
                               fontSize: "12px",
                               display: "flex",
                               flexWrap: "wrap",
