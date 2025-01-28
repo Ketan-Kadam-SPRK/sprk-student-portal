@@ -41,6 +41,8 @@ function JobOpportunities() {
         setError500(true);
       } else {
         setData(jobData);
+        let filterData = data?.filter((job) => job?.status === activeTAb);
+        setFilteredData(filterData);
       }
     } catch (err) {
       console.error("Error fetching practical exams:", err);

@@ -157,7 +157,14 @@ function JobDetails() {
             flexWrap: "wrap",
           }}
         >
-          <Box sx={{ display: "flex", gap: "20px", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
             <Image
               cloudName="dxlzzgbfw"
               publicId={data?.company_logo}

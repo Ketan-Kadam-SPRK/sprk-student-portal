@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, IconButton, Typography } from "@mui/material";
-import ArrowDropDownCircleIcon from "@mui/icons-material/ArrowDropDownCircle";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import RotateRightIcon from "@mui/icons-material/RotateRight";
-import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { Image } from "cloudinary-react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,10 +13,8 @@ import { useDispatch } from "react-redux";
 import { getCourseGrpDetailsBYId } from "../course.actions";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../Common/ErrorHandling";
-import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
-import ExpandLessRoundedIcon from "@mui/icons-material/ExpandLessRounded";
 import { ExpandLessRounded, ExpandMoreRounded } from "@mui/icons-material";
-
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 function CoureseDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,30 +60,35 @@ function CoureseDetails() {
     getCourseDetailsAPi();
   }, [courseId]);
 
-  const getStatusProperties = (status) => {
+  const getStatusColor = (status) => {
+    let color = "";
+    let backgroundColor = "";
     switch (status) {
-      case "ONGOING":
-        return {
-          style: { bgcolor: "#DDEBFF", color: "#0038A8" },
-          icon: <RotateRightIcon sx={{ color: "#0038A8" }} />,
-        };
+      case "ON_GOING":
+        color = "#0038A8";
+        backgroundColor = "#C1D6FF";
+        break;
       case "COMPLETED":
-        return {
-          style: { bgcolor: "#CBFFAC", color: "#368C00" },
-          icon: <CheckCircleOutlineIcon sx={{ color: "#368C00" }} />,
-        };
+        color = "#368C00";
+        backgroundColor = "#CBFFAC";
+        break;
       case "EXPIRED":
-        return {
-          style: { bgcolor: "#D1D1D1", color: "#3D3D3D" },
-          icon: <InfoRoundedIcon sx={{ color: "#3D3D3D" }} />,
-        };
+        color = "#3D3D3D";
+        backgroundColor = "#D1D1D1";
+        break;
+      case "PENDING":
+        color = "#755200";
+        backgroundColor = "#FFF3A4";
+        break;
       default:
-        return {
-          style: { bgcolor: "#FFFFB8", color: "#783B09" },
-          icon: <PauseCircleOutlineIcon />,
-        };
+        color = "black";
+        backgroundColor = "white";
+        break;
     }
+    return { color, backgroundColor };
   };
+
+  const { color, backgroundColor } = getStatusColor(data?.status);
 
   const handleExpandToggle = (courseId) => {
     // Toggle the expanded state of the course
@@ -123,6 +123,7 @@ function CoureseDetails() {
           justifyContent: "space-between",
           p: 2,
           gap: "20px",
+          flexWrap: "wrap",
         }}
       >
         {/* Back Button */}
@@ -147,26 +148,11 @@ function CoureseDetails() {
             COURSE GROUP STATUS :
           </Typography>
           {/* Display Batch Status with Styling */}
-          <Box
-            sx={{
-              width: "150px",
-              borderRadius: "25px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "5px", // Add spacing between icon and text
-              padding: "5px",
-              // ...getStatusProperties(data.course_Status).style,
-            }}
-          >
-            {/* {getStatusProperties(data.course_Status).icon}{" "} */}
-            {/* Render the icon */}
-            {/* <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
-              {data.course_Status
-                ? data.course_Status.replace("_", " ").toUpperCase()
-                : "NA"}
-            </Typography> */}
-          </Box>
+          <StatusStyledComponent
+            value={data?.status}
+            color={color}
+            backgroundColor={backgroundColor}
+          />
         </Box>
       </Box>
       <Box
@@ -361,9 +347,15 @@ function CoureseDetails() {
                             color: "white",
                             fontSize: "var(--font-size-medium)",
                             fontWeight: "700",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
                           }}
                         >
-                          {item?.course_name}
+                          {item?.course_name}{" "}
+                          {item?.is_completed && (
+                            <CheckCircleRoundedIcon color="white" />
+                          )}
                         </Typography>
                         <Box
                           sx={{
@@ -382,12 +374,16 @@ function CoureseDetails() {
                           }}
                         >
                           {item?.batches?.map((batch, batchIndex) => (
-                            <StatusStyledComponent
+                            <IconButton
                               key={batchIndex}
-                              value={batch}
-                              color={"black"}
-                              backgroundColor={"white"}
-                            />
+                              onClick={() => navigate(`/Batches/${batch}`)}
+                            >
+                              <StatusStyledComponent
+                                value={batch}
+                                color={"black"}
+                                backgroundColor={"white"}
+                              />
+                            </IconButton>
                           ))}
                         </Box>
                       </Box>

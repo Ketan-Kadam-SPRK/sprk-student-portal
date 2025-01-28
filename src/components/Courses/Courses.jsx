@@ -12,13 +12,18 @@ const Courses = () => {
   const headers = useAuthHeaders();
   const [courseData, setCourseData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error500, setError500] = useState(false);
 
   const getCourseDetailsAPi = async () => {
     try {
       setLoading(true);
       const res = await dispatch(getCourseGrpDetails({ headers }));
+      const status = res?.payload?.status;
       const data = (await res.payload.data?.data) || [];
       const sorted = data?.sort((a, b) => b.booking_date - a.booking_date);
+      if (status === 500 || status === 503) {
+        setError500(true);
+      }
       setCourseData(sorted);
       setLoading(false);
     } catch (err) {
@@ -31,8 +36,8 @@ const Courses = () => {
     getCourseDetailsAPi();
   }, []);
 
-  if (loading) {
-    return <ErrorHandling error500={false} loadData={loading} />;
+  if (loading || error500) {
+    return <ErrorHandling error500={error500} loadData={loading} />;
   }
 
   return (
