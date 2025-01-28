@@ -14,12 +14,13 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch } from "react-redux";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import Lottie from "lottie-react";
+import Lottie, { LottiePlayer } from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
 import { setLogin, setUserDetails } from "./store/authSlice";
 import { Checkbox } from "@mui/material";
 import { getUser, loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
+import batchesLottie from "./batchesLottie.json";
 
 function Login() {
   const dispatch = useDispatch();
@@ -211,10 +212,16 @@ function Login() {
         </Box>
 
         <Box>
-          <Image
+          {/* <Image
             style={{ width: "500px" }}
             publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1734759238/Frame_2609318_ipiwpz.svg"
             cloudName="dxlzzgbfw"
+          /> */}
+
+          <Lottie
+            animationData={batchesLottie}
+            loop={true}
+            style={{ width: "800px", height: "auto" }}
           />
         </Box>
         {/* <Box
