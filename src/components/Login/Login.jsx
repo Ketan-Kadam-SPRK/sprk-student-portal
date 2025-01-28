@@ -221,7 +221,7 @@ function Login() {
           <Lottie
             animationData={batchesLottie}
             loop={true}
-            style={{ width: "800px", height: "auto" }}
+            style={{ width: "8  00px", height: "auto" }}
           />
         </Box>
         {/* <Box
