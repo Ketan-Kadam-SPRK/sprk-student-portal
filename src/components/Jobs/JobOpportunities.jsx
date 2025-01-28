@@ -1,17 +1,25 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import JobCard from "./child/JobCard";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { getAllJobs } from "./jobs.actions";
 import ErrorHandling from "../Common/ErrorHandling";
+import { formatForDisplay } from "../../Utils/formateForDisplay";
+import NoDataPage from "../../Utils/NoDataPage";
 
 function JobOpportunities() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error500, setError500] = useState(false);
+  const [activeTAb, setActiveTab] = useState("NOT_APPLIED");
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+  const status = ["NOT_APPLIED", "APPLIED", "UNPLACED", "PLACED", "DENIED"];
 
   useEffect(() => {
     getJobs();
@@ -40,6 +48,11 @@ function JobOpportunities() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    let filterData = data?.filter((job) => job?.status === activeTAb);
+    setFilteredData(filterData);
+  }, [activeTAb]);
 
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
@@ -73,20 +86,52 @@ function JobOpportunities() {
           p: 2,
         }}
       >
+        <Box sx={{ display: "flex", gap: 2, overflow: "auto" }}>
+          {status?.map((res, index) => (
+            <Button
+              // variant={activeTAb === res ? "contained" : "outlined"}
+              key={index}
+              onClick={() => handleTabChange(res)}
+              sx={{
+                borderRadius: "5px",
+                padding: "10px",
+                width: "150px",
+                minWidth: "150px",
+                // boxShadow:
+                //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+                fontWeight: "bold",
+                fontSize: "14px",
+                gap: "10px",
+                backgroundColor: activeTAb === res ? "#6560F0" : "#E0DFFF",
+                color: activeTAb === res && "white",
+              }}
+            >
+              {formatForDisplay(res)}
+            </Button>
+          ))}
+        </Box>
         <Box
           sx={{
             display: "flex",
             gap: 4,
             flexWrap: "wrap",
-            // flex: 1,
+            flex: 1,
             p: 2,
             overflow: "auto",
             width: "100%",
           }}
         >
-          {data?.map((item, index) => (
-            <JobCard key={index} item={item} />
-          ))}
+          {filteredData?.length > 0 ? (
+            filteredData?.map((item, index) => (
+              <JobCard key={index} item={item} />
+            ))
+          ) : (
+            <NoDataPage
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738046047/Search_for_a_job_candidate_jeezzw.png"
+              errorHeading="No job postings available right now!"
+              errorDescription="We’re curating the best opportunities for you. Check back later."
+            />
+          )}
         </Box>
       </Box>
     </Box>

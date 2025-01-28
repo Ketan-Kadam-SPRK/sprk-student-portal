@@ -19,6 +19,7 @@ import ErrorHandling from "../../Common/ErrorHandling";
 import { formatForDisplay } from "../../../Utils/formateForDisplay";
 import DenyJobDialog from "./DenyJobDialog";
 import ApplyJobDialog from "./ApplyJobDialog";
+import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 
 function JobDetails() {
   const navigate = useNavigate();
@@ -66,6 +67,25 @@ function JobDetails() {
     }
   };
 
+  const getColorAndBackground = (status) => {
+    switch (status) {
+      case "APPLIED":
+        return { backgroundColor: "#FFFFB8", color: "#783B09" };
+      case "NOT_APPLIED":
+        return { backgroundColor: "#D4D4D4", color: "#555555" };
+      case "UNPLACED":
+        return { backgroundColor: "#C0E5FF", color: "#37447D" };
+      case "PLACED":
+        return { backgroundColor: "#B0F7CC", color: "#239A60" };
+      case "DENIED":
+        return { backgroundColor: "#E0C8FF", color: "#2C004E" };
+      default:
+        return { backgroundColor: "white", color: "black" };
+    }
+  };
+
+  const { color, backgroundColor } = getColorAndBackground(data?.status);
+
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
   }
@@ -108,32 +128,14 @@ function JobDetails() {
               fontWeight: 700,
             }}
           >
-            JOB STATUS :
+            Placement Status :
           </Typography>
           {/* Display Batch Status with Styling */}
-          <Box
-            sx={{
-              borderRadius: "25px",
-              px: 2,
-              py: 1,
-              backgroundColor:
-                data?.job_status === "OPEN" ? "#B0F7CC" : "#999999",
-              width: "100px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: data?.job_status === "OPEN" ? "#239A60" : "#414141",
-                fontWeight: 600,
-                fontSize: "var(--font-size-small)",
-              }}
-            >
-              {data?.job_status}
-            </Typography>
-          </Box>
+          <StatusStyledComponent
+            color={color}
+            backgroundColor={backgroundColor}
+            value={data?.status}
+          />
         </Box>
       </Box>
       <Box
@@ -188,10 +190,19 @@ function JobDetails() {
           </Box>
 
           <Box sx={{ display: "flex", gap: "10px" }}>
-            <Button variant="contained" onClick={handleAplDialog}>
+            <Button
+              variant="contained"
+              onClick={handleAplDialog}
+              disabled={data?.job_status === "CLOSE"}
+            >
               Apply
             </Button>
-            <Button variant="contained" color="error" onClick={handleDenDialog}>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDenDialog}
+              disabled={data?.job_status === "CLOSE"}
+            >
               Deny
             </Button>
           </Box>
@@ -242,6 +253,15 @@ function JobDetails() {
           >
             No Of Vacancies :
             <span style={{ fontWeight: "normal" }}> {data?.vacancies}</span>
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-small)",
+              fontWeight: "bold",
+            }}
+          >
+            Job Status :
+            <span style={{ fontWeight: "normal" }}> {data?.job_status}</span>
           </Typography>
           <Typography
             sx={{

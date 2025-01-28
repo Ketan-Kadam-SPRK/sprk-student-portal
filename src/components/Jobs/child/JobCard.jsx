@@ -1,13 +1,9 @@
-import { Typography, Box, IconButton } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
-import dateFormator from "../../../Utils/dateFormator";
-import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { formatDateTime } from "../../../Utils/dateTimeFormator";
 import { Image } from "cloudinary-react";
 
@@ -15,6 +11,25 @@ function JobCard({ item }) {
   const navigate = useNavigate();
 
   console.log(item);
+
+  const getColorAndBackground = (status) => {
+    switch (status) {
+      case "APPLIED":
+        return { backgroundColor: "#FFFFB8", color: "#783B09" };
+      case "NOT_APPLIED":
+        return { backgroundColor: "#D4D4D4", color: "#555555" };
+      case "UNPLACED":
+        return { backgroundColor: "#C0E5FF", color: "#37447D" };
+      case "PLACED":
+        return { backgroundColor: "#B0F7CC", color: "#239A60" };
+      case "DENIED":
+        return { backgroundColor: "#E0C8FF", color: "#2C004E" };
+      default:
+        return { backgroundColor: "white", color: "black" };
+    }
+  };
+
+  const { color, backgroundColor } = getColorAndBackground(item?.status);
 
   return (
     <Box
@@ -169,6 +184,7 @@ function JobCard({ item }) {
             {formatDateTime(item?.posted_on)}
           </Typography>
         </Box>
+
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography
             sx={{
@@ -181,6 +197,20 @@ function JobCard({ item }) {
           </Typography>
           <Typography sx={{ fontSize: "var(--font-size-small)" }}>
             {formatDateTime(item?.closing_date)}
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{
+              fontWeight: "600",
+              mr: 1,
+              fontSize: "var(--font-size-small)",
+            }}
+          >
+            Job Status :
+          </Typography>
+          <Typography sx={{ fontSize: "var(--font-size-small)" }}>
+            {item?.job_status}
           </Typography>
         </Box>
         <Box
@@ -210,29 +240,11 @@ function JobCard({ item }) {
             View Details{" "}
             <ArrowForwardIosRoundedIcon color="primary" fontSize="inherit" />
           </Typography>
-          <Box
-            sx={{
-              borderRadius: "25px",
-              px: 2,
-              py: 1,
-              backgroundColor:
-                item?.job_status === "OPEN" ? "#B0F7CC" : "#999999",
-              width: "100px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: item?.job_status === "OPEN" ? "#239A60" : "#414141",
-                fontWeight: 600,
-                fontSize: "var(--font-size-small)",
-              }}
-            >
-              {item?.job_status}
-            </Typography>
-          </Box>
+          <StatusStyledComponent
+            color={color}
+            backgroundColor={backgroundColor}
+            value={item?.status}
+          />
         </Box>
       </Box>
     </Box>
