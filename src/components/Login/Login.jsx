@@ -61,7 +61,7 @@ function Login() {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveAnimation((prev) => (prev + 1) % animations.length);
-    }, 7000); // 7 seconds
+    }, 6000); // 7 seconds
 
     return () => clearInterval(interval);
   }, [animations.length]);
@@ -240,26 +240,30 @@ function Login() {
           <Lottie
             animationData={animations[activeAnimation].data}
             loop
-            style={{ width: "800px", height: "auto" }}
+            style={{ width: "800px", height: "500px", objectFit: "contain" }}
           />
-
-          {/* Label for Current Animation */}
-          <Typography variant="h6">
-            {animations[activeAnimation].label}
-          </Typography>
-
           {/* Indicators */}
-          <Box display="flex" gap={1} marginTop={2}>
+          <Box
+            display="flex"
+            gap={1}
+            marginTop={2}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {animations.map((_, index) => (
               <Box
                 key={index}
                 sx={{
-                  width: 12,
+                  width: 30,
                   height: 12,
-                  borderRadius: "50%",
+                  borderRadius: "20px",
                   backgroundColor:
-                    activeAnimation === index ? "blue" : "lightgray",
+                    activeAnimation === index ? "grey" : "lightgray",
                   transition: "background-color 0.3s ease",
+                  boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                 }}
               />
             ))}
