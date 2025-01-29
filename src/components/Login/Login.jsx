@@ -21,6 +21,8 @@ import { Checkbox } from "@mui/material";
 import { getUser, loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
 import batchesLottie from "./batchesLottie.json";
+import examLottie from "./examLottie.json";
+import jobOpportunityLottie from "./job-opportunityLottie.json";
 
 function Login() {
   const dispatch = useDispatch();
@@ -47,6 +49,22 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const [captchaKey, setCaptchaKey] = useState(Date.now());
+
+  const [activeAnimation, setActiveAnimation] = useState(0);
+
+  const animations = [
+    { data: batchesLottie, label: "Batches Animation" },
+    { data: examLottie, label: "Exam Animation" },
+    { data: jobOpportunityLottie, label: "Job Opportunities Animation" },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveAnimation((prev) => (prev + 1) % animations.length);
+    }, 7000); // 7 seconds
+
+    return () => clearInterval(interval);
+  }, [animations.length]);
 
   const handleHcaptchaVerification = (token) => {
     if (token) {
@@ -211,44 +229,42 @@ function Login() {
           />
         </Box>
 
-        <Box>
-          {/* <Image
-            style={{ width: "500px" }}
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1734759238/Frame_2609318_ipiwpz.svg"
-            cloudName="dxlzzgbfw"
-          /> */}
-
-          <Lottie
-            animationData={batchesLottie}
-            loop={true}
-            style={{ width: "8  00px", height: "auto" }}
-          />
-        </Box>
-        {/* <Box
+        <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
-            height: "400px",
-            width: "400px",
-            maxWidth: "90%",
-            backgroundColor: "#DAEBFF",
-            p: 2,
+            justifyContent: "center",
           }}
         >
-          <Typography
-            sx={{
-              fontSize: "var(--font-size-large)",
-              fontWeight: "600",
-              color: "#0A2647",
-            }}
-          >
-            Welcome to SPRK Technologies!{" "}
+          <Lottie
+            animationData={animations[activeAnimation].data}
+            loop
+            style={{ width: "800px", height: "auto" }}
+          />
+
+          {/* Label for Current Animation */}
+          <Typography variant="h6">
+            {animations[activeAnimation].label}
           </Typography>
-          <Typography sx={{ fontSize: "var(--font-size-medium)" }}>
-            Get ready to Connect, Innovate, Inspire.
-          </Typography>
-        </Box> */}
+
+          {/* Indicators */}
+          <Box display="flex" gap={1} marginTop={2}>
+            {animations.map((_, index) => (
+              <Box
+                key={index}
+                sx={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: "50%",
+                  backgroundColor:
+                    activeAnimation === index ? "blue" : "lightgray",
+                  transition: "background-color 0.3s ease",
+                }}
+              />
+            ))}
+          </Box>
+        </Box>
       </Grid2>
 
       {/* Right side panel */}
