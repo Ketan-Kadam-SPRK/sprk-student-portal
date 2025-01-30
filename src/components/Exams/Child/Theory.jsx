@@ -70,7 +70,7 @@ function Theory() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 2,
+        gap: 3,
         p: 2,
         height: "80vh",
         overflowY: "auto",
@@ -107,7 +107,7 @@ function Theory() {
         <Box
           sx={{
             display: "flex",
-            gap: 2,
+            gap: 3,
             flexWrap: "wrap",
           }}
         >
@@ -155,7 +155,7 @@ function Theory() {
         <Box
           sx={{
             display: "flex",
-            gap: 2,
+            gap: 3,
             flexWrap: "wrap",
           }}
         >
@@ -203,7 +203,7 @@ function Theory() {
         <Box
           sx={{
             display: "flex",
-            gap: 2,
+            gap: 3,
             flexWrap: "wrap",
           }}
         >

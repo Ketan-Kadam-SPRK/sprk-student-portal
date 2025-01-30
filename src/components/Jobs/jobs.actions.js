@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axios/axiosInstance";
 
-export const getCourseGrpDetails = createAsyncThunk(
-  "course/getCourseGrpDetails",
+export const getAllJobs = createAsyncThunk(
+  "job/getAllJobs",
   async ({ headers }) => {
     try {
       // Send a GET request to fetch user details using the access token and user ID
-      const res = await axiosInstance.get(`/student-portal/course-groups`, {
+      const res = await axiosInstance.get(`/student-portal/job-posts`, {
         headers,
       });
 
@@ -14,34 +14,31 @@ export const getCourseGrpDetails = createAsyncThunk(
       const data = await res.data;
 
       // Return the user details
-      return { data: data, status: res.status };
+      return data;
     } catch (err) {
       console.log(err);
-      return { status: err.response.status, error: err.response.data.error };
+      throw err; // Throw an error if there's an issue with the request
     }
   }
 );
 
-export const getCourseGrpDetailsBYId = createAsyncThunk(
-  "course/getCourseGrpDetailsBYId",
+export const getJobDetais = createAsyncThunk(
+  "job/getJobDetais",
   async ({ headers, id }) => {
     try {
       // Send a GET request to fetch user details using the access token and user ID
-      const res = await axiosInstance.get(
-        `/student-portal/course-group/${id}`,
-        {
-          headers,
-        }
-      );
+      const res = await axiosInstance.get(`/student-portal/job-post/${id}`, {
+        headers,
+      });
 
       // Extract and return the data from the response
       const data = await res.data;
 
       // Return the user details
-      return { data: data, status: res.status };
+      return data;
     } catch (err) {
       console.log(err);
-      return { status: err.response.status, error: err.response.data.error };
+      throw err; // Throw an error if there's an issue with the request
     }
   }
 );

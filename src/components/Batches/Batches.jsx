@@ -18,6 +18,7 @@ function Batches() {
   const headers = useAuthHeaders();
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error500, setError500] = useState(false);
 
   useEffect(() => {
     getStudentBatches();
@@ -29,6 +30,10 @@ function Batches() {
     try {
       const res = await dispatch(getBatches({ headers }));
       const data = res?.payload?.data?.data || [];
+      const status = res?.payload?.status;
+      if (status === 500 || status === 503) {
+        setError500(true);
+      }
       setBatches(data);
       setLoading(false);
     } catch (err) {
@@ -36,8 +41,8 @@ function Batches() {
     }
   };
 
-  if (loading) {
-    return <ErrorHandling error500={false} loadData={loading} />;
+  if (loading || error500) {
+    return <ErrorHandling error500={error500} loadData={loading} />;
   }
 
   return (
@@ -63,7 +68,9 @@ function Batches() {
       >
         <BoxCard
           title="Ongoing Batches"
-          number="5"
+          number={
+            batches?.filter((batch) => batch.batch_status === "ONGOING")?.length
+          }
           image={
             <RotateLeftOutlinedIcon sx={{ color: "white", fontSize: "40px" }} />
           }
@@ -72,7 +79,10 @@ function Batches() {
 
         <BoxCard
           title="Upcoming Batches"
-          number="5"
+          number={
+            batches?.filter((batch) => batch.batch_status === "UPCOMING")
+              ?.length
+          }
           image={
             <ArrowCircleUpOutlinedIcon
               sx={{ color: "white", fontSize: "40px" }}
@@ -82,7 +92,9 @@ function Batches() {
         />
         <BoxCard
           title="Onhold Batches"
-          number="5"
+          number={
+            batches?.filter((batch) => batch.batch_status === "ONHOLD")?.length
+          }
           image={
             <PauseCircleOutlineRoundedIcon
               sx={{ color: "white", fontSize: "40px" }}
@@ -93,7 +105,10 @@ function Batches() {
 
         <BoxCard
           title="Completed Batches"
-          number="5"
+          number={
+            batches?.filter((batch) => batch.batch_status === "COMPLETED")
+              ?.length
+          }
           image={
             <CheckCircleOutlineOutlinedIcon
               sx={{ color: "white", fontSize: "40px" }}
@@ -104,7 +119,7 @@ function Batches() {
 
         <BoxCard
           title="Total"
-          number="203"
+          number={batches?.length}
           image={<BookIcon sx={{ color: "white", fontSize: "40px" }} />}
           bgColor="#EB7300"
         />

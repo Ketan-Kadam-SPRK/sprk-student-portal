@@ -14,12 +14,15 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch } from "react-redux";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import Lottie from "lottie-react";
+import Lottie, { LottiePlayer } from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
 import { setLogin, setUserDetails } from "./store/authSlice";
 import { Checkbox } from "@mui/material";
 import { getUser, loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
+import batchesLottie from "./batchesLottie.json";
+import examLottie from "./examLottie.json";
+import jobOpportunityLottie from "./job-opportunityLottie.json";
 
 function Login() {
   const dispatch = useDispatch();
@@ -46,6 +49,22 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const [captchaKey, setCaptchaKey] = useState(Date.now());
+
+  const [activeAnimation, setActiveAnimation] = useState(0);
+
+  const animations = [
+    { data: batchesLottie, label: "Batches Animation" },
+    { data: examLottie, label: "Exam Animation" },
+    { data: jobOpportunityLottie, label: "Job Opportunities Animation" },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveAnimation((prev) => (prev + 1) % animations.length);
+    }, 6000); // 7 seconds
+
+    return () => clearInterval(interval);
+  }, [animations.length]);
 
   const handleHcaptchaVerification = (token) => {
     if (token) {
@@ -210,38 +229,46 @@ function Login() {
           />
         </Box>
 
-        <Box>
-          <Image
-            style={{ width: "500px" }}
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1734759238/Frame_2609318_ipiwpz.svg"
-            cloudName="dxlzzgbfw"
-          />
-        </Box>
-        {/* <Box
+        <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
-            height: "400px",
-            width: "400px",
-            maxWidth: "90%",
-            backgroundColor: "#DAEBFF",
-            p: 2,
+            justifyContent: "center",
           }}
         >
-          <Typography
+          <Lottie
+            animationData={animations[activeAnimation].data}
+            loop
+            style={{ width: "800px", height: "500px", objectFit: "contain" }}
+          />
+          {/* Indicators */}
+          <Box
+            display="flex"
+            gap={1}
+            marginTop={2}
             sx={{
-              fontSize: "var(--font-size-large)",
-              fontWeight: "600",
-              color: "#0A2647",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            Welcome to SPRK Technologies!{" "}
-          </Typography>
-          <Typography sx={{ fontSize: "var(--font-size-medium)" }}>
-            Get ready to Connect, Innovate, Inspire.
-          </Typography>
-        </Box> */}
+            {animations.map((_, index) => (
+              <Box
+                key={index}
+                sx={{
+                  width: 30,
+                  height: 12,
+                  borderRadius: "20px",
+                  backgroundColor:
+                    activeAnimation === index ? "grey" : "lightgray",
+                  transition: "background-color 0.3s ease",
+                  boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                }}
+              />
+            ))}
+          </Box>
+        </Box>
       </Grid2>
 
       {/* Right side panel */}

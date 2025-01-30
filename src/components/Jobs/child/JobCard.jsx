@@ -1,13 +1,9 @@
-import { Typography, Box, IconButton } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
-import dateFormator from "../../../Utils/dateFormator";
-import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { formatDateTime } from "../../../Utils/dateTimeFormator";
 import { Image } from "cloudinary-react";
 
@@ -15,35 +11,25 @@ function JobCard({ item }) {
   const navigate = useNavigate();
 
   console.log(item);
-  const getStatusColor = (status) => {
-    let color = "";
-    let backgroundColor = "";
+
+  const getColorAndBackground = (status) => {
     switch (status) {
-      case "Paid":
-        color = "#1F5200";
-        backgroundColor = "#CBFFAC";
-        break;
-      case "Pending":
-        color = "#755200";
-        backgroundColor = "#FFF3A4";
-        break;
-      case "Due":
-        color = "#52007A";
-        backgroundColor = "#E4AEFF";
-        break;
-      case "Overdue":
-        color = "#9F0000";
-        backgroundColor = "#FFB5B5";
-        break;
+      case "APPLIED":
+        return { backgroundColor: "#FFFFB8", color: "#783B09" };
+      case "NOT_APPLIED":
+        return { backgroundColor: "#D4D4D4", color: "#555555" };
+      case "UNPLACED":
+        return { backgroundColor: "#C0E5FF", color: "#37447D" };
+      case "PLACED":
+        return { backgroundColor: "#B0F7CC", color: "#239A60" };
+      case "DENIED":
+        return { backgroundColor: "#E0C8FF", color: "#2C004E" };
       default:
-        color = "black";
-        backgroundColor = "white";
-        break;
+        return { backgroundColor: "white", color: "black" };
     }
-    return { color, backgroundColor };
   };
 
-  const { color, backgroundColor } = getStatusColor(item?.PaymentStatus);
+  const { color, backgroundColor } = getColorAndBackground(item?.status);
 
   return (
     <Box
@@ -106,15 +92,15 @@ function JobCard({ item }) {
               maxWidth: "100%",
               fontSize: "var(--font-size-small)",
             }}
-            title={item?.comp_name}
+            title={item?.company_name}
           >
-            {item?.comp_name}
+            {item?.company_name}
           </Typography>
 
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <LocationOnIcon fontSize="14" />
             <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-              {item?.location}
+              {item?.job_location}
             </Typography>
           </Box>
         </Box>
@@ -132,9 +118,9 @@ function JobCard({ item }) {
               objectFit: "contain",
               borderRadius: "5px",
             }}
-            publicId={item?.companylogo || ""}
+            publicId={item?.company_logo || ""}
             cloudName={
-              item?.companylogo?.split("cloudinary.com/")[1]?.split("/")[0]
+              item?.company_logo?.split("cloudinary.com/")[1]?.split("/")[0]
             }
           />
         </Box>
@@ -166,7 +152,7 @@ function JobCard({ item }) {
               overflow: "hidden",
             }}
           >
-            {item?.required_skills && item.required_skills.length > 0 && (
+            {item?.courses && item?.courses?.length > 0 && (
               <Typography
                 sx={{
                   color: "black",
@@ -177,9 +163,9 @@ function JobCard({ item }) {
                   display: "inline-block",
                   fontSize: "var(--font-size-small)",
                 }}
-                title={item?.required_skills.join(", ")}
+                title={item?.courses.join(", ")}
               >
-                {item?.required_skills.join(", ")}
+                {item?.courses.join(", ")}
               </Typography>
             )}
           </Box>
@@ -195,9 +181,10 @@ function JobCard({ item }) {
             Posted On:
           </Typography>
           <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-            {formatDateTime(item?.updatedAt)}
+            {formatDateTime(item?.posted_on)}
           </Typography>
         </Box>
+
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography
             sx={{
@@ -209,7 +196,21 @@ function JobCard({ item }) {
             Closing Date:
           </Typography>
           <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-            {formatDateTime(item?.updatedAt)}
+            {formatDateTime(item?.closing_date)}
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{
+              fontWeight: "600",
+              mr: 1,
+              fontSize: "var(--font-size-small)",
+            }}
+          >
+            Job Status :
+          </Typography>
+          <Typography sx={{ fontSize: "var(--font-size-small)" }}>
+            {item?.job_status}
           </Typography>
         </Box>
         <Box
@@ -224,7 +225,7 @@ function JobCard({ item }) {
         >
           <Typography
             onClick={() => {
-              navigate(`/Course_Groups/${item?.cg_uid}`);
+              navigate(`/Job_Opportunities/${item?.job_uid}`);
             }}
             color="primary"
             fontSize={"var(--font-size-extra-small)"}
@@ -239,29 +240,11 @@ function JobCard({ item }) {
             View Details{" "}
             <ArrowForwardIosRoundedIcon color="primary" fontSize="inherit" />
           </Typography>
-          <Box
-            sx={{
-              borderRadius: "25px",
-              px: 2,
-              py: 1,
-              backgroundColor:
-                item?.job_status === "OPEN" ? "#B0F7CC" : "#999999",
-              width: "100px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: item?.job_status === "OPEN" ? "#239A60" : "#414141",
-                fontWeight: 600,
-                fontSize: "var(--font-size-small)",
-              }}
-            >
-              {item?.job_status}
-            </Typography>
-          </Box>
+          <StatusStyledComponent
+            color={color}
+            backgroundColor={backgroundColor}
+            value={item?.status}
+          />
         </Box>
       </Box>
     </Box>

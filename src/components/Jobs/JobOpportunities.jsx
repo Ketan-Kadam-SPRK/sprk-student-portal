@@ -1,91 +1,64 @@
-import { Box, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import JobCard from "./child/JobCard";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { getAllJobs } from "./jobs.actions";
+import ErrorHandling from "../Common/ErrorHandling";
+import { formatForDisplay } from "../../Utils/formateForDisplay";
+import NoDataPage from "../../Utils/NoDataPage";
 
 function JobOpportunities() {
-  const data = [
-    {
-      job_uid: "JOWJEQ4P4LUELQ",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "Software Engineer",
-      location: "Springfield",
-      location_uid: null,
-      required_skills: ["HTML", "CSS", "JavaScript"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-12-09T10:50:44.833283Z",
-    },
-    {
-      job_uid: "JOZQAT68LFL4Y3",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "To test edit",
-      location: "New York",
-      location_uid: null,
-      required_skills: ["HTML", "CSS", "JavaScript"],
-      vacancies: null,
-      job_description: null,
-      job_status: "OPEN",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-11-24T08:14:21.587598Z",
-    },
-    {
-      job_uid: "JO0S3298HHSTF7",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "Software Engineer",
-      location: "Springfield",
-      location_uid: null,
-      required_skills: ["HTML"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-12-16T13:34:49.432812Z",
-    },
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error500, setError500] = useState(false);
+  const [activeTAb, setActiveTab] = useState("NOT_APPLIED");
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+  const status = ["NOT_APPLIED", "APPLIED", "UNPLACED", "PLACED", "DENIED"];
 
-    {
-      job_uid: "JO0S3298HHSTF7",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "Software Engineer",
-      location: "Springfield",
-      location_uid: null,
-      required_skills: ["Cpp"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-12-16T13:34:49.432812Z",
-    },
-    {
-      job_uid: "JO0S3298HHSTF7",
-      comp_uid: "COMPcc5f3a46f3",
-      comp_name: "Wipro",
-      job_title: "Software Engineer",
-      location: "Springfield",
-      location_uid: null,
-      required_skills: ["java"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732270281/bqeu2cupyxyplakn9fpo.png",
-      updatedAt: "2024-12-16T13:34:49.432812Z",
-    },
-  ];
+  useEffect(() => {
+    getJobs();
+  }, []);
+
+  const getJobs = async () => {
+    try {
+      setLoading(true);
+
+      const res = await dispatch(getAllJobs({ headers }));
+      const status = res?.payload?.status;
+      const data = res?.payload?.data || [];
+      const jobData = data?.sort(
+        (a, b) => new Date(b?.posted_on) - new Date(a?.posted_on)
+      );
+      console.log(res);
+
+      if (status === 500 || status === 503) {
+        setError500(true);
+      } else {
+        setData(jobData);
+        let filterData = data?.filter((job) => job?.status === activeTAb);
+        setFilteredData(filterData);
+      }
+    } catch (err) {
+      console.error("Error fetching practical exams:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    let filterData = data?.filter((job) => job?.status === activeTAb);
+    setFilteredData(filterData);
+  }, [activeTAb]);
+
+  if (loading || error500) {
+    return <ErrorHandling error500={error500} loadData={loading} />;
+  }
   return (
     <Box
       sx={{
@@ -115,20 +88,52 @@ function JobOpportunities() {
           p: 2,
         }}
       >
+        <Box sx={{ display: "flex", gap: 2, overflow: "auto" }}>
+          {status?.map((res, index) => (
+            <Button
+              // variant={activeTAb === res ? "contained" : "outlined"}
+              key={index}
+              onClick={() => handleTabChange(res)}
+              sx={{
+                borderRadius: "5px",
+                padding: "10px",
+                width: "150px",
+                minWidth: "150px",
+                // boxShadow:
+                //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+                fontWeight: "bold",
+                fontSize: "14px",
+                gap: "10px",
+                backgroundColor: activeTAb === res ? "#6560F0" : "#E0DFFF",
+                color: activeTAb === res && "white",
+              }}
+            >
+              {formatForDisplay(res)}
+            </Button>
+          ))}
+        </Box>
         <Box
           sx={{
             display: "flex",
             gap: 4,
             flexWrap: "wrap",
-            // flex: 1,
+            flex: 1,
             p: 2,
             overflow: "auto",
             width: "100%",
           }}
         >
-          {data?.map((item, index) => (
-            <JobCard key={index} item={item} />
-          ))}
+          {filteredData?.length > 0 ? (
+            filteredData?.map((item, index) => (
+              <JobCard key={index} item={item} />
+            ))
+          ) : (
+            <NoDataPage
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738046047/Search_for_a_job_candidate_jeezzw.png"
+              errorHeading="No job postings available right now!"
+              errorDescription="We’re curating the best opportunities for you. Check back later."
+            />
+          )}
         </Box>
       </Box>
     </Box>
