@@ -200,7 +200,9 @@ function JobDetails() {
             <Button
               variant="contained"
               onClick={handleAplDialog}
-              disabled={data?.job_status === "CLOSE"}
+              disabled={
+                data?.job_status === "CLOSE" || data?.status !== "NOT_APPLIED"
+              }
             >
               Apply
             </Button>
@@ -208,7 +210,9 @@ function JobDetails() {
               variant="contained"
               color="error"
               onClick={handleDenDialog}
-              disabled={data?.job_status === "CLOSE"}
+              disabled={
+                data?.job_status === "CLOSE" || data?.status !== "NOT_APPLIED"
+              }
             >
               Deny
             </Button>
@@ -374,11 +378,23 @@ function JobDetails() {
       </Box>
 
       <Dialog open={openDen} fullWidth maxWidth="sm">
-        <DenyJobDialog handleClose={handleDenDialog} />
+        <DenyJobDialog
+          handleClose={handleDenDialog}
+          getJobsDetailsById={getJobsDetailsById}
+          jobID={jobid}
+        />
       </Dialog>
 
       <Dialog open={openApl} fullWidth maxWidth="sm">
-        <ApplyJobDialog handleClose={handleAplDialog} />
+        <ApplyJobDialog
+          handleClose={handleAplDialog}
+          getJobsDetailsById={getJobsDetailsById}
+          jobData={{
+            jobID: jobid,
+            title: data?.job_title,
+            comp: data?.company_name,
+          }}
+        />
       </Dialog>
     </Box>
   );

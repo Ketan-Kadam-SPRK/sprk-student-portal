@@ -1,6 +1,7 @@
 import { Close } from "@mui/icons-material";
 import {
   Button,
+  CircularProgress,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -8,10 +9,53 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import { denyJob } from "../jobs.actions";
 
-function DenyJobDialog({ handleClose }) {
+function DenyJobDialog({ handleClose, getJobsDetailsById, jobID }) {
+  const headers = useAuthHeaders();
+  const dispatch = useDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [reason, setReason] = useState("");
+  const [reasonError, setReasonError] = useState("");
+  const handleReasonChange = (event) => {
+    const value = event.target.value;
+
+    const newValue = value.trim();
+
+    if (newValue.length > 200 || newValue.length < 10) {
+      setReasonError("Reason should be between 10 and 200 characters");
+    } else {
+      setReasonError("");
+    }
+    setReason(value);
+  };
+
+  const submit = async () => {
+    let newReason = reason?.trim();
+    if (newReason.length < 10 || newReason.length > 200) {
+      setReasonError("Reason should be between 10 and 200 characters");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const res = await dispatch(
+        denyJob({ headers, reason: newReason, id: jobID })
+      );
+      if (res.payload) {
+        handleClose();
+        getJobsDetailsById();
+      }
+
+      setIsSubmitting(false);
+    } catch (err) {
+      console.error(err);
+      setIsSubmitting(false);
+    }
+  };
   return (
     <>
       <DialogTitle
@@ -56,18 +100,21 @@ function DenyJobDialog({ handleClose }) {
 
         <TextField
           multiline
-          rows={4}
+          rows={6}
+          placeholder="Type your reason here...."
+          value={reason}
+          onChange={handleReasonChange}
           fullWidth
-          placeholder="Type Your Reason Here ..."
+          error={Boolean(reasonError)}
+          helperText={reasonError}
         />
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
-        <Button variant="contained" color="error">
-          Submit
+        <Button variant="contained" disabled={isSubmitting} onClick={submit}>
+          {isSubmitting ? <CircularProgress size={24} /> : "Submit"}
         </Button>
         <Button
           variant="outlined"
-          color="error"
           onClick={() => {
             handleClose();
           }}

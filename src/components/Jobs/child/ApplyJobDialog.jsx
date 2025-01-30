@@ -9,10 +9,17 @@ import {
   Typography,
   Box,
   Checkbox,
+  CircularProgress,
 } from "@mui/material";
 import React, { useState } from "react";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-function ApplyJobDialog({ handleClose }) {
+import { applyJob } from "../jobs.actions";
+import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import { useDispatch } from "react-redux";
+function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
+  const headers = useAuthHeaders();
+  const dispatch = useDispatch();
+
   const data = {};
   const [doc, setDoc] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
@@ -50,23 +57,27 @@ function ApplyJobDialog({ handleClose }) {
     }
   };
 
-  //   const submit = async () => {
-  //     if (!doc) {
-  //       setError("Please select a file.");
-  //       return;
-  //     }
-  //     setIsSubmitting(true);
-  //     try {
-  //       const res = await dispatch(applyToJob({ token, doc }));
-  //       if (res.payload) {
-  //         setSubmited(true);
-  //       }
-  //       setIsSubmitting(false);
-  //     } catch (err) {
-  //       console.error(err);
-  //       setIsSubmitting(false);
-  //     }
-  //   };
+  const submit = async () => {
+    if (!doc) {
+      setError("Please select a file.");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const res = await dispatch(
+        applyJob({ headers, doc, id: jobData?.jobID })
+      );
+      if (res.payload) {
+        handleClose();
+        getJobsDetailsById();
+      }
+
+      setIsSubmitting(false);
+    } catch (err) {
+      console.error(err);
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -90,7 +101,7 @@ function ApplyJobDialog({ handleClose }) {
             color="primary"
             sx={{ fontSize: "30px !important" }}
           />{" "}
-          You are applying to UI/UX Designer position at McKinsey Company.
+          {`You are applying to ${jobData?.title} position at ${jobData?.comp}.`}
         </Typography>
         <IconButton
           onClick={() => {
@@ -206,7 +217,7 @@ function ApplyJobDialog({ handleClose }) {
               <Typography
                 sx={{ color: "#464646", fontSize: "var(--font-size-small)  " }}
               >
-                {`I, ${data?.studentName}, give ${data?.company} permission to collect,
+                {`I, ${data?.studentName}, give ${jobData?.comp} permission to collect,
                   verify, and use my personal information for recruitment
                   purposes. I understand my information will be kept
                   confidential. If not selected, my data may be retained for
@@ -226,7 +237,13 @@ function ApplyJobDialog({ handleClose }) {
         </Box>
       </DialogContent>
       <DialogActions sx={{ p: 2 }}>
-        <Button variant="contained">Submit</Button>
+        <Button
+          variant="contained"
+          disabled={isSubmitting || !isChecked}
+          onClick={submit}
+        >
+          {isSubmitting ? <CircularProgress size={24} /> : "Submit"}
+        </Button>
         <Button
           variant="outlined"
           onClick={() => {
