@@ -215,7 +215,7 @@ function Login() {
         sx={{
           position: "relative",
           display: { xs: "none", sm: "none", md: "flex" },
-          backgroundColor: "#0F488C",
+          backgroundColor: "#295DC5",
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -223,8 +223,8 @@ function Login() {
         {/* Logo and Welcome Section */}
         <Box sx={{ position: "absolute", top: "10px", left: "10px" }}>
           <Image
-            style={{ width: "150px" }}
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg"
+            style={{ width: "180px" }}
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738220565/sprk_logo_White_1_vajsin.png"
             cloudName="dxlzzgbfw"
           />
         </Box>
@@ -240,7 +240,7 @@ function Login() {
           <Lottie
             animationData={animations[activeAnimation].data}
             loop
-            style={{ width: "800px", height: "500px", objectFit: "contain" }}
+            style={{ width: "auto", height: "auto", objectFit: "contain" }}
           />
           {/* Indicators */}
           <Box
@@ -257,13 +257,13 @@ function Login() {
               <Box
                 key={index}
                 sx={{
-                  width: 30,
-                  height: 12,
+                  width: activeAnimation === index ? 30 : 20,
+                  height: 4,
                   borderRadius: "20px",
                   backgroundColor:
-                    activeAnimation === index ? "grey" : "lightgray",
-                  transition: "background-color 0.3s ease",
-                  boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                    activeAnimation === index ? "white" : "#bdcef1",
+                  transition: "width 0.3s ease, background-color 0.3s ease",
+                  // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                 }}
               />
             ))}
