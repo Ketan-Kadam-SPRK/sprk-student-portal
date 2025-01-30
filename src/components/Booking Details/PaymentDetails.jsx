@@ -19,11 +19,18 @@ import { AmountFormat } from "../../Utils/AmountFormat";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Receipt from "../Common/Reciept/Receipt";
 import BookingAknowLetter from "./modals/BookingAknowLetter";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 
 function PaymentDetails() {
   const navigate = useNavigate();
   const [openReciept, setOpenReciept] = useState(false);
   const [openDetailModal, setOpenDetailModal] = useState(false);
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [loading, setLoading] = useState(false);
+  // const [data, setData] = useState([]);
+
   const handleDetailModal = () => {
     setOpenDetailModal(!openDetailModal);
   };
@@ -35,6 +42,23 @@ function PaymentDetails() {
   const handleClosePayment = () => {
     setOpenReciept(!openReciept);
   };
+
+  // const getBookingDetail = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await dispatch(getBookingDetails({ headers }));
+  //     const data = res?.payload?.data?.data || [];
+  //     console.log(data)
+  //     setData(data);
+  //     setLoading(false);
+  //   } catch (err) {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getBookingDetail();
+  // }, []);
 
   const data = {
     booking_code: "B2501KHARE5854A5",
@@ -232,7 +256,17 @@ function PaymentDetails() {
   ];
 
   return (
-    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        p: 2,
+        // minHeight: "100vh",
+        overflow: "auto",
+        flex: 1,
+      }}
+    >
       <Box
         sx={{
           backgroundColor: "white",
@@ -324,7 +358,9 @@ function PaymentDetails() {
                 <Typography variant="h6">Installments</Typography>
               </Box>
               <Box>
-                <Button variant="contained" onClick={handleDetailModal}>view Details</Button>
+                <Button variant="contained" onClick={handleDetailModal}>
+                  view Details
+                </Button>
               </Box>
             </Box>
             <Box sx={{ display: "flex", gap: "20px", py: "15px" }}>

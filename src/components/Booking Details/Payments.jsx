@@ -1,66 +1,39 @@
-import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import BookingDetailsCard from "./child/BookingDetailsCard";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { getBookingDetails } from "./action/Payment.action";
+import ErrorHandling from "../Common/ErrorHandling";
 
 function Payments() {
-    const courseData = [
-        {
-          bcn_no: "BCN10180540",
-          courses: ["figma", "website development track"],
-          booking_date: "01/12/2024",
-          NumberOfInstallments: 12,
-          numberOfInstallmentPaid: 3,
-          PaidAmount: 50000,
-          BalanceAmount: 5000,
-          PaymentPattern: "installment",
-          PaymentStatus: "Due",
-        },
-        {
-          bcn_no: "BCN10180541",
-          courses: ["graphic design", "UI/UX basics"],
-          booking_date: "02/01/2024",
-          NumberOfInstallments: 10,
-          numberOfInstallmentPaid: 2,
-          PaidAmount: 20000,
-          BalanceAmount: 8000,
-          PaymentPattern: "installment",
-          PaymentStatus: "Pending",
-        },
-        {
-          bcn_no: "BCN10180542",
-          courses: ["python programming", "data analysis"],
-          booking_date: "01/15/2024",
-          NumberOfInstallments: 8,
-          numberOfInstallmentPaid: 4,
-          PaidAmount: 40000,
-          BalanceAmount: 10000,
-          PaymentPattern: "installment",
-          PaymentStatus: "Paid",
-        },
-        {
-          bcn_no: "BCN10180543",
-          courses: ["mobile app development", "flutter basics"],
-          booking_date: "01/20/2024",
-          NumberOfInstallments: 6,
-          numberOfInstallmentPaid: 3,
-          PaidAmount: 30000,
-          BalanceAmount: 15000,
-          PaymentPattern: "installment",
-          PaymentStatus: "Pending",
-        },
-        {
-          bcn_no: "BCN10180544",
-          courses: ["react", "next.js"],
-          booking_date: "02/25/2024",
-          NumberOfInstallments: 5,
-          numberOfInstallmentPaid: 1,
-          PaidAmount: 10000,
-          BalanceAmount: 40000,
-          PaymentPattern: "installment",
-          PaymentStatus: "Pending",
-        },
-      ];
-      
+
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [loading, setLoading] = useState(false);
+  const [courseData,setCourseData]=useState([])
+    const getBookingDetail = async () => {
+      setLoading(true);
+      try {
+        const res = await dispatch(getBookingDetails({ headers }));
+        const data = res?.payload?.data?.data || [];
+        console.log(data)
+        setCourseData(data)
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
+    };
+  
+    useEffect(() => {
+      getBookingDetail();
+    }, []);
+  
+    if (loading) {
+      return <ErrorHandling error500={false} loadData={loading} />;
+    }
+  
+   
   return (
     <Box
       sx={{
@@ -68,7 +41,6 @@ function Payments() {
         flexDirection: "column",
         gap: 2,
         p: 2,
-        // minHeight: "100vh",
         overflow: "auto",
         flex: 1,
       }}
