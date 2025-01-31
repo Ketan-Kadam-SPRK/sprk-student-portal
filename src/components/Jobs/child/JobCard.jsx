@@ -6,6 +6,7 @@ import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRound
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { formatDateTime } from "../../../Utils/dateTimeFormator";
 import { Image } from "cloudinary-react";
+import dateFormator from "../../../Utils/dateFormator";
 
 function JobCard({ item }) {
   const navigate = useNavigate();
@@ -181,7 +182,7 @@ function JobCard({ item }) {
             Posted On:
           </Typography>
           <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-            {formatDateTime(item?.posted_on)}
+            {dateFormator(item?.posted_on)}
           </Typography>
         </Box>
 
@@ -196,7 +197,7 @@ function JobCard({ item }) {
             Closing Date:
           </Typography>
           <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-            {formatDateTime(item?.closing_date)}
+            {dateFormator(item?.closing_date)}
           </Typography>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center" }}>

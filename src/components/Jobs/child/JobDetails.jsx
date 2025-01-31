@@ -20,6 +20,7 @@ import { formatForDisplay } from "../../../Utils/formateForDisplay";
 import DenyJobDialog from "./DenyJobDialog";
 import ApplyJobDialog from "./ApplyJobDialog";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
+import dateFormator from "../../../Utils/dateFormator";
 
 function JobDetails() {
   const navigate = useNavigate();
@@ -283,7 +284,7 @@ function JobDetails() {
             Posted On :
             <span style={{ fontWeight: "normal" }}>
               {" "}
-              {formatDateTime(data?.posted_on)}
+              {dateFormator(data?.posted_on)}
             </span>
           </Typography>
           <Typography
@@ -295,7 +296,7 @@ function JobDetails() {
             Closing Date :
             <span style={{ fontWeight: "normal" }}>
               {" "}
-              {formatDateTime(data?.closing_date)}
+              {dateFormator(data?.closing_date)}
             </span>
           </Typography>
           <Typography
