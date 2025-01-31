@@ -1,0 +1,126 @@
+/* styles.css */
+
+/* Modal Style */
+.modalStyle {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    height: auto !important;
+    width: 450px !important;
+    max-width: 90%;
+    padding: 20px !important;
+    background-color: white !important;
+    z-index: 111 !important;
+    border-radius: 10px !important;
+  }
+  
+  /* Styled Modal Container */
+  .styledModalContainer {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    overflow: auto !important;
+    width: 90vw !important;
+    height: 80vh !important;
+    border-radius: 4px !important;
+    outline: none !important;
+  }
+  
+  /* Style for Another Section */
+  .style4 {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    height: 90% !important;
+    width: 800px !important;
+    max-width: 90% !important;
+    overflow: auto !important;
+    background-color: white !important;
+    z-index: -1;
+  }
+  
+  .mainBox {
+    padding: 24px;
+    background-color: var(--secondry-color);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mainHeding {
+    font-size: 36px !important;
+    font-weight: bold !important;
+    color: #263238 !important;
+    padding-bottom: 10px;
+  }
+  
+  /* Table style */
+  
+  .tableContainer {
+    overflow: scroll !important;
+  }
+  
+  .tableCell {
+    width: 25% !important;
+    border: 1px solid white !important;
+    color: #fff !important;
+    padding: 8px 10px !important;
+  }
+  
+  .tableCell_1 {
+    background-color: #fff !important;
+    padding: 8px 10px !important;
+  }
+  
+  /* Cancel Modal Style */
+  .CloseIconStyle {
+    position: absolute !important;
+    top: 20px !important;
+    right: 20px !important;
+    cursor: pointer !important;
+  }
+  
+  .headingBox {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px;
+  }
+  
+  .errorIconStyle {
+    font-size: 25px !important;
+    color: red !important;
+  }
+  
+  .headingStyle {
+    font-size: 20px !important;
+    font-weight: bold !important;
+  }
+  
+  .typoStyle {
+    margin-top: 10px !important;
+    font-size: 14px !important;
+  }
+  
+  .yesNoBox {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-top: 20px !important;
+  }
+  
+  .buttons {
+    width: 120px !important;
+  }
+
+  
+  /* Media Query for Mobile View */
+  @media (max-width: 767px) {
+  
+    .styledModalContainer {
+      width: 90% !important;
+      height: 90vh !important;
+    }
+  
+  
+  }

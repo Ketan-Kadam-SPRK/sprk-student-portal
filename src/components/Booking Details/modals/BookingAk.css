@@ -1,0 +1,49 @@
+/* Define CSS for the printed table */
+.printBotton{
+    position: relative;
+    margin-top: 30px;
+    /* left: 0px;
+    bottom:0px; */
+  }
+  .printTable {
+    /* width: 100%; */
+    padding:10px;
+    border-collapse: collapse;
+    margin: 15px;
+  }
+  
+  .printTable td {
+    padding: 5px;
+    /* border: 1px solid black; */
+  }
+  
+  .printTable .header {
+    text-align: center;
+    /* border-bottom: 1px solid black; */
+  }
+  
+  .printTable .mainDiv {
+    page-break-inside: avoid;
+  }
+  
+  .printTable .footer {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Add any additional CSS styles for your content here */
+  @media print {
+    .printBotton {
+      display: none;
+    }
+    .printTable {
+      padding: 30px
+    }
+   
+  
+  
+    .printTable .mainDiv {
+      /* page-break-inside: avoid; */
+      margin-bottom: 150px;
+    }
+  }

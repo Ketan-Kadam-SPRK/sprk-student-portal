@@ -1,0 +1,747 @@
+import React, { useRef, useEffect, useState, forwardRef } from "react";
+import { Image } from "cloudinary-react";
+import "./BookingAk.css";
+import { useDispatch, useSelector } from "react-redux";
+import { ToWords } from "to-words";
+import {
+  Box,
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Backdrop,
+  CircularProgress,
+} from "@mui/material";
+import { useReactToPrint } from "react-to-print";
+// import { usePDF } from "react-to-pdf";
+import FormatDate from "../../../Utils/FormatDate";
+import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import Styles from "./booking.module.css";
+
+const tableStyle = {
+  border: "1px solid black",
+  py: "5px", // Padding on the Y-axis
+  px: 1, // Padding on the X-axis
+  fontSize: "12px",
+  fontWeight: "bold",
+  width: "200px",
+};
+
+const tableStyle2 = {
+  border: "1px solid black",
+  py: "5px", // Padding on the Y-axis
+  px: 1, // Padding on the X-axis
+  fontSize: "12px",
+};
+
+const textStyle = {
+  mt: 1, // Margin on the top
+  fontSize: "14px",
+};
+
+
+const BookingAknowLetter = forwardRef(({ handleDetailModal }, ref) => {
+  const headers = useAuthHeaders();
+  // const data = useSelector((state) => state.booking.bookingAkData);
+  const dispatch = useDispatch();
+  // const [bookingData, setBookingData] = useState(null);
+  const toWords = new ToWords();
+  const [loading, setLoading] = useState(false);
+
+
+  const bookingData = {
+    enq_id: 820,
+    booked_id: 2240,
+    booking_code: "B2501KHARDF84BBA",
+    booked_at: "2025-01-27T06:13:52.671928Z",
+    booked_by: "Kavita Pankaj Pawar",
+    booked_course: [
+      {
+        course_group_id: 33,
+        course_group_name: "Full Stack Development - Java",
+        course_group_inst_fees: 57999.4,
+        course_group_inst_discount: 38.948,
+        course_group_lump_fees: 51999.97,
+        course_group_lump_discount: 45.2632,
+        course_group_duration: 250,
+        courses: [
+          {
+            course_id: 11,
+            course_name: "C Programming",
+            course_fees: 7800,
+            course_sessions: 30,
+          },
+          {
+            course_id: 12,
+            course_name: "C++ Programming",
+            course_fees: 7800,
+            course_sessions: 22,
+          },
+          {
+            course_id: 13,
+            course_name: "HTML5",
+            course_fees: 3000,
+            course_sessions: 8,
+          },
+          {
+            course_id: 14,
+            course_name: "CSS3",
+            course_fees: 7700,
+            course_sessions: 20,
+          },
+          {
+            course_id: 15,
+            course_name: "Bootstrap",
+            course_fees: 2000,
+            course_sessions: 12,
+          },
+          {
+            course_id: 16,
+            course_name: "Javascript",
+            course_fees: 10000,
+            course_sessions: 20,
+          },
+          {
+            course_id: 17,
+            course_name: "MySQL",
+            course_fees: 12700,
+            course_sessions: 25,
+          },
+          {
+            course_id: 19,
+            course_name: "Core Java",
+            course_fees: 15700,
+            course_sessions: 30,
+          },
+          {
+            course_id: 20,
+            course_name: "JSP & Servlet",
+            course_fees: 8000,
+            course_sessions: 26,
+          },
+          {
+            course_id: 21,
+            course_name: "Spring Framework",
+            course_fees: 14000,
+            course_sessions: 50,
+          },
+          {
+            course_id: 22,
+            course_name: "Hibernate",
+            course_fees: 5000,
+            course_sessions: 4,
+          },
+          {
+            course_id: 41,
+            course_name: "Introduction to Data Structure",
+            course_fees: 1300,
+            course_sessions: 3,
+          },
+        ],
+      },
+    ],
+    student: {
+      student_id: 646,
+      student_code: "S2501KHAR58D9AFC",
+      student_name: "Siddhesh Thapa",
+      student_address: "navrang road, Navi Mumbai, Maharashtra, 410210, India",
+    },
+    converted: null,
+    booking_status: "CANCELLED",
+    payment_term: "INSTALLMENT",
+    duration: 250,
+    total_fees: 58000,
+    pending_fees: 0,
+    paid_fees: 0,
+    course_fees: 58000,
+    other_fees: 0,
+    discount_amount: 0,
+    discount_reason: null,
+    rea_fee: null,
+    rea_rsn: null,
+    credit: null,
+    credit_amount: 0,
+    generated_credits: 0,
+    gst: 0,
+    payments: {
+      exp: [
+        {
+          sdl: "WEEKDAY",
+          exp: "2026-07-07T06:14:51.536Z",
+          upt: "2026-07-07T06:14:51.536Z",
+        },
+      ],
+      instal: [
+        {
+          due_at: "2025-01-27",
+          paid_at: "2025-01-27T00:00:00Z",
+          payment_id: 1850,
+          receipt_code: "R25012764EBB3C",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST2501271143be36",
+        },
+        {
+          due_at: "2025-02-27",
+          paid_at: "2025-01-27T00:00:00Z",
+          payment_id: 1853,
+          receipt_code: "R250127E0B2F28",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST25012711437313",
+        },
+        {
+          due_at: "2025-03-27",
+          paid_at: "2025-01-22T00:00:00Z",
+          payment_id: 1854,
+          receipt_code: "R250127BB79B69",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST250127114382da",
+        },
+        {
+          due_at: "2025-04-27",
+          paid_at: "2025-01-26T00:00:00Z",
+          payment_id: 1855,
+          receipt_code: "R250127ECB9E6C",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST2501271143623f",
+        },
+        {
+          due_at: "2025-05-27",
+          paid_at: "2025-01-13T00:00:00Z",
+          payment_id: 1856,
+          receipt_code: "R250127CA54160",
+          due_amount: 11600,
+          paid_amount: 11600,
+          installment_status: "PAID",
+          installment_id: "IST2501271143f652",
+        },
+      ],
+    },
+    number_of_installments: 5,
+    registration_amount: 0,
+    registration_payment: [],
+    rbc: false,
+    previous_course: null,
+    new_course: null,
+    is_lump_sum: true,
+    start_date: "2025-01-28T06:14:51.536Z",
+  };
+
+  //   useEffect(() => {
+  //     fetchBookingData();
+  //   }, [data]);
+
+  //   const fetchBookingData = async () => {
+  //     if (data !== null) {
+  //       setLoading(true);
+  //       // Function to fetch course enrollment data using Redux
+  //       await dispatch(
+  //         getBookingDatabyId({ headers, bookingId: data?.booked_id })
+  //       )
+  //         .then((res) => {
+  //           const data = res?.payload?.data;
+  //           setLoading(false);
+  //           setBookingData(data);
+  //         })
+  //         .catch((err) => {
+  //           setLoading(false);
+  //         });
+  //     }
+  //   };
+
+  const printRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef, // Pass the ref directly to contentRef
+    documentTitle: `Sprk_Booking_Acknowledgment_${bookingData?.booking_code}`,
+  });
+
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === "p") {
+        event.preventDefault(); // Prevent the default browser print dialog
+        handlePrint(); // Trigger the print function from useReactToPrint
+        // handlePrintReceipt();
+      }
+    };
+
+    // Add an event listener to the document to listen for Ctrl + P
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      // Remove the event listener when the component unmounts
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handlePrint]);
+
+  // const { targetRef } = usePDF({
+  //   filename: `sprk_booking_aknowledgement-${new Date().toISOString()}.pdf`,
+  // });
+
+
+  const courseNames = bookingData?.booked_course?.map(
+    (course) => course.course_group_name
+  );
+
+  let totalFees = bookingData?.total_fees;
+
+  const joinedNames = courseNames?.join(", "); // Join course names into a string
+
+  // const paidPayments =
+  //   .map((res) => ({
+  //     ...res,
+  //     balance: res.paid_amount,
+  //   }));
+
+  const paidPayments = bookingData?.payments?.instal
+    ?.filter((payment) => payment.installment_status === "PAID")
+    ?.map((payment) => {
+      const paidAmount = payment.paid_amount || 0;
+      totalFees -= paidAmount; // Update the remaining balance
+      return {
+        ...payment,
+        balance: totalFees,
+      };
+    });
+
+  // Calculate total paid amount
+  const totalPaidAmount =
+    paidPayments?.reduce(
+      (total, payment) => total + (payment.paid_amount || 0),
+      0
+    ) || 0;
+
+  // Convert total paid amount to words
+  const totalPaidAmountInWords = toWords?.convert(totalPaidAmount);
+
+  const totalBalance = bookingData?.generated_credits || 0;
+
+  const totalBalanceInWords = toWords?.convert(totalBalance);
+
+  return (
+    <Box className={Styles.border}>
+      <Backdrop open={loading} sx={{ zIndex: 999 }}>
+        <CircularProgress />
+      </Backdrop>
+      <Box
+        sx={{
+          p: 1,
+          display: "flex",
+          justifyContent: "flex-end",
+          position: "sticky",
+          top: "0px",
+          right: "0px",
+          backgroundColor: "#263238",
+          width: "100%",
+          "@media print": {
+            display: "none",
+          },
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={() => {
+            handlePrint();
+            setTimeout(() => {
+              handleDetailModal();
+            }, 1000);
+          }}
+          sx={{
+            px: 3,
+            color: "white",
+            // backgroundColor:'#414D54'
+          }}
+        >
+          Print
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            handleDetailModal();
+          }}
+          sx={{
+            px: 3,
+            ml: 2,
+            fontWeight: "600",
+            backgroundColor: "white",
+          }}
+        >
+          Cancel
+        </Button>
+      </Box>
+      <Box ref={printRef} sx={{ height: "100%", overFlow: "auto"}}>
+        <table className="printTable">
+          <thead className="header">
+            <tr>
+              <td colSpan="2">
+                <Image
+                  style={{ width: "180px" }}
+                  publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg"
+                  cloudName="dxlzzgbfw"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td colSpan="2">
+                <Typography sx={{ fontSize: "12px", textAlign: "center" }}>
+                  <span style={{ fontWeight: "bold" }}> Office Address :</span>{" "}
+                  SPRK Technologies, Office no: 102-105, 1st floor, Royal
+                  Palace, Sector-2, Plot no.11, Opp. Glomax Mall, Kharghar, Navi
+                  Mumbai, Maharashtra, India, Telephone - 9082572832
+                </Typography>
+              </td>
+            </tr>
+
+            <tr>
+              <td colSpan="2">
+                <Box
+                  sx={{
+                    borderTop: "1px solid black",
+                    borderBottom: "1px solid black",
+                    py: 2,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "24px",
+                      fontWeight: "600",
+                      textAlign: "center",
+                    }}
+                  >
+                    Booking Confirmation
+                  </Typography>
+                </Box>
+              </td>
+            </tr>
+          </thead>
+          <tbody className="mainDiv page-break">
+            <tr>
+              <td colSpan="2">
+                <Typography sx={{ fontSize: "12px", fontWeight: "600", mt: 1 }}>
+                  STUDENT DETAILS
+                </Typography>
+                <Table sx={{ maxHeight: 400, mt: 1, borderRadius: "3px" }}>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell sx={{ ...tableStyle }}> Student ID</TableCell>
+                      <TableCell sx={{ ...tableStyle2 }}>
+                        {bookingData?.student.student_code}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell sx={{ ...tableStyle }}>BCN</TableCell>
+                      <TableCell sx={{ ...tableStyle2 }}>
+                        {bookingData?.booking_code}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell sx={{ ...tableStyle }}>
+                        Enrollment Date
+                      </TableCell>
+                      <TableCell sx={{ ...tableStyle2 }}>
+                        {FormatDate(bookingData?.booked_at)}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell sx={{ ...tableStyle }}>Student Name</TableCell>
+                      <TableCell sx={{ ...tableStyle2 }}>
+                        {bookingData?.student?.student_name}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell sx={{ ...tableStyle }}>Address</TableCell>
+                      <TableCell sx={{ ...tableStyle2 }}>
+                        {bookingData?.student?.student_address}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell sx={{ ...tableStyle }}>
+                        Course Enrolled{" "}
+                      </TableCell>
+                      <TableCell sx={{ ...tableStyle2 }}>
+                        {joinedNames}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell sx={{ ...tableStyle }}>Total Fee</TableCell>
+                      <TableCell sx={{ ...tableStyle2 }}>
+                        {`Rs. ${bookingData?.total_fees?.toLocaleString(
+                          "en-IN"
+                        )}`}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan="2">
+                <Typography sx={{ fontSize: "12px", fontWeight: "600", mt: 2 }}>
+                  COURSE DETAILS
+                </Typography>
+                <Table sx={{ maxHeight: 400, mt: 1, borderRadius: "3px" }}>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell
+                        sx={{
+                          ...tableStyle2,
+                          maxWidth: "50px",
+                          width: "50px",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {" "}
+                        Sr.no
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          ...tableStyle2,
+                          fontSize: "12px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {" "}
+                        Course Name{" "}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          border: "1px solid black",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          py: "1px",
+                          px: 1,
+                        }}
+                      >
+                        {" "}
+                        Modules{" "}
+                      </TableCell>
+                    </TableRow>
+                    {bookingData?.booked_course?.length > 0 &&
+                      bookingData?.booked_course?.map((courseGroup, index) => (
+                        <TableRow
+                          key={index}
+                          sx={{ height: "100%", border: "1px solid black" }}
+                        >
+                          <TableCell
+                            sx={{
+                              ...tableStyle2,
+                              maxWidth: "50px",
+                              width: "50px",
+                              fontSize: "12px",
+                              fontWeight: "600",
+                              height: "100%",
+                              borderBottom: "none",
+                            }}
+                          >
+                            {index + 1}
+                          </TableCell>
+
+                          <TableCell
+                            sx={{
+                              ...tableStyle,
+                              height: "100%",
+                              borderBottom: "none",
+                            }}
+                          >
+                            {courseGroup?.course_group_name}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              fontSize: "12px",
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: "10px",
+                              padding: "10px",
+                              height: "100%",
+                              borderBottom: "none",
+                            }}
+                          >
+                            {courseGroup?.courses
+                              ?.slice() // Create a shallow copy to avoid mutating the original array
+                              .sort((a, b) => a.course_id - b.course_id) // Sort in ascending order based on course_id
+                              .map((course, tIndex) => (
+                                <div
+                                  key={tIndex}
+                                  style={{
+                                    padding: "3px 5px",
+                                    borderRadius: "20px",
+                                    backgroundColor: "white",
+                                    color: "black",
+                                    border: "1px solid black",
+                                    fontSize: "10px",
+                                  }}
+                                >
+                                  {course?.course_name}
+                                </div>
+                              ))}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <Typography sx={{ fontSize: "12px", fontWeight: "600", mt: 2 }}>
+                  PAYMENT DETAILS
+                </Typography>
+                <Table
+                  sx={{
+                    maxHeight: 400,
+                    borderRadius: "3px",
+                    marginTop: "10px",
+                  }}
+                >
+                  <TableBody>
+                    <TableRow>
+                      <TableCell sx={{ ...tableStyle }}> Sr. No.</TableCell>
+                      <TableCell sx={{ ...tableStyle }}> Receipt No.</TableCell>
+                      <TableCell sx={{ ...tableStyle }}>
+                        {" "}
+                        Payment Date
+                      </TableCell>
+                      <TableCell sx={{ ...tableStyle }}>
+                        {" "}
+                        Amount Paid (In INR)
+                      </TableCell>
+                      <TableCell sx={{ ...tableStyle }}>
+                        {" "}
+                        Amount Balance (In INR)
+                      </TableCell>
+                    </TableRow>
+                    {paidPayments && paidPayments?.length > 0 ? (
+                      paidPayments?.map((payment, index) => {
+                        return (
+                          <TableRow key={index + 1}>
+                            <TableCell sx={{ ...tableStyle2 }}>
+                              {index + 1}
+                            </TableCell>
+                            <TableCell sx={{ ...tableStyle2 }}>
+                              {payment?.receipt_code}
+                            </TableCell>
+                            <TableCell sx={{ ...tableStyle2 }}>
+                              {FormatDate(payment?.paid_at)}
+                            </TableCell>
+                            <TableCell sx={{ ...tableStyle2 }}>
+                              {payment?.paid_amount
+                                ? `Rs. ${payment?.paid_amount?.toLocaleString()}`
+                                : ""}
+                            </TableCell>
+                            <TableCell sx={{ ...tableStyle2 }}>
+                              {`Rs. ${Math.ceil(
+                                payment.balance
+                              )?.toLocaleString()}`}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })
+                    ) : (
+                      // Display an empty row with "-" in all fields
+                      <TableRow>
+                        <TableCell sx={{ ...tableStyle2 }}>-</TableCell>
+                        <TableCell sx={{ ...tableStyle2 }}>-</TableCell>
+                        <TableCell sx={{ ...tableStyle2 }}>-</TableCell>
+                        <TableCell sx={{ ...tableStyle2 }}>-</TableCell>
+                        <TableCell sx={{ ...tableStyle2 }}>-</TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+                <Typography sx={{ marginTop: "10px" }}>
+                  <span style={{ fontWeight: "bold" }}>
+                    Total Amount Paid (In INR)
+                  </span>{" "}
+                  is Rs. {totalPaidAmount?.toLocaleString()} (
+                  {totalPaidAmountInWords?.charAt(0).toUpperCase() +
+                    totalPaidAmountInWords?.slice(1)}{" "}
+                  only)
+                </Typography>
+                {totalBalance !== 0 && (
+                  <Typography sx={{ marginTop: "10px" }}>
+                    <span style={{ fontWeight: "bold" }}>
+                      Total Generated Credit (In INR)
+                    </span>{" "}
+                    is Rs. {totalBalance?.toLocaleString()} (
+                    {totalBalanceInWords?.charAt(0).toUpperCase() +
+                      totalBalanceInWords?.slice(1)}{" "}
+                    only)
+                  </Typography>
+                )}
+              </td>
+            </tr>
+
+            <tr>
+              <td className="courseDetail" colSpan="2">
+                <Typography sx={{ fontSize: "12px", fontWeight: "600", mt: 2 }}>
+                  CODE OF CONDUCT
+                </Typography>
+                <Typography sx={{ ...textStyle }}>
+                  1. SPRK Technologies is not an university and does not award
+                  degrees/diplomas.
+                </Typography>
+                <Typography sx={{ ...textStyle }}>
+                  2. After the module/course completion, it is mandatory for the
+                  student to submit their project on time.
+                </Typography>
+                <Typography sx={{ ...textStyle }}>
+                  3. Minimum 70% attendance is mandatory to get the certificate.
+                </Typography>
+                <Typography sx={{ ...textStyle }}>
+                  4. Prior information to the institute is mandatory in case of
+                  any leave.
+                </Typography>
+                <Typography sx={{ ...textStyle }}>
+                  5. SPRK TECHNOLOGIES do not claim 100% guarantee about the
+                  placement.
+                </Typography>
+                <Typography sx={{ ...textStyle }}>
+                  6. The amount once paid is non-refundable.
+                </Typography>
+                <Typography sx={{ ...textStyle }}>
+                  7. Goods & Service Tax is not charged on the services provided
+                  by SPRK Technologies to Students. Hence SPRK Technologies is
+                  not liable to provide Tax invoice.
+                </Typography>
+                <Typography sx={{ ...textStyle }}>
+                  8. In RBC, the payment should be equal to or greater than the
+                  previous course fees paid. If the payment is less, no refund
+                  will be issued.
+                </Typography>
+                {bookingData?.rbc === true && (
+                  <Typography sx={{ ...textStyle }}>
+                    9. RBC would be applied in the context of transitioning from
+                    a previous “{bookingData?.previous_course}” course to a new
+                    “{bookingData?.new_course}” course.
+                  </Typography>
+                )}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot className="footer">
+            <tr>
+              {/* <td colSpan="2" >
+                <Typography sx={{ fontSize: "12px", mt: 2, mb:1, textAlign: "center" }}>
+                  <span style={{ fontWeight: "bold" }}> Office Address :</span> SPRK Technologies, Office no: 102-105, 1st floor, Royal Palace, Sector-2, Plot no.11, Opp. Glomax Mall, Kharghar, Navi Mumbai, Maharashtra, India, Telephone - 9082572832
+                </Typography>
+              </td> */}
+            </tr>
+          </tfoot>
+        </table>
+      </Box>
+    </Box>
+  );
+});
+
+export default BookingAknowLetter;

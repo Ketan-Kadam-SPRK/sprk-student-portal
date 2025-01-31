@@ -18,19 +18,48 @@ import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
 import { AmountFormat } from "../../Utils/AmountFormat";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Receipt from "../Common/Reciept/Receipt";
+import BookingAknowLetter from "./modals/BookingAknowLetter";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 
 function PaymentDetails() {
   const navigate = useNavigate();
   const [openReciept, setOpenReciept] = useState(false);
+  const [openDetailModal, setOpenDetailModal] = useState(false);
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+  const [loading, setLoading] = useState(false);
+  // const [data, setData] = useState([]);
+
+  const handleDetailModal = () => {
+    setOpenDetailModal(!openDetailModal);
+  };
 
   const handleOpenPayment = (row) => {
     console.log(row);
     setOpenReciept(!openReciept);
-  }
+  };
   const handleClosePayment = () => {
     setOpenReciept(!openReciept);
-  }
-  
+  };
+
+  // const getBookingDetail = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await dispatch(getBookingDetails({ headers }));
+  //     const data = res?.payload?.data?.data || [];
+  //     console.log(data)
+  //     setData(data);
+  //     setLoading(false);
+  //   } catch (err) {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getBookingDetail();
+  // }, []);
+
   const data = {
     booking_code: "B2501KHARE5854A5",
     course_grp: ["Full Stack in Java", "Data Analytics", "Excel"],
@@ -212,13 +241,13 @@ function PaymentDetails() {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Button
-            sx={{textWrap:"nowrap"}}
-            size="small"
+              sx={{ textWrap: "nowrap" }}
+              size="small"
               variant="contained"
               onClick={() => handleOpenPayment(row)}
               disabled={row.installment_status !== "PAID"}
             >
-          view Receipt
+              view Receipt
             </Button>
           </Box>
         );
@@ -227,7 +256,17 @@ function PaymentDetails() {
   ];
 
   return (
-    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        p: 2,
+        // minHeight: "100vh",
+        overflow: "auto",
+        flex: 1,
+      }}
+    >
       <Box
         sx={{
           backgroundColor: "white",
@@ -319,7 +358,9 @@ function PaymentDetails() {
                 <Typography variant="h6">Installments</Typography>
               </Box>
               <Box>
-                <Button variant="contained">view Details</Button>
+                <Button variant="contained" onClick={handleDetailModal}>
+                  view Details
+                </Button>
               </Box>
             </Box>
             <Box sx={{ display: "flex", gap: "20px", py: "15px" }}>
@@ -363,7 +404,7 @@ function PaymentDetails() {
               gap: "10px",
               backgroundColor: "white",
               p: 2,
-              mb:4,
+              mb: 4,
               borderRadius: "10px",
             }}
           >
@@ -376,7 +417,8 @@ function PaymentDetails() {
             >
               <InfoOutlinedIcon color="error" />
               <Typography sx={{ alignItems: "center" }}>
-                <span style={{ fontWeight: "bold" }}>Note</span>: The final due date for payment is 10/April/2025
+                <span style={{ fontWeight: "bold" }}>Note</span>: The final due
+                date for payment is 10/April/2025
               </Typography>
             </Box>
             <Typography sx={{ pl: 3 }}>
@@ -387,12 +429,18 @@ function PaymentDetails() {
           </Box>
         </Box>
       </Box>
-      <Dialog open={openReciept} onClose={handleClosePayment } maxWidth="md" fullWidth={true}>
-              <Box>
-                <Receipt
-                handleClosePayment={handleClosePayment}
-                />
-              </Box>
+      <Dialog
+        open={openReciept}
+        onClose={handleClosePayment}
+        maxWidth="md"
+        fullWidth={true}
+      >
+        <Box>
+          <Receipt handleClosePayment={handleClosePayment} />
+        </Box>
+      </Dialog>
+      <Dialog open={openDetailModal} maxWidth="md" fullWidth={true}>
+        <BookingAknowLetter handleDetailModal={handleDetailModal} />
       </Dialog>
     </Box>
   );

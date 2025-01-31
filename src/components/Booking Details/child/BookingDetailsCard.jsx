@@ -80,7 +80,7 @@ function BookingDetailsCard({ item }) {
             wordBreak: "break-word",
           }}
         >
-          {item?.bcn_no || ""}
+          {item?.booking_uid || ""}
         </Typography>
         <Typography
           sx={{
@@ -93,7 +93,7 @@ function BookingDetailsCard({ item }) {
             wordBreak: "break-word",
           }}
         >
-          {item?.courses?.join(" | ") || ""}
+          {item?.cg_names?.join(" | ") || ""}
         </Typography>
         <Typography
           sx={{
@@ -128,25 +128,27 @@ function BookingDetailsCard({ item }) {
               color: "#1976D2",
             }}
           >
-            Total Installments : {item?.NumberOfInstallments}
+            Total Installments : {item?.total_installments}
           </Typography>
           <Box>
           <CircularProgressWithLabel
-              value={item.numberOfInstallmentPaid}
-              totalValue={item.NumberOfInstallments}
-              progress={`${item.numberOfInstallmentPaid}/${item.NumberOfInstallments}`}
+              value={item.paid_installments}
+              totalValue={item.total_installments
+              }
+              progress={`${item.paid_installments}/${item.total_installments
+              }`}
             />
           </Box>
         </Box>
         <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-          Paid Amount: {item?.PaidAmount}
+          Paid Amount: {item?.paid_amt}
         </Typography>
-        <Typography>Balance Amount: {item?.BalanceAmount}</Typography>
-        <Typography>Payment Pattern : {item?.PaymentPattern}</Typography>
+        <Typography>Balance Amount: {item?.balance_amt}</Typography>
+        <Typography>Payment Pattern : {item?.payment_type}</Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: "10px",flexWrap:"wrap" }}>
           <Typography>Payment Status :</Typography>
           <StatusStyledComponent
-            value={item?.PaymentStatus}
+            value={item?.payment_status}
             color={color}
             backgroundColor={backgroundColor}
           />
@@ -162,7 +164,7 @@ function BookingDetailsCard({ item }) {
         >
           <Typography
             onClick={() => {
-              navigate(`/Payments/${item?.bcn_no}`);
+              navigate(`/Payments/${item?.booking_uid}`);
             }}
             color="primary"
             fontSize={"var(--font-size-extra-small)"}
