@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Typography,
@@ -21,11 +21,18 @@ import { Close } from "@mui/icons-material";
 import { Image } from "cloudinary-react";
 import CertificateModal from "./CertificateModal";
 import NoDataPage from "../../Utils/NoDataPage";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { getAllCertificates } from "./certificate.actions";
 
 function Certificates() {
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
   const [expanded, setExpanded] = useState(null);
   const targetRef = useRef(null);
-
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error500, setError500] = useState(false);
   const handleToggle = (id) => {
     setExpanded((prev) => (prev === id ? null : id));
   };
@@ -36,52 +43,82 @@ function Certificates() {
     setOpen(false);
   };
 
-  const data = [
-    {
-      Booking_id: "BCN10180540",
-      course_Name: "Fullstack in Java",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483574/sprk/courses/java_mbn80i.svg",
-      certificate_status: "pending",
-      theoryExam: true,
-      ProjectExam: false,
-      Attendance: false,
-      fees: true,
-    },
-    {
-      Booking_id: "BCN10180541",
-      course_Name: "React Development",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483584/sprk/courses/react_j3mxql.svg",
-      certificate_status: "to_review",
-      theoryExam: true,
-      ProjectExam: true,
-      Attendance: false,
-      fees: false,
-    },
-    {
-      Booking_id: "BCN10180542",
-      course_Name: "Python for Data Science",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483582/sprk/courses/python_x9slrg.svg",
-      certificate_status: "ready",
-      theoryExam: false,
-      ProjectExam: true,
-      Attendance: true,
-      fees: true,
-    },
-    {
-      Booking_id: "BCN10180543",
-      course_Name: "Machine Learning",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483576/sprk/courses/machine-learning_rh4ndy.svg",
-      certificate_status: "released",
-      theoryExam: true,
-      ProjectExam: true,
-      Attendance: true,
-      fees: true,
-    },
-  ];
+  useEffect(() => {
+    getJobs();
+  }, []);
+
+  const getJobs = async () => {
+    try {
+      setLoading(true);
+
+      const res = await dispatch(getAllCertificates({ headers }));
+      const status = res?.payload?.status;
+      const data = res?.payload?.data || [];
+      // const jobData = data?.sort(
+      //   (a, b) => new Date(b?.posted_on) - new Date(a?.posted_on)
+      // );
+      console.log(res);
+
+      if (status === 500 || status === 503) {
+        setError500(true);
+      } else {
+        setData(data);
+        // let filterData = data?.filter((job) => job?.status === activeTAb);
+        // setFilteredData(filterData);
+      }
+    } catch (err) {
+      console.error("Error fetching practical exams:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // const data = [
+  //   {
+  //     boo_uid: "BCN10180540",
+  //     course_Name: "Fullstack in Java",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483574/sprk/courses/java_mbn80i.svg",
+  //     status: "PENDING",
+  //     theoryExam: true,
+  //     ProjectExam: false,
+  //     Attendance: false,
+  //     fees: true,
+  //   },
+  //   {
+  //     boo_uid: "BCN10180541",
+  //     course_Name: "React Development",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483584/sprk/courses/react_j3mxql.svg",
+  //     status: "TO_REVIEW",
+  //     theoryExam: true,
+  //     ProjectExam: true,
+  //     Attendance: false,
+  //     fees: false,
+  //   },
+  //   {
+  //     boo_uid: "BCN10180542",
+  //     course_Name: "Python for Data Science",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483582/sprk/courses/python_x9slrg.svg",
+  //     status: "READY",
+  //     theoryExam: false,
+  //     ProjectExam: true,
+  //     Attendance: true,
+  //     fees: true,
+  //   },
+  //   {
+  //     boo_uid: "BCN10180543",
+  //     course_Name: "Machine Learning",
+  //     course_img:
+  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483576/sprk/courses/machine-learning_rh4ndy.svg",
+  //     status: "RELEASED",
+  //     theoryExam: true,
+  //     ProjectExam: true,
+  //     Attendance: true,
+  //     fees: true,
+  //   },
+  // ];
 
   const previewData = {
     cou_gro_name: "Python Programming",
@@ -111,13 +148,13 @@ function Certificates() {
 
   const getStepFromStatus = (status) => {
     switch (status) {
-      case "pending":
+      case "PENDING":
         return 0;
-      case "to_review":
+      case "TO_REVIEW":
         return 1;
-      case "ready":
+      case "READY":
         return 2;
-      case "released":
+      case "RELEASED":
         return 3;
       default:
         return 0; // Default to step 0 for unknown statuses
@@ -186,11 +223,11 @@ function Certificates() {
               }}
             >
               {data.map((item, index) => {
-                const activeStep = getStepFromStatus(item.certificate_status); // Get activeStep for each item
+                const activeStep = getStepFromStatus(item.status); // Get activeStep for each item
                 return (
                   <Accordion
-                    key={item.Booking_id}
-                    expanded={expanded === item.Booking_id}
+                    key={item.boo_uid}
+                    expanded={expanded === item.boo_uid}
                     sx={{ p: 2 }}
                   >
                     <AccordionSummary
@@ -198,12 +235,12 @@ function Certificates() {
                         <ExpandMoreIcon
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleToggle(item.Booking_id);
+                            handleToggle(item.boo_uid);
                           }}
                         />
                       }
-                      aria-controls={`${item.Booking_id}-content`}
-                      id={`${item.Booking_id}-header`}
+                      aria-controls={`${item.boo_uid}-content`}
+                      id={`${item.boo_uid}-header`}
                       onClick={(e) => e.stopPropagation()}
                     >
                       <Box
@@ -241,7 +278,7 @@ function Certificates() {
                             }}
                           >
                             <Image
-                              publicId={item.course_img}
+                              publicId={item.logo}
                               cloudName="dxlzzgbfw"
                               style={{
                                 width: "60px",
@@ -258,13 +295,13 @@ function Certificates() {
                             }}
                           >
                             <Typography variant="h6" fontWeight={600}>
-                              {item.course_Name}
+                              {item.cou_name}
                             </Typography>
                             <Typography
                               variant="body2"
                               sx={{ color: "#4D535A" }}
                             >
-                              {item.Booking_id}
+                              {item.boo_uid}
                             </Typography>
                           </Box>
                         </Box>
@@ -317,19 +354,19 @@ function Certificates() {
                       >
                         <Box sx={{ display: "flex", gap: 1 }}>
                           <Typography>Theory Exam</Typography>
-                          {renderStatusIcon(item.theoryExam)}
+                          {renderStatusIcon(item.theory)}
                         </Box>
                         <Box sx={{ display: "flex", gap: 1 }}>
                           <Typography>Project Exam</Typography>
-                          {renderStatusIcon(item.ProjectExam)}
+                          {renderStatusIcon(item.project)}
                         </Box>
                         <Box sx={{ display: "flex", gap: 1 }}>
                           <Typography>Attendance</Typography>
-                          {renderStatusIcon(item.Attendance)}
+                          {renderStatusIcon(item.attendance)}
                         </Box>
                         <Box sx={{ display: "flex", gap: 1 }}>
                           <Typography>Fees Paid</Typography>
-                          {renderStatusIcon(item.fees)}
+                          {renderStatusIcon(item.pendingFees === 0)}
                         </Box>
                       </Box>
                     </AccordionDetails>
@@ -385,7 +422,7 @@ function Certificates() {
           <DialogActions>
             <Box sx={{ display: "flex", px: 2, py: 1, width: "100%" }}>
               <Typography>
-                Released on 03 July 2024 by Kavita Suryawanshi.
+                RELEASED on 03 July 2024 by Kavita Suryawanshi.
               </Typography>
             </Box>
           </DialogActions>
