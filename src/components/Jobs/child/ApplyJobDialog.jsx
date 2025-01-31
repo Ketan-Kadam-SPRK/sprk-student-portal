@@ -15,12 +15,12 @@ import React, { useState } from "react";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { applyJob } from "../jobs.actions";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
   const headers = useAuthHeaders();
   const dispatch = useDispatch();
+  const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
 
-  const data = {};
   const [doc, setDoc] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState("");
@@ -189,7 +189,7 @@ function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
         >
           <Typography
             sx={{
-              fontSize: "var(--font-size-medium)",
+              fontSize: "var(--font-size-small)",
               fontWeight: 500,
               color: "#085186",
             }}
@@ -217,7 +217,7 @@ function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
               <Typography
                 sx={{ color: "#464646", fontSize: "var(--font-size-small)  " }}
               >
-                {`I, ${data?.studentName}, give ${jobData?.comp} permission to collect,
+                {`I, ${userDetails?.name}, give ${jobData?.comp} permission to collect,
                   verify, and use my personal information for recruitment
                   purposes. I understand my information will be kept
                   confidential. If not selected, my data may be retained for
