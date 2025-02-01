@@ -41,7 +41,7 @@ function RoutesConfig() {
       <Route path="Leaves" element={<Leaves />} />
       <Route path="Payments" element={<Outlet />}>
         <Route index element={<Payments />} />
-        <Route path=":paymentId" element={<PaymentDetails />} />
+        <Route path=":booking_uid" element={<PaymentDetails />} />
       </Route>
       <Route path="Certificates" element={<Certificates />} />
       <Route path="Job_Opportunities" element={<Outlet />}>
