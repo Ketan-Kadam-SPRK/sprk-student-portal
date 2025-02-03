@@ -4,6 +4,8 @@ import { useReactToPrint } from "react-to-print";
 import { ToWords } from "to-words";
 import "./receipt.css";
 import { Image } from "cloudinary-react";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../../../Hooks/useAuthHeaders";
 
 const text1 = {
   fontSize: "12px",
@@ -18,64 +20,25 @@ const text2 = {
 const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
   // Get receipt data from the Redux store
 
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
   const receiptData = {
     receipt_id: 1791,
     receipt_code: "R2501218144D46",
-    booked_id: 2187,
     booked_code: "B2501KHAR5D5C18A",
-    enquiry_id: 834,
-    student_id: 657,
-    student_code: "S2501KHARE872754",
     student_name: "Namdev Pise",
     student_address: "859, Solapur, Maharashtra, 851458, India",
-    booked_course: [
-      {
-        course_group_id: 2,
-        course_group_name: "Basic MS-office",
-        courses: [
-          {
-            course_id: 2,
-            course_name: "Basic Excel",
-          },
-          {
-            course_id: 3,
-            course_name: "Word",
-          },
-          {
-            course_id: 4,
-            course_name: "PowerPoint",
-          },
-          {
-            course_id: 5,
-            course_name: "Outlook",
-          },
-        ],
-      },
-    ],
     receipt_status: "ACTIVE",
     paid_amount: 8300,
     payment_mode: "CREDIT_CARD",
     transaction_id: null,
     cheque_number: null,
-    cheque_date: null,
-    bank_name: null,
-    branch_name: null,
     authorization_code: "4444555648",
-    initiated_at: "21/Jan/2025",
     paid_at: "2025-01-21T00:00:00Z",
-    initiated_by: "Kavita Pankaj Pawar",
-    cancellation_reason: null,
-    printed_receipts: [
-      {
-        receipt_id: 1791,
-        receipt_code: "R2501218144D46",
-        generated_at: "2025-01-21T13:24:34.948436Z",
-        printed_at: "2025-01-22T04:55:23.409124Z",
-        printed_by: "Kavita Pankaj Pawar",
-      },
-    ],
-    booked_course2: "Basic MS-office",
   };
+  
+  console.log(receiptData);
+  
   // Initialize loading state
   const [isLoading, setIsLoading] = useState(false);
 
