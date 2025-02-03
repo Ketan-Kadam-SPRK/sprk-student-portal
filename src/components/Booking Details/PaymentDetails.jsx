@@ -17,11 +17,12 @@ import { formatForDisplay } from "../../Utils/formateForDisplay";
 import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
 import { AmountFormat } from "../../Utils/AmountFormat";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Receipt from "../Common/Reciept/Receipt";
 import BookingAknowLetter from "./modals/BookingAknowLetter";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { getBookingInstallments } from "./action/Payment.action";
+import FormatDate from "../../Utils/FormatDate";
+import Receipt from "./modals/Receipt/Receipt";
 
 function PaymentDetails() {
   const navigate = useNavigate();
@@ -301,7 +302,7 @@ function PaymentDetails() {
             gap: "10px",
             backgroundColor: "white",
             borderRadius: "10px",
-            mt: 4,
+            mt: 2,
           }}
         >
           <Accordion>
@@ -422,22 +423,19 @@ function PaymentDetails() {
             >
               {data !== null &&
                 data?.payment_term === "LUMPSUM" &&
-                data?.pending_fees !== 0 && (
-                  <Typography
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      color: "#FFFFFF",
-                    }}
-                  >
-                    i m in
-                    {/* Note: The final due date for payment is{" "}
-                    {data.instal &&
-                      instal?.length > 0 &&
-                      FormatDate(
-                        data.instal[data.instal.length - 1]?.due_at
-                      )}{" "} */}
-                  </Typography>
+                data?.pending_fees !== 0 &&
+                data?.instal?.length > 0 && (
+                  <Box>
+                    <Box sx={{display:'flex',gap:'5px'}}>
+                      <InfoOutlinedIcon sx={{color:'red'}}/>
+                    <Typography>
+                      <span style={{ fontWeight: "bold" }}>Note :</span> The
+                      final due date for payment is{" "}
+                      {FormatDate(data.instal[data.instal.length - 1]?.due_at)}
+                    </Typography>
+                    </Box>
+                    <Typography sx={{pl:2}}>If the payment is not completed before the deadline, your payment will automatically get converted from a lumpsum to an installment plan.</Typography>
+                  </Box>
                 )}
             </Box>
           </Box>
@@ -450,11 +448,14 @@ function PaymentDetails() {
         fullWidth={true}
       >
         <Box>
-          <Receipt handleClosePayment={handleClosePayment} />
+          <Receipt handleClosePayment={handleClosePayment}/>
         </Box>
       </Dialog>
       <Dialog open={openDetailModal} maxWidth="md" fullWidth={true}>
-        <BookingAknowLetter handleDetailModal={handleDetailModal} />
+        <BookingAknowLetter 
+        handleDetailModal={handleDetailModal}
+        booking_uid={booking_uid}
+        />
       </Dialog>
     </Box>
   );

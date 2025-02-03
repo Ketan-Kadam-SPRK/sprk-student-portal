@@ -46,7 +46,7 @@ function BookingDetailsCard({ item }) {
       sx={{
         minWidth:{lg:"350px",md:"350px",sm:"250px",xs:"200px"},
         display: "flex",
-        flex: 1,
+        // flex: 1,
         flexBasis: "auto",
         flexDirection: "column",
         gap: "20px",
@@ -88,9 +88,11 @@ function BookingDetailsCard({ item }) {
             // fontWeight: "bold",
             fontSize: "var(--font-size-small)",
             textTransform: "capitalize",
-            // width: "200px",
+            width: "200px",
             maxWidth: "100%",
-            wordBreak: "break-word",
+            flexWrap:'nowrap',
+            overflow:'hidden',
+            overlay:"ellipsis"
           }}
         >
           {item?.cg_names?.join(" | ") || ""}
