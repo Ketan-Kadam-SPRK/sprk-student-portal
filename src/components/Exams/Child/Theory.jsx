@@ -1,23 +1,14 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Badge, Box, IconButton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ExamCard from "./ExamCard";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-import { useDispatch } from "react-redux";
-import { getTheoryExams } from "../exams.actions";
-import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
-import ErrorHandling from "../../Common/ErrorHandling";
+
 import NoDataPage from "../../../Utils/NoDataPage";
-function Theory() {
-  const dispatch = useDispatch();
-  const headers = useAuthHeaders();
-  const [data, setData] = useState({});
-
-  const [loading, setLoading] = useState(false);
-
+function Theory({ data = [], count }) {
   const [toggle, setToggle] = useState({
     practice: true,
-    internal: false,
+    internal_assessment: false,
     final: false,
   });
 
@@ -27,43 +18,6 @@ function Theory() {
       [name]: !prev[name],
     }));
   };
-
-  useEffect(() => {
-    getAllTheoryExams();
-  }, []);
-
-  const getAllTheoryExams = async () => {
-    try {
-      setLoading(true);
-
-      const res = await dispatch(getTheoryExams({ headers }));
-      const status = res?.payload?.status;
-      const examsData = res?.payload?.data || [];
-
-      if (status === 500 || status === 503) {
-        setError500(true);
-      } else {
-        const modified = {
-          practice: examsData?.filter(
-            (item) => item.assessment_type === "PRACTICE"
-          ),
-          internal_assessment: examsData?.filter(
-            (item) => item.assessment_type === "INTERNAL_ASSESSMENT"
-          ),
-          final: examsData?.filter((item) => item.assessment_type === "FINAL"),
-        };
-        setData(modified);
-      }
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return <ErrorHandling error500={false} loadData={loading} />;
-  }
 
   return (
     <Box
@@ -93,6 +47,7 @@ function Theory() {
         <Typography fontSize={"var(--font-size-small)"} fontWeight={600}>
           Practice
         </Typography>{" "}
+        <Badge color="error" badgeContent={count?.practice} />
         {
           <IconButton onClick={() => handleToggle("practice")}>
             {toggle?.practice ? (
@@ -141,9 +96,10 @@ function Theory() {
         <Typography fontSize={"var(--font-size-small)"} fontWeight={600}>
           Internal Assessment
         </Typography>{" "}
+        <Badge color="error" badgeContent={count?.internal_assessment} />
         {
-          <IconButton onClick={() => handleToggle("internal")}>
-            {toggle?.internal ? (
+          <IconButton onClick={() => handleToggle("internal_assessment")}>
+            {toggle?.internal_assessment ? (
               <KeyboardArrowDownRoundedIcon sx={{ color: "white" }} />
             ) : (
               <KeyboardArrowUpRoundedIcon sx={{ color: "white" }} />
@@ -151,7 +107,7 @@ function Theory() {
           </IconButton>
         }
       </Box>
-      {toggle?.internal && (
+      {toggle?.internal_assessment && (
         <Box
           sx={{
             display: "flex",
@@ -189,6 +145,7 @@ function Theory() {
         <Typography fontSize={"var(--font-size-small)"} fontWeight={600}>
           Final
         </Typography>{" "}
+        <Badge color="error" badgeContent={count?.final} />
         {
           <IconButton onClick={() => handleToggle("final")}>
             {toggle?.final ? (

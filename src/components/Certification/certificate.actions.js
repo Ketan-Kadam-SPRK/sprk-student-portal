@@ -7,25 +7,21 @@ export const getAllCertificates = createAsyncThunk(
   async ({ headers }) => {
     try {
       // Send a GET request to fetch user details using the access token and user ID
-      const res = await axiosInstance.get(
-        `https://vxljwq9k-8888.inc1.devtunnels.ms/api/student-portal/certificates`,
-        {
-          headers,
-        }
-      );
+      const res = await axiosInstance.get(`/student-portal/certificates`, {
+        headers,
+      });
 
       // Extract and return the data from the response
       const data = await res.data;
 
       // Return the user details
-      return data;
+
+      return { data: data, status: res.status };
     } catch (err) {
-      console.log(err);
-      throw err; // Throw an error if there's an issue with the request
+      return { status: err.response.status, error: err.response.data.error };
     }
   }
 );
-
 
 export const getCertificate = createAsyncThunk(
   "certificate/getAllCertificates",

@@ -26,6 +26,13 @@ function JobDetails() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
+  const [count, setCount] = useState({
+    applied: 0,
+    notApplied: 0,
+    unplaced: 0,
+    placed: 0,
+    denied: 0,
+  });
 
   const { jobid } = useParams(); // Destructure the parameter from useParams
   console.log(jobid);
