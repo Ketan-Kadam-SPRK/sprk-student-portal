@@ -52,127 +52,71 @@ const BookingAknowLetter = forwardRef(({ handleDetailModal }, ref) => {
 
 
   const bookingData = {
-    enq_id: 820,
-    booked_id: 2240,
     booking_code: "B2501KHARDF84BBA",
     booked_at: "2025-01-27T06:13:52.671928Z",
-    booked_by: "Kavita Pankaj Pawar",
     booked_course: [
       {
-        course_group_id: 33,
         course_group_name: "Full Stack Development - Java",
-        course_group_inst_fees: 57999.4,
-        course_group_inst_discount: 38.948,
-        course_group_lump_fees: 51999.97,
-        course_group_lump_discount: 45.2632,
-        course_group_duration: 250,
         courses: [
           {
             course_id: 11,
             course_name: "C Programming",
-            course_fees: 7800,
-            course_sessions: 30,
           },
           {
             course_id: 12,
             course_name: "C++ Programming",
-            course_fees: 7800,
-            course_sessions: 22,
           },
           {
             course_id: 13,
             course_name: "HTML5",
-            course_fees: 3000,
-            course_sessions: 8,
           },
           {
             course_id: 14,
             course_name: "CSS3",
-            course_fees: 7700,
-            course_sessions: 20,
           },
           {
             course_id: 15,
             course_name: "Bootstrap",
-            course_fees: 2000,
-            course_sessions: 12,
           },
           {
             course_id: 16,
             course_name: "Javascript",
-            course_fees: 10000,
-            course_sessions: 20,
           },
           {
             course_id: 17,
             course_name: "MySQL",
-            course_fees: 12700,
-            course_sessions: 25,
           },
           {
             course_id: 19,
             course_name: "Core Java",
-            course_fees: 15700,
-            course_sessions: 30,
           },
           {
             course_id: 20,
             course_name: "JSP & Servlet",
-            course_fees: 8000,
-            course_sessions: 26,
           },
           {
             course_id: 21,
             course_name: "Spring Framework",
-            course_fees: 14000,
-            course_sessions: 50,
           },
           {
             course_id: 22,
             course_name: "Hibernate",
-            course_fees: 5000,
-            course_sessions: 4,
           },
           {
             course_id: 41,
             course_name: "Introduction to Data Structure",
-            course_fees: 1300,
-            course_sessions: 3,
           },
         ],
       },
     ],
     student: {
-      student_id: 646,
       student_code: "S2501KHAR58D9AFC",
       student_name: "Siddhesh Thapa",
       student_address: "navrang road, Navi Mumbai, Maharashtra, 410210, India",
     },
-    converted: null,
-    booking_status: "CANCELLED",
-    payment_term: "INSTALLMENT",
-    duration: 250,
     total_fees: 58000,
-    pending_fees: 0,
-    paid_fees: 0,
-    course_fees: 58000,
-    other_fees: 0,
-    discount_amount: 0,
-    discount_reason: null,
-    rea_fee: null,
-    rea_rsn: null,
-    credit: null,
-    credit_amount: 0,
     generated_credits: 0,
-    gst: 0,
     payments: {
-      exp: [
-        {
-          sdl: "WEEKDAY",
-          exp: "2026-07-07T06:14:51.536Z",
-          upt: "2026-07-07T06:14:51.536Z",
-        },
-      ],
       instal: [
         {
           due_at: "2025-01-27",
@@ -226,14 +170,9 @@ const BookingAknowLetter = forwardRef(({ handleDetailModal }, ref) => {
         },
       ],
     },
-    number_of_installments: 5,
-    registration_amount: 0,
-    registration_payment: [],
     rbc: false,
     previous_course: null,
     new_course: null,
-    is_lump_sum: true,
-    start_date: "2025-01-28T06:14:51.536Z",
   };
 
   //   useEffect(() => {

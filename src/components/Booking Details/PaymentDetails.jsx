@@ -7,8 +7,8 @@ import {
   Dialog,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import dateFormator from "../../Utils/dateFormator";
 import { Image } from "cloudinary-react";
@@ -21,6 +21,7 @@ import Receipt from "../Common/Reciept/Receipt";
 import BookingAknowLetter from "./modals/BookingAknowLetter";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { getBookingInstallments } from "./action/Payment.action";
 
 function PaymentDetails() {
   const navigate = useNavigate();
@@ -29,7 +30,9 @@ function PaymentDetails() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
-  // const [data, setData] = useState([]);
+  const { booking_uid } = useParams();
+  console.log(booking_uid);
+  const [data, setData] = useState([]);
 
   const handleDetailModal = () => {
     setOpenDetailModal(!openDetailModal);
@@ -43,101 +46,103 @@ function PaymentDetails() {
     setOpenReciept(!openReciept);
   };
 
-  // const getBookingDetail = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const res = await dispatch(getBookingDetails({ headers }));
-  //     const data = res?.payload?.data?.data || [];
-  //     console.log(data)
-  //     setData(data);
-  //     setLoading(false);
-  //   } catch (err) {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getBookingDetail();
-  // }, []);
-
-  const data = {
-    booking_code: "B2501KHARE5854A5",
-    course_grp: ["Full Stack in Java", "Data Analytics", "Excel"],
-    booked_at: "2025-01-21T07:16:16.971931Z",
-    batch_prefer: "Weekdays",
-    payment_term: "Installments",
-    total_fees: 58000,
-    pending_fees: 23200.0,
-    paid_fees: 34800.0,
-    instal: [
-      {
-        due_at: "2025-01-21",
-        paid_at: "2025-01-21T00:00:00Z",
-        payment_id: 1779,
-        receipt_code: "R25012119D6623",
-        due_amount: 11600.0,
-        paid_amount: 11600.0,
-        Mode_of_Payment: "CASH",
-        installment_status: "PAID",
-        installment_id: "IST2501211246b2b9",
-      },
-      {
-        due_at: "2025-02-21",
-        paid_at: "2025-01-21T00:00:00Z",
-        payment_id: 1780,
-        receipt_code: "R25012141B5CE8",
-        due_amount: 11600.0,
-        paid_amount: 11600.0,
-        Mode_of_Payment: "CASH",
-        installment_status: "PAID",
-        installment_id: "IST25012112468d9c",
-      },
-      {
-        due_at: "2025-03-21",
-        paid_at: "2025-01-21T00:00:00Z",
-        payment_id: 1781,
-        receipt_code: "R250121ED470B5",
-        due_amount: 11600.0,
-        paid_amount: 11600.0,
-        Mode_of_Payment: "CASH",
-        installment_status: "PAID",
-        installment_id: "IST25012112469a42",
-      },
-      {
-        due_at: "2025-04-21",
-        paid_at: null,
-        payment_id: null,
-        receipt_code: null,
-        due_amount: 11600.0,
-        paid_amount: null,
-        Mode_of_Payment: null,
-        installment_status: "PENDING",
-        installment_id: "IST2501211246239f",
-      },
-      {
-        due_at: "2025-05-21",
-        paid_at: null,
-        payment_id: null,
-        receipt_code: null,
-        due_amount: 11600.0,
-        paid_amount: null,
-        Mode_of_Payment: null,
-        installment_status: "PENDING",
-        installment_id: "IST250121124615a9",
-      },
-      {
-        due_at: "2025-06-21",
-        paid_at: null,
-        payment_id: null,
-        receipt_code: null,
-        due_amount: 11600.0,
-        paid_amount: null,
-        Mode_of_Payment: null,
-        installment_status: "PENDING",
-        installment_id: "IST250121124615a9",
-      },
-    ],
+  const getBookingInstallmentDetails = async () => {
+    setLoading(true);
+    try {
+      const res = await dispatch(
+        getBookingInstallments({ headers, booking_uid })
+      );
+      const data = res?.payload?.data?.data || [];
+      console.log(data);
+      setData(data);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    getBookingInstallmentDetails();
+  }, []);
+
+  // const data = {
+  //   booking_code: "B2501KHARE5854A5",
+  //   course_grp: ["Full Stack in Java", "Data Analytics", "Excel"],
+  //   booked_at: "2025-01-21T07:16:16.971931Z",
+  //   batch_prefer: "Weekdays",
+  //   payment_term: "Installments",
+  //   total_fees: 58000,
+  //   pending_fees: 23200.0,
+  //   paid_fees: 34800.0,
+  //   instal: [
+  //     {
+  //       due_at: "2025-01-21",
+  //       paid_at: "2025-01-21T00:00:00Z",
+  //       payment_id: 1779,
+  //       receipt_code: "R25012119D6623",
+  //       due_amount: 11600.0,
+  //       paid_amount: 11600.0,
+  //       Mode_of_Payment: "CASH",
+  //       installment_status: "PAID",
+  //       installment_id: "IST2501211246b2b9",
+  //     },
+  //     {
+  //       due_at: "2025-02-21",
+  //       paid_at: "2025-01-21T00:00:00Z",
+  //       payment_id: 1780,
+  //       receipt_code: "R25012141B5CE8",
+  //       due_amount: 11600.0,
+  //       paid_amount: 11600.0,
+  //       Mode_of_Payment: "CASH",
+  //       installment_status: "PAID",
+  //       installment_id: "IST25012112468d9c",
+  //     },
+  //     {
+  //       due_at: "2025-03-21",
+  //       paid_at: "2025-01-21T00:00:00Z",
+  //       payment_id: 1781,
+  //       receipt_code: "R250121ED470B5",
+  //       due_amount: 11600.0,
+  //       paid_amount: 11600.0,
+  //       Mode_of_Payment: "CASH",
+  //       installment_status: "PAID",
+  //       installment_id: "IST25012112469a42",
+  //     },
+  //     {
+  //       due_at: "2025-04-21",
+  //       paid_at: null,
+  //       payment_id: null,
+  //       receipt_code: null,
+  //       due_amount: 11600.0,
+  //       paid_amount: null,
+  //       Mode_of_Payment: null,
+  //       installment_status: "PENDING",
+  //       installment_id: "IST2501211246239f",
+  //     },
+  //     {
+  //       due_at: "2025-05-21",
+  //       paid_at: null,
+  //       payment_id: null,
+  //       receipt_code: null,
+  //       due_amount: 11600.0,
+  //       paid_amount: null,
+  //       Mode_of_Payment: null,
+  //       installment_status: "PENDING",
+  //       installment_id: "IST250121124615a9",
+  //     },
+  //     {
+  //       due_at: "2025-06-21",
+  //       paid_at: null,
+  //       payment_id: null,
+  //       receipt_code: null,
+  //       due_amount: 11600.0,
+  //       paid_amount: null,
+  //       Mode_of_Payment: null,
+  //       installment_status: "PENDING",
+  //       installment_id: "IST250121124615a9",
+  //     },
+  //   ],
+  // };
 
   const getMonthName = (dateString) => {
     if (!dateString) return ""; // Handle invalid or undefined date
@@ -326,7 +331,7 @@ function PaymentDetails() {
             <AccordionDetails>
               <div style={{ color: "#0074BD", fontWeight: 600 }}>
                 <Typography>
-                  Course groups : {data.course_grp.join(" | ")}
+                  Course groups : {data?.course_grp?.join(" | ")}
                 </Typography>
                 <Typography>
                   Booking Date : {dateFormator(data.booked_at)}
@@ -415,17 +420,26 @@ function PaymentDetails() {
                 alignItems: "center",
               }}
             >
-              <InfoOutlinedIcon color="error" />
-              <Typography sx={{ alignItems: "center" }}>
-                <span style={{ fontWeight: "bold" }}>Note</span>: The final due
-                date for payment is 10/April/2025
-              </Typography>
+              {data !== null &&
+                data?.payment_term === "LUMPSUM" &&
+                data?.pending_fees !== 0 && (
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 500,
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    i m in
+                    {/* Note: The final due date for payment is{" "}
+                    {data.instal &&
+                      instal?.length > 0 &&
+                      FormatDate(
+                        data.instal[data.instal.length - 1]?.due_at
+                      )}{" "} */}
+                  </Typography>
+                )}
             </Box>
-            <Typography sx={{ pl: 3 }}>
-              If the payment is not completed before the deadline, your payment
-              will automatically get converted from a lumpsum to an installment
-              plan.
-            </Typography>
           </Box>
         </Box>
       </Box>
