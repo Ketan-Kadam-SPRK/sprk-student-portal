@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid2, Typography } from "@mui/material";
 import CourseGrpCard from "./child/CourseGrpCard";
 import { getCourseGrpDetails } from "./course.actions";
 import { useDispatch } from "react-redux";
@@ -101,23 +101,28 @@ const Courses = () => {
           }}
         >
           {courseData?.length > 0 ? (
-            courseData?.map((item, index) => (
-              <CourseGrpCard
-                key={`${index}-${item.cg_uid}-${item.bcn}`}
-                item={item}
-              />
-            ))
+            <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
+              {courseData?.map((item, index) => (
+                <Grid2
+                  key={`${index}-${item.cg_uid}-${item.bcn}`}
+                  size={{ xs: 12, sm: 12, md: 6, lg: 4 }}
+                >
+                  <CourseGrpCard item={item} />
+                </Grid2>
+              ))}
+            </Grid2>
           ) : (
             <NoDataPage
               errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737363456/Online_education_with_laptop_and_books_zsko0t.svg"
               errorHeading="No Course Groups Yet!"
-              errorDescription="Looks like you’re not enrolled in any course groups yet.  Once you join a course, all the details will show up here. "
+              errorDescription="Looks like you’re not enrolled in any course groups yet. Once you join a course, all the details will show up here."
             />
           )}
         </Box>
       </Box>
     </Box>
   );
+  
 };
 
 export default Courses;

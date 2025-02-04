@@ -71,8 +71,9 @@ function ExamCard({ item }) {
         borderRadius: "10px",
         backgroundColor: "white",
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
-        width: "350px",
-        maxWidth: "90%",
+        // width: "350px",
+        width: "100%",
+        // maxWidth: "90%",
       }}
     >
       <Box
