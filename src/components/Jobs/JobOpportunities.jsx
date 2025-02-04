@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Badge, Box, Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import JobCard from "./child/JobCard";
 import { useDispatch } from "react-redux";
@@ -16,6 +16,14 @@ function JobOpportunities() {
   const [loading, setLoading] = useState(false);
   const [error500, setError500] = useState(false);
   const [activeTAb, setActiveTab] = useState("NOT_APPLIED");
+
+  const [count, setCount] = useState({
+    APPLIED: 0,
+    NOT_APPLIED: 0,
+    UNPLACED: 0,
+    PLACED: 0,
+    DENIED: 0,
+  });
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -43,6 +51,19 @@ function JobOpportunities() {
         setData(jobData);
         let filterData = data?.filter((job) => job?.status === activeTAb);
         setFilteredData(filterData);
+        setCount({
+          APPLIED:
+            jobData?.filter((job) => job?.status === "APPLIED")?.length || 0,
+          NOT_APPLIED:
+            jobData?.filter((job) => job?.status === "NOT_APPLIED")?.length ||
+            0,
+          UNPLACED:
+            jobData?.filter((job) => job?.status === "UNPLACED")?.length || 0,
+          PLACED:
+            jobData?.filter((job) => job?.status === "PLACED")?.length || 0,
+          DENIED:
+            jobData?.filter((job) => job?.status === "DENIED")?.length || 0,
+        });
       }
     } catch (err) {
       console.error("Error fetching practical exams:", err);
@@ -55,6 +76,8 @@ function JobOpportunities() {
     let filterData = data?.filter((job) => job?.status === activeTAb);
     setFilteredData(filterData);
   }, [activeTAb]);
+
+  console.log(count);
 
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
@@ -107,6 +130,9 @@ function JobOpportunities() {
                 backgroundColor: activeTAb === res ? "#6560F0" : "#E0DFFF",
                 color: activeTAb === res && "white",
               }}
+              endIcon={
+                <Badge badgeContent={count[res]} color="secondary"></Badge>
+              }
             >
               {formatForDisplay(res)}
             </Button>

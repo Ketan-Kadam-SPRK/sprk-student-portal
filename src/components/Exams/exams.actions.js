@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axios/axiosInstance";
 
-export const getTheoryExams = createAsyncThunk(
-  "exam/getTheoryExams",
+export const getAllExams = createAsyncThunk(
+  "exam/getAllExams",
   async ({ headers }) => {
     try {
       // Send a GET request to fetch user details using the access token and user ID
-      const res = await axiosInstance.get(`/student-portal/exams/theory`, {
+      const res = await axiosInstance.get(`/student-portal/exams`, {
         headers,
       });
 
@@ -14,10 +14,9 @@ export const getTheoryExams = createAsyncThunk(
       const data = await res.data;
 
       // Return the user details
-      return data;
+      return { data: data, status: res.status };
     } catch (err) {
-      console.log(err);
-      throw err; // Throw an error if there's an issue with the request
+      return { status: err.response.status, error: err.response.data.error };
     }
   }
 );

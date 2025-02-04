@@ -24,6 +24,7 @@ import NoDataPage from "../../Utils/NoDataPage";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { getAllCertificates } from "./certificate.actions";
+import ErrorHandling from "../../components/Common/ErrorHandling";
 
 function Certificates() {
   const dispatch = useDispatch();
@@ -53,18 +54,14 @@ function Certificates() {
 
       const res = await dispatch(getAllCertificates({ headers }));
       const status = res?.payload?.status;
-      const data = res?.payload?.data || [];
-      // const jobData = data?.sort(
-      //   (a, b) => new Date(b?.posted_on) - new Date(a?.posted_on)
-      // );
+      const data = res?.payload?.data?.data || [];
+
       console.log(res);
 
       if (status === 500 || status === 503) {
         setError500(true);
       } else {
         setData(data);
-        // let filterData = data?.filter((job) => job?.status === activeTAb);
-        // setFilteredData(filterData);
       }
     } catch (err) {
       console.error("Error fetching practical exams:", err);
@@ -72,53 +69,6 @@ function Certificates() {
       setLoading(false);
     }
   };
-
-  // const data = [
-  //   {
-  //     boo_uid: "BCN10180540",
-  //     course_Name: "Fullstack in Java",
-  //     course_img:
-  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483574/sprk/courses/java_mbn80i.svg",
-  //     status: "PENDING",
-  //     theoryExam: true,
-  //     ProjectExam: false,
-  //     Attendance: false,
-  //     fees: true,
-  //   },
-  //   {
-  //     boo_uid: "BCN10180541",
-  //     course_Name: "React Development",
-  //     course_img:
-  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483584/sprk/courses/react_j3mxql.svg",
-  //     status: "TO_REVIEW",
-  //     theoryExam: true,
-  //     ProjectExam: true,
-  //     Attendance: false,
-  //     fees: false,
-  //   },
-  //   {
-  //     boo_uid: "BCN10180542",
-  //     course_Name: "Python for Data Science",
-  //     course_img:
-  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483582/sprk/courses/python_x9slrg.svg",
-  //     status: "READY",
-  //     theoryExam: false,
-  //     ProjectExam: true,
-  //     Attendance: true,
-  //     fees: true,
-  //   },
-  //   {
-  //     boo_uid: "BCN10180543",
-  //     course_Name: "Machine Learning",
-  //     course_img:
-  //       "https://res.cloudinary.com/droommwjk/image/upload/v1707483576/sprk/courses/machine-learning_rh4ndy.svg",
-  //     status: "RELEASED",
-  //     theoryExam: true,
-  //     ProjectExam: true,
-  //     Attendance: true,
-  //     fees: true,
-  //   },
-  // ];
 
   const previewData = {
     cou_gro_name: "Python Programming",
@@ -169,6 +119,10 @@ function Certificates() {
     );
   };
 
+  if (loading || error500) {
+    return <ErrorHandling error500={error500} loadData={loading} />;
+  }
+
   return (
     <>
       <Box
@@ -217,12 +171,14 @@ function Certificates() {
                 display: "flex",
                 flexDirection: "column",
                 backgroundColor: "white",
-                minHeight: "60vh",
+                height: "80vh",
+                flex: 1,
                 p: 2,
+                overflow: "auto",
                 gap: 5,
               }}
             >
-              {data.map((item, index) => {
+              {data?.map((item, index) => {
                 const activeStep = getStepFromStatus(item.status); // Get activeStep for each item
                 return (
                   <Accordion
