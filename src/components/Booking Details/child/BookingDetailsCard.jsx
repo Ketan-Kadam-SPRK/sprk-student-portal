@@ -6,6 +6,12 @@ import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRound
 import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import dateFormator from "../../../Utils/dateFormator";
 import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
+import {
+  CapitalizeFirstLetter,
+  formatForDisplay,
+} from "../../../Utils/formateForDisplay";
+import { CapitalFirstLetterOnly } from "../../../Utils/CapitalFirstLetterOnly";
+import { AmountFormat } from "../../../Utils/AmountFormat";
 
 function BookingDetailsCard({ item }) {
   const navigate = useNavigate();
@@ -39,15 +45,13 @@ function BookingDetailsCard({ item }) {
     return { color, backgroundColor };
   };
 
-  const { color, backgroundColor } = getStatusColor(item?.PaymentStatus);
+  const { color, backgroundColor } = getStatusColor(item?.payment_status);
 
   return (
     <Box
       sx={{
-        minWidth:{lg:"350px",md:"350px",sm:"250px",xs:"200px"},
+        width: "100%",
         display: "flex",
-        // flex: 1,
-        flexBasis: "auto",
         flexDirection: "column",
         gap: "20px",
         borderRadius: "10px",
@@ -60,12 +64,12 @@ function BookingDetailsCard({ item }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: "5px",
+          // gap: "5px",
           p: 2,
           background: "linear-gradient(270deg, #6560F0 0.13%, #0A2647 91.8%)",
-          borderRadius: "10px 10px 0px 0px",
+          borderRadius: "10px",
           alignItems: "flex-start",
-          height: "140px",
+          height: "120px",
           justifyContent: "space-between",
         }}
       >
@@ -75,28 +79,30 @@ function BookingDetailsCard({ item }) {
             fontWeight: "bold",
             fontSize: "var(--font-size-medium)",
             textTransform: "capitalize",
-            width: "200px",
+            // width: "200px",
             maxWidth: "100%",
             wordBreak: "break-word",
           }}
         >
           {item?.booking_uid || ""}
         </Typography>
-        <Typography
-          sx={{
-            color: "white",
-            // fontWeight: "bold",
-            fontSize: "var(--font-size-small)",
-            textTransform: "capitalize",
-            width: "200px",
-            maxWidth: "100%",
-            flexWrap:'nowrap',
-            overflow:'hidden',
-            overlay:"ellipsis"
-          }}
-        >
-          {item?.cg_names?.join(" | ") || ""}
-        </Typography>
+        <Box sx={{width:'100%'}}>
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: "var(--font-size-small)",
+              textOverflow: "ellipsis",
+              wordBreak: "normal",
+              whiteSpace: "nowrap",
+              width:"100%",
+              overflow: "hidden",
+              cursor: "pointer",
+            }}
+            title={item?.cg_names?.join(" | ") || ""}
+          >
+            {item?.cg_names?.join(" | ") || ""}
+          </Typography>
+        </Box>
         <Typography
           sx={{
             color: "white",
@@ -111,7 +117,7 @@ function BookingDetailsCard({ item }) {
         </Typography>
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Box
           sx={{
             display: "flex",
@@ -133,22 +139,103 @@ function BookingDetailsCard({ item }) {
             Total Installments : {item?.total_installments}
           </Typography>
           <Box>
-          <CircularProgressWithLabel
+            <CircularProgressWithLabel
               value={item.paid_installments}
-              totalValue={item.total_installments
-              }
-              progress={`${item.paid_installments}/${item.total_installments
-              }`}
+              totalValue={item.total_installments}
+              progress={`${item.paid_installments}/${item.total_installments}`}
             />
           </Box>
         </Box>
-        <Typography sx={{ fontSize: "var(--font-size-small)" }}>
-          Paid Amount: {item?.paid_amt}
-        </Typography>
-        <Typography>Balance Amount: {item?.balance_amt}</Typography>
-        <Typography>Payment Pattern : {item?.payment_type}</Typography>
-        <Box sx={{ display: "flex", alignItems: "center", gap: "10px",flexWrap:"wrap" }}>
-          <Typography>Payment Status :</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            color: "#393939",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-small) !important",
+              fontWeight: 600,
+            }}
+          >
+            Paid Amount :
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-extra-small) !important",
+            }}
+          >
+            {AmountFormat(item?.paid_amt)}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            color: "#393939",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-small) !important",
+              fontWeight: 600,
+            }}
+          >
+            Balance Amount :
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-extra-small) !important",
+            }}
+          >
+            {AmountFormat(item?.balance_amt)}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            color: "#393939",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-small) !important",
+              fontWeight: 600,
+            }}
+          >
+            Payment Pattern :
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-extra-small) !important",
+            }}
+          >
+            {CapitalFirstLetterOnly(item?.payment_type)}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            flexWrap: "wrap",
+            color: "#393939",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-small) !important",
+              fontWeight: 600,
+            }}
+          >
+            Payment Status :
+          </Typography>
           <StatusStyledComponent
             value={item?.payment_status}
             color={color}
@@ -162,6 +249,7 @@ function BookingDetailsCard({ item }) {
             justifyContent: "space-between",
             gap: "10px",
             flexWrap: "wrap",
+            pt: 1,
           }}
         >
           <Typography

@@ -23,6 +23,7 @@ import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { getBookingInstallments } from "./action/Payment.action";
 import FormatDate from "../../Utils/FormatDate";
 import Receipt from "./modals/Receipt/Receipt";
+import { CapitalFirstLetterOnly } from "../../Utils/CapitalFirstLetterOnly";
 
 function PaymentDetails() {
   const navigate = useNavigate();
@@ -179,7 +180,7 @@ function PaymentDetails() {
       minWidth: 150,
       format: (value) => AmountFormat(value),
     },
-    { headerName: "Mode of Payment", id: "Mode_of_Payment", minWidth: 150 },
+    { headerName: "Mode of Payment", id: "mode_of_Payment", minWidth: 150 },
     {
       headerName: "Paid On",
       id: "paid_at",
@@ -267,7 +268,7 @@ function PaymentDetails() {
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        p: 2,
+        pb: 2,
         // minHeight: "100vh",
         overflow: "auto",
         flex: 1,
@@ -293,7 +294,7 @@ function PaymentDetails() {
           </Button>
         </Box>
       </Box>
-      <Box sx={{ px: 2 }}>
+      <Box sx={{ px: 3 }}>
         <Box
           sx={{
             display: "flex",
@@ -337,8 +338,8 @@ function PaymentDetails() {
                 <Typography>
                   Booking Date : {dateFormator(data.booked_at)}
                 </Typography>
-                <Typography>Batch Preference : {data.batch_prefer}</Typography>
-                <Typography>Payment Pattern : {data.payment_term}</Typography>
+                <Typography>Batch Preference : {CapitalFirstLetterOnly(data.batch_prefer)}</Typography>
+                <Typography>Payment Pattern : {CapitalFirstLetterOnly(data.payment_term)}</Typography>
               </div>
             </AccordionDetails>
           </Accordion>
@@ -426,15 +427,21 @@ function PaymentDetails() {
                 data?.pending_fees !== 0 &&
                 data?.instal?.length > 0 && (
                   <Box>
-                    <Box sx={{display:'flex',gap:'5px'}}>
-                      <InfoOutlinedIcon sx={{color:'red'}}/>
-                    <Typography>
-                      <span style={{ fontWeight: "bold" }}>Note :</span> The
-                      final due date for payment is{" "}
-                      {FormatDate(data.instal[data.instal.length - 1]?.due_at)}
-                    </Typography>
+                    <Box sx={{ display: "flex", gap: "5px" }}>
+                      <InfoOutlinedIcon sx={{ color: "red" }} />
+                      <Typography>
+                        <span style={{ fontWeight: "bold" }}>Note :</span> The
+                        final due date for payment is{" "}
+                        {FormatDate(
+                          data.instal[data.instal.length - 1]?.due_at
+                        )}
+                      </Typography>
                     </Box>
-                    <Typography sx={{pl:2}}>If the payment is not completed before the deadline, your payment will automatically get converted from a lumpsum to an installment plan.</Typography>
+                    <Typography sx={{ pl: 2 }}>
+                      If the payment is not completed before the deadline, your
+                      payment will automatically get converted from a lumpsum to
+                      an installment plan.
+                    </Typography>
                   </Box>
                 )}
             </Box>
@@ -447,14 +454,12 @@ function PaymentDetails() {
         maxWidth="md"
         fullWidth={true}
       >
-        <Box>
-          <Receipt handleClosePayment={handleClosePayment}/>
-        </Box>
+        <Receipt handleClosePayment={handleClosePayment} />
       </Dialog>
       <Dialog open={openDetailModal} maxWidth="md" fullWidth={true}>
-        <BookingAknowLetter 
-        handleDetailModal={handleDetailModal}
-        booking_uid={booking_uid}
+        <BookingAknowLetter
+          handleDetailModal={handleDetailModal}
+          booking_uid={booking_uid}
         />
       </Dialog>
     </Box>
