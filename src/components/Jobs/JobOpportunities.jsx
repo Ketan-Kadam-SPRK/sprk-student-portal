@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Typography } from "@mui/material";
+import { Badge, Box, Button, Grid2, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import JobCard from "./child/JobCard";
 import { useDispatch } from "react-redux";
@@ -150,9 +150,13 @@ function JobOpportunities() {
           }}
         >
           {filteredData?.length > 0 ? (
-            filteredData?.map((item, index) => (
-              <JobCard key={index} item={item} />
-            ))
+            <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
+              {filteredData?.map((item, index) => (
+                <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
+                  <JobCard key={index} item={item} />
+                </Grid2>
+              ))}
+            </Grid2>
           ) : (
             <NoDataPage
               errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738046047/Search_for_a_job_candidate_jeezzw.png"
