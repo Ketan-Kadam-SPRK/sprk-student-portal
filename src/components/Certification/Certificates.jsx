@@ -182,22 +182,17 @@ function Certificates() {
                 const activeStep = getStepFromStatus(item.status); // Get activeStep for each item
                 return (
                   <Accordion
-                    key={item.boo_uid}
-                    expanded={expanded === item.boo_uid}
+                    key={`${item.boo_uid}-${index}`}
+                    expanded={expanded === `${item.boo_uid}-${index}`}
                     sx={{ p: 2 }}
+                    onClick={(e) => {
+                      handleToggle(`${item.boo_uid}-${index}`);
+                    }}
                   >
                     <AccordionSummary
-                      expandIcon={
-                        <ExpandMoreIcon
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleToggle(item.boo_uid);
-                          }}
-                        />
-                      }
-                      aria-controls={`${item.boo_uid}-content`}
-                      id={`${item.boo_uid}-header`}
-                      onClick={(e) => e.stopPropagation()}
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls={`${item.boo_uid}-${index}-content`}
+                      id={`${item.boo_uid}-${index}-header`}
                     >
                       <Box
                         sx={{
