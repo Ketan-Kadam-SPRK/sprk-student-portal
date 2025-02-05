@@ -54,20 +54,32 @@ function Payments() {
       <Box
         sx={{
           backgroundColor: "white",
-          p: "20px",
           borderRadius: "10px",
           gap: "50px",
           width: "100%",
           maxWidth: "100%",
         }}
       >
-        <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
-          {courseData?.map((item, index) => (
-            <Grid2 key={index} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
-              <BookingDetailsCard item={item} />
-            </Grid2>
-          ))}
-        </Grid2>
+        <Box
+          sx={{
+            backgroundColor: "#6560F0",
+            borderRadius: "10px 10px 0px 0px",
+            p: 2,
+          }}
+        >
+          <Typography variant="h6" sx={{ color: "white", fontWeight: 600 }}>
+            Track Your Booking Details
+          </Typography>
+        </Box>
+        <Box sx={{ p: "20px" }}>
+          <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
+            {courseData?.map((item, index) => (
+              <Grid2 key={index} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+                <BookingDetailsCard item={item} />
+              </Grid2>
+            ))}
+          </Grid2>
+        </Box>
       </Box>
     </Box>
   );
