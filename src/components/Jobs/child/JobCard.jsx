@@ -37,6 +37,7 @@ function JobCard({ item }) {
       sx={{
         // width: "370px",
         width: "100%",
+        height: "100%",
         display: "flex",
         // f: 4,
         // flex: 1,
@@ -101,7 +102,15 @@ function JobCard({ item }) {
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <LocationOnIcon fontSize="14" />
-            <Typography sx={{ fontSize: "var(--font-size-small)" }}>
+            <Typography
+              sx={{
+                fontSize: "var(--font-size-small)",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                maxWidth: "100%",
+              }}
+            >
               {item?.job_location}
             </Typography>
           </Box>

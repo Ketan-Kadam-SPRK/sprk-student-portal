@@ -118,6 +118,7 @@ const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
           backgroundColor: "#263238",
           width: "100%",
           zIndex: 101,
+          height:'100%'
         }}
       >
         <Button

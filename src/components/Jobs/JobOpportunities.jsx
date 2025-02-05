@@ -150,9 +150,18 @@ function JobOpportunities() {
           }}
         >
           {filteredData?.length > 0 ? (
-            <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
+            <Grid2
+              container
+              spacing={2}
+              sx={{
+                width: "100%",
+                margin: 0,
+                justifyContent: "start",
+                alignItems: "stretch",
+              }}
+            >
               {filteredData?.map((item, index) => (
-                <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
+                <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }} sx={{border: "1px solidrgba(243, 107, 9, 0.89)"}}>
                   <JobCard key={index} item={item} />
                 </Grid2>
               ))}

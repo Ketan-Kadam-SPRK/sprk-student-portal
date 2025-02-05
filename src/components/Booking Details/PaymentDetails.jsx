@@ -338,8 +338,12 @@ function PaymentDetails() {
                 <Typography>
                   Booking Date : {dateFormator(data.booked_at)}
                 </Typography>
-                <Typography>Batch Preference : {CapitalFirstLetterOnly(data.batch_prefer)}</Typography>
-                <Typography>Payment Pattern : {CapitalFirstLetterOnly(data.payment_term)}</Typography>
+                <Typography>
+                  Batch Preference : {CapitalFirstLetterOnly(data.batch_prefer)}
+                </Typography>
+                <Typography>
+                  Payment Pattern : {CapitalFirstLetterOnly(data.payment_term)}
+                </Typography>
               </div>
             </AccordionDetails>
           </Accordion>
@@ -403,29 +407,29 @@ function PaymentDetails() {
               errorDescription="Click 'Apply Leave' to get started."
             />
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              mt: 2,
-              gap: "10px",
-              backgroundColor: "white",
-              p: 2,
-              mb: 4,
-              borderRadius: "10px",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                gap: "5px",
-                alignItems: "center",
-              }}
-            >
-              {data !== null &&
-                data?.payment_term === "LUMPSUM" &&
-                data?.pending_fees !== 0 &&
-                data?.instal?.length > 0 && (
+          {data !== null &&
+            data?.payment_term === "LUMPSUM" &&
+            data?.pending_fees !== 0 &&
+            data?.instal?.length > 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  mt: 2,
+                  gap: "10px",
+                  backgroundColor: "white",
+                  p: 2,
+                  mb: 4,
+                  borderRadius: "10px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "5px",
+                    alignItems: "center",
+                  }}
+                >
                   <Box>
                     <Box sx={{ display: "flex", gap: "5px" }}>
                       <InfoOutlinedIcon sx={{ color: "red" }} />
@@ -433,7 +437,7 @@ function PaymentDetails() {
                         <span style={{ fontWeight: "bold" }}>Note :</span> The
                         final due date for payment is{" "}
                         {FormatDate(
-                          data.instal[data.instal.length - 1]?.due_at
+                          data?.instal[data?.instal?.length - 1]?.due_at
                         )}
                       </Typography>
                     </Box>
@@ -443,9 +447,9 @@ function PaymentDetails() {
                       an installment plan.
                     </Typography>
                   </Box>
-                )}
-            </Box>
-          </Box>
+                </Box>
+              </Box>
+            )}
         </Box>
       </Box>
       <Dialog
