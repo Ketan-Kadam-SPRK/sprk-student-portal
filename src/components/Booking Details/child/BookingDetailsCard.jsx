@@ -1,15 +1,10 @@
-import { Typography, Box, Button } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import dateFormator from "../../../Utils/dateFormator";
 import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
-import {
-  CapitalizeFirstLetter,
-  formatForDisplay,
-} from "../../../Utils/formateForDisplay";
 import { CapitalFirstLetterOnly } from "../../../Utils/CapitalFirstLetterOnly";
 import { AmountFormat } from "../../../Utils/AmountFormat";
 
@@ -21,19 +16,19 @@ function BookingDetailsCard({ item }) {
     let color = "";
     let backgroundColor = "";
     switch (status) {
-      case "Paid":
+      case "PAID":
         color = "#1F5200";
         backgroundColor = "#CBFFAC";
         break;
-      case "Pending":
+      case "PENDING":
         color = "#755200";
         backgroundColor = "#FFF3A4";
         break;
-      case "Due":
+      case "DUE":
         color = "#52007A";
         backgroundColor = "#E4AEFF";
         break;
-      case "Overdue":
+      case "OVERDUE":
         color = "#9F0000";
         backgroundColor = "#FFB5B5";
         break;
@@ -64,7 +59,6 @@ function BookingDetailsCard({ item }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          // gap: "5px",
           p: 2,
           background: "linear-gradient(270deg, #6560F0 0.13%, #0A2647 91.8%)",
           borderRadius: "10px",
@@ -79,7 +73,6 @@ function BookingDetailsCard({ item }) {
             fontWeight: "bold",
             fontSize: "var(--font-size-medium)",
             textTransform: "capitalize",
-            // width: "200px",
             maxWidth: "100%",
             wordBreak: "break-word",
           }}
@@ -106,10 +99,8 @@ function BookingDetailsCard({ item }) {
         <Typography
           sx={{
             color: "white",
-            // fontWeight: "bold",
             fontSize: "var(--font-size-small)",
             textTransform: "capitalize",
-            // width: "200px",
             maxWidth: "100%",
           }}
         >
