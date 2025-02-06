@@ -24,6 +24,7 @@ import { getBookingInstallments } from "./action/Payment.action";
 import FormatDate from "../../Utils/FormatDate";
 import Receipt from "./modals/Receipt/Receipt";
 import { CapitalFirstLetterOnly } from "../../Utils/CapitalFirstLetterOnly";
+import ErrorHandling from "../Common/ErrorHandling";
 
 function PaymentDetails() {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ function PaymentDetails() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
+  const [receiptId, setReceiptId] = useState(null);
   const { booking_uid } = useParams();
   console.log(booking_uid);
   const [data, setData] = useState([]);
@@ -43,6 +45,7 @@ function PaymentDetails() {
   const handleOpenPayment = (row) => {
     console.log(row);
     setOpenReciept(!openReciept);
+    setReceiptId(row?.receipt_code);
   };
   const handleClosePayment = () => {
     setOpenReciept(!openReciept);
@@ -262,6 +265,10 @@ function PaymentDetails() {
     },
   ];
 
+  if (loading) {
+    return <ErrorHandling error500={false} loadData={loading} />;
+  }
+
   return (
     <Box
       sx={{
@@ -454,11 +461,11 @@ function PaymentDetails() {
       </Box>
       <Dialog
         open={openReciept}
-        onClose={handleClosePayment}
+        onClose={() => handleOpenPayment(null)}
         maxWidth="md"
         fullWidth={true}
       >
-        <Receipt handleClosePayment={handleClosePayment} />
+        <Receipt handleClosePayment={handleOpenPayment} receiptID={receiptId} />
       </Dialog>
       <Dialog open={openDetailModal} maxWidth="md" fullWidth={true}>
         <BookingAknowLetter

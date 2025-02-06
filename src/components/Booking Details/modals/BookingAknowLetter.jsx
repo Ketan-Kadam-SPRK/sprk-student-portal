@@ -57,6 +57,7 @@ const BookingAknowLetter = forwardRef(
     }, [booking_uid]);
 
     const fetchBookingData = async () => {
+      setLoading(true);
       await dispatch(getBookingConfirmation({ headers, booking_uid }))
         .then((res) => {
           const data = res?.payload?.data.data;
@@ -136,12 +137,24 @@ const BookingAknowLetter = forwardRef(
     const totalBalance = bookingData?.generated_credits || 0;
 
     const totalBalanceInWords = toWords?.convert(totalBalance);
+    if (loading) {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            backgroundColor: "transparent",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
 
     return (
       <Box className={Styles.border}>
-        <Backdrop open={loading} sx={{ zIndex: 999 }}>
-          <CircularProgress />
-        </Backdrop>
         <Box
           sx={{
             p: 1,

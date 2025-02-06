@@ -6,6 +6,7 @@ import "./receipt.css";
 import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../Hooks/useAuthHeaders";
+import { getReceiptData } from "../../action/Payment.action";
 
 const text1 = {
   fontSize: "12px",
@@ -17,37 +18,59 @@ const text2 = {
   marginRight: "5px",
 };
 
-const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
+const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
   // Get receipt data from the Redux store
+  const [receiptData, setReceiptData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
-  const receiptData = {
-    receipt_id: 1791,
-    receipt_code: "R2501218144D46",
-    booked_code: "B2501KHAR5D5C18A",
-    student_name: "Namdev Pise",
-    student_address: "859, Solapur, Maharashtra, 851458, India",
-    receipt_status: "ACTIVE",
-    paid_amount: 8300,
-    payment_mode: "CREDIT_CARD",
-    transaction_id: null,
-    cheque_number: null,
-    authorization_code: "4444555648",
-    paid_at: "2025-01-21T00:00:00Z",
+  // const receiptData = {
+  //   receipt_id: 1791,
+  //   receipt_code: "R2501218144D46",
+  //   booked_code: "B2501KHAR5D5C18A",
+  //   student_name: "Namdev Pise",
+  //   student_address: "859, Solapur, Maharashtra, 851458, India",
+  //   receipt_status: "ACTIVE",
+  //   paid_amount: 8300,
+  //   payment_mode: "CREDIT_CARD",
+  //   transaction_id: null,
+  //   cheque_number: null,
+  //   authorization_code: "4444555648",
+  //   paid_at: "2025-01-21T00:00:00Z",
+  // };
+
+  useEffect(() => {
+    getReceipt();
+  }, []);
+
+  const getReceipt = async () => {
+    try {
+      setIsLoading(true);
+      const res = await dispatch(getReceiptData({ headers, id: receiptID }));
+
+      const data = res?.payload?.data?.data || [];
+      console.log(data);
+      setIsLoading(false);
+
+      setReceiptData(data);
+    } catch (error) {
+      setIsLoading(false);
+
+      console.error("Error fetching receipt data:", error);
+    }
   };
-  
+
   console.log(receiptData);
-  
+
   // Initialize loading state
-  const [isLoading, setIsLoading] = useState(false);
 
   // Create a reference to the component for printing
   const printRef = useRef();
 
   const handlePrint = useReactToPrint({
     contentRef: printRef, // Pass the ref directly to contentRef
-    documentTitle:`payment_Receipt_${receiptData?.receipt_code || "N/A"}`
+    documentTitle: `payment_Receipt_${receiptData?.receipt_code || "N/A"}`,
   });
 
   useEffect(() => {
@@ -104,6 +127,22 @@ const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
   //     }
   //   };
 
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          backgroundColor: "transparent",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <Box
@@ -118,7 +157,7 @@ const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
           backgroundColor: "#263238",
           width: "100%",
           zIndex: 101,
-          height:'100%'
+          height: "100%",
         }}
       >
         <Button
@@ -291,7 +330,7 @@ const Receipt = forwardRef(({ handleClosePayment, getPayData }, ref) => {
                     {receiptData?.student_name}
                   </Typography>
                 </Box>
-                <Box sx={{ display: "flex" }}>
+                <Box sx={{ display: "flex", mt: 1 }}>
                   <Typography style={text1}>Address: </Typography>
                   <Typography style={text2}>
                     {receiptData?.student_address}
