@@ -115,6 +115,22 @@
     align-items: center !important;
 }
 
+.watermarkdiv {
+    position: absolute !important;
+    top: 0% !important;
+    left: 15% !important;
+    width: 100%;
+    transform: rotate(-25deg) !important;
+
+}
+
+.watermark {
+    font-size: 100px;
+    font-weight: bold;
+    opacity: 0.2;
+    color: rgba(0, 83, 146, 0.685);
+}
+
 .fontStyle3 {
     font-size: 12px !important;
     color: #999999 !important;
@@ -126,9 +142,9 @@
 .fontStyle4 {
     font-size: 12px !important;
     text-align: center !important;
-    font-family: Arial !important;
+    /* font-family: Arial !important; */
     margin: 0 !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
 }
 
 .margin0 {
