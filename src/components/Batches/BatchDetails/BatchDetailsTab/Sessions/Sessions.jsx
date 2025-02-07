@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import styles from "./Sessions.module.css";
 import { Box, Typography } from "@mui/material";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
@@ -9,7 +9,7 @@ import RotateRightIcon from "@mui/icons-material/RotateRight";
 
 import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
-import NoDataPage from "../../../../../Utils/NoDataPage";
+import NoDataPage from "../../../../Common/NoDataPage";
 
 function Sessions({ sessionData }) {
   const [show, setShow] = useState(false);

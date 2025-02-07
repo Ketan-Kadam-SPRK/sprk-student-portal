@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { thunk } from "redux-thunk";
 import {
   FLUSH,
   REHYDRATE,
@@ -10,27 +9,29 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-
 import authSlice from "./components/Login/store/authSlice";
+import encryptTransform from "./crypto";
 
-const persistConfig = { key: "auth", storage, version: 1 };
-
-// Use authSlice.reducer
-const persistreducer = persistReducer(persistConfig, authSlice);
-
-const rootReducer = {
-  authSlice: persistreducer,
+const persistConfig = {
+  key: "auth",
+  storage,
+  version: 1,
+  // transforms: [enc ryptTransform], // Apply the encryption transform
 };
 
+const persistedReducer = persistReducer(persistConfig, authSlice);
+
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    authSlice: persistedReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       immutableCheck: false,
       serializableCheck: {
         ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(thunk),
+    }),
 });
 
 export { store, persistStore };

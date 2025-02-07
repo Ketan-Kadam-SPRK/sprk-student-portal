@@ -11,7 +11,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../../../Common/ErrorHandling";
-import NoDataPage from "../../../../../Utils/NoDataPage";
+import NoDataPage from "../../../../Common/NoDataPage";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
 
 import { getAbsentLogs } from "../../../action/batches.actions";
@@ -21,12 +21,17 @@ function AbsentLog({ batchId }) {
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [error500, setError500] = useState(false);
 
   const getAbsentLog = async () => {
     setLoading(true);
     try {
       const res = await dispatch(getAbsentLogs({ headers, batchId }));
       const data = res?.payload?.data?.data || [];
+      const status = res?.payload?.status;
+      if (status === 500 || status === 503) {
+        setError500(true);
+      }
       setData(data);
       setLoading(false);
     } catch (err) {
@@ -38,8 +43,8 @@ function AbsentLog({ batchId }) {
     getAbsentLog();
   }, []);
 
-  if (loading) {
-    return <ErrorHandling error500={false} loadData={loading} />;
+  if (loading || error500) {
+    return <ErrorHandling error500={error500} loadData={loading} />;
   }
 
   return (

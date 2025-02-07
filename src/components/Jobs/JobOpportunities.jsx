@@ -6,7 +6,7 @@ import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { getAllJobs } from "./jobs.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
-import NoDataPage from "../../Utils/NoDataPage";
+import NoDataPage from "../Common/NoDataPage";
 
 function JobOpportunities() {
   const dispatch = useDispatch();
@@ -161,7 +161,11 @@ function JobOpportunities() {
               }}
             >
               {filteredData?.map((item, index) => (
-                <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }} sx={{border: "1px solidrgba(243, 107, 9, 0.89)"}}>
+                <Grid2
+                  key={index}
+                  size={{ xs: 12, sm: 12, md: 6, lg: 4 }}
+                  sx={{ border: "1px solidrgba(243, 107, 9, 0.89)" }}
+                >
                   <JobCard key={index} item={item} />
                 </Grid2>
               ))}

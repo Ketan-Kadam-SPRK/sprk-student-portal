@@ -5,7 +5,7 @@ import { getCourseGrpDetails } from "./course.actions";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import ErrorHandling from "../Common/ErrorHandling";
-import NoDataPage from "../../Utils/NoDataPage";
+import NoDataPage from "../Common/NoDataPage";
 
 const Courses = () => {
   const dispatch = useDispatch();
@@ -122,7 +122,6 @@ const Courses = () => {
       </Box>
     </Box>
   );
-  
 };
 
 export default Courses;

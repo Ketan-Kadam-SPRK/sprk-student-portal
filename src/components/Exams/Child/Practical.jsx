@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Grid2 } from "@mui/material";
 import ExamCard from "./ExamCard";
-import NoDataPage from "../../../Utils/NoDataPage";
+import NoDataPage from "../../Common/NoDataPage";
 
 function Practical({ data = [] }) {
   return (

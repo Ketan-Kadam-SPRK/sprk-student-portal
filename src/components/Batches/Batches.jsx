@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { getBatches } from "./action/batches.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import NoDataPage from "../../Utils/NoDataPage";
+import NoDataPage from "../Common/NoDataPage";
 import PauseCircleOutlineRoundedIcon from "@mui/icons-material/PauseCircleOutlineRounded";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";

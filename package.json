@@ -25,6 +25,7 @@
     "ag-grid-react": "^33.0.3",
     "axios": "^1.7.9",
     "cloudinary-react": "^1.8.1",
+    "crypto-js": "^4.2.0",
     "jwt-decode": "^4.0.0",
     "lottie-light-react": "^2.4.0",
     "lottie-react": "^2.4.0",

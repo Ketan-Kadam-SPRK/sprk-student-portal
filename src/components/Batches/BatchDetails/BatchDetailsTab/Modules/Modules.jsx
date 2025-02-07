@@ -11,18 +11,22 @@ import ErrorHandling from "../../../../Common/ErrorHandling";
 
 import { getModulesDetails } from "../../../action/batches.actions";
 
-
-function Modules({batchId}) {
+function Modules({ batchId }) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [modules, setModules] = useState([]);
+  const [error500, setError500] = useState(false);
 
   const getModules = async () => {
     setLoading(true);
     try {
       const res = await dispatch(getModulesDetails({ headers, batchId }));
       const data = res?.payload?.data?.data || [];
+      const status = res?.payload?.status;
+      if (status === 500 || status === 503) {
+        setError500(true);
+      }
       setModules(data); // Ensure the sorted data is set
       setLoading(false);
     } catch (err) {
@@ -30,15 +34,14 @@ function Modules({batchId}) {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     getModules();
   }, []);
 
-  if (loading) {
-    return <ErrorHandling error500={false} loadData={loading} />;
-  } 
+  if (loading || error500) {
+    return <ErrorHandling error500={error500} loadData={loading} />;
+  }
 
   return (
     <Box
@@ -88,7 +91,9 @@ function Modules({batchId}) {
                 px: 3,
                 gap: "5px",
                 backgroundColor:
-                  item?.moduleCompletionStatus === "COMPLETED" ? "#CDFEE1" : "#E4AEFF",
+                  item?.moduleCompletionStatus === "COMPLETED"
+                    ? "#CDFEE1"
+                    : "#E4AEFF",
                 py: 1,
                 borderRadius: "25px",
               }}
@@ -110,10 +115,15 @@ function Modules({batchId}) {
                 sx={{
                   fontSize: { xs: "10px", sm: "13px", md: "13px" },
                   fontWeight: "600",
-                  color: item?.moduleCompletionStatus === "COMPLETED" ? "#12472E" : "#52007A",
+                  color:
+                    item?.moduleCompletionStatus === "COMPLETED"
+                      ? "#12472E"
+                      : "#52007A",
                 }}
               >
-                {item?.moduleCompletionStatus === "COMPLETED" ? "COMPLETED" : "Upcoming"}
+                {item?.moduleCompletionStatus === "COMPLETED"
+                  ? "COMPLETED"
+                  : "Upcoming"}
               </Typography>
             </Box>
           </Box>

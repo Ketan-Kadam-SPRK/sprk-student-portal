@@ -4,7 +4,8 @@ import ExamCard from "./ExamCard";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
-import NoDataPage from "../../../Utils/NoDataPage";
+import NoDataPage from "../../Common/NoDataPage";
+
 function Theory({ data = [], count }) {
   const [toggle, setToggle] = useState({
     practice: true,
@@ -174,12 +175,12 @@ function Theory({ data = [], count }) {
         >
           {data?.final?.length > 0 ? (
             <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
-            {data?.final?.map((item, index) => (
-              <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
-                <ExamCard key={index} item={item} />
-              </Grid2>
-            ))}
-          </Grid2>
+              {data?.final?.map((item, index) => (
+                <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
+                  <ExamCard key={index} item={item} />
+                </Grid2>
+              ))}
+            </Grid2>
           ) : (
             <NoDataPage
               errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg"

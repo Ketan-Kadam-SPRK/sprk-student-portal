@@ -22,6 +22,7 @@ function NoDataPage({ errorImgPublicId, errorHeading, errorDescription }) {
         justifyContent: "center",
         p: 2,
         width: "100%",
+        flex: 1,
       }}
     >
       <Box
@@ -42,8 +43,7 @@ function NoDataPage({ errorImgPublicId, errorHeading, errorDescription }) {
             publicId={errorImgPublicId}
             cloudName="dxlzzgbfw"
             style={{
-              width: isMobile ? "100px" : "212px",
-              height: "auto",
+              height: isMobile ? "100px" : "212px",
               objectFit: "contain",
               "@media (max-width: 600px)": {
                 width: "100px",

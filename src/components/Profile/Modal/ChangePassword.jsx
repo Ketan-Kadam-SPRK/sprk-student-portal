@@ -104,7 +104,7 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
   };
 
   return (
-    <Box sx={{ position: "relative", p: 3 }}>
+    <Box sx={{ position: "relative", p: 3, width: "500px", maxWidth: "100%" }}>
       <IconButton
         onClick={() => {
           handleClose();
@@ -129,26 +129,25 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
           handleSubmit();
         }}
       >
-        <Grid2 sx={{ pt: 2 }} container spacing={2}>
-          <Grid2 size={12}>
-            <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
-              <Typography
-                sx={{
-                  fontSize: "var(--font-size-medium)",
-                  fontWeight: "bold",
-                }}
-              >
-                Change Your Password
-              </Typography>
-            </Box>
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 12,
-              sm: 12,
-              md: 4,
-            }}
-          >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
+            <Typography
+              sx={{
+                fontSize: "var(--font-size-medium)",
+                fontWeight: "bold",
+              }}
+            >
+              Change Your Password
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               sx={{
                 fontSize: "var(--font-size-small)",
@@ -157,14 +156,7 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
             >
               Current Password :
             </Typography>
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 12,
-              sm: 12,
-              md: 8,
-            }}
-          >
+
             <TextField
               type={passwordVisibility.currentPassword ? "text" : "password"}
               fullWidth
@@ -198,14 +190,8 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
               error={Boolean(errors.currentPassword)}
               helperText={errors.currentPassword}
             />
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 12,
-              sm: 12,
-              md: 4,
-            }}
-          >
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               sx={{
                 fontSize: "var(--font-size-small)",
@@ -214,14 +200,7 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
             >
               New Password :
             </Typography>
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 12,
-              sm: 12,
-              md: 8,
-            }}
-          >
+
             <TextField
               type={passwordVisibility.newPassword ? "text" : "password"}
               fullWidth
@@ -255,14 +234,8 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
               error={Boolean(errors.newPassword)}
               helperText={errors.newPassword}
             />
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 12,
-              sm: 12,
-              md: 4,
-            }}
-          >
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Typography
               sx={{
                 fontSize: "var(--font-size-small)",
@@ -271,14 +244,7 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
             >
               Confirm Password :
             </Typography>
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 12,
-              sm: 12,
-              md: 8,
-            }}
-          >
+
             <TextField
               type={passwordVisibility.confirmPassword ? "text" : "password"}
               fullWidth
@@ -312,15 +278,13 @@ const ChangePassword = forwardRef(({ handleClose }, ref) => {
               error={Boolean(errors.confirmPassword)}
               helperText={errors.confirmPassword}
             />
-          </Grid2>
-          <Grid2 size={12}>
-            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-              <Button type="submit" variant="contained" disabled={loading}>
-                {loading ? <CircularProgress size={20} /> : "Change Password"}
-              </Button>
-            </Box>
-          </Grid2>
-        </Grid2>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+            <Button type="submit" variant="contained" disabled={loading}>
+              {loading ? <CircularProgress size={20} /> : "Change Password"}
+            </Button>
+          </Box>
+        </Box>
       </form>
     </Box>
   );

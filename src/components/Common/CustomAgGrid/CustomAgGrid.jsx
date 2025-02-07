@@ -8,7 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import NoDataPage from "../../../Utils/NoDataPage";
+import NoDataPage from "../NoDataPage";
 
 const CustomAgGrid = ({
   rows = [],
@@ -69,8 +69,13 @@ const CustomAgGrid = ({
             {rows.length > 0 ? (
               rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row,rowIndex) => (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id || rowIndex}>
+                .map((row, rowIndex) => (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.id || rowIndex}
+                  >
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (

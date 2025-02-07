@@ -41,12 +41,17 @@ function BatchDetails() {
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [sessionData, setSessionData] = useState([]);
+  const [error500, setError500] = useState(false);
 
   const getSessionsDetail = async () => {
     setLoading(true);
     try {
       const res = await dispatch(getSessionsDetails({ headers, batchId }));
       const data = res?.payload?.data?.data || [];
+      const status = res?.payload?.status;
+      if (status === 500 || status === 503) {
+        setError500(true);
+      }
       console.log(data);
       setSessionData(data);
       setLoading(false);
@@ -95,8 +100,8 @@ function BatchDetails() {
     }
   };
 
-  if (loading) {
-    return <ErrorHandling error500={false} loadData={loading} />;
+  if (loading || error500) {
+    return <ErrorHandling error500={error500} loadData={loading} />;
   }
 
   return (

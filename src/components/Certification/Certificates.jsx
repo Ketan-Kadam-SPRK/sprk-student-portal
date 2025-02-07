@@ -21,7 +21,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { Close } from "@mui/icons-material";
 import { Image } from "cloudinary-react";
 import CertificateModal from "./CertificateModal";
-import NoDataPage from "../../Utils/NoDataPage";
+import NoDataPage from "../Common/NoDataPage";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { downloadCertificate, getAllCertificates } from "./certificate.actions";
@@ -39,7 +39,7 @@ function Certificates() {
   const [expanded, setExpanded] = useState(null);
   const targetRef = useRef(null);
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error500, setError500] = useState(false);
   const [certId, setCertId] = useState(null);
   const [downloading, setDownloading] = useState(false);
@@ -75,8 +75,6 @@ function Certificates() {
       const res = await dispatch(getAllCertificates({ headers }));
       const status = res?.payload?.status;
       const data = res?.payload?.data?.data || [];
-
-      console.log(res);
 
       if (status === 500 || status === 503) {
         setError500(true);

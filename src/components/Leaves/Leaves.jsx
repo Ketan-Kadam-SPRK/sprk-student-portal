@@ -43,7 +43,7 @@ function Leaves() {
   const handleCloseWidrow = () => setOpenWidrow(!openWidrow);
   const [leaveId, setLeaveId] = useState(null);
   const [formData, setFormData] = useState(initialState);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [leaveData, setleaveData] = useState([]);
   const [proofFile, setProofFile] = useState(null);
   const [rows, setRows] = useState([]);
@@ -275,15 +275,15 @@ function Leaves() {
   return (
     <>
       <Box
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      gap: 2,
-      p: 2,
-      // minHeight: "100vh",
-      overflow: "auto",
-      flex: 1,
-    }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          p: 2,
+          // minHeight: "100vh",
+          overflow: "auto",
+          flex: 1,
+        }}
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <Typography variant="h4" fontWeight={600}>
@@ -294,36 +294,48 @@ function Leaves() {
           </Typography>
         </Box>
         <Box>
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Box sx={{ display: "flex", gap: 2, alignItems: "center",flexWrap:"wrap" }}>
-            <Box>
-              <PopupFilterComponent
-                rowData={rows}
-                statusOptions={["APPROVED", "PENDING", "DECLINED", "WITHDREW"]}
-                setFilterData={setFilterData}
-                dateKey="start"
-                statusKey="status"
-                tabName="leave"
-              />
-            </Box>
-            <Box>
-              <Button variant="contained" onClick={() => setOpen(true)}>
-                Apply Leave
-              </Button>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <Box>
+                <PopupFilterComponent
+                  rowData={rows}
+                  statusOptions={[
+                    "APPROVED",
+                    "PENDING",
+                    "DECLINED",
+                    "WITHDREW",
+                  ]}
+                  setFilterData={setFilterData}
+                  dateKey="start"
+                  statusKey="status"
+                  tabName="leave"
+                />
+              </Box>
+              <Box>
+                <Button variant="contained" onClick={() => setOpen(true)}>
+                  Apply Leave
+                </Button>
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Box sx={{ mt: 2 }}>
-          <CustomAgGrid
-            rows={filterData}
-            columns={columns}
-            paginationModel={{ page: 0, pageSize: 10 }}
-            checkboxSelection={false}
-            errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737008545/calendar_with_marks_uh7eeu.svg"
-            errorHeading="No leaves applied yet. "
-            errorDescription="Click 'Apply Leave' to get started."
-          />
-        </Box>
+          <Box sx={{ mt: 2 }}>
+            <CustomAgGrid
+              rows={filterData}
+              columns={columns}
+              paginationModel={{ page: 0, pageSize: 10 }}
+              checkboxSelection={false}
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737008545/calendar_with_marks_uh7eeu.svg"
+              errorHeading="No leaves applied yet. "
+              errorDescription="Click 'Apply Leave' to get started."
+            />
+          </Box>
         </Box>
 
         <Dialog open={open} scroll={"body"} fullWidth={true}>
