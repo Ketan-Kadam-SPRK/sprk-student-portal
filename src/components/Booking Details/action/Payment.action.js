@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../../axios/axiosInstance";
+import { handleResponse } from "../../../Utils/apiHelpers";
 
 export const getBookingDetails = createAsyncThunk(
   "payment/getBookingDetails",
@@ -75,6 +76,27 @@ export const getReceiptData = createAsyncThunk(
       return { data: data, status: res.status };
     } catch (err) {
       return { status: err.response.status, error: err.response.data.error };
+    }
+  }
+);
+
+export const printReceipt = createAsyncThunk(
+  "payment/printReceipt",
+  async ({ headers, id }) => {
+    try {
+      // Send a POST request to the login API endpoint with user data
+      const res = await axiosInstance.post(
+        `/student-portal/print/rec/${id}`,
+        null,
+        {
+          headers: headers,
+        }
+      );
+
+      const data = await res.data; // Corrected this line
+      return data;
+    } catch (err) {
+      return handleError(err);
     }
   }
 );

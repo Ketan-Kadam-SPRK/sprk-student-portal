@@ -1,12 +1,20 @@
 import React, { useRef, useState, forwardRef, useEffect } from "react";
-import { Button, Typography, Box, Grid, CircularProgress } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Box,
+  Grid,
+  CircularProgress,
+  DialogTitle,
+  DialogContent,
+} from "@mui/material";
 import { useReactToPrint } from "react-to-print";
 import { ToWords } from "to-words";
 import "./receipt.css";
 import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../Hooks/useAuthHeaders";
-import { getReceiptData } from "../../action/Payment.action";
+import { getReceiptData, printReceipt } from "../../action/Payment.action";
 
 const text1 = {
   fontSize: "12px",
@@ -22,6 +30,8 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
   // Get receipt data from the Redux store
   const [receiptData, setReceiptData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isPrinting, setIsPrinting] = useState(false);
 
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
@@ -114,18 +124,22 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
       toWords.convert(Number(String(paidAmount).split(".")[1])) +
       " Paise";
 
-  //   const handlePrintReceipt = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const receiptId = receiptData?.receipt_id;
-  //       await dispatch(printReceipt({ receiptId, headers }));
-  //       getPayData();
-  //     } finally {
-  //       setTimeout(() => {
-  //         handleCloseRecipt();
-  //       }, 1000);
-  //     }
-  //   };
+  const handlePrintReceipt = async () => {
+    setIsPrinting(true);
+    try {
+      const res = await dispatch(printReceipt({ headers, id: receiptID }));
+      if (res.payload) {
+        handlePrint();
+      }
+
+      setIsPrinting(false);
+    } finally {
+      setTimeout(() => {
+        handleClosePayment();
+      }, 1000);
+      setIsPrinting(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -144,59 +158,55 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
   }
 
   return (
-    <Box>
-      <Box
-        className="print-button"
-        sx={{
-          p: 1,
-          display: "flex",
-          justifyContent: "flex-end",
-          position: "sticky",
-          top: "0px",
-          right: "0px",
-          backgroundColor: "#263238",
-          width: "100%",
-          zIndex: 101,
-          height: "100%",
-        }}
-      >
-        <Button
-          variant="contained"
-          disabled={isLoading}
-          onClick={() => {
-            handlePrint();
-          }}
+    <>
+      <DialogTitle>
+        <Box
+          className="print-button"
           sx={{
-            px: 3,
-            color: "white",
-            // backgroundColor:'#414D54'
-          }}
-        >
-          {isLoading ? <CircularProgress size={24} /> : "Print"}
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            handleClosePayment();
-          }}
-          sx={{
-            px: 3,
-            ml: 2,
-            fontWeight: "600",
-            backgroundColor: "white",
-          }}
-        >
-          Cancel
-        </Button>
-      </Box>
+            p: 1,
+            display: "flex",
+            justifyContent: "flex-end",
 
-      <Box sx={{ width: "900px", overflow: "auto" }}>
+            backgroundColor: "#263238",
+          }}
+        >
+          <Button
+            variant="contained"
+            disabled={isPrinting}
+            onClick={() => {
+              handlePrintReceipt();
+            }}
+            sx={{
+              px: 3,
+              color: "white",
+              // backgroundColor:'#414D54'
+            }}
+          >
+            {isLoading ? <CircularProgress size={24} /> : "Print"}
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              handleClosePayment();
+            }}
+            sx={{
+              px: 3,
+              ml: 2,
+              fontWeight: "600",
+              backgroundColor: "white",
+            }}
+          >
+            Cancel
+          </Button>
+        </Box>
+      </DialogTitle>
+      <DialogContent>
         <Box
           sx={{
             px: 4,
             backgroundColor: "white",
-            height: "100%",
-            overFlow: "scroll",
+
+            minWidth: "800px",
           }}
           ref={printRef}
         >
@@ -461,8 +471,8 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
             </Box>
           </Box>
         </Box>
-      </Box>
-    </Box>
+      </DialogContent>
+    </>
   );
 });
 
