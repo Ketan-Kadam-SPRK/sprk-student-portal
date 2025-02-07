@@ -362,14 +362,14 @@ function Login() {
               helperText={errors.isPasswordValid && "Password is required"}
             />
 
-            <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+            {/* <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
               <Checkbox
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
                 color="primary"
               />
               <Typography variant="body2"> Remember me</Typography>
-            </Box>
+            </Box> */}
             <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
               <HCaptcha
                 sitekey={import.meta.env.VITE_APP_CAPTCHA_SITE_KEY}
