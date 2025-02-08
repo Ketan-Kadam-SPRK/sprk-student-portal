@@ -1,5 +1,5 @@
 import { Grid2, Box, Typography, CircularProgress } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import BatchCard from "./Child/BatchCard";
 import { Image } from "cloudinary-react";
 import { modifyEventJson } from "../../Utils/ModifyEventJson";
@@ -8,226 +8,78 @@ import BoxCard from "./Child/BoxCard";
 import { useSelector } from "react-redux";
 import NoDataPageDashboard from "../Common/NoDataPageDashboard";
 import dateFormator from "../../Utils/dateFormator";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import {
+  getDashExams,
+  getDashJobs,
+  getTodaysBatches,
+} from "./dashboard.actions";
+import { getAllCertificates } from "../Certification/certificate.actions";
 
 function Dashboard() {
   const userDetails = useSelector((state) => state.authSlice.userDetails);
-  const EventJson = [
-    {
-      bth_id: "BTH24MARBEXL31",
-      faculty_id: "SPRK24DIS81",
-      faculty_name: "Disha Shah",
-      course_name: "Basic Excel",
-      course_color: "#239A60",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483571/sprk/courses/excel_dxug6p.svg",
-      bth_status: "BOOKED",
-      est_start: "2026-02-26T05:30:00Z",
-      est_end: "2026-04-16T07:30:00Z",
-      students: 1,
-      zone: "Asia/Calcutta",
-      week_days: ["WEDNESDAY", "THURSDAY", "FRIDAY"],
-      sessions: [
-        {
-          session_id: "SSN24DDEA7A",
-          start: "2026-02-26T05:30:00Z",
-          end: "2026-02-26T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN247CD325",
-          start: "2026-02-27T05:30:00Z",
-          end: "2026-02-27T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN247A19F7",
-          start: "2026-03-05T05:30:00Z",
-          end: "2026-03-05T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN249D06A5",
-          start: "2026-03-06T05:30:00Z",
-          end: "2026-03-06T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
+  const headers = useAuthHeaders();
+  const dispatch = useDispatch();
+  const [batches, setBatches] = useState([]);
+  const [certificates, setCertificates] = useState([]);
+  const [jobs, setJobs] = useState([]);
+  const [exams, setExams] = useState([]);
 
-        {
-          session_id: "SSN24C4D1EC",
-          start: "2026-03-19T05:30:00Z",
-          end: "2026-03-19T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN24947357",
-          start: "2026-03-20T05:30:00Z",
-          end: "2026-03-20T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-      ],
-    },
-    {
-      bth_id: "BTH24FEBCJAV1",
-      faculty_id: "SPRK24PANB5",
-      faculty_name: "Pankaj Pawar",
-      course_name: "Core Java",
-      course_color: "#2B0948",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483574/sprk/courses/java_mbn80i.svg",
-      bth_status: "ONHOLD",
-      est_start: "2024-02-24T05:30:00Z",
-      est_end: "2024-04-13T07:45:00Z",
-      students: 19,
-      zone: "Asia/Calcutta",
-      week_days: ["SATURDAY"],
-      sessions: [
-        {
-          session_id: "SSN24CF0897",
-          start: "2024-02-24T05:30:00Z",
-          end: "2024-02-24T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN24E12934",
-          start: "2024-03-02T05:30:00Z",
-          end: "2024-03-02T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN248B00BD",
-          start: "2024-03-09T05:30:00Z",
-          end: "2024-03-09T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN2457FC44",
-          start: "2024-03-16T05:30:00Z",
-          end: "2024-03-16T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN24965CD1",
-          start: "2024-03-23T05:30:00Z",
-          end: "2024-03-23T07:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-      ],
-    },
+  useEffect(() => {
+    getTodaysBatchData();
+    getCertificateDashboard();
+    getExams();
+    getJobs();
+  }, []);
+  const getTodaysBatchData = async () => {
+    try {
+      const res = await dispatch(getTodaysBatches({ headers }));
+      console.log(res);
+      const data = res?.payload?.data?.data || [];
+      const sorted = data?.sort(
+        (a, b) => new Date(b.start_time) - new Date(a.start_time)
+      );
+      setBatches(sorted);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    {
-      bth_id: "BTH24MARCPRG2",
-      faculty_id: "SPRK24DIS81",
-      faculty_name: "Disha Shah",
-      course_name: "C Programming",
-      course_color: "#472D30",
-      course_img:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483565/sprk/courses/c_qtljqk.svg",
-      bth_status: "BOOKED",
-      est_start: "2024-07-09T06:30:00Z",
-      est_end: "2025-01-21T08:30:00Z",
-      students: 2,
-      zone: "Asia/Calcutta",
-      week_days: ["TUESDAY", "THURSDAY", "FRIDAY"],
-      sessions: [
-        {
-          session_id: "SSN24D4EFE1",
-          start: "2024-07-09T06:30:00Z",
-          end: "2024-07-09T08:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN24D0A44A",
-          start: "2024-07-16T06:30:00Z",
-          end: "2024-07-16T08:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN24865B0A",
-          start: "2024-07-23T06:30:00Z",
-          end: "2024-07-23T08:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
+  const getCertificateDashboard = async () => {
+    try {
+      const res = await dispatch(getAllCertificates({ headers }));
+      const data = res?.payload?.data?.data || [];
+      setCertificates(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-        {
-          session_id: "SSN240EBA6A",
-          start: "2024-11-12T06:30:00Z",
-          end: "2024-11-12T08:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-        {
-          session_id: "SSN24A9BF95",
-          start: "2024-11-19T06:30:00Z",
-          end: "2024-11-19T08:30:00Z",
-          taken_by: null,
-          conducted: false,
-          conflict: null,
-        },
-      ],
-    },
-  ];
+  const getExams = async () => {
+    try {
+      const res = await dispatch(getDashExams({ headers }));
+      const data = res?.payload?.data?.data || [];
 
-  const modifiedData = modifyEventJson(EventJson);
+      setExams(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const latestExams = [
-    {
-      course_name: "Python",
-      course_logo:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483582/sprk/courses/python_x9slrg.svg",
-      exam_uid: "E250118aef",
-      batch_uid: "BTH25JANPYTH50",
-      assigned_by: "Kavita Pankaj Pawar",
-      start_date: "2025-01-18T10:33:00Z",
-      end_date: "2025-01-19T09:33:00Z",
-      duration: null,
-      status: null,
-      assessment_type: null,
-      course_color: "#0A9396",
-    },
-    {
-      course_name: "HTML5",
-      course_logo:
-        "https://res.cloudinary.com/droommwjk/image/upload/v1707483572/sprk/courses/html_htzzt2.svg",
-      exam_uid: "E250121e69",
-      batch_uid: "BTH24JULHTM52",
-      assigned_by: "Kavita Pankaj Pawar",
-      start_date: "2025-01-21T10:01:00Z",
-      end_date: "2025-01-22T09:01:00Z",
-      duration: null,
-      status: null,
-      assessment_type: null,
-      course_color: "#4B0082",
-    },
-  ];
+  const getJobs = async () => {
+    try {
+      const res = await dispatch(getDashJobs({ headers }));
+      const data = res?.payload?.data?.data || [];
+      setJobs(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const recentJob = [
     {
@@ -261,23 +113,6 @@ function Dashboard() {
       companylogo:
         "http://res.cloudinary.com/duttop4n6/image/upload/v1732712053/z3ajilj63ixshygxkptc.png",
       updatedAt: "2024-11-28T06:13:42.393498Z",
-    },
-  ];
-
-  const certificates = [
-    {
-      id: 1,
-      title: "Ready",
-      description: "Full Stack Java",
-      imageUrl:
-        "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737461523/Reward_badge_with_star_and_ribbon_tkvffi.svg",
-    },
-    {
-      id: 2,
-      title: "To_Reviwe",
-      description: "React Mastery",
-      imageUrl:
-        "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737461523/Reward_badge_with_star_and_ribbon_tkvffi.svg",
     },
   ];
 
@@ -403,9 +238,9 @@ function Dashboard() {
               overflowY: "scroll",
             }}
           >
-            {modifiedData?.length < 0 ? (
-              modifiedData.map((item, index) => (
-                <BatchCard key={index} item={item} />
+            {batches?.length > 0 ? (
+              batches.map((item, index) => (
+                <BatchCard key={`${item.batch_uid}-${index}`} item={item} />
               ))
             ) : (
               <NoDataPageDashboard
@@ -433,10 +268,10 @@ function Dashboard() {
           >
             Exams
           </Typography>
-          {latestExams?.length < 0 ? (
-            latestExams?.map((res, index) => (
+          {exams?.length > 0 ? (
+            exams?.map((res, index) => (
               <Box
-                key={index}
+                key={`${res.exam_uid}-${index}`}
                 sx={{
                   display: "flex",
                   p: 2,
@@ -448,8 +283,8 @@ function Dashboard() {
               >
                 <Image
                   style={{ width: "80px", height: "80px", objectFit: "cover" }}
-                  publicId={res?.course_logo}
-                  cloudName={res?.course_logo?.split("/")[2]}
+                  publicId={res?.cou_logo}
+                  cloudName={res?.cou_logo?.split("/")[2]}
                 />
 
                 <Box
@@ -459,23 +294,17 @@ function Dashboard() {
                     gap: 1,
                   }}
                 >
-                  <Typography variant="h6">{`${res.course_name} | Exam ID: ${res.exam_uid}`}</Typography>
-
                   <Typography
-                    sx={{
-                      fontSize: "var(--font-size-extra-small)",
-                      color: "grey",
-                    }}
-                  >
-                    {res.batch_uid}
-                  </Typography>
+                    variant="h6"
+                    fontWeight={600}
+                  >{`${res.cou_name} | Exam ID: ${res.exam_uid}`}</Typography>
 
                   <Typography
                     sx={{
                       fontSize: "var(--font-size-extra-small)",
                       color: "red",
                     }}
-                  >{`Submit before : ${res.end_date}`}</Typography>
+                  >{`Submit before : ${res.exam_endDate}`}</Typography>
                 </Box>
               </Box>
             ))
@@ -519,30 +348,43 @@ function Dashboard() {
           >
             Certificates
           </Typography>
-          <Box sx={{ display: "flex", gap: 2 }}>
-            {certificates?.length < 0 ? (
-              certificates?.map((certificate) => (
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              overflowX: "scroll",
+              p: 2,
+              alignContent: "flex-start",
+              flex: 1,
+              height: "auto",
+            }}
+          >
+            {certificates?.length > 0 ? (
+              certificates?.map((certificate, index) => (
                 <Box
-                  key={certificate.id}
+                  key={`${certificate.boo_uid}-${index}`}
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: 2,
+                    gap: 1,
                     boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
                     p: 2,
                     borderRadius: "10px",
-                    justifyContent: "center",
+                    // justifyContent: "center",
                     alignItems: "center",
                     width: "150px",
+                    minWidth: "150px",
+                    flex: 1,
+                    overflow: "hidden",
                   }}
                 >
                   <Image
                     style={{
-                      width: "100px",
+                      width: "80px",
                       height: "auto",
                       objectFit: "contain",
                     }}
-                    publicId={certificate.imageUrl}
+                    publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737461523/Reward_badge_with_star_and_ribbon_tkvffi.svg"
                     cloudName="dxlzzgbfw"
                   />
                   <Typography
@@ -551,15 +393,20 @@ function Dashboard() {
                       fontWeight: "bold",
                     }}
                   >
-                    {certificate.title}
+                    {certificate.status?.toLowerCase()}
                   </Typography>
                   <Typography
                     sx={{
                       fontSize: "var(--font-size-extra-small)",
                       fontWeight: "bold",
+                      // textOverflow: "ellipsis",
+                      // overflow: "hidden",
+                      // whiteSpace: "nowrap",
+                      // width: "100px",
+                      textAlign: "center",
                     }}
                   >
-                    {certificate.description}
+                    {certificate.cou_name}
                   </Typography>
                 </Box>
               ))
@@ -591,8 +438,8 @@ function Dashboard() {
           >
             Recently Added Jobs
           </Typography>
-          {recentJob?.length < 0 ? (
-            recentJob?.map((res, index) => (
+          {jobs?.length > 0 ? (
+            jobs?.map((res, index) => (
               <Box
                 key={index}
                 sx={{
@@ -606,8 +453,8 @@ function Dashboard() {
               >
                 <Image
                   style={{ width: "80px", height: "80px", objectFit: "cover" }}
-                  publicId={res?.companylogo}
-                  cloudName={res?.companylogo?.split("/")[2]}
+                  publicId={res?.comp_logo}
+                  cloudName={res?.comp_logo?.split("/")[2]}
                 />
 
                 <Box
@@ -617,7 +464,7 @@ function Dashboard() {
                     gap: 1,
                   }}
                 >
-                  <Typography variant="h6">{`${res.job_title} `}</Typography>
+                  <Typography variant="h6">{`${res.post_name} `}</Typography>
 
                   <Typography
                     sx={{
@@ -632,7 +479,7 @@ function Dashboard() {
                     sx={{
                       fontSize: "var(--font-size-extra-small)",
                     }}
-                  >{`Posted On: ${res.updatedAt}`}</Typography>
+                  >{`Posted On: ${res.created_at}`}</Typography>
                 </Box>
               </Box>
             ))

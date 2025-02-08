@@ -1,6 +1,5 @@
 import { Typography, Box } from "@mui/material";
-import React from "react";
-import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
+import React, { useEffect, useState } from "react";
 import {
   convertToLocalTime,
   getRemainingTime,
@@ -8,118 +7,82 @@ import {
 import { Image } from "cloudinary-react";
 
 function BatchCard({ item }) {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 10000); // Refresh every 10 seconds
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []);
+
+  const RemainingDiv = () => {
+    const endTime = new Date(item?.end_time);
+    const startTime = new Date(item?.start_time);
+
+    console.log(endTime);
+
+    if (currentTime >= startTime && currentTime <= endTime) {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "#F00D0D",
+            padding: "5px 10px",
+            borderRadius: "15px",
+            minWidth: "100px",
+          }}
+        >
+          <Typography
+            sx={{ color: "white", fontSize: "var(--font-size-extra-small)" }}
+          >
+            Live
+          </Typography>
+        </Box>
+      );
+    } else if (currentTime > endTime) {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "#1EB600",
+            padding: "5px 10px",
+            borderRadius: "15px",
+            minWidth: "100px",
+          }}
+        >
+          <Typography
+            sx={{ color: "white", fontSize: "var(--font-size-extra-small)" }}
+          >
+            COMPLETED
+          </Typography>
+        </Box>
+      );
+    } else if (currentTime < startTime) {
+      return (
+        <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <Typography
+            sx={{
+              color: "#B24040",
+              fontWeight: "bold",
+              fontSize: "var(--font-size-small)",
+            }}
+          >
+            {getRemainingTime(item?.start_time)}
+          </Typography>
+        </Box>
+      );
+    }
+
+    return null;
+  };
+
   return (
-    // <Box
-    //   sx={{
-    //     width: "300px",
-    //     minWidth: "300px",
-    //     display: "flex",
-    //     flexDirection: "column",
-    //     gap: "10px",
-    //     border: `2px solid ${item?.course_color}`,
-    //     borderRadius: "10px",
-    //     backgroundColor: `${item?.course_color}60`, // If the course color is in hex (e.g., #FF5733), adding opacity can be tricky.
-    //     p: 2,
-    //   }}
-    // >
-    //   <Box
-    //     sx={{
-    //       display: "flex",
-    //       justifyContent: "space-between",
-    //       gap: 3,
-    //     }}
-    //   >
-    //     <Box
-    //       sx={{
-    //         display: "flex",
-    //         flexDirection: "column",
-    //         gap: 1,
-    //         width: "150px",
-    //       }}
-    //     >
-    //       <Box
-    //         sx={{
-    //           p: 1,
-    //           backgroundColor: "#FFDF60",
-    //           borderRadius: "10px",
-    //         }}
-    //       >
-    //         <Typography
-    //           sx={{
-    //             fontSize: "var(--font-size-extra-small)",
-    //             fontWeight: "bold",
-    //           }}
-    //         >
-    //           {" "}
-    //           {`${convertToLocalTime(item?.start)} - ${convertToLocalTime(
-    //             item?.end
-    //           )}`}
-    //         </Typography>
-    //       </Box>
-
-    //       <Box>
-    //         <Typography
-    //           sx={{
-    //             fontSize: "var(--font-size-medium)",
-    //             fontWeight: "bold",
-    //           }}
-    //         >
-    //           {item?.course_name}
-    //         </Typography>
-    //         <Typography
-    //           sx={{
-    //             fontSize: "var(--font-size-medium)",
-    //             fontWeight: "bold",
-    //           }}
-    //         >
-    //           {item?.bth_id}
-    //         </Typography>
-    //       </Box>
-    //     </Box>
-    //     <Box>
-    //       <Image
-    //         style={{ width: "80px", height: "80px", objectFit: "cover" }}
-    //         publicId={item?.course_img}
-    //         cloudName={item?.course_img?.split("/")[2]}
-    //       />
-    //     </Box>
-    //   </Box>
-
-    //   <Typography
-    //     sx={{
-    //       fontSize: "var(--font-size-small)",
-    //       color: "#085186",
-    //       fontWeight: "bold",
-    //     }}
-    //   >
-    //     Full Stack Java Development
-    //   </Typography>
-
-    //   <Box
-    //     sx={{
-    //       display: "flex",
-    //       justifyContent: "space-between",
-    //       alignItems: "center",
-    //       marginTop: "80px",
-    //     }}
-    //   >
-    //     <Box>
-    //       <Typography sx={{ fontWeight: "bold" }}>Faculty</Typography>
-    //       <Typography>{item?.faculty_name}</Typography>
-    //     </Box>
-
-    //     <Typography
-    //       sx={{
-    //         fontSize: "var(--font-size-extra-small)",
-    //         color: "grey",
-    //         fontWeight: "600",
-    //       }}
-    //     >
-    //       {getRemainingTime(item?.start)}
-    //     </Typography>
-    //   </Box>
-    // </Box>
-
     <Box
       sx={{
         display: "flex",
@@ -127,10 +90,9 @@ function BatchCard({ item }) {
         alignItems: "center",
         justifyContent: "space-between",
         p: "20px",
-        backgroundColor: `${item?.course_color}60`, // If the course color is in hex (e.g., #FF5733), adding opacity can be tricky.
+        backgroundColor: `${item?.cou_color}60`,
         borderRadius: "10px",
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
-        // width: "100%",
         flexWrap: "wrap",
       }}
     >
@@ -144,41 +106,20 @@ function BatchCard({ item }) {
       >
         <Image
           style={{ width: "80px", height: "80px", objectFit: "cover" }}
-          publicId={item?.course_img}
-          cloudName={item?.course_img?.split("/")[2]}
+          publicId={item?.cou_img_url}
+          cloudName={item?.cou_img_url?.split("/")[2]}
         />
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <Typography
-            sx={{
-              fontSize: "var(--font-size-small)",
-              fontWeight: "bold",
-            }}
-          >{`${item?.course_name} | ${item?.bth_id}`}</Typography>
+            sx={{ fontSize: "var(--font-size-small)", fontWeight: "bold" }}
+          >
+            {`${item?.course_name} | ${item?.batch_uid}`}
+          </Typography>
           <Typography
-            sx={{
-              fontSize: "var(--font-size-small)",
-            }}
-          >{`Full Stack Java Development`}</Typography>
-          <Typography
-            sx={{
-              color: "grey",
-              fontSize: "var(--font-size-extra-small)",
-            }}
+            sx={{ color: "grey", fontSize: "var(--font-size-extra-small)" }}
           >
             {item?.faculty_name}
           </Typography>
-          {/* <StatusStyledComponent
-            value={"Ongoing"}
-            color={"white"}
-            backgroundColor={"black"}
-          /> */}
         </Box>
       </Box>
       <Box
@@ -190,22 +131,15 @@ function BatchCard({ item }) {
           justifyContent: "space-between",
         }}
       >
-        <Box
-          sx={{
-            p: 1,
-            backgroundColor: "#FFDF60",
-            borderRadius: "10px",
-          }}
-        >
+        <Box sx={{ p: 1, backgroundColor: "#FFDF60", borderRadius: "10px" }}>
           <Typography
             sx={{
               fontSize: "var(--font-size-extra-small)",
               fontWeight: "bold",
             }}
           >
-            {" "}
-            {`${convertToLocalTime(item?.start)} - ${convertToLocalTime(
-              item?.end
+            {`${convertToLocalTime(item?.start_time)} - ${convertToLocalTime(
+              item?.end_time
             )}`}
           </Typography>
         </Box>
@@ -215,17 +149,10 @@ function BatchCard({ item }) {
             flexDirection: "column",
             gap: 3,
             alignItems: "center",
+            minWidth: "100px",
           }}
         >
-          <Typography
-            sx={{
-              fontSize: "var(--font-size-extra-small)",
-              color: "grey",
-              fontWeight: "600",
-            }}
-          >
-            {getRemainingTime(item?.start)}
-          </Typography>
+          <RemainingDiv />
         </Box>
       </Box>
     </Box>
