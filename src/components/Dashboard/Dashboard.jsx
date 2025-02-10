@@ -1,10 +1,7 @@
-import { Grid2, Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 import BatchCard from "./Child/BatchCard";
 import { Image } from "cloudinary-react";
-import { modifyEventJson } from "../../Utils/ModifyEventJson";
-import CircularWithValueLabel from "../Common/CircularProgressWithLable";
-import BoxCard from "./Child/BoxCard";
 import { useSelector } from "react-redux";
 import NoDataPageDashboard from "../Common/NoDataPageDashboard";
 import dateFormator from "../../Utils/dateFormator";
@@ -17,105 +14,93 @@ import {
   getTodaysBatches,
 } from "./dashboard.actions";
 import { getAllCertificates } from "../Certification/certificate.actions";
+import { formatDateTime } from "../../Utils/dateTimeFormator";
+import ErrorHandling from "../Common/ErrorHandling";
+import { useNavigate } from "react-router-dom";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import TypingAnimation from "./Child/TypingAnimation";
 
 function Dashboard() {
-  const userDetails = useSelector((state) => state.authSlice.userDetails);
+  function convertToTitleCase(text) {
+    if (!text) return "";
+
+    // Lowercase all characters and capitalize the first letter
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  }
   const headers = useAuthHeaders();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [batches, setBatches] = useState([]);
   const [certificates, setCertificates] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [exams, setExams] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getTodaysBatchData();
-    getCertificateDashboard();
-    getExams();
-    getJobs();
+    fetchAllDashboardData();
   }, []);
-  const getTodaysBatchData = async () => {
+
+  const fetchAllDashboardData = async () => {
     try {
-      const res = await dispatch(getTodaysBatches({ headers }));
-      console.log(res);
-      const data = res?.payload?.data?.data || [];
-      const sorted = data?.sort(
+      setLoading(true);
+      const [batchesRes, certificatesRes, examsRes, jobsRes] =
+        await Promise.all([
+          dispatch(getTodaysBatches({ headers })),
+          dispatch(getAllCertificates({ headers })),
+          dispatch(getDashExams({ headers })),
+          dispatch(getDashJobs({ headers })),
+        ]);
+
+      // Extract and process data from responses
+      const batchData = batchesRes?.payload?.data?.data || [];
+      const sortedBatches = batchData.sort(
         (a, b) => new Date(b.start_time) - new Date(a.start_time)
       );
-      setBatches(sorted);
+
+      const certificatesData = certificatesRes?.payload?.data?.data || [];
+      const examsData = examsRes?.payload?.data?.data || [];
+      const jobsData = jobsRes?.payload?.data?.data || [];
+
+      // Update state with the processed data
+      setBatches(sortedBatches);
+      setCertificates(certificatesData);
+      setExams(examsData);
+      setJobs(jobsData);
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching dashboard data:", error);
+      setLoading(false);
     }
   };
 
-  const getCertificateDashboard = async () => {
-    try {
-      const res = await dispatch(getAllCertificates({ headers }));
-      const data = res?.payload?.data?.data || [];
-      setCertificates(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const Events = [];
+  // const Events = [
+  //   {
+  //     id: "1",
+  //     title: "Hacketon 2024",
+  //     start: "2024-01-01T05:00:00.000Z",
+  //     end: "2024-01-02T08:00:00.000Z",
+  //     logo: "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Vision 2024",
+  //     start: "2024-01-01T05:00:00.000Z",
+  //     end: "2024-01-02T08:00:00.000Z",
+  //     logo: "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg",
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "Diwali 2024",
+  //     start: "2024-01-01T05:00:00.000Z",
+  //     end: "2024-01-02T08:00:00.000Z",
+  //     logo: "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg",
+  //   },
+  // ];
 
-  const getExams = async () => {
-    try {
-      const res = await dispatch(getDashExams({ headers }));
-      const data = res?.payload?.data?.data || [];
-
-      setExams(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getJobs = async () => {
-    try {
-      const res = await dispatch(getDashJobs({ headers }));
-      const data = res?.payload?.data?.data || [];
-      setJobs(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const recentJob = [
-    {
-      job_uid: "JOc96e973843",
-      comp_uid: "COMP5f44c46714",
-      comp_name: "Tech Innovations Pvt Ltd",
-      job_title: "react dev",
-      location: "Mumbai",
-      location_uid: null,
-      required_skills: ["Ca7817df73"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732712053/z3ajilj63ixshygxkptc.png",
-      updatedAt: "2024-11-28T06:13:42.393498Z",
-    },
-    {
-      job_uid: "JOc96e973843",
-      comp_uid: "COMP5f44c46714",
-      comp_name: "Tech Innovations Pvt Ltd",
-      job_title: "react dev",
-      location: "Mumbai",
-      location_uid: null,
-      required_skills: ["Ca7817df73"],
-      vacancies: null,
-      job_description: null,
-      job_status: "CLOSE",
-      expiration_date: null,
-      companylogo:
-        "http://res.cloudinary.com/duttop4n6/image/upload/v1732712053/z3ajilj63ixshygxkptc.png",
-      updatedAt: "2024-11-28T06:13:42.393498Z",
-    },
-  ];
-
+  if (loading) {
+    return <ErrorHandling loadData={loading} />;
+  }
   return (
     <Box
       sx={{
@@ -131,62 +116,135 @@ function Dashboard() {
       <Box
         sx={{
           display: "flex",
-          gap: 2,
-          flexWrap: "wrap",
+          gap: 3,
+          flexDirection: {
+            xs: "column",
+            sm: "column",
+            md: "column",
+            lg: "row",
+          },
         }}
       >
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
-            gap: 1,
-            boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+            gap: 2,
             backgroundColor: "#0073E6",
-            color: "white",
-            borderRadius: "10px",
-            flexBasis: "auto",
+            justifyContent: "space-between",
             p: 2,
-            flex: 1,
+            borderRadius: "10px",
+            flexWrap: "wrap",
+            color: "white",
+            flex: 3,
+            boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
           }}
         >
-          <Typography variant="h5">{`Welcome, Pooja Verma !`}</Typography>
-          <Typography
+          <Box
             sx={{
-              fontSize: "var(--font-size-small)",
+              display: "flex",
+              gap: 2,
+              flexDirection: "column",
+              maxWidth: "400px",
+              justifyContent: "space-evenly",
             }}
           >
-            Ready to achieve your next milestone?
-          </Typography>
+            <TypingAnimation />
+
+            <Typography
+              sx={{
+                fontSize: "var(--font-size-small)",
+                fontStyle: "italic",
+              }}
+            >
+              " In a world of endless networks, the strongest connection is
+              between knowledge and curiosity ".
+            </Typography>
+          </Box>
+          <Image
+            cloudName="dxlzzgbfw"
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738920467/Educational_video_for_online_education_egzdnt.svg"
+            style={{ width: "200px", height: "auto" }}
+          />
         </Box>
         <Box
           sx={{
             display: "flex",
-            // justifyContent: "center",
-            alignItems: "center",
-            gap: 3,
-            flexWrap: "wrap",
+            flexDirection: "column",
             flex: 2,
+            borderRadius: "10px",
+            backgroundColor: "white",
+            boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+            // boxShadow:
+            //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            p: 2,
+            gap: 2,
           }}
         >
-          <BoxCard
-            title="Ongoing"
-            number="5"
-            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_fipttr.svg"
-            bgColor="#6560F0"
-          />
+          <Typography
+            sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+          >
+            Upcoming Events
+          </Typography>
+          <Box sx={{ display: "flex", overflowX: "auto" }}>
+            {Events?.length > 0 ? (
+              Events?.map((res, index) => (
+                <Box
+                  key={`${index}`}
+                  sx={{
+                    display: "flex",
+                    p: 2,
+                    borderRadius: "10px",
+                    gap: 4,
+                    minWidth: "250px",
+                    boxShadow:
+                      "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+                    backgroundColor: "#F1F5FF",
+                    cursor: "pointer",
+                  }}
+                  // onClick={() => navigate(`/Exams`)}
+                >
+                  <Image
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      objectFit: "cover",
+                      filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+                    }}
+                    publicId={res?.logo}
+                    cloudName={res?.logo?.split("/")[2]}
+                  />
 
-          <BoxCard
-            title="Completed"
-            number="5"
-            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_1_hcgvhn.svg"
-            bgColor="#1F7C20"
-          />
-          <BoxCard
-            title="Pending"
-            number="5"
-            image="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735027996/Vector_2_himwuf.svg"
-            bgColor="#E0BB0D"
-          />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 0.5,
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                    >{`${res.title}`}</Typography>
+
+                    <Typography
+                      sx={{
+                        fontSize: "var(--font-size-extra-small)",
+                        color: "red",
+                      }}
+                    >{`Start on : ${formatDateTime(res.start)}`}</Typography>
+                  </Box>
+                </Box>
+              ))
+            ) : (
+              <NoDataPageDashboard
+                errorImgPublicId={null}
+                errorHeading="No Events Yet!"
+                errorDescription="We're working on something exciting. Stay tuned!"
+              />
+            )}
+          </Box>
         </Box>
       </Box>
       <Box
@@ -211,6 +269,8 @@ function Dashboard() {
             borderRadius: "10px",
             flex: 3,
             boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+            // boxShadow:
+            //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
           }}
         >
           <Box
@@ -226,7 +286,7 @@ function Dashboard() {
               Today's Sessions
             </Typography>
 
-            <Typography fontWeight={600}>{dateFormator(new Date())}</Typography>
+            <Typography fontWeight={500}>{dateFormator(new Date())}</Typography>
           </Box>
 
           <Box
@@ -259,6 +319,8 @@ function Dashboard() {
             borderRadius: "10px",
             backgroundColor: "white",
             boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+            // boxShadow:
+            //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
             p: 2,
             gap: 2,
           }}
@@ -278,11 +340,20 @@ function Dashboard() {
                   borderRadius: "10px",
                   gap: 4,
                   minWidth: "250px",
-                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+                  boxShadow:
+                    "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+                  backgroundColor: "#F1F5FF",
+                  cursor: "pointer",
                 }}
+                onClick={() => navigate(`/Exams`)}
               >
                 <Image
-                  style={{ width: "80px", height: "80px", objectFit: "cover" }}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    objectFit: "cover",
+                    filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+                  }}
                   publicId={res?.cou_logo}
                   cloudName={res?.cou_logo?.split("/")[2]}
                 />
@@ -291,20 +362,30 @@ function Dashboard() {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: 1,
+                    gap: 0.5,
                   }}
                 >
                   <Typography
                     variant="h6"
-                    fontWeight={600}
-                  >{`${res.cou_name} | Exam ID: ${res.exam_uid}`}</Typography>
-
+                    sx={{
+                      fontWeight: "bold",
+                    }}
+                  >{`${res.cou_name}`}</Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "var(--font-size-small)",
+                      color: "#565656",
+                      fontWeight: "bold",
+                    }}
+                  >{`Exam ID: ${res.exam_uid}`}</Typography>
                   <Typography
                     sx={{
                       fontSize: "var(--font-size-extra-small)",
                       color: "red",
                     }}
-                  >{`Submit before : ${res.exam_endDate}`}</Typography>
+                  >{`Start on : ${formatDateTime(
+                    res.exam_startDate
+                  )}`}</Typography>
                 </Box>
               </Box>
             ))
@@ -314,6 +395,19 @@ function Dashboard() {
               errorHeading="No Exams Yet!"
               errorDescription="Use this time to revise and sharpen your skills."
             />
+          )}
+          {exams?.length > 0 && (
+            <Button
+              endIcon={<ChevronRightRoundedIcon />}
+              sx={{
+                ml: "auto",
+                fontWeight: "bold",
+                fontSize: "var(--font-size-extra-small)",
+              }}
+              onClick={() => navigate(`/Exams`)}
+            >
+              View All
+            </Button>
           )}
         </Box>
       </Box>
@@ -340,14 +434,37 @@ function Dashboard() {
             borderRadius: "10px",
             flex: 3,
             boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+            // boxShadow:
+            //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
             minWidth: "300px",
           }}
         >
-          <Typography
-            sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              justifyContent: "space-between",
+            }}
           >
-            Certificates
-          </Typography>
+            <Typography
+              sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+            >
+              Certificates
+            </Typography>
+
+            {exams?.length > 0 && (
+              <Button
+                endIcon={<ChevronRightRoundedIcon />}
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "var(--font-size-extra-small)",
+                }}
+                onClick={() => navigate(`/Exams`)}
+              >
+                View All
+              </Button>
+            )}
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -367,7 +484,8 @@ function Dashboard() {
                     display: "flex",
                     flexDirection: "column",
                     gap: 1,
-                    boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+                    boxShadow:
+                      "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
                     p: 2,
                     borderRadius: "10px",
                     // justifyContent: "center",
@@ -376,6 +494,11 @@ function Dashboard() {
                     minWidth: "150px",
                     flex: 1,
                     overflow: "hidden",
+                    backgroundColor: ["READY", "RELEASED"].includes(
+                      certificate.status
+                    )
+                      ? "#E6E6FF"
+                      : "#EFEFEF",
                   }}
                 >
                   <Image
@@ -384,7 +507,11 @@ function Dashboard() {
                       height: "auto",
                       objectFit: "contain",
                     }}
-                    publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737461523/Reward_badge_with_star_and_ribbon_tkvffi.svg"
+                    publicId={
+                      ["RELEASED", "READY"].includes(certificate.status)
+                        ? "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737461523/Reward_badge_with_star_and_ribbon_tkvffi.svg"
+                        : "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739185789/Reward_badge_with_star_and_ribbon_2_owdvvg.svg"
+                    }
                     cloudName="dxlzzgbfw"
                   />
                   <Typography
@@ -393,7 +520,7 @@ function Dashboard() {
                       fontWeight: "bold",
                     }}
                   >
-                    {certificate.status?.toLowerCase()}
+                    {convertToTitleCase(certificate.status)}
                   </Typography>
                   <Typography
                     sx={{
@@ -428,7 +555,8 @@ function Dashboard() {
             flex: 2,
             borderRadius: "10px",
             backgroundColor: "white",
-            boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+            boxShadow:
+              "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
             p: 2,
             gap: 2,
           }}
@@ -448,11 +576,22 @@ function Dashboard() {
                   borderRadius: "10px",
                   gap: 4,
                   minWidth: "250px",
-                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+                  boxShadow:
+                    "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+                  backgroundColor: "#F1F5FF",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  navigate(`/Job_Opportunities/${res.job_uid}`);
                 }}
               >
                 <Image
-                  style={{ width: "80px", height: "80px", objectFit: "cover" }}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    objectFit: "cover",
+                    filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+                  }}
                   publicId={res?.comp_logo}
                   cloudName={res?.comp_logo?.split("/")[2]}
                 />
@@ -461,15 +600,24 @@ function Dashboard() {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: 1,
+                    gap: 0.5,
                   }}
                 >
-                  <Typography variant="h6">{`${res.post_name} `}</Typography>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {" "}
+                    {`${res.post_name} `}
+                  </Typography>
 
                   <Typography
                     sx={{
-                      fontSize: "var(--font-size-extra-small)",
-                      color: "grey",
+                      fontSize: "var(--font-size-small)",
+                      color: "#565656",
+                      fontWeight: "bold",
                     }}
                   >
                     {res.comp_name}
@@ -478,8 +626,9 @@ function Dashboard() {
                   <Typography
                     sx={{
                       fontSize: "var(--font-size-extra-small)",
+                      color: "#858585",
                     }}
-                  >{`Posted On: ${res.created_at}`}</Typography>
+                  >{`Posted On: ${formatDateTime(res.created_at)}`}</Typography>
                 </Box>
               </Box>
             ))
@@ -489,6 +638,19 @@ function Dashboard() {
               errorHeading="No Job Openings Right Now!"
               errorDescription="Keep building your skills while we update jobs!"
             />
+          )}
+          {jobs?.length > 0 && (
+            <Button
+              endIcon={<ChevronRightRoundedIcon />}
+              sx={{
+                ml: "auto",
+                fontWeight: "bold",
+                fontSize: "var(--font-size-extra-small)",
+              }}
+              onClick={() => navigate(`/Job_Opportunities`)}
+            >
+              View All
+            </Button>
           )}
         </Box>
       </Box>

@@ -94,6 +94,7 @@ function BatchCard({ item }) {
         borderRadius: "10px",
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
         flexWrap: "wrap",
+        m: 1,
       }}
     >
       <Box
@@ -105,7 +106,12 @@ function BatchCard({ item }) {
         }}
       >
         <Image
-          style={{ width: "80px", height: "80px", objectFit: "cover" }}
+          style={{
+            width: "80px",
+            height: "80px",
+            objectFit: "cover",
+            filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+          }}
           publicId={item?.cou_img_url}
           cloudName={item?.cou_img_url?.split("/")[2]}
         />
