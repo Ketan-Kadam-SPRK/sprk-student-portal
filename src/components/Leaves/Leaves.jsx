@@ -108,10 +108,15 @@ function Leaves() {
   const handleWithdrawConfirm = async () => {
     setWithdrawnLoad(true);
     try {
-      const res = await dispatch(getWithdrawnLeaves({ headers, leaveId }));
-      handleCloseWidrow();
-      getAllLeavesData();
-      setWithdrawnLoad(false);
+      const res = await dispatch(getWithdrawnLeaves({ headers, leaveId })).then((res)=>{
+        if(res.payload !== undefined){
+          handleCloseWidrow();
+          getAllLeavesData();
+          setWithdrawnLoad(false);
+          setLeaveId(null);
+        }
+      });
+
     } catch (error) {
       console.error("Error withdrawing leave:", error);
       setWithdrawnLoad(false);
@@ -268,6 +273,8 @@ function Leaves() {
     },
   ];
 
+  console.log(leaveId)
+
   if (loading) {
     return <ErrorHandling error500={false} loadData={loading} />;
   }
@@ -319,7 +326,7 @@ function Leaves() {
                 />
               </Box>
               <Box>
-                <Button variant="contained" onClick={() => setOpen(true)}>
+                <Button variant="contained" onClick={() =>{ setOpen(true); setLeaveId(null)}}>
                   Apply Leave
                 </Button>
               </Box>
@@ -351,7 +358,7 @@ function Leaves() {
             getAllLeavesData={getAllLeavesData}
           />
         </Dialog>
-        <Dialog open={openWidrow} scroll={"body"} maxWidth="sm">
+        <Dialog open={openWidrow} scroll={"body"} maxWidth="xs">
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 3 }}>
             <Box
               sx={{
