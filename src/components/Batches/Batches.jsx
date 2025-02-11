@@ -125,6 +125,17 @@ function Batches() {
         />
       </Box>
 
+      <Typography
+        sx={{
+          textAlign: "center",
+          px: 3,
+          fontStyle: "italic",
+          color: "#4D535A",
+        }}
+      >
+        "Progress is built one session at a time—keep showing up!🚀"
+      </Typography>
+
       <Box
         sx={{
           display: "flex",
@@ -159,9 +170,9 @@ function Batches() {
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            height: "100%",
-            flex: 1,
+            // flex: 1,
             p: 2,
+            height: "100vh",
             overflow: "auto",
           }}
         >

@@ -262,8 +262,25 @@ function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  <Typography className={Styles.empIdStyle}>
+                  {/* <Typography className={Styles.empIdStyle}>
                     {" "}
+                    {userDetails?.name}
+                  </Typography> */}
+
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      color: "#085084",
+                      fontWeight: "600",
+                      cursor: "pointer",
+                      width: "120px",
+                      wordBreak: "break-all",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {/* Display user details (employee id) */}
                     {userDetails?.name}
                   </Typography>
                   <KeyboardArrowDownIcon sx={{ color: "grey" }} />

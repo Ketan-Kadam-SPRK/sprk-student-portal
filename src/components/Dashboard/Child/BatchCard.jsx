@@ -90,10 +90,12 @@ function BatchCard({ item }) {
         alignItems: "center",
         justifyContent: "space-between",
         p: "20px",
-        backgroundColor: `${item?.cou_color}60`,
+        backgroundColor: `${item?.cou_color}30`,
         borderRadius: "10px",
-        boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+        boxShadow:
+          "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
         flexWrap: "wrap",
+        m: 1,
       }}
     >
       <Box
@@ -105,7 +107,12 @@ function BatchCard({ item }) {
         }}
       >
         <Image
-          style={{ width: "80px", height: "80px", objectFit: "cover" }}
+          style={{
+            width: "80px",
+            height: "80px",
+            objectFit: "cover",
+            filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+          }}
           publicId={item?.cou_img_url}
           cloudName={item?.cou_img_url?.split("/")[2]}
         />

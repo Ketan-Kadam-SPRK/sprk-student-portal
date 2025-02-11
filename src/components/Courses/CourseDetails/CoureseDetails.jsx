@@ -270,6 +270,9 @@ function CoureseDetails() {
               backgroundColor: "#6560F0",
               borderTopLeftRadius: "10px",
               borderTopRightRadius: "10px",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
             }}
           >
             <Typography
@@ -279,12 +282,22 @@ function CoureseDetails() {
                 fontSize: "var(--font-size-medium)",
               }}
             >
-              Here’s the list of courses in this course group
+              Ready to Learn? Here’s Your List of Courses!
             </Typography>
+            <Image
+              publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739266120/fefcgtzzv4nemmqmvel8.svg"
+              style={{
+                width: "30px",
+                height: "auto",
+                objectFit: "cover",
+              }}
+              cloudName="dxlzzgbfw"
+            />
           </Box>
           <Box
             sx={{
-              flex: 1,
+              // flex: 1,
+              height: "100vh",
               display: "flex",
               flexDirection: "column",
               gap: 2,
@@ -295,120 +308,127 @@ function CoureseDetails() {
             {data?.courses?.length > 0 ? (
               data?.courses?.map((item, index) => (
                 <Box
-                  key={index}
+                  key={`${index}-${item?.course_uid}`}
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                    borderRadius: "10px",
-                    p: 2,
                     boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
-                    backgroundColor: `${item?.course_color}`,
-                    cursor: "pointer",
-                    overflow: "hidden",
+                    borderRadius: "10px",
                   }}
-                  onClick={() => handleExpandToggle(item?.course_uid)} // Handle card click
                 >
                   <Box
                     sx={{
                       display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      position: "relative",
+                      flexDirection: "column",
+                      gap: "20px",
+                      p: 2,
+                      borderRadius: "10px",
+
+                      backgroundColor: `${item?.course_color}`,
+                      cursor: "pointer",
+                      overflow: "hidden",
                     }}
+                    onClick={() => handleExpandToggle(item?.course_uid)} // Handle card click
                   >
                     <Box
                       sx={{
                         display: "flex",
-                        gap: "20px",
+                        justifyContent: "space-between",
                         alignItems: "center",
-                        // flexWrap: "wrap",
-                        flexDirection: { xs: "column", sm: "row" },
+                        position: "relative",
                       }}
                     >
-                      <Image
-                        publicId={item?.course_logo}
-                        style={{
-                          width: "70px",
-                          height: "auto",
-                          objectFit: "cover",
-                        }}
-                        cloudName={item?.course_logo?.split("/")[0]}
-                      />
                       <Box
                         sx={{
                           display: "flex",
-                          flexDirection: "column",
-                          gap: "10px",
+                          gap: "20px",
+                          alignItems: "center",
+                          // flexWrap: "wrap",
+                          flexDirection: { xs: "column", sm: "row" },
                         }}
                       >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: "var(--font-size-medium)",
-                            fontWeight: "700",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
+                        <Image
+                          publicId={item?.course_logo}
+                          style={{
+                            width: "70px",
+                            height: "auto",
+                            objectFit: "cover",
                           }}
-                        >
-                          {item?.course_name}{" "}
-                          {item?.is_completed && (
-                            <CheckCircleRoundedIcon color="white" />
-                          )}
-                        </Typography>
+                          cloudName={item?.course_logo?.split("/")[0]}
+                        />
                         <Box
                           sx={{
                             display: "flex",
+                            flexDirection: "column",
                             gap: "10px",
-                            // p: 2,
-                            borderRadius: "10px",
-                            alignItems: "center",
-                            overflow: "auto",
-                            maxWidth: {
-                              xs: "40vw",
-                              sm: "40vw",
-                              md: "40vw",
-                              lg: "60vw",
-                            },
                           }}
                         >
-                          {item?.batches?.map((batch, batchIndex) => (
-                            <IconButton
-                              key={batchIndex}
-                              onClick={() => navigate(`/Batches/${batch}`)}
-                            >
-                              <StatusStyledComponent
-                                value={batch}
-                                color={"black"}
-                                backgroundColor={"white"}
-                              />
-                            </IconButton>
-                          ))}
+                          <Typography
+                            sx={{
+                              color: "white",
+                              fontSize: "var(--font-size-medium)",
+                              fontWeight: "700",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "10px",
+                            }}
+                          >
+                            {item?.course_name}{" "}
+                            {item?.is_completed && (
+                              <CheckCircleRoundedIcon color="white" />
+                            )}
+                          </Typography>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: "10px",
+                              // p: 2,
+                              borderRadius: "10px",
+                              alignItems: "center",
+                              overflow: "auto",
+                              maxWidth: {
+                                xs: "40vw",
+                                sm: "40vw",
+                                md: "40vw",
+                                lg: "60vw",
+                              },
+                            }}
+                          >
+                            {item?.batches?.map((batch, batchIndex) => (
+                              <IconButton
+                                key={batchIndex}
+                                onClick={() => navigate(`/Batches/${batch}`)}
+                              >
+                                <StatusStyledComponent
+                                  value={batch}
+                                  color={"#3A35C9"}
+                                  backgroundColor={"white"}
+                                />
+                              </IconButton>
+                            ))}
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                    <IconButton
-                      sx={
-                        {
-                          // cursor: "pointer",
-                          // position: "absolute",
-                          // top: "50%",
-                          // transform: "translateY(-50%)",
-                          // right: "10px",
+                      <IconButton
+                        sx={
+                          {
+                            // cursor: "pointer",
+                            // position: "absolute",
+                            // top: "50%",
+                            // transform: "translateY(-50%)",
+                            // right: "10px",
+                          }
                         }
-                      }
-                    >
-                      {expandedCourseId === item?.course_uid ? (
-                        <ExpandLessRounded
-                          sx={{ color: "white", fontSize: "30px" }}
-                        />
-                      ) : (
-                        <ExpandMoreRounded
-                          sx={{ color: "white", fontSize: "30px" }}
-                        />
-                      )}
-                    </IconButton>
+                      >
+                        {expandedCourseId === item?.course_uid ? (
+                          <ExpandLessRounded
+                            sx={{ color: "white", fontSize: "30px" }}
+                          />
+                        ) : (
+                          <ExpandMoreRounded
+                            sx={{ color: "white", fontSize: "30px" }}
+                          />
+                        )}
+                      </IconButton>
+                    </Box>
                   </Box>
                   {expandedCourseId === item?.course_uid && (
                     <Box
@@ -418,6 +438,7 @@ function CoureseDetails() {
                         transition: "max-height 0.3s ease",
                         backgroundColor: "white",
                         p: 2,
+                        mx: 2,
                         borderRadius: "10px",
                         gap: "10px",
                         display: "flex",
@@ -431,12 +452,12 @@ function CoureseDetails() {
                           <Typography
                             key={moduleIndex}
                             sx={{
-                              color: "var(--sidebar-bg-color)",
+                              color: "#085186",
                               fontWeight: "600",
                               p: 2,
                               fontSize: "var(--font-size-small)",
                               borderRadius: "10px",
-                              boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+                              boxShadow: "rgba(0, 0, 0, 0.18) 0px 2px 4px",
                             }}
                           >
                             {`${moduleIndex + 1}. ${module}`}

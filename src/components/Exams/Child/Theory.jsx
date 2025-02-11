@@ -32,6 +32,11 @@ function Theory({ data = [], count }) {
         flex: 1,
       }}
     >
+      {/* <ButtonGroup variant="outlined" aria-label="Basic button group">
+        <Button onClick={() => handleToggle("practice")}>Practice</Button>
+        <Button onClick={() => handleToggle("practice")}>Internal Assessment</Button>
+        <Button onClick={() => handleToggle("practice")}>Final</Button>
+      </ButtonGroup> */}
       <Box
         sx={{
           backgroundColor: "#6560F0",
