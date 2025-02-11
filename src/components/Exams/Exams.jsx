@@ -8,6 +8,7 @@ import ErrorHandling from "../Common/ErrorHandling";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { Image } from "cloudinary-react";
+import { setExamsData } from "../Login/store/authSlice";
 
 const buttonStyle = {
   borderRadius: "5px",
@@ -75,6 +76,8 @@ function Exams() {
             (item) => item.assessment_type === "PROJECT"
           ),
         };
+
+        dispatch(setExamsData({ examsData: modified }));
 
         setCount({
           practice:

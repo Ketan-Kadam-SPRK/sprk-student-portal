@@ -1,200 +1,127 @@
-import { Badge, Box, Grid2, IconButton, Typography } from "@mui/material";
+import {
+  Badge,
+  Box,
+  Button,
+  ButtonGroup,
+  Grid2,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ExamCard from "./ExamCard";
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
 import NoDataPage from "../../Common/NoDataPage";
+import { useSelector } from "react-redux";
 
-function Theory({ data = [], count }) {
-  const [toggle, setToggle] = useState({
-    practice: true,
-    internal_assessment: false,
-    final: false,
-  });
+function Theory({ count }) {
+  const data = useSelector((state) => state.authSlice.examsData);
+  const [toggle, setToggle] = useState("practice");
+  // const myData = data || [];
+  console.log(data);
 
   const handleToggle = (name) => {
-    setToggle((prev) => ({
-      ...prev,
-      [name]: !prev[name],
-    }));
+    setToggle(name);
   };
+
+  const [examData, setExamData] = useState([]);
+
+  useEffect(() => {
+    let thisData = data?.theory[toggle] || [];
+    console.log(thisData);
+    setExamData(thisData);
+  }, [toggle, data]);
 
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 3,
-        p: 2,
-        height: "80vh",
-        overflowY: "auto",
-        flex: 1,
+        gap: 1,
+        position: "relative",
       }}
     >
-      {/* <ButtonGroup variant="outlined" aria-label="Basic button group">
-        <Button onClick={() => handleToggle("practice")}>Practice</Button>
-        <Button onClick={() => handleToggle("practice")}>Internal Assessment</Button>
-        <Button onClick={() => handleToggle("practice")}>Final</Button>
-      </ButtonGroup> */}
-      <Box
-        sx={{
-          backgroundColor: "#6560F0",
-          color: "white",
-          display: "flex",
-          px: 1,
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "400px",
-          maxWidth: "100%",
-          borderRadius: "5px",
-        }}
-      >
-        <Typography fontSize={"var(--font-size-small)"} fontWeight={600}>
-          Practice
-        </Typography>{" "}
-        <Badge color="error" badgeContent={count?.practice} />
-        {
-          <IconButton onClick={() => handleToggle("practice")}>
-            {toggle?.practice ? (
-              <KeyboardArrowDownRoundedIcon sx={{ color: "white" }} />
-            ) : (
-              <KeyboardArrowUpRoundedIcon sx={{ color: "white" }} />
-            )}
-          </IconButton>
-        }
-      </Box>
-      {toggle?.practice && (
-        <Box
+      <Box sx={{ display: "flex", gap: 1 }}>
+        <Button
+          // variant="text"
           sx={{
+            minWidth: "120px",
             display: "flex",
-            gap: 3,
-            flexWrap: "wrap",
+            gap: 2,
+            px: 2,
+            alignItems: "center",
+            color: toggle === "practice" ? "#6560F0" : "grey",
+            fontWeight: "bold",
+            borderBottom: toggle === "practice" ? "4px solid #6560F0" : "",
           }}
+          onClick={() => handleToggle("practice")}
         >
-          {data?.practice?.length > 0 ? (
-            <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
-              {data?.practice.map((item, index) => (
-                <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
-                  <ExamCard key={index} item={item} />
-                </Grid2>
-              ))}
-            </Grid2>
-          ) : (
-            <NoDataPage
-              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg"
-              errorHeading="No exams assigned yet!"
-              errorDescription="Your exams will appear here once they are scheduled. Stay prepared and keep learning!"
-            />
-          )}
-        </Box>
-      )}
-
-      <Box
-        sx={{
-          backgroundColor: "#6560F0",
-          color: "white",
-          display: "flex",
-          px: 1,
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "400px",
-          maxWidth: "100%",
-          borderRadius: "5px",
-        }}
-      >
-        <Typography fontSize={"var(--font-size-small)"} fontWeight={600}>
+          Practice <Badge color="secondary" badgeContent={count?.practice} />
+        </Button>
+        <Button
+          // variant="text"
+          sx={{
+            minWidth: "120px",
+            display: "flex",
+            gap: 2,
+            px: 2,
+            alignItems: "center",
+            color: toggle === "internal_assessment" ? "#6560F0" : "grey",
+            fontWeight: "bold",
+            borderBottom:
+              toggle === "internal_assessment" ? "4px solid #6560F0" : "",
+          }}
+          onClick={() => handleToggle("internal_assessment")}
+        >
           Internal Assessment
-        </Typography>{" "}
-        <Badge color="error" badgeContent={count?.internal_assessment} />
-        {
-          <IconButton onClick={() => handleToggle("internal_assessment")}>
-            {toggle?.internal_assessment ? (
-              <KeyboardArrowDownRoundedIcon sx={{ color: "white" }} />
-            ) : (
-              <KeyboardArrowUpRoundedIcon sx={{ color: "white" }} />
-            )}
-          </IconButton>
-        }
-      </Box>
-      {toggle?.internal_assessment && (
-        <Box
-          sx={{
-            display: "flex",
-            gap: 3,
-            flexWrap: "wrap",
-          }}
-        >
-          {data?.internal_assessment?.length > 0 ? (
-            <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
-              {data?.internal_assessment?.map((item, index) => (
-                <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
-                  <ExamCard key={index} item={item} />
-                </Grid2>
-              ))}
-            </Grid2>
-          ) : (
-            <NoDataPage
-              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg"
-              errorHeading="No exams assigned yet!"
-              errorDescription="Your exams will appear here once they are scheduled. Stay prepared and keep learning!"
-            />
-          )}
-        </Box>
-      )}
+          <Badge color="secondary" badgeContent={count?.internal_assessment} />
+        </Button>
 
+        <Button
+          variant="text"
+          sx={{
+            minWidth: "120px",
+            display: "flex",
+            gap: 2,
+            px: 2,
+            alignItems: "center",
+            color: toggle === "final" ? "#6560F0" : "grey",
+            fontWeight: "bold",
+            borderBottom: toggle === "final" ? "4px solid #6560F0" : "",
+          }}
+          onClick={() => handleToggle("final")}
+        >
+          Final <Badge color="secondary" badgeContent={count?.final} />
+        </Button>
+      </Box>
       <Box
         sx={{
-          backgroundColor: "#6560F0",
-          color: "white",
           display: "flex",
-          px: 1,
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "400px",
-          maxWidth: "100%",
-          borderRadius: "5px",
+          flexDirection: "column",
+          gap: 3,
+          p: 2,
+          height: "100vh",
+          overflowY: "auto",
+          // flex: 1,
         }}
       >
-        <Typography fontSize={"var(--font-size-small)"} fontWeight={600}>
-          Final
-        </Typography>{" "}
-        <Badge color="error" badgeContent={count?.final} />
-        {
-          <IconButton onClick={() => handleToggle("final")}>
-            {toggle?.final ? (
-              <KeyboardArrowDownRoundedIcon sx={{ color: "white" }} />
-            ) : (
-              <KeyboardArrowUpRoundedIcon sx={{ color: "white" }} />
-            )}
-          </IconButton>
-        }
+        {examData?.length > 0 ? (
+          <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
+            {examData?.map((item, index) => (
+              <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
+                <ExamCard key={index} item={item} />
+              </Grid2>
+            ))}
+          </Grid2>
+        ) : (
+          <NoDataPage
+            errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg"
+            errorHeading="No exams assigned yet!"
+            errorDescription="Your exams will appear here once they are scheduled. Stay prepared and keep learning!"
+          />
+        )}
       </Box>
-      {toggle?.final && (
-        <Box
-          sx={{
-            display: "flex",
-            gap: 3,
-            flexWrap: "wrap",
-          }}
-        >
-          {data?.final?.length > 0 ? (
-            <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
-              {data?.final?.map((item, index) => (
-                <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
-                  <ExamCard key={index} item={item} />
-                </Grid2>
-              ))}
-            </Grid2>
-          ) : (
-            <NoDataPage
-              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg"
-              errorHeading="No exams assigned yet!"
-              errorDescription="Your exams will appear here once they are scheduled. Stay prepared and keep learning!"
-            />
-          )}
-        </Box>
-      )}
     </Box>
   );
 }
