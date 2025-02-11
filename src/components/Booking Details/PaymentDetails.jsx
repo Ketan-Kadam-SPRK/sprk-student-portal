@@ -70,84 +70,6 @@ function PaymentDetails() {
     getBookingInstallmentDetails();
   }, []);
 
-  // const data = {
-  //   booking_code: "B2501KHARE5854A5",
-  //   course_grp: ["Full Stack in Java", "Data Analytics", "Excel"],
-  //   booked_at: "2025-01-21T07:16:16.971931Z",
-  //   batch_prefer: "Weekdays",
-  //   payment_term: "Installments",
-  //   total_fees: 58000,
-  //   pending_fees: 23200.0,
-  //   paid_fees: 34800.0,
-  //   instal: [
-  //     {
-  //       due_at: "2025-01-21",
-  //       paid_at: "2025-01-21T00:00:00Z",
-  //       payment_id: 1779,
-  //       receipt_code: "R25012119D6623",
-  //       due_amount: 11600.0,
-  //       paid_amount: 11600.0,
-  //       Mode_of_Payment: "CASH",
-  //       installment_status: "PAID",
-  //       installment_id: "IST2501211246b2b9",
-  //     },
-  //     {
-  //       due_at: "2025-02-21",
-  //       paid_at: "2025-01-21T00:00:00Z",
-  //       payment_id: 1780,
-  //       receipt_code: "R25012141B5CE8",
-  //       due_amount: 11600.0,
-  //       paid_amount: 11600.0,
-  //       Mode_of_Payment: "CASH",
-  //       installment_status: "PAID",
-  //       installment_id: "IST25012112468d9c",
-  //     },
-  //     {
-  //       due_at: "2025-03-21",
-  //       paid_at: "2025-01-21T00:00:00Z",
-  //       payment_id: 1781,
-  //       receipt_code: "R250121ED470B5",
-  //       due_amount: 11600.0,
-  //       paid_amount: 11600.0,
-  //       Mode_of_Payment: "CASH",
-  //       installment_status: "PAID",
-  //       installment_id: "IST25012112469a42",
-  //     },
-  //     {
-  //       due_at: "2025-04-21",
-  //       paid_at: null,
-  //       payment_id: null,
-  //       receipt_code: null,
-  //       due_amount: 11600.0,
-  //       paid_amount: null,
-  //       Mode_of_Payment: null,
-  //       installment_status: "PENDING",
-  //       installment_id: "IST2501211246239f",
-  //     },
-  //     {
-  //       due_at: "2025-05-21",
-  //       paid_at: null,
-  //       payment_id: null,
-  //       receipt_code: null,
-  //       due_amount: 11600.0,
-  //       paid_amount: null,
-  //       Mode_of_Payment: null,
-  //       installment_status: "PENDING",
-  //       installment_id: "IST250121124615a9",
-  //     },
-  //     {
-  //       due_at: "2025-06-21",
-  //       paid_at: null,
-  //       payment_id: null,
-  //       receipt_code: null,
-  //       due_amount: 11600.0,
-  //       paid_amount: null,
-  //       Mode_of_Payment: null,
-  //       installment_status: "PENDING",
-  //       installment_id: "IST250121124615a9",
-  //     },
-  //   ],
-  // };
 
   const getMonthName = (dateString) => {
     if (!dateString) return ""; // Handle invalid or undefined date
@@ -155,13 +77,13 @@ function PaymentDetails() {
     return date.toLocaleString("en-US", { month: "long" }); // Returns full month name (e.g., "January")
   };
   const columns = [
-    // {
-    //   headerName: "Month",
-    //   id: "due_at",
-    //   minWidth: 150,
-    //   filterable: false,
-    //   format: (value) => getMonthName(value),
-    // },
+    {
+      headerName: "Month",
+      id: "due_at",
+      minWidth: 150,
+      filterable: false,
+      format: (value) => getMonthName(value),
+    },
     {
       headerName: "Due Date",
       id: "due_at",

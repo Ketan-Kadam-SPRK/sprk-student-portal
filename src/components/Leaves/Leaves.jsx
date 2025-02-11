@@ -27,6 +27,7 @@ import { LightTooltip } from "../../Utils/LightToolTip";
 //child components and actions
 import ApplyLeaveModal from "./ApplyLeaveModal";
 import { getAllLeaves, getWithdrawnLeaves } from "./action/leaves.action";
+import { Image } from "cloudinary-react";
 
 function Leaves() {
   const initialState = {
@@ -220,32 +221,6 @@ function Leaves() {
         );
       },
     },
-
-    {
-      headerName: "Managed By",
-      id: "managedBy",
-      minWidth: 200,
-    },
-    {
-      headerName: "View Document",
-      id: "file",
-      minWidth: 150,
-      format: (row) => {
-        return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton
-              onClick={() => handleOpenFile(row)}
-              disabled={row === null}
-            >
-              <InsertDriveFileIcon
-                sx={{ color: row === null ? "#9B9B9B" : "#0074BD" }}
-              />
-            </IconButton>
-          </Box>
-        );
-      },
-    },
-
     {
       headerName: "Action",
       id: "leaveRequestUid",
@@ -272,6 +247,31 @@ function Leaves() {
         );
       },
     },
+
+    {
+      headerName: "Managed By",
+      id: "managedBy",
+      minWidth: 200,
+    },
+    {
+      headerName: "View Document",
+      id: "file",
+      minWidth: 150,
+      format: (row) => {
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              onClick={() => handleOpenFile(row)}
+              disabled={row === null}
+            >
+              <InsertDriveFileIcon
+                sx={{ color: row === null ? "#9B9B9B" : "#0074BD" }}
+              />
+            </IconButton>
+          </Box>
+        );
+      },
+    },
   ];
 
   console.log(leaveId);
@@ -293,11 +293,25 @@ function Leaves() {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Typography variant="h4" fontWeight={600}>
-          Your Leaves
-        </Typography>
-        <Typography sx={{ color: "#4D535A" }}>
-          Track your leave history and apply for new leaves easily.
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+          <Typography variant="h4" fontWeight={600}>
+            Your Leaves
+          </Typography>
+          <Image
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739277438/calendar-with-checklist-date-schedule-3d-icon-removebg-preview_1_vtiyrw.svg"
+            cloudName="dxlzzgbfw"
+            style={{
+              width: "30px",
+              height: "auto",
+              objectFit: "contain",
+            }}
+          />
+        </Box>
+        <Typography
+          fontSize={"var(--font-size-medium)"}
+          sx={{ color: "#4D535A", fontStyle: "italic" }}
+        >
+          Track your leave history easily.
         </Typography>
       </Box>
       <Box>
