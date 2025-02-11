@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import ErrorHandling from "../Common/ErrorHandling";
 import NoDataPage from "../Common/NoDataPage";
+import { Image } from "cloudinary-react";
+import { objectShallowCompare } from "@mui/x-data-grid/hooks/utils/useGridSelector";
 
 const Courses = () => {
   const dispatch = useDispatch();
@@ -52,10 +54,31 @@ const Courses = () => {
         flex: 1,
       }}
     >
-      <Typography variant="h4" fontWeight={"bold"}>
-        Your Programs at a Glance{" "}
-      </Typography>
-      <Typography fontSize={"var(--font-size-medium)"}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4" fontWeight={600}>
+          Your Programs at a Glance{" "}
+          <Image
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739265190/diary-education-learning-pencil-school-study-svgrepo-com_1_qyg6bi.svg"
+            style={{
+              width: "30px",
+              height: "auto",
+              objectFit: "contain",
+            }}
+            cloudName="dxlzzgbfw"
+          />
+        </Typography>
+      </Box>
+      <Typography
+        fontSize={"var(--font-size-medium)"}
+        fontStyle={"italic"}
+        color="#4D535A"
+      >
         The road to mastery is through continuous learning. Stay curious, stay
         inspired.{" "}
       </Typography>
@@ -93,7 +116,7 @@ const Courses = () => {
             display: "flex",
             gap: 4,
             flexWrap: "wrap",
-            flex: 1,
+            // flex: 1,
             p: 2,
             overflow: "auto",
             height: "100vh",

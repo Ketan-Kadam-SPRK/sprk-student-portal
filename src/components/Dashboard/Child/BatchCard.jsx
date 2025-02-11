@@ -90,9 +90,10 @@ function BatchCard({ item }) {
         alignItems: "center",
         justifyContent: "space-between",
         p: "20px",
-        backgroundColor: `${item?.cou_color}60`,
+        backgroundColor: `${item?.cou_color}30`,
         borderRadius: "10px",
-        boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+        boxShadow:
+          "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
         flexWrap: "wrap",
         m: 1,
       }}

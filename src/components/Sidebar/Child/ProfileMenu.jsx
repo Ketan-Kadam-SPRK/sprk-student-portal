@@ -33,6 +33,11 @@ const ProfileMenu = forwardRef(
      * @returns {undefined}
      */
 
+    const handleIdClick = () => {
+      navigator.clipboard.writeText(userDetails?.student_id);
+      toast.success("Copied to clipboard");
+    };
+
     return (
       <Menu
         aria-hidden={isMenuOpen ? "false" : "true"} // Apply aria-hidden based on focus state
@@ -82,21 +87,25 @@ const ProfileMenu = forwardRef(
               </Avatar>
             )}
           </Box>
-          <Box>
+          <Box sx={{ cursor: "pointer" }} onClick={handleIdClick}>
             <Typography
               sx={{
                 fontSize: "14px",
                 color: "#085084",
-                width: "180px",
                 fontWeight: "600",
                 cursor: "pointer",
+                width: "120px",
+                wordBreak: "break-all",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
               }}
             >
               {/* Display user details (employee id) */}
-              {userDetails?.student_id}
+              {userDetails?.name}
             </Typography>
             <Typography sx={{ fontSize: "14px" }}>
-              {userDetails?.name}
+              {userDetails?.student_id}
             </Typography>
           </Box>
         </MenuItem>

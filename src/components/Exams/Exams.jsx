@@ -7,6 +7,7 @@ import { getAllExams } from "./exams.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { Image } from "cloudinary-react";
 
 const buttonStyle = {
   borderRadius: "5px",
@@ -26,7 +27,7 @@ function Exams() {
   const [activeTab, setActiveTab] = useState(0);
   const [data, setData] = useState({});
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error500, setError500] = useState(false);
   const [count, setCount] = useState({
     practice: 0,
@@ -122,12 +123,30 @@ function Exams() {
         flex: 1,
       }}
     >
-      <Box sx={{ mt: 3 }}>
+      <Box sx={{ mt: 1 }}>
         <Typography variant="h4" fontWeight={"600"}>
           Your Exams
         </Typography>
-        <Typography fontSize={"var(--font-size-medium)"}>
+        <Typography
+          fontSize={"var(--font-size-medium)"}
+          fontStyle={"italic"}
+          color="#4D535A"
+          // sx={{
+          //   display: "flex",
+          //   gap: 1,
+          // }}
+        >
           Track your upcoming exams here
+          <Image
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254460/ndjoyyrgaezboup67csd.png"
+            style={{
+              width: "25px",
+              height: "auto",
+              objectFit: "contain",
+              marginLeft: "5px",
+            }}
+            cloudName="dxlzzgbfw"
+          />
         </Typography>
       </Box>
       <Box

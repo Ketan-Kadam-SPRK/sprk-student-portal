@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+import { Image } from "cloudinary-react";
+import { Padding } from "@mui/icons-material";
 
 const TypingAnimation = () => {
   const userDetails = useSelector((state) => state.authSlice.userDetails);
   const sentences = [
-    `Welcome, ${userDetails?.name} !`,
+    `Welcome, ${userDetails?.name}!`,
     "Ready to achieve your next milestone?",
   ];
+
   const typingSpeed = 100;
   const delayBetweenSentences = 1500;
 
@@ -19,14 +22,12 @@ const TypingAnimation = () => {
     let typingTimeout;
 
     if (isTyping) {
-      // Show characters one by one
       const currentSentence = sentences[sentenceIndex];
       if (currentText.length < currentSentence.length) {
         typingTimeout = setTimeout(() => {
           setCurrentText(currentSentence.slice(0, currentText.length + 1));
         }, typingSpeed);
       } else {
-        // Wait before erasing or switching to the next sentence
         setIsTyping(false);
         setTimeout(() => {
           setIsTyping(true);
@@ -41,8 +42,23 @@ const TypingAnimation = () => {
 
   return (
     <div>
-      <Typography variant="h5" fontWeight={600}>
+      <Typography variant="h4" fontWeight={600}>
         {currentText}
+        {/* Show emoji when on the first sentence */}
+        {sentenceIndex === 0 && currentText.length === sentences[0].length && (
+          <Image
+            style={{
+              width: "30px",
+              height: "auto",
+              objectFit: "contain",
+              marginLeft: "10px",
+            }}
+            publicId={
+              "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739253981/emoji__sparkles__gpuatf.svg"
+            }
+            cloudName="dxlzzgbfw"
+          />
+        )}
       </Typography>
     </div>
   );

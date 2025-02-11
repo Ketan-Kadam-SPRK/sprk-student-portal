@@ -145,9 +145,25 @@ function Certificates() {
       >
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <Typography variant="h4" fontWeight={600}>
-            Your Certificates
+            Your Certificates{" "}
+            <Image
+              publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739265190/diary-education-learning-pencil-school-study-svgrepo-com_1_qyg6bi.svg"
+              style={{
+                width: "25px",
+                height: "auto",
+                objectFit: "contain",
+                marginLeft: "5px",
+              }}
+              cloudName="dxlzzgbfw"
+            />
           </Typography>
-          <Typography sx={{ color: "#4D535A" }}>
+          <Typography
+            sx={{
+              color: "#4D535A",
+              fontStyle: "italic",
+              fontSize: "var(--font-size-medium)",
+            }}
+          >
             Every achievement tells the story of your determination.
           </Typography>
         </Box>
@@ -156,7 +172,7 @@ function Certificates() {
             sx={{
               display: "flex",
               flexDirection: "column",
-              mt: 2,
+              mt: 1,
             }}
           >
             <Box

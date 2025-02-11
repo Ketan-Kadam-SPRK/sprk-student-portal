@@ -11,8 +11,9 @@ import React, { useState } from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
 import { formatDateTime } from "../../../Utils/dateTimeFormator";
-import { Close } from "@mui/icons-material";
+import { Close, InfoRounded } from "@mui/icons-material";
 import ReportPreviewModal from "./ReportPreviewModal";
+import LightTooltip from "../../Common/LightTooltip";
 
 function ExamCard({ item }) {
   const [responseID, setResponseID] = useState(null);
@@ -61,6 +62,34 @@ function ExamCard({ item }) {
   };
 
   const { color, bgColor } = getStatusColor(item?.status);
+
+  const evaluting = () => {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+          backgroundColor: "white",
+          p: 2,
+        }}
+      >
+        <Typography
+          sx={{ fontSize: "var(--font-size-extra-small)", fontWeight: "bold" }}
+        >
+          Under Evalution
+        </Typography>
+
+        <Typography sx={{ fontSize: "var(--font-size-extra-small)" }}>
+          Your exam is under review.{" "}
+        </Typography>
+
+        <Typography sx={{ fontSize: "var(--font-size-extra-small)" }}>
+          Results will be updated once the process is complete.
+        </Typography>
+      </Box>
+    );
+  };
   return (
     <Box
       sx={{
@@ -162,6 +191,7 @@ function ExamCard({ item }) {
             justifyContent: "space-between",
             gap: 1,
             mt: 2,
+            flexWrap: "wrap",
           }}
         >
           <StatusStyledComponent
@@ -172,12 +202,13 @@ function ExamCard({ item }) {
 
           {["SCHEDULED", "ONGOING"].includes(item?.status) && (
             <Button
+              variant="contained"
               sx={{
-                backgroundColor: "#3C36EC",
+                // backgroundColor: "#3C36EC",
                 color: "white",
-                ":hover": {
-                  backgroundColor: "#3C36EC",
-                },
+                // ":hover": {
+                //   backgroundColor: "#3C36EC",
+                // },
                 borderRadius: "30px",
                 width: "100px",
                 boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
@@ -191,25 +222,37 @@ function ExamCard({ item }) {
             </Button>
           )}
 
-          {["FAIL", "PASS"].includes(item?.status) && (
-            <Button
-              sx={{
-                backgroundColor: "#3C36EC",
-                color: "white",
-                ":hover": {
-                  backgroundColor: "#3C36EC",
-                },
-                borderRadius: "30px",
-                width: "100px",
-                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-              }}
-              onClick={() => {
-                handleDialog(item?.exam_user_uid);
-              }}
-            >
-              RESULT
-            </Button>
-          )}
+          {["FAIL", "PASS"].includes(item?.status) &&
+            !["PROJECT", "PRACTICAL"].includes(item?.assessment_type) && (
+              <Button
+                color="secondary"
+                variant="contained"
+                sx={{
+                  // backgroundColor: "#6560F0",
+                  color: "white",
+                  // ":hover": {
+                  //   backgroundColor: "#3C36EC",
+                  // },
+                  borderRadius: "30px",
+                  width: "100px",
+                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                }}
+                onClick={() => {
+                  handleDialog(item?.exam_user_uid);
+                }}
+                disabled={item?.status === "EVALUATING"}
+                endIcon={
+                  item?.status === "EVALUATING" ? (
+                    <LightTooltip title={evaluting()} arrow>
+                      {" "}
+                      <InfoRounded />{" "}
+                    </LightTooltip>
+                  ) : null
+                }
+              >
+                RESULT
+              </Button>
+            )}
         </Box>
       </Box>
 

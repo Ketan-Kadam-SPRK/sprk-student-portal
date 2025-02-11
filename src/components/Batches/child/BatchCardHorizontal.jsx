@@ -87,6 +87,7 @@ function BatchCardHorizontal({ item = {} }) {
               fontSize: "var(--font-size-small)",
               fontWeight: "bold",
               cursor: "pointer",
+              color: "#0064C9",
             }}
             onClick={() => {
               navigate(`/Batches/${item?.batch_uid}`);

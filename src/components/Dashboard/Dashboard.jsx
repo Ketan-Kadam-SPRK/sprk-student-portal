@@ -19,7 +19,8 @@ import ErrorHandling from "../Common/ErrorHandling";
 import { useNavigate } from "react-router-dom";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import TypingAnimation from "./Child/TypingAnimation";
-
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { Circle } from "@mui/icons-material";
 function Dashboard() {
   function convertToTitleCase(text) {
     if (!text) return "";
@@ -180,11 +181,31 @@ function Dashboard() {
             gap: 2,
           }}
         >
-          <Typography
-            sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
           >
-            Upcoming Events
-          </Typography>
+            <Typography
+              sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+            >
+              Upcoming Events
+            </Typography>
+
+            <Image
+              style={{
+                width: "20px",
+                height: "auto",
+                objectFit: "contain",
+              }}
+              publicId={
+                "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739253981/red_and_white_megaphone_n6xssx.svg"
+              }
+              cloudName="dxlzzgbfw"
+            />
+          </Box>
           <Box sx={{ display: "flex", overflowX: "auto" }}>
             {Events?.length > 0 ? (
               Events?.map((res, index) => (
@@ -232,8 +253,23 @@ function Dashboard() {
                       sx={{
                         fontSize: "var(--font-size-extra-small)",
                         color: "red",
+                        display: "flex", // Ensures proper alignment of icon and text
+                        alignItems: "center",
                       }}
-                    >{`Start on : ${formatDateTime(res.start)}`}</Typography>
+                    >
+                      <Box
+                        component="span"
+                        sx={{
+                          width: "8px",
+                          height: "8px",
+                          backgroundColor: "black", // Color of the bullet
+                          borderRadius: "50%", // Makes it circular
+                          display: "inline-block",
+                          marginRight: "8px", // Space between the bullet and text
+                        }}
+                      ></Box>
+                      {`Start on : ${formatDateTime(res.start)}`}
+                    </Typography>
                   </Box>
                 </Box>
               ))
@@ -280,12 +316,30 @@ function Dashboard() {
               justifyContent: "space-between",
             }}
           >
-            <Typography
-              sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+            <Box
+              sx={{
+                display: "flex",
+                gap: 1,
+                alignItems: "center",
+              }}
             >
-              Today's Sessions
-            </Typography>
-
+              <Typography
+                sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+              >
+                Today's Sessions
+              </Typography>
+              <Image
+                style={{
+                  width: "20px",
+                  height: "auto",
+                  objectFit: "contain",
+                }}
+                publicId={
+                  "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739253981/calendar-svgrepo-com_2_1_dkekjd.svg"
+                }
+                cloudName="dxlzzgbfw"
+              />
+            </Box>
             <Typography fontWeight={500}>{dateFormator(new Date())}</Typography>
           </Box>
 
@@ -325,11 +379,30 @@ function Dashboard() {
             gap: 2,
           }}
         >
-          <Typography
-            sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
           >
-            Exams
-          </Typography>
+            <Typography
+              sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+            >
+              Exams
+            </Typography>
+            <Image
+              style={{
+                width: "20px",
+                height: "auto",
+                objectFit: "contain",
+              }}
+              publicId={
+                "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254460/ndjoyyrgaezboup67csd.png"
+              }
+              cloudName="dxlzzgbfw"
+            />
+          </Box>
           {exams?.length > 0 ? (
             exams?.map((res, index) => (
               <Box
@@ -351,7 +424,7 @@ function Dashboard() {
                   style={{
                     width: "80px",
                     height: "80px",
-                    objectFit: "cover",
+                    objectFit: "contain",
                     filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
                   }}
                   publicId={res?.cou_logo}
@@ -378,14 +451,28 @@ function Dashboard() {
                       fontWeight: "bold",
                     }}
                   >{`Exam ID: ${res.exam_uid}`}</Typography>
+
                   <Typography
                     sx={{
                       fontSize: "var(--font-size-extra-small)",
                       color: "red",
+                      display: "flex", // Ensures proper alignment of icon and text
+                      alignItems: "center",
                     }}
-                  >{`Start on : ${formatDateTime(
-                    res.exam_startDate
-                  )}`}</Typography>
+                  >
+                    <Box
+                      component="span"
+                      sx={{
+                        width: "8px",
+                        height: "8px",
+                        backgroundColor: "red", // Color of the bullet
+                        borderRadius: "50%", // Makes it circular
+                        display: "inline-block",
+                        marginRight: "8px", // Space between the bullet and text
+                      }}
+                    ></Box>
+                    {`Start on : ${formatDateTime(res.exam_startDate)}`}
+                  </Typography>
                 </Box>
               </Box>
             ))
@@ -446,20 +533,39 @@ function Dashboard() {
               justifyContent: "space-between",
             }}
           >
-            <Typography
-              sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+            <Box
+              sx={{
+                display: "flex",
+                gap: 1,
+                alignItems: "center",
+              }}
             >
-              Certificates
-            </Typography>
+              <Typography
+                sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+              >
+                Certificates
+              </Typography>
+              <Image
+                style={{
+                  width: "20px",
+                  height: "auto",
+                  objectFit: "contain",
+                }}
+                publicId={
+                  "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739253981/certificate-contract-svgrepo-com_1_l211vd.svg"
+                }
+                cloudName="dxlzzgbfw"
+              />
+            </Box>
 
-            {exams?.length > 0 && (
+            {certificates?.length > 0 && (
               <Button
                 endIcon={<ChevronRightRoundedIcon />}
                 sx={{
                   fontWeight: "bold",
                   fontSize: "var(--font-size-extra-small)",
                 }}
-                onClick={() => navigate(`/Exams`)}
+                onClick={() => navigate(`/Certificates`)}
               >
                 View All
               </Button>
@@ -561,11 +667,31 @@ function Dashboard() {
             gap: 2,
           }}
         >
-          <Typography
-            sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              alignItems: "center",
+            }}
           >
-            Recently Added Jobs
-          </Typography>
+            <Typography
+              sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+            >
+              Recently Added Jobs
+            </Typography>
+
+            <Image
+              style={{
+                width: "20px",
+                height: "auto",
+                objectFit: "contain",
+              }}
+              publicId={
+                "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254478/ccyolkdgxmljm4bmpkai.png"
+              }
+              cloudName="dxlzzgbfw"
+            />
+          </Box>
           {jobs?.length > 0 ? (
             jobs?.map((res, index) => (
               <Box
@@ -589,7 +715,7 @@ function Dashboard() {
                   style={{
                     width: "80px",
                     height: "80px",
-                    objectFit: "cover",
+                    objectFit: "contain",
                     filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
                   }}
                   publicId={res?.comp_logo}

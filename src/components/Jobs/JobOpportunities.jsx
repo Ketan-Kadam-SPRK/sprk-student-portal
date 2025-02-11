@@ -7,6 +7,7 @@ import { getAllJobs } from "./jobs.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
 import NoDataPage from "../Common/NoDataPage";
+import { Image } from "cloudinary-react";
 
 function JobOpportunities() {
   const dispatch = useDispatch();
@@ -96,8 +97,18 @@ function JobOpportunities() {
     >
       <Typography variant="h4" fontWeight={"bold"}>
         Job Openings for You{" "}
+        <Image
+          publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254478/ccyolkdgxmljm4bmpkai.png"
+          style={{
+            width: "30px",
+            height: "auto",
+            objectFit: "contain",
+            marginLeft: "5px",
+          }}
+          cloudName="dxlzzgbfw"
+        />
       </Typography>
-      <Typography fontSize={"var(--font-size-medium)"}>
+      <Typography fontSize={"var(--font-size-medium)"} fontStyle={"italic"}>
         Stay ahead with opportunities selected just for you.{" "}
       </Typography>
       <Box

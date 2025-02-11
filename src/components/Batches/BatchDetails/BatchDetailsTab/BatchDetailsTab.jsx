@@ -6,7 +6,6 @@ import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
 import AbsentLog from "./AbsentLog/AbsentLog";
 
-
 const TabPanel = ({ children, value, index }) => {
   return (
     <div role="tabpanel" hidden={value !== index}>
@@ -15,15 +14,14 @@ const TabPanel = ({ children, value, index }) => {
   );
 };
 
-function BatchDetailsTab({sessionData}) {
-  const tabNames = ["SESSIONS", "MODULES", "ABSENT LOG"];
+function BatchDetailsTab({ sessionData }) {
+  const tabNames = ["SESSIONS", "MODULES"];
   const [activeTab, setActiveTab] = useState(0);
   const batchId = useParams().batchId || null;
 
   const handleTabChange = (event, newTabIndex) => {
     setActiveTab(newTabIndex);
   };
-
 
   return (
     <Box className={styles.mainBox}>
@@ -61,14 +59,14 @@ function BatchDetailsTab({sessionData}) {
       </Box>
 
       <TabPanel value={activeTab} index={0}>
-        <Sessions sessionData={sessionData}/>
+        <Sessions sessionData={sessionData} />
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        <Modules batchId={batchId}/>
+        <Modules batchId={batchId} />
       </TabPanel>
-      <TabPanel value={activeTab} index={2}>
+      {/* <TabPanel value={activeTab} index={2}>
         <AbsentLog batchId={batchId} />
-      </TabPanel>
+      </TabPanel> */}
     </Box>
   );
 }
