@@ -382,7 +382,7 @@ function Dashboard() {
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
+              justifyContent: "space-between",
               gap: 1,
             }}
           >
@@ -390,18 +390,33 @@ function Dashboard() {
               sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
             >
               Exams
+              <Image
+                style={{
+                  width: "20px",
+                  height: "auto",
+                  objectFit: "contain",
+                  marginLeft: "5px",
+                }}
+                publicId={
+                  "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254460/ndjoyyrgaezboup67csd.png"
+                }
+                cloudName="dxlzzgbfw"
+              />
             </Typography>
-            <Image
-              style={{
-                width: "20px",
-                height: "auto",
-                objectFit: "contain",
-              }}
-              publicId={
-                "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254460/ndjoyyrgaezboup67csd.png"
-              }
-              cloudName="dxlzzgbfw"
-            />
+
+            {exams?.length > 0 && (
+              <Button
+                endIcon={<ChevronRightRoundedIcon />}
+                sx={{
+                  ml: "auto",
+                  fontWeight: "bold",
+                  fontSize: "var(--font-size-extra-small)",
+                }}
+                onClick={() => navigate(`/Exams`)}
+              >
+                View All
+              </Button>
+            )}
           </Box>
           {exams?.length > 0 ? (
             exams?.map((res, index) => (
@@ -482,19 +497,6 @@ function Dashboard() {
               errorHeading="No Exams Yet!"
               errorDescription="Use this time to revise and sharpen your skills."
             />
-          )}
-          {exams?.length > 0 && (
-            <Button
-              endIcon={<ChevronRightRoundedIcon />}
-              sx={{
-                ml: "auto",
-                fontWeight: "bold",
-                fontSize: "var(--font-size-extra-small)",
-              }}
-              onClick={() => navigate(`/Exams`)}
-            >
-              View All
-            </Button>
           )}
         </Box>
       </Box>
@@ -670,27 +672,41 @@ function Dashboard() {
           <Box
             sx={{
               display: "flex",
+              justifyContent: "space-between",
               gap: 1,
-              alignItems: "center",
             }}
           >
             <Typography
               sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
             >
-              Recently Added Jobs
+              Recently Added Jobs{" "}
+              <Image
+                style={{
+                  width: "20px",
+                  height: "auto",
+                  objectFit: "contain",
+                  marginLeft: "5px",
+                }}
+                publicId={
+                  "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254478/ccyolkdgxmljm4bmpkai.png"
+                }
+                cloudName="dxlzzgbfw"
+              />
             </Typography>
 
-            <Image
-              style={{
-                width: "20px",
-                height: "auto",
-                objectFit: "contain",
-              }}
-              publicId={
-                "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254478/ccyolkdgxmljm4bmpkai.png"
-              }
-              cloudName="dxlzzgbfw"
-            />
+            {jobs?.length > 0 && (
+              <Button
+                endIcon={<ChevronRightRoundedIcon />}
+                sx={{
+                  ml: "auto",
+                  fontWeight: "bold",
+                  fontSize: "var(--font-size-extra-small)",
+                }}
+                onClick={() => navigate(`/Job_Opportunities`)}
+              >
+                View All
+              </Button>
+            )}
           </Box>
           {jobs?.length > 0 ? (
             jobs?.map((res, index) => (
@@ -764,19 +780,6 @@ function Dashboard() {
               errorHeading="No Job Openings Right Now!"
               errorDescription="Keep building your skills while we update jobs!"
             />
-          )}
-          {jobs?.length > 0 && (
-            <Button
-              endIcon={<ChevronRightRoundedIcon />}
-              sx={{
-                ml: "auto",
-                fontWeight: "bold",
-                fontSize: "var(--font-size-extra-small)",
-              }}
-              onClick={() => navigate(`/Job_Opportunities`)}
-            >
-              View All
-            </Button>
           )}
         </Box>
       </Box>
