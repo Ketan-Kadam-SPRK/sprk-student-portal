@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { getBookingDetails } from "./action/Payment.action";
 import ErrorHandling from "../Common/ErrorHandling";
+import { Image } from "cloudinary-react";
 
 function Payments() {
   const dispatch = useDispatch();
@@ -44,10 +45,19 @@ function Payments() {
       }}
     >
       <Box>
-        <Typography variant="h5" sx={{ color: "#0A2647", fontWeight: 600 }}>
-          Your Course Group Bookings
-        </Typography>
-        <Typography sx={{ color: "#4D535A" }}>
+        <Box sx={{ display: "flex", gap: "10px" }}>
+          <Typography variant="h4" sx={{ color: "#0A2647", fontWeight: 600 }}>
+            Your Course Group Bookings
+          </Typography>
+          <Image
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739256894/payment-method-credit-card-svgrepo-com_2_1_bcecrt.svg"
+            cloudName="dxlzzgbfw"
+            style={{ width: "50px", height: "50px" }}
+          />
+        </Box>
+        <Typography
+          sx={{ color: "#4D535A", fontSize: "20px", fontStyle: "italic" }}
+        >
           Stay updated on your bookings and payment progress.
         </Typography>
       </Box>

@@ -264,6 +264,7 @@ function PaymentDetails() {
       },
     },
   ];
+  console.log(data)
 
   if (loading) {
     return <ErrorHandling error500={false} loadData={loading} />;
@@ -299,6 +300,9 @@ function PaymentDetails() {
           >
             {<ArrowBackIcon />}
           </Button>
+        </Box>
+        <Box>
+          <Typography>payment status :</Typography>
         </Box>
       </Box>
       <Box sx={{ px: 3 }}>
