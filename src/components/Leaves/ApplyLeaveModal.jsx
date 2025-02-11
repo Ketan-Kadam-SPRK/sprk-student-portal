@@ -312,7 +312,7 @@ const handleClearFile = () => {
         }}
       >
         <Box>
-          <Typography sx={{ fontSize: "20px" }}>Apply Leave</Typography>
+          <Typography sx={{ fontSize: "20px" }}>{leaveId === null ? "Apply Leave" : "Edit Leave"}</Typography>
         </Box>
         <CloseIcon
           onClick={() => {
