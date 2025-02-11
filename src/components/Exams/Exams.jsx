@@ -8,7 +8,7 @@ import ErrorHandling from "../Common/ErrorHandling";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { Image } from "cloudinary-react";
-import { setExamsData } from "../Login/store/authSlice";
+import { setExamsData } from "./examSlice";
 
 const buttonStyle = {
   borderRadius: "5px",

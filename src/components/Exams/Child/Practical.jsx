@@ -2,8 +2,12 @@ import React from "react";
 import { Box, Grid2 } from "@mui/material";
 import ExamCard from "./ExamCard";
 import NoDataPage from "../../Common/NoDataPage";
+import { useSelector } from "react-redux";
 
-function Practical({ data = [] }) {
+function Practical() {
+  const data =
+    useSelector((state) => state.examSlice.examsData?.practical) || [];
+
   return (
     <Box
       sx={{

@@ -1,22 +1,13 @@
-import {
-  Badge,
-  Box,
-  Button,
-  ButtonGroup,
-  Grid2,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Badge, Box, Button, Grid2 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ExamCard from "./ExamCard";
-import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
-import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
 import NoDataPage from "../../Common/NoDataPage";
 import { useSelector } from "react-redux";
 
 function Theory({ count }) {
-  const data = useSelector((state) => state.authSlice.examsData);
+  const data = useSelector((state) => state.examSlice?.examsData);
+  console.log(data);
   const [toggle, setToggle] = useState("practice");
   // const myData = data || [];
   console.log(data);

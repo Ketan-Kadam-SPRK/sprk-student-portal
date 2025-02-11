@@ -3,8 +3,11 @@ import { Box, Grid2 } from "@mui/material";
 import ExamCard from "./ExamCard";
 
 import NoDataPage from "../../Common/NoDataPage";
+import { useSelector } from "react-redux";
 
-function Project({ data = [] }) {
+function Project() {
+  const data = useSelector((state) => state.examSlice.examsData?.project) || [];
+
   return (
     <Box
       sx={{

@@ -11,7 +11,7 @@ import {
 } from "redux-persist";
 import authSlice from "./components/Login/store/authSlice";
 import encryptTransform from "./crypto";
-
+import examSlice from "./components/Exams/examSlice";
 const persistConfig = {
   key: "auth",
   storage,
@@ -24,6 +24,7 @@ const persistedReducer = persistReducer(persistConfig, authSlice);
 const store = configureStore({
   reducer: {
     authSlice: persistedReducer,
+    examSlice: examSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

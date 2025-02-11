@@ -110,7 +110,7 @@ function ExamCard({ item }) {
           display: "flex",
           justifyContent: "space-between",
           gap: 1,
-          backgroundColor: item?.course_color,
+          backgroundColor: item?.course_color || "#0073E6",
           p: 2,
           borderRadius: "10px",
         }}
@@ -123,7 +123,7 @@ function ExamCard({ item }) {
               fontWeight: "bold",
             }}
           >
-            {item?.course_name}
+            {item?.course_name?.join(" , ")}
           </Typography>
           <Typography
             sx={{ color: "white" }}
