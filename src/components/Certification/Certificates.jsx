@@ -167,7 +167,6 @@ function Certificates() {
         <Typography
           sx={{
             color: "#4D535A",
-            fontStyle: "italic",
             fontSize: "var(--font-size-medium)",
           }}
         >
@@ -515,8 +514,8 @@ function Certificates() {
             {/* Acknowledgment Text */}
             <Box
               sx={{
-                textAlign: "left", 
-                px:3,
+                textAlign: "left",
+                px: 3,
                 pt: 2,
                 display: "flex",
                 alignItems: "flex-start", // Align items at the top
@@ -533,8 +532,14 @@ function Certificates() {
                 the issuance of my certificate.
               </Typography>
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2,px:3 }}>
-              <Button variant="contained" onClick={handleClose} disabled={!isChecked}>
+            <Box
+              sx={{ display: "flex", justifyContent: "flex-end", mt: 2, px: 3 }}
+            >
+              <Button
+                variant="contained"
+                onClick={handleClose}
+                disabled={!isChecked}
+              >
                 Confirm
               </Button>
             </Box>

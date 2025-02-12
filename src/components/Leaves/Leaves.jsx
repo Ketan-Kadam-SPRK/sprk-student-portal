@@ -308,7 +308,7 @@ function Leaves() {
         </Box>
         <Typography
           fontSize={"var(--font-size-medium)"}
-          sx={{ color: "#4D535A", fontStyle: "italic" }}
+          sx={{ color: "#4D535A",}}
         >
           Track your leave history easily.
         </Typography>

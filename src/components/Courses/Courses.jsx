@@ -58,7 +58,7 @@ const Courses = () => {
         sx={{
           display: "flex",
           gap: 1,
-          alignItems: "center",
+          flexDirection: "column",
         }}
       >
         <Typography variant="h4" fontWeight={600}>
@@ -73,15 +73,12 @@ const Courses = () => {
             cloudName="dxlzzgbfw"
           />
         </Typography>
+        <Typography fontSize={"var(--font-size-medium)"} color="#4D535A">
+          The road to mastery is through continuous learning. Stay curious, stay
+          inspired.{" "}
+        </Typography>
       </Box>
-      <Typography
-        fontSize={"var(--font-size-medium)"}
-        fontStyle={"italic"}
-        color="#4D535A"
-      >
-        The road to mastery is through continuous learning. Stay curious, stay
-        inspired.{" "}
-      </Typography>
+
       <Box
         sx={{
           display: "flex",

@@ -44,10 +44,10 @@ function Payments() {
         flex: 1,
       }}
     >
-      <Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          <Typography variant="h5" sx={{ color: "#0A2647", fontWeight: 600, }}>
-            Your Course Group Bookings
+          <Typography variant="h4" sx={{ color: "#0A2647", fontWeight: 600 }}>
+            Your Course Group Bookings {""}
           </Typography>
           <Image
             publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739256894/payment-method-credit-card-svgrepo-com_2_1_bcecrt.svg"
@@ -56,12 +56,13 @@ function Payments() {
               width: "30px",
               height: "auto",
               objectFit: "contain",
+              marginLeft: "5px",
             }}
           />
         </Box>
         <Typography
           fontSize={"var(--font-size-medium)"}
-          sx={{ color: "#4D535A",}}
+          sx={{ color: "#4D535A" }}
         >
           Stay updated on your bookings and payment progress.
         </Typography>
