@@ -35,7 +35,6 @@ function PaymentDetails() {
   const [loading, setLoading] = useState(false);
   const [receiptId, setReceiptId] = useState(null);
   const { booking_uid } = useParams();
-  console.log(booking_uid);
   const [data, setData] = useState([]);
 
   const handleDetailModal = () => {
@@ -43,7 +42,6 @@ function PaymentDetails() {
   };
 
   const handleOpenPayment = (row) => {
-    console.log(row);
     setOpenReciept(!openReciept);
     setReceiptId(row?.receipt_code);
   };
@@ -57,8 +55,12 @@ function PaymentDetails() {
       const res = await dispatch(
         getBookingInstallments({ headers, booking_uid })
       );
-      const data = res?.payload?.data?.data || [];
-      console.log(data);
+      let data = res?.payload?.data?.data || {};
+      data.instal =
+        data.instal?.map((installment) => ({
+          ...installment,
+          month: installment.due_at,
+        })) || [];
       setData(data);
       setLoading(false);
     } catch (err) {
@@ -70,16 +72,69 @@ function PaymentDetails() {
     getBookingInstallmentDetails();
   }, []);
 
+  const determinePaymentStatus = (installments) => {
+    let statuses = installments?.map((i) => i.installment_status) || [];
+    if (statuses.includes("OVERDUE")) return "OVERDUE";
+    if (statuses.includes("DUE")) return "DUE";
+    if (statuses.includes("PENDING")) return "PENDING";
+    return "PAID";
+  };
+
+  console.log(data.instal);
+  console.log(data?.instal?.installment_status);
+  console.log(determinePaymentStatus(data?.instal));
 
   const getMonthName = (dateString) => {
     if (!dateString) return ""; // Handle invalid or undefined date
     const date = new Date(dateString);
     return date.toLocaleString("en-US", { month: "long" }); // Returns full month name (e.g., "January")
   };
+
+  const getColorAndBackground = (installment_status) => {
+    switch (installment_status) {
+      case "PAID":
+        return { color: "#1F5200", backgroundColor: "#CBFFAC" };
+      case "DUE":
+        return { color: "#52007A", backgroundColor: "#E4AEFF" };
+      case "PENDING":
+        return { color: "#755200", backgroundColor: "#FFF3A4" };
+      case "OVERDUE":
+        return { color: "#9F0000", backgroundColor: "#FFB5B5" };
+      default:
+        return { color: "", backgroundColor: "" };
+    }
+  };
+
+  const StatusBadge = ({ status }) => {
+    const { color, backgroundColor } = getColorAndBackground(status);
+
+    return (
+      <div
+        style={{
+          color: color,
+          backgroundColor: backgroundColor,
+          textAlign: "center",
+          borderRadius: "20px",
+          height: "35px",
+          padding: "15px",
+          minWidth: "150px",
+          fontWeight: "bold",
+          display: "flex",
+          fontSize: "14px",
+          alignItems: "center",
+          justifyContent: "center",
+          maxWidth: "200px",
+        }}
+      >
+        {formatForDisplay(status)}
+      </div>
+    );
+  };
+
   const columns = [
     {
       headerName: "Month",
-      id: "due_at",
+      id: "month",
       minWidth: 150,
       filterable: false,
       format: (value) => getMonthName(value),
@@ -123,47 +178,9 @@ function PaymentDetails() {
         alignItems: "center",
         justifyContent: "center",
       },
-      format: (installment_status, rowData) => {
-        const getColorAndBackground = (installment_status) => {
-          switch (installment_status) {
-            case "PAID":
-              return { color: "#1F5200", backgroundColor: "#CBFFAC" };
-            case "DUE":
-              return { color: "#52007A", backgroundColor: "#E4AEFF" };
-            case "PENDING":
-              return { color: "#755200", backgroundColor: "#FFF3A4" };
-            case "OVERDUE":
-              return { color: "#9F0000", backgroundColor: "#FFB5B5" };
-            default:
-              return { color: "", backgroundColor: "" };
-          }
-        };
-
-        const { color, backgroundColor } =
-          getColorAndBackground(installment_status);
-
-        return (
-          <div
-            style={{
-              color: color,
-              backgroundColor: backgroundColor,
-              textAlign: "center",
-              borderRadius: "20px",
-              height: "35px",
-              padding: "15px",
-              minWidth: "150px",
-              fontWeight: "bold",
-              display: "flex",
-              fontSize: "14px",
-              alignItems: "center",
-              justifyContent: "center",
-              maxWidth: "200px",
-            }}
-          >
-            {formatForDisplay(installment_status)}
-          </div>
-        );
-      },
+      format: (installment_status, rowData) => (
+        <StatusBadge status={installment_status} />
+      ),
     },
     {
       headerName: "Action",
@@ -186,7 +203,6 @@ function PaymentDetails() {
       },
     },
   ];
-  console.log(data)
 
   if (loading) {
     return <ErrorHandling error500={false} loadData={loading} />;
@@ -223,8 +239,9 @@ function PaymentDetails() {
             {<ArrowBackIcon />}
           </Button>
         </Box>
-        <Box>
-          <Typography>payment status :</Typography>
+        <Box sx={{ display: "flex", gap: "10px",alignItems:"center" }}>
+          <Typography sx={{ fontWeight: 600,fontSize:"16px" }}>PAYMENT STATUS:</Typography>
+          <StatusBadge status={determinePaymentStatus(data?.instal)} />
         </Box>
       </Box>
       <Box sx={{ px: 3 }}>
