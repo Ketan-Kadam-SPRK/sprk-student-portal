@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Image } from "cloudinary-react";
-import { Padding } from "@mui/icons-material";
+import styles from "./typing.module.css";
 
 const TypingAnimation = () => {
   const userDetails = useSelector((state) => state.authSlice.userDetails);
@@ -44,6 +44,7 @@ const TypingAnimation = () => {
     <div>
       <Typography variant="h4" fontWeight={600}>
         {currentText}
+
         {/* Show emoji when on the first sentence */}
         {sentenceIndex === 0 && currentText.length === sentences[0].length && (
           <Image
@@ -59,6 +60,8 @@ const TypingAnimation = () => {
             cloudName="dxlzzgbfw"
           />
         )}
+
+        <span className={styles.cursor}>|</span>
       </Typography>
     </div>
   );

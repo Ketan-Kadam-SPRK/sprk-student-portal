@@ -69,22 +69,26 @@ function ExamCard({ item }) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: 1,
+          gap: 0.5,
           backgroundColor: "white",
           p: 2,
         }}
       >
         <Typography
-          sx={{ fontSize: "var(--font-size-extra-small)", fontWeight: "bold" }}
+          sx={{ fontSize: "var(--font-size-small)", fontWeight: "bold" }}
         >
           Under Evalution
         </Typography>
 
-        <Typography sx={{ fontSize: "var(--font-size-extra-small)" }}>
+        <Typography
+          sx={{ fontSize: "var(--font-size-extra-small)", color: "grey" }}
+        >
           Your exam is under review.{" "}
         </Typography>
 
-        <Typography sx={{ fontSize: "var(--font-size-extra-small)" }}>
+        <Typography
+          sx={{ fontSize: "var(--font-size-extra-small)", color: "grey" }}
+        >
           Results will be updated once the process is complete.
         </Typography>
       </Box>
@@ -110,33 +114,54 @@ function ExamCard({ item }) {
           display: "flex",
           justifyContent: "space-between",
           gap: 1,
-          backgroundColor: item?.course_color,
+          backgroundColor: item?.course_color || "#0073E6",
           p: 2,
           borderRadius: "10px",
+          flexWrap: "wrap",
         }}
       >
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            justifyContent: "center",
+          }}
+        >
           <Typography
             sx={{
               color: "white",
               fontSize: "var(--font-size-medium)",
               fontWeight: "bold",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              maxWidth: "200px",
             }}
+            title={item?.course_name?.join(" , ")}
           >
-            {item?.course_name}
+            {item?.course_name?.join(" , ")}
           </Typography>
           <Typography
             sx={{ color: "white" }}
           >{`Exam ID : ${item?.exam_uid}`}</Typography>
         </Box>
         <img
-          src={item?.course_logo}
+          src={
+            item?.course_logo ||
+            "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739339435/sprk_logo_registered1__1_x4akee.svg"
+          }
           alt="course_logo"
           style={{
-            width: "50px",
-            height: "50px",
-            objectFit: "cover",
+            width: "80px",
+            height: "auto",
+            objectFit: "contain",
             filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+            backgroundColor: item?.course_logo ? "transparent" : "white",
+            boxShadow: item?.course_logo
+              ? "none"
+              : "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+            borderRadius: item?.course_logo ? "none" : "10px",
           }}
         />
       </Box>
@@ -222,30 +247,30 @@ function ExamCard({ item }) {
             </Button>
           )}
 
-          {["FAIL", "PASS"].includes(item?.status) &&
+          {["FAIL", "PASS", "EVALUATING"].includes(item?.status) &&
             !["PROJECT", "PRACTICAL"].includes(item?.assessment_type) && (
               <Button
-                color="secondary"
+                color={item?.status !== "EVALUATING" ? "secondary" : "inherit"}
                 variant="contained"
                 sx={{
-                  // backgroundColor: "#6560F0",
-                  color: "white",
+                  backgroundColor:
+                    item?.status !== "EVALUATING" ? "#9D28E0" : "#D8D8D8",
+                  color: item?.status !== "EVALUATING" ? "white" : "black",
                   // ":hover": {
                   //   backgroundColor: "#3C36EC",
                   // },
                   borderRadius: "30px",
-                  width: "100px",
+                  width: "120px",
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                 }}
                 onClick={() => {
-                  handleDialog(item?.exam_user_uid);
+                  item?.status !== "EVALUATING" &&
+                    handleDialog(item?.exam_user_uid);
                 }}
-                disabled={item?.status === "EVALUATING"}
                 endIcon={
                   item?.status === "EVALUATING" ? (
                     <LightTooltip title={evaluting()} arrow>
-                      {" "}
-                      <InfoRounded />{" "}
+                      <InfoRounded sx={{ color: "black" }} />
                     </LightTooltip>
                   ) : null
                 }

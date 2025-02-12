@@ -1,22 +1,16 @@
-import {
-  Badge,
-  Box,
-  Button,
-  ButtonGroup,
-  Grid2,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Badge, Box, Button, Grid2, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ExamCard from "./ExamCard";
-import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded";
-import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
 import NoDataPage from "../../Common/NoDataPage";
 import { useSelector } from "react-redux";
+import { Search } from "@mui/icons-material";
+import { searchFilterData } from "../../../Utils/SearchFilterData";
 
 function Theory({ count }) {
-  const data = useSelector((state) => state.authSlice.examsData);
+  const data = useSelector((state) => state.examSlice?.examsData);
+  const [searchText, setSearchText] = useState("");
+  console.log(data);
   const [toggle, setToggle] = useState("practice");
   // const myData = data || [];
   console.log(data);
@@ -29,9 +23,15 @@ function Theory({ count }) {
 
   useEffect(() => {
     let thisData = data?.theory[toggle] || [];
-    console.log(thisData);
-    setExamData(thisData);
-  }, [toggle, data]);
+
+    if (searchText) {
+      thisData = searchFilterData(thisData, searchText);
+    }
+    let sorted = [...thisData]?.sort(
+      (a, b) => new Date(b.start_date) - new Date(a.start_date)
+    );
+    setExamData(sorted);
+  }, [toggle, data, searchText]);
 
   return (
     <Box
@@ -95,6 +95,27 @@ function Theory({ count }) {
           Final <Badge color="secondary" badgeContent={count?.final} />
         </Button>
       </Box>
+      <TextField
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        placeholder="Search"
+        variant="outlined"
+        size="small"
+        sx={{
+          width: "400px",
+          maxWidth: "100%",
+          backgroundColor: "white",
+          borderRadius: "8px",
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "8px",
+          },
+        }}
+        slotProps={{
+          input: {
+            startAdornment: <Search sx={{ color: "grey" }} />,
+          },
+        }}
+      />
       <Box
         sx={{
           display: "flex",
@@ -109,8 +130,11 @@ function Theory({ count }) {
         {examData?.length > 0 ? (
           <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
             {examData?.map((item, index) => (
-              <Grid2 key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
-                <ExamCard key={index} item={item} />
+              <Grid2
+                key={`${item.exam_uid}-${index}`}
+                size={{ xs: 12, sm: 12, md: 6, lg: 4 }}
+              >
+                <ExamCard item={item} />
               </Grid2>
             ))}
           </Grid2>

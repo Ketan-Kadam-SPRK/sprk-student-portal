@@ -146,7 +146,8 @@ function Dashboard() {
               gap: 2,
               flexDirection: "column",
               maxWidth: "400px",
-              justifyContent: "space-evenly",
+              justifyContent: "space-between",
+              minHeight: "170px",
             }}
           >
             <TypingAnimation />
