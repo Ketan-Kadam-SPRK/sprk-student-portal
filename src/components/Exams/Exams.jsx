@@ -129,6 +129,16 @@ function Exams() {
       <Box sx={{ mt: 1 }}>
         <Typography variant="h4" fontWeight={"600"}>
           Your Exams
+          <Image
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254460/ndjoyyrgaezboup67csd.png"
+            style={{
+              width: "30px",
+              height: "auto",
+              objectFit: "contain",
+              marginLeft: "5px",
+            }}
+            cloudName="dxlzzgbfw"
+          />
         </Typography>
         <Typography
           fontSize={"var(--font-size-medium)"}
@@ -140,16 +150,6 @@ function Exams() {
           // }}
         >
           Track your upcoming exams here
-          <Image
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254460/ndjoyyrgaezboup67csd.png"
-            style={{
-              width: "25px",
-              height: "auto",
-              objectFit: "contain",
-              marginLeft: "5px",
-            }}
-            cloudName="dxlzzgbfw"
-          />
         </Typography>
       </Box>
       <Box

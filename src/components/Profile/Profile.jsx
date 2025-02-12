@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, Typography } from "@mui/material";
+import { Box, Button, Dialog, Typography, Avatar } from "@mui/material";
 import React, { useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import CallIcon from "@mui/icons-material/Call";
@@ -6,6 +6,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import { useSelector } from "react-redux";
 import ChangePassword from "./Modal/ChangePassword";
 import LogoutAll from "./Modal/LogoutAll";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 function Profile() {
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
@@ -93,7 +94,7 @@ function Profile() {
           }}
         >
           <Box>
-            <img
+            {/* <img
               src="https://png.pngtree.com/png-clipart/20230927/original/pngtree-man-avatar-image-for-profile-png-image_13001882.png"
               alt=""
               style={{
@@ -102,7 +103,24 @@ function Profile() {
                 borderRadius: "50%",
                 objectFit: "cover",
               }}
-            />
+            /> */}
+            <Avatar
+              sx={{
+                width: "200px",
+                height: "auto",
+                p: 0,
+              }}
+            >
+              <AccountCircleIcon
+                sx={{
+                  width: "200px",
+                  height: "auto",
+                  // aspectRatio: 1,
+                  textAlign: "center",
+                  padding: "0px",
+                }}
+              />
+            </Avatar>
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
@@ -116,7 +134,7 @@ function Profile() {
             <Typography
               variant="h5"
               color="white"
-              sx={{ mt: 2, textAlign: "center" }}
+              sx={{ mt: 4, textAlign: "center" }}
             >
               "Education is the most powerful weapon which you can use to change
               the world."

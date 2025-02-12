@@ -49,6 +49,7 @@ function RoutesConfig() {
         <Route path=":jobid" element={<JobDetails />} />
       </Route>
       <Route path="/Profile" element={<Profile />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }
