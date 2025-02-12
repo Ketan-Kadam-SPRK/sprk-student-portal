@@ -352,9 +352,9 @@ function PaymentDetails() {
               paginationModel={{ page: 0, pageSize: 10 }}
               height={450}
               checkboxSelection={false}
-              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737008545/calendar_with_marks_uh7eeu.svg"
-              errorHeading="No leaves applied yet. "
-              errorDescription="Click 'Apply Leave' to get started."
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739358129/OBJECTS_1_vfdewq_qsbbyy.svg"
+              errorHeading="No payments left!"
+              errorDescription="Looks like you've already cleared all your payments. Enjoy your course!"
             />
           </Box>
           {data !== null &&
