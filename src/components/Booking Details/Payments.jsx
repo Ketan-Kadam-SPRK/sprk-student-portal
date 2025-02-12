@@ -46,7 +46,7 @@ function Payments() {
     >
       <Box>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          <Typography variant="h4" sx={{ color: "#0A2647", fontWeight: 600 }}>
+          <Typography variant="h5" sx={{ color: "#0A2647", fontWeight: 600, }}>
             Your Course Group Bookings
           </Typography>
           <Image
@@ -61,7 +61,7 @@ function Payments() {
         </Box>
         <Typography
           fontSize={"var(--font-size-medium)"}
-          sx={{ color: "#4D535A", fontStyle: "italic" }}
+          sx={{ color: "#4D535A",}}
         >
           Stay updated on your bookings and payment progress.
         </Typography>

@@ -145,19 +145,19 @@ function Leaves() {
     {
       headerName: "From",
       id: "start",
-      minWidth: 150,
+      minWidth: 120,
       filterable: false,
       format: (value) => dateFormator(value),
     },
     {
       headerName: "To",
       id: "end",
-      minWidth: 150,
+      minWidth: 120,
       style: { color: "#0074BD", fontWeight: 600 },
       format: (value) => dateFormator(value, 1),
     },
 
-    { headerName: "Days", id: "noOfDays", minWidth: 100 },
+    { headerName: "Days", id: "noOfDays", minWidth: 80 },
     { headerName: "Reason", id: "reason", minWidth: 250 },
     {
       headerName: "Status",
@@ -287,7 +287,6 @@ function Leaves() {
         flexDirection: "column",
         gap: 2,
         p: 2,
-        // minHeight: "100vh",
         overflow: "auto",
         flex: 1,
       }}
