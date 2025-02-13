@@ -13,6 +13,7 @@ import PaymentDetails from "../components/Booking Details/PaymentDetails";
 import JobOpportunities from "../components/Jobs/JobOpportunities";
 import Certificates from "../components/Certification/Certificates";
 import JobDetails from "../components/Jobs/child/JobDetails";
+import ExploreCourses from "../components/Explore Courses/ExploreCourses";
 
 function RoutesConfig() {
   return (
@@ -49,6 +50,7 @@ function RoutesConfig() {
         <Route path=":jobid" element={<JobDetails />} />
       </Route>
       <Route path="/Profile" element={<Profile />} />
+      <Route path="/Explore_Courses" element={<ExploreCourses />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
