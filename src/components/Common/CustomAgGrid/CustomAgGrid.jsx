@@ -13,6 +13,7 @@ import NoDataPage from "../NoDataPage";
 const CustomAgGrid = ({
   rows = [],
   columns,
+  noDatalength = [],
   height = 600,
   errorImgPublicId,
   errorHeading,
@@ -66,7 +67,7 @@ const CustomAgGrid = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.length > 0 ? (
+            {noDatalength?.length > 0 ? (
               rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, rowIndex) => (

@@ -10,10 +10,12 @@ import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
 import NoDataPage from "../../../../Common/NoDataPage";
+import PopupFilterComponent from "../../../../Common/FilterMenuComponent/PopupFilterComponent";
 
 function Sessions({ sessionData }) {
   const [show, setShow] = useState(false);
   const [showAttendanceDrawer, setShowAttendanceDrawer] = useState(false);
+   const [filterData, setFilterData] = useState([]);
 
   const handleToggleDrawer = () => {
     setShowAttendanceDrawer(!showAttendanceDrawer);
@@ -43,14 +45,25 @@ function Sessions({ sessionData }) {
         };
     }
   };
+  console.log(sessionData)
+  console.log(filterData)
 
   return (
     <>
       {sessionData?.list?.length > 0 ? (
         <Box className={styles.mainBox}>
           <Box sx={{ px: 3, py: 2 }}>
-            {/* Map through sessionData and render each session */}
-            {sessionData?.list?.map((sessionData) => (
+            <Box sx={{display: "flex", justifyContent: "flex-end"}}>
+              <PopupFilterComponent
+                rowData={sessionData?.list}
+                statusOptions={["PRESENT", "ABSENT","ON_LEAVE"]}
+                setFilterData={setFilterData}
+                dateKey={null}
+                statusKey="studentAttendanceStatus"
+                search={false}
+              />
+            </Box>
+            {filterData?.map((sessionData) => (
               <Accordion
                 key={sessionData?.session_id}
                 sx={{ marginBottom: "25px" }}

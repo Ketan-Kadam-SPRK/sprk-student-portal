@@ -27,7 +27,9 @@ function PopupFilterComponent({
   rowData,
   dateKey = null,
   statusKey = null,
+  search = true,
 }) {
+  console.log(rowData)
   const location = useLocation();
   const searchQuery = location?.state?.searchQuery;
   const bookingCode = location?.state?.bcode;
@@ -77,7 +79,7 @@ function PopupFilterComponent({
 
     setLoading(true);
 
-    const filteredData = rowData.filter((item) => {
+    const filteredData = rowData?.filter((item) => {
       const matchesQuickFilter =
         !filterState.quickFilter ||
         Object.values(item).some((value) =>
@@ -200,30 +202,23 @@ function PopupFilterComponent({
         gap: "10px",
       }}
     >
-      <TextField
-        type="search"
-        size="small"
-        sx={{
-          width: { xs: "100%", sm: "300px" },
-          backgroundColor: "white",
-          borderRadius: 1,
-        }}
-        value={filterState.quickFilter}
-        onChange={(e) => {
-          setFilterState((prevState) => ({
-            ...prevState,
-            quickFilter: e.target.value,
-          }));
-        }}
-        placeholder="Search..."
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
+      {search && (
+        <TextField
+          type="search"
+          size="small"
+          sx={{ width: { xs: "100%", sm: "300px" }, backgroundColor: "white", borderRadius: 1 }}
+          value={filterState.quickFilter}
+          onChange={(e) => setFilterState((prevState) => ({ ...prevState, quickFilter: e.target.value }))}
+          placeholder="Search..."
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      )}
       <div style={{ position: "relative" }}>
         <Button
           aria-controls={open ? "demo-customized-menu" : undefined}

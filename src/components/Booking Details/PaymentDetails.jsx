@@ -349,6 +349,7 @@ function PaymentDetails() {
             <CustomAgGrid
               rows={data?.instal}
               columns={columns}
+              noDatalength={data?.instal}
               paginationModel={{ page: 0, pageSize: 10 }}
               height={450}
               checkboxSelection={false}
