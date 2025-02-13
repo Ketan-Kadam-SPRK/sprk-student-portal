@@ -5,6 +5,8 @@ import {
   CircularProgress,
   Dialog,
   IconButton,
+  styled,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
@@ -28,6 +30,7 @@ import { LightTooltip } from "../../Utils/LightToolTip";
 import ApplyLeaveModal from "./ApplyLeaveModal";
 import { getAllLeaves, getWithdrawnLeaves } from "./action/leaves.action";
 import { Image } from "cloudinary-react";
+import { format } from "crypto-js";
 
 function Leaves() {
   const initialState = {
@@ -145,20 +148,39 @@ function Leaves() {
     {
       headerName: "From",
       id: "start",
-      minWidth: 120,
+      minWidth: 150,
       filterable: false,
       format: (value) => dateFormator(value),
     },
     {
       headerName: "To",
       id: "end",
-      minWidth: 120,
+      minWidth: 150,
       style: { color: "#0074BD", fontWeight: 600 },
       format: (value) => dateFormator(value, 1),
     },
 
-    { headerName: "Days", id: "noOfDays", minWidth: 80 },
-    { headerName: "Reason", id: "reason", minWidth: 250 },
+    { headerName: "Days", id: "noOfDays", minWidth: 70 },
+    {
+      headerName: "Reason",
+      id: "reason",
+      minWidth: 170,
+      format: (value) => (
+        <LightTooltip title={value} arrow>
+          <span
+            style={{
+              display: "block",
+              maxWidth: "180px", // Adjust as needed
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {value}
+          </span>
+        </LightTooltip>
+      ),
+    },
     {
       headerName: "Status",
       id: "status",
@@ -172,13 +194,13 @@ function Leaves() {
         const getColorAndBackground = (status) => {
           switch (status) {
             case "APPROVED":
-              return { color: "#1F5200", backgroundColor: "#CBFFAC" };
+              return { color: "#239A60", backgroundColor: "#B0F7CC" };
             case "PENDING":
-              return { color: "#755200", backgroundColor: "#FFF3A4" };
+              return { color: "#783B09", backgroundColor: "#FFFFB8" };
             case "DECLINED":
-              return { color: "#9F0000", backgroundColor: "#FFB5B5" };
+              return { color: "#A30000", backgroundColor: "#FFC0C0" };
             case "WITHDREW":
-              return { color: "#0038A8", backgroundColor: "#C1D6FF" };
+              return { color: "#1C4963", backgroundColor: "#DDEBFF" };
             default:
               return { color: "", backgroundColor: "" };
           }
@@ -251,12 +273,18 @@ function Leaves() {
     {
       headerName: "Managed By",
       id: "managedBy",
-      minWidth: 200,
-    },
+      minWidth: 170,
+      format: (value) => {
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography>{value || "--"}</Typography>
+          </Box>
+        );
+    }},
     {
-      headerName: "View Document",
+      headerName: "Document",
       id: "file",
-      minWidth: 150,
+      minWidth: 120,
       format: (row) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -350,11 +378,12 @@ function Leaves() {
           <CustomAgGrid
             rows={filterData}
             columns={columns}
+            noDatalength={rows}
             paginationModel={{ page: 0, pageSize: 10 }}
             checkboxSelection={false}
             errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737008545/calendar_with_marks_uh7eeu.svg"
-            errorHeading="No leaves applied yet. "
-            errorDescription="Click 'Apply Leave' to get started."
+            errorHeading="Attendance Goals Unlocked! You’re on a Roll!"
+            errorDescription="No leaves recorded. Keep up the great attendance streak!"
           />
         </Box>
       </Box>
