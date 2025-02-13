@@ -155,7 +155,7 @@ function BookingDetailsCard({ item }) {
           </Typography>
           <Typography
             sx={{
-              fontSize: "var(--font-size-extra-small) !important",
+              fontSize: "14px",
             }}
           >
             {AmountFormat(item?.paid_amt)}
@@ -179,7 +179,7 @@ function BookingDetailsCard({ item }) {
           </Typography>
           <Typography
             sx={{
-              fontSize: "var(--font-size-extra-small) !important",
+              fontSize: "14px",
             }}
           >
             {AmountFormat(item?.balance_amt)}
@@ -204,7 +204,7 @@ function BookingDetailsCard({ item }) {
           </Typography>
           <Typography
             sx={{
-              fontSize: "var(--font-size-extra-small) !important",
+              fontSize: "14px",
             }}
           >
             {CapitalFirstLetterOnly(item?.payment_type)}
@@ -217,6 +217,7 @@ function BookingDetailsCard({ item }) {
             gap: "10px",
             flexWrap: "wrap",
             color: "#393939",
+            my: 1,
           }}
         >
           <Typography
@@ -248,7 +249,7 @@ function BookingDetailsCard({ item }) {
               navigate(`/Payments/${item?.booking_uid}`);
             }}
             color="primary"
-            fontSize={"var(--font-size-extra-small)"}
+            fontSize={"var(--font-size-small)"}
             fontWeight={"bold"}
             sx={{
               cursor: "pointer",

@@ -35,7 +35,6 @@ function PaymentDetails() {
   const [loading, setLoading] = useState(false);
   const [receiptId, setReceiptId] = useState(null);
   const { booking_uid } = useParams();
-  console.log(booking_uid);
   const [data, setData] = useState([]);
 
   const handleDetailModal = () => {
@@ -43,7 +42,6 @@ function PaymentDetails() {
   };
 
   const handleOpenPayment = (row) => {
-    console.log(row);
     setOpenReciept(!openReciept);
     setReceiptId(row?.receipt_code);
   };
@@ -57,8 +55,12 @@ function PaymentDetails() {
       const res = await dispatch(
         getBookingInstallments({ headers, booking_uid })
       );
-      const data = res?.payload?.data?.data || [];
-      console.log(data);
+      let data = res?.payload?.data?.data || {};
+      data.instal =
+        data.instal?.map((installment) => ({
+          ...installment,
+          month: installment.due_at,
+        })) || [];
       setData(data);
       setLoading(false);
     } catch (err) {
@@ -70,98 +72,73 @@ function PaymentDetails() {
     getBookingInstallmentDetails();
   }, []);
 
-  // const data = {
-  //   booking_code: "B2501KHARE5854A5",
-  //   course_grp: ["Full Stack in Java", "Data Analytics", "Excel"],
-  //   booked_at: "2025-01-21T07:16:16.971931Z",
-  //   batch_prefer: "Weekdays",
-  //   payment_term: "Installments",
-  //   total_fees: 58000,
-  //   pending_fees: 23200.0,
-  //   paid_fees: 34800.0,
-  //   instal: [
-  //     {
-  //       due_at: "2025-01-21",
-  //       paid_at: "2025-01-21T00:00:00Z",
-  //       payment_id: 1779,
-  //       receipt_code: "R25012119D6623",
-  //       due_amount: 11600.0,
-  //       paid_amount: 11600.0,
-  //       Mode_of_Payment: "CASH",
-  //       installment_status: "PAID",
-  //       installment_id: "IST2501211246b2b9",
-  //     },
-  //     {
-  //       due_at: "2025-02-21",
-  //       paid_at: "2025-01-21T00:00:00Z",
-  //       payment_id: 1780,
-  //       receipt_code: "R25012141B5CE8",
-  //       due_amount: 11600.0,
-  //       paid_amount: 11600.0,
-  //       Mode_of_Payment: "CASH",
-  //       installment_status: "PAID",
-  //       installment_id: "IST25012112468d9c",
-  //     },
-  //     {
-  //       due_at: "2025-03-21",
-  //       paid_at: "2025-01-21T00:00:00Z",
-  //       payment_id: 1781,
-  //       receipt_code: "R250121ED470B5",
-  //       due_amount: 11600.0,
-  //       paid_amount: 11600.0,
-  //       Mode_of_Payment: "CASH",
-  //       installment_status: "PAID",
-  //       installment_id: "IST25012112469a42",
-  //     },
-  //     {
-  //       due_at: "2025-04-21",
-  //       paid_at: null,
-  //       payment_id: null,
-  //       receipt_code: null,
-  //       due_amount: 11600.0,
-  //       paid_amount: null,
-  //       Mode_of_Payment: null,
-  //       installment_status: "PENDING",
-  //       installment_id: "IST2501211246239f",
-  //     },
-  //     {
-  //       due_at: "2025-05-21",
-  //       paid_at: null,
-  //       payment_id: null,
-  //       receipt_code: null,
-  //       due_amount: 11600.0,
-  //       paid_amount: null,
-  //       Mode_of_Payment: null,
-  //       installment_status: "PENDING",
-  //       installment_id: "IST250121124615a9",
-  //     },
-  //     {
-  //       due_at: "2025-06-21",
-  //       paid_at: null,
-  //       payment_id: null,
-  //       receipt_code: null,
-  //       due_amount: 11600.0,
-  //       paid_amount: null,
-  //       Mode_of_Payment: null,
-  //       installment_status: "PENDING",
-  //       installment_id: "IST250121124615a9",
-  //     },
-  //   ],
-  // };
+  const determinePaymentStatus = (installments) => {
+    let statuses = installments?.map((i) => i.installment_status) || [];
+    if (statuses.includes("OVERDUE")) return "OVERDUE";
+    if (statuses.includes("DUE")) return "DUE";
+    if (statuses.includes("PENDING")) return "PENDING";
+    return "PAID";
+  };
+
+  console.log(data.instal);
+  console.log(data?.instal?.installment_status);
+  console.log(determinePaymentStatus(data?.instal));
 
   const getMonthName = (dateString) => {
     if (!dateString) return ""; // Handle invalid or undefined date
     const date = new Date(dateString);
     return date.toLocaleString("en-US", { month: "long" }); // Returns full month name (e.g., "January")
   };
+
+  const getColorAndBackground = (installment_status) => {
+    switch (installment_status) {
+      case "PAID":
+        return { color: "#1F5200", backgroundColor: "#CBFFAC" };
+      case "DUE":
+        return { color: "#52007A", backgroundColor: "#E4AEFF" };
+      case "PENDING":
+        return { color: "#755200", backgroundColor: "#FFF3A4" };
+      case "OVERDUE":
+        return { color: "#9F0000", backgroundColor: "#FFB5B5" };
+      default:
+        return { color: "", backgroundColor: "" };
+    }
+  };
+
+  const StatusBadge = ({ status }) => {
+    const { color, backgroundColor } = getColorAndBackground(status);
+
+    return (
+      <div
+        style={{
+          color: color,
+          backgroundColor: backgroundColor,
+          textAlign: "center",
+          borderRadius: "20px",
+          height: "35px",
+          padding: "15px",
+          minWidth: "150px",
+          fontWeight: "bold",
+          display: "flex",
+          fontSize: "14px",
+          alignItems: "center",
+          justifyContent: "center",
+          maxWidth: "200px",
+        }}
+      >
+        {formatForDisplay(status)}
+      </div>
+    );
+  };
+
   const columns = [
-    // {
-    //   headerName: "Month",
-    //   id: "due_at",
-    //   minWidth: 150,
-    //   filterable: false,
-    //   format: (value) => getMonthName(value),
-    // },
+    {
+      headerName: "Month",
+      id: "month",
+      minWidth: 150,
+      filterable: false,
+      format: (value) => getMonthName(value),
+    },
     {
       headerName: "Due Date",
       id: "due_at",
@@ -201,47 +178,9 @@ function PaymentDetails() {
         alignItems: "center",
         justifyContent: "center",
       },
-      format: (installment_status, rowData) => {
-        const getColorAndBackground = (installment_status) => {
-          switch (installment_status) {
-            case "PAID":
-              return { color: "#1F5200", backgroundColor: "#CBFFAC" };
-            case "DUE":
-              return { color: "#52007A", backgroundColor: "#E4AEFF" };
-            case "PENDING":
-              return { color: "#755200", backgroundColor: "#FFF3A4" };
-            case "OVERDUE":
-              return { color: "#9F0000", backgroundColor: "#FFB5B5" };
-            default:
-              return { color: "", backgroundColor: "" };
-          }
-        };
-
-        const { color, backgroundColor } =
-          getColorAndBackground(installment_status);
-
-        return (
-          <div
-            style={{
-              color: color,
-              backgroundColor: backgroundColor,
-              textAlign: "center",
-              borderRadius: "20px",
-              height: "35px",
-              padding: "15px",
-              minWidth: "150px",
-              fontWeight: "bold",
-              display: "flex",
-              fontSize: "14px",
-              alignItems: "center",
-              justifyContent: "center",
-              maxWidth: "200px",
-            }}
-          >
-            {formatForDisplay(installment_status)}
-          </div>
-        );
-      },
+      format: (installment_status, rowData) => (
+        <StatusBadge status={installment_status} />
+      ),
     },
     {
       headerName: "Action",
@@ -299,6 +238,10 @@ function PaymentDetails() {
           >
             {<ArrowBackIcon />}
           </Button>
+        </Box>
+        <Box sx={{ display: "flex", gap: "10px",alignItems:"center" }}>
+          <Typography sx={{ fontWeight: 600,fontSize:"16px" }}>PAYMENT STATUS:</Typography>
+          <StatusBadge status={determinePaymentStatus(data?.instal)} />
         </Box>
       </Box>
       <Box sx={{ px: 3 }}>
@@ -409,9 +352,9 @@ function PaymentDetails() {
               paginationModel={{ page: 0, pageSize: 10 }}
               height={450}
               checkboxSelection={false}
-              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737008545/calendar_with_marks_uh7eeu.svg"
-              errorHeading="No leaves applied yet. "
-              errorDescription="Click 'Apply Leave' to get started."
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739358129/OBJECTS_1_vfdewq_qsbbyy.svg"
+              errorHeading="No payments left!"
+              errorDescription="Looks like you've already cleared all your payments. Enjoy your course!"
             />
           </Box>
           {data !== null &&

@@ -142,7 +142,6 @@ function Exams() {
         </Typography>
         <Typography
           fontSize={"var(--font-size-medium)"}
-          fontStyle={"italic"}
           color="#4D535A"
           // sx={{
           //   display: "flex",

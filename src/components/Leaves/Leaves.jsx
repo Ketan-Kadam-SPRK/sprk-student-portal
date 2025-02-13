@@ -27,6 +27,7 @@ import { LightTooltip } from "../../Utils/LightToolTip";
 //child components and actions
 import ApplyLeaveModal from "./ApplyLeaveModal";
 import { getAllLeaves, getWithdrawnLeaves } from "./action/leaves.action";
+import { Image } from "cloudinary-react";
 
 function Leaves() {
   const initialState = {
@@ -108,15 +109,16 @@ function Leaves() {
   const handleWithdrawConfirm = async () => {
     setWithdrawnLoad(true);
     try {
-      const res = await dispatch(getWithdrawnLeaves({ headers, leaveId })).then((res)=>{
-        if(res.payload !== undefined){
-          handleCloseWidrow();
-          getAllLeavesData();
-          setWithdrawnLoad(false);
-          setLeaveId(null);
+      const res = await dispatch(getWithdrawnLeaves({ headers, leaveId })).then(
+        (res) => {
+          if (res.payload !== undefined) {
+            handleCloseWidrow();
+            getAllLeavesData();
+            setWithdrawnLoad(false);
+            setLeaveId(null);
+          }
         }
-      });
-
+      );
     } catch (error) {
       console.error("Error withdrawing leave:", error);
       setWithdrawnLoad(false);
@@ -143,19 +145,19 @@ function Leaves() {
     {
       headerName: "From",
       id: "start",
-      minWidth: 150,
+      minWidth: 120,
       filterable: false,
       format: (value) => dateFormator(value),
     },
     {
       headerName: "To",
       id: "end",
-      minWidth: 150,
+      minWidth: 120,
       style: { color: "#0074BD", fontWeight: 600 },
       format: (value) => dateFormator(value, 1),
     },
 
-    { headerName: "Days", id: "noOfDays", minWidth: 100 },
+    { headerName: "Days", id: "noOfDays", minWidth: 80 },
     { headerName: "Reason", id: "reason", minWidth: 250 },
     {
       headerName: "Status",
@@ -219,32 +221,6 @@ function Leaves() {
         );
       },
     },
-
-    {
-      headerName: "Managed By",
-      id: "managedBy",
-      minWidth: 200,
-    },
-    {
-      headerName: "View Document",
-      id: "file",
-      minWidth: 150,
-      format: (row) => {
-        return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton
-              onClick={() => handleOpenFile(row)}
-              disabled={row === null}
-            >
-              <InsertDriveFileIcon
-                sx={{ color: row === null ? "#9B9B9B" : "#0074BD" }}
-              />
-            </IconButton>
-          </Box>
-        );
-      },
-    },
-
     {
       headerName: "Action",
       id: "leaveRequestUid",
@@ -271,140 +247,177 @@ function Leaves() {
         );
       },
     },
+
+    {
+      headerName: "Managed By",
+      id: "managedBy",
+      minWidth: 200,
+    },
+    {
+      headerName: "View Document",
+      id: "file",
+      minWidth: 150,
+      format: (row) => {
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              onClick={() => handleOpenFile(row)}
+              disabled={row === null}
+            >
+              <InsertDriveFileIcon
+                sx={{ color: row === null ? "#9B9B9B" : "#0074BD" }}
+              />
+            </IconButton>
+          </Box>
+        );
+      },
+    },
   ];
 
-  console.log(leaveId)
+  console.log(leaveId);
 
   if (loading) {
     return <ErrorHandling error500={false} loadData={loading} />;
   }
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          p: 2,
-          // minHeight: "100vh",
-          overflow: "auto",
-          flex: 1,
-        }}
-      >
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        p: 2,
+        overflow: "auto",
+        flex: 1,
+      }}
+    >
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Typography variant="h4" fontWeight={600}>
             Your Leaves
           </Typography>
-          <Typography sx={{ color: "#4D535A" }}>
-            Track your leave history and apply for new leaves easily.
-          </Typography>
-        </Box>
-        <Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-                alignItems: "center",
-                flexWrap: "wrap",
-              }}
-            >
-              <Box>
-                <PopupFilterComponent
-                  rowData={rows}
-                  statusOptions={[
-                    "APPROVED",
-                    "PENDING",
-                    "DECLINED",
-                    "WITHDREW",
-                  ]}
-                  setFilterData={setFilterData}
-                  dateKey="start"
-                  statusKey="status"
-                  tabName="leave"
-                />
-              </Box>
-              <Box>
-                <Button variant="contained" onClick={() =>{ setOpen(true); setLeaveId(null)}}>
-                  Apply Leave
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-          <Box sx={{ mt: 2 }}>
-            <CustomAgGrid
-              rows={filterData}
-              columns={columns}
-              paginationModel={{ page: 0, pageSize: 10 }}
-              checkboxSelection={false}
-              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737008545/calendar_with_marks_uh7eeu.svg"
-              errorHeading="No leaves applied yet. "
-              errorDescription="Click 'Apply Leave' to get started."
-            />
-          </Box>
-        </Box>
-
-        <Dialog open={open} scroll={"body"} fullWidth={true}>
-          <ApplyLeaveModal
-            formData={formData}
-            setFormData={setFormData}
-            handleClose={handleClose}
-            initialState={initialState}
-            proofFile={proofFile}
-            setProofFile={setProofFile}
-            leaveId={leaveId}
-            setLeaveId={setLeaveId}
-            getAllLeavesData={getAllLeavesData}
+          <Image
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739277438/calendar-with-checklist-date-schedule-3d-icon-removebg-preview_1_vtiyrw.svg"
+            cloudName="dxlzzgbfw"
+            style={{
+              width: "30px",
+              height: "auto",
+              objectFit: "contain",
+            }}
           />
-        </Dialog>
-        <Dialog open={openWidrow} scroll={"body"} maxWidth="xs">
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 3 }}>
-            <Box
-              sx={{
-                display: "flex",
-                gap: 1,
-                alignItems: "flex-start",
-                justifyContent: "space-between",
-              }}
-            >
-              <Box sx={{ display: "flex", gap: 1, pt: 1 }}>
-                <ErrorIcon sx={{ color: "#FF0000" }} />
-                <Typography sx={{ fontSize: "18px", fontWeight: 600 }}>
-                  Are you sure you want to withdraw your leave request?
-                </Typography>
-              </Box>
-              <Box>
-                <IconButton onClick={() => setOpenWidrow(false)}>
-                  <CloseIcon />
-                </IconButton>
-              </Box>
+        </Box>
+        <Typography
+          fontSize={"var(--font-size-medium)"}
+          sx={{ color: "#4D535A",}}
+        >
+          Track your leave history easily.
+        </Typography>
+      </Box>
+      <Box>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Box>
+              <PopupFilterComponent
+                rowData={rows}
+                statusOptions={["APPROVED", "PENDING", "DECLINED", "WITHDREW"]}
+                setFilterData={setFilterData}
+                dateKey="start"
+                statusKey="status"
+                tabName="leave"
+              />
             </Box>
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-              <Box sx={{ display: "flex", gap: 2 }}>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  sx={{ px: 6 }}
-                  onClick={() => setOpenWidrow(false)}
-                >
-                  No
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  sx={{ px: 6 }}
-                  onClick={handleWithdrawConfirm}
-                  disabled={withdrawnLoad}
-                >
-                  {withdrawnLoad ? <CircularProgress size={20} /> : "Yes"}
-                </Button>
-              </Box>
+            <Box>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setOpen(true);
+                  setLeaveId(null);
+                }}
+              >
+                Apply Leave
+              </Button>
             </Box>
           </Box>
-        </Dialog>
+        </Box>
+        <Box sx={{ mt: 2 }}>
+          <CustomAgGrid
+            rows={filterData}
+            columns={columns}
+            paginationModel={{ page: 0, pageSize: 10 }}
+            checkboxSelection={false}
+            errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737008545/calendar_with_marks_uh7eeu.svg"
+            errorHeading="No leaves applied yet. "
+            errorDescription="Click 'Apply Leave' to get started."
+          />
+        </Box>
       </Box>
-    </>
+
+      <Dialog open={open} scroll={"body"} fullWidth={true}>
+        <ApplyLeaveModal
+          formData={formData}
+          setFormData={setFormData}
+          handleClose={handleClose}
+          initialState={initialState}
+          proofFile={proofFile}
+          setProofFile={setProofFile}
+          leaveId={leaveId}
+          setLeaveId={setLeaveId}
+          getAllLeavesData={getAllLeavesData}
+        />
+      </Dialog>
+      <Dialog open={openWidrow} scroll={"body"} maxWidth="xs">
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 3 }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box sx={{ display: "flex", gap: 1, pt: 1 }}>
+              <ErrorIcon sx={{ color: "#FF0000" }} />
+              <Typography sx={{ fontSize: "18px", fontWeight: 600 }}>
+                Are you sure you want to withdraw your leave request?
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton onClick={() => setOpenWidrow(false)}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Button
+                variant="outlined"
+                color="error"
+                sx={{ px: 6 }}
+                onClick={() => setOpenWidrow(false)}
+              >
+                No
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ px: 6 }}
+                onClick={handleWithdrawConfirm}
+                disabled={withdrawnLoad}
+              >
+                {withdrawnLoad ? <CircularProgress size={20} /> : "Yes"}
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Dialog>
+    </Box>
   );
 }
 
