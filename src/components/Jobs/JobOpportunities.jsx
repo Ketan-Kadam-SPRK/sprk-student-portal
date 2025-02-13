@@ -108,9 +108,15 @@ function JobOpportunities() {
           cloudName="dxlzzgbfw"
         />
       </Typography>
-      <Typography fontSize={"var(--font-size-medium)"} fontStyle={"italic"}>
-        Stay ahead with opportunities selected just for you.{" "}
-      </Typography>
+      <Box>
+        <Typography fontSize={"var(--font-size-medium)"}>
+          Stay ahead with opportunities selected just for you.{" "}
+        </Typography>
+        <Typography fontSize={"var(--font-size-small)"}>
+          (Note: Applying to the jobs and not showing up may result in excluding
+          you from future job opportunities.)
+        </Typography>
+      </Box>
       <Box
         sx={{
           display: "flex",

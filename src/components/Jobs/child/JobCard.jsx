@@ -35,12 +35,9 @@ function JobCard({ item }) {
   return (
     <Box
       sx={{
-        // width: "370px",
         width: "100%",
-        height: "100%",
+        // height: "100%",
         display: "flex",
-        // f: 4,
-        // flex: 1,
         flexDirection: "column",
         gap: "20px",
         borderRadius: "10px",
