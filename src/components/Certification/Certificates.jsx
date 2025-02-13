@@ -129,6 +129,12 @@ function Certificates() {
   };
 
   const [isChecked, setIsChecked] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+
+  const handleConfirmClick = () => {
+    setIsConfirmed(true);
+    // handleClose();
+  };
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -512,37 +518,62 @@ function Certificates() {
             </Box>
 
             {/* Acknowledgment Text */}
-            <Box
-              sx={{
-                textAlign: "left",
-                px: 3,
-                pt: 2,
-                display: "flex",
-                alignItems: "flex-start", // Align items at the top
-              }}
-            >
-              <Checkbox
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-                sx={{ mt: -1 }} // Adjust vertical alignment slightly
-              />
-              <Typography sx={{ fontSize: "14px" }}>
-                I acknowledge that my name, course details, and all other
-                information are accurate to the best of my knowledge and approve
-                the issuance of my certificate.
-              </Typography>
-            </Box>
-            <Box
-              sx={{ display: "flex", justifyContent: "flex-end", mt: 2, px: 3 }}
-            >
-              <Button
-                variant="contained"
-                onClick={handleClose}
-                disabled={!isChecked}
+            {!isConfirmed ? (
+              <Box>
+                <Box
+                  sx={{
+                    textAlign: "left",
+                    px: 3,
+                    pt: 2,
+                    display: "flex",
+                    alignItems: "flex-start", // Align items at the top
+                  }}
+                >
+                  <Checkbox
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                    sx={{ mt: -1 }} // Adjust vertical alignment slightly
+                  />
+                  <Typography sx={{ fontSize: "14px" }}>
+                    I acknowledge that my name, course details, and all other
+                    information are accurate to the best of my knowledge and
+                    approve the issuance of my certificate.
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    mt: 2,
+                    px: 3,
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    onClick={handleConfirmClick}
+                    disabled={!isChecked}
+                  >
+                    Confirm
+                  </Button>
+                </Box>
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 2,
+                  px: 3,
+                }}
               >
-                Confirm
-              </Button>
-            </Box>
+                <Typography sx={{ textAlign: "center", fontWeight: 600 }}>
+                  Your certificate details have been confirmed. Your certificate
+                  is now being processed.
+                  <br /> Stay tuned for updates on its release!
+                </Typography>
+              </Box>
+            )}
           </Box>
         </DialogContent>
       </Dialog>
