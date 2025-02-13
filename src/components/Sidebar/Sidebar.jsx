@@ -48,6 +48,7 @@ import SidebarItem from "./Child/SidebarItem";
 import ProfileMenu from "./Child/ProfileMenu";
 import RoutesConfig from "../../Routes/RoutesConfig";
 import { EventBusyRounded } from "@mui/icons-material";
+import CategoryIcon from "@mui/icons-material/Category";
 
 /**
  * @class Sidebar
@@ -339,9 +340,7 @@ function Sidebar() {
                     // gap:1
                   }}
                 >
-                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
-                    Overview
-                  </Typography>
+                  <Typography sx={{ ...headingTextStyle }}>Overview</Typography>
                   <SidebarItem
                     title="Dashboard"
                     icon={DashboardRoundedIcon}
@@ -448,6 +447,22 @@ function Sidebar() {
                     onClick={() => {
                       navigate("/Job_Opportunities");
                       handleTabClick("Job_Opportunities");
+                      handleDrawerClose();
+                    }}
+                  />
+
+                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                    Keep Learning
+                  </Typography>
+
+                  <SidebarItem
+                    title="Explore Courses"
+                    icon={CategoryIcon}
+                    open={open}
+                    isActive={activeTab === "Explore_Courses"}
+                    onClick={() => {
+                      navigate("/Explore_Courses");
+                      handleTabClick("Explore_Courses");
                       handleDrawerClose();
                     }}
                   />
