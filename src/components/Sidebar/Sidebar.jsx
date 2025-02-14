@@ -48,6 +48,7 @@ import SidebarItem from "./Child/SidebarItem";
 import ProfileMenu from "./Child/ProfileMenu";
 import RoutesConfig from "../../Routes/RoutesConfig";
 import { EventBusyRounded } from "@mui/icons-material";
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
 /**
  * @class Sidebar
@@ -421,6 +422,17 @@ function Sidebar() {
                     onClick={() => {
                       navigate("/Payments");
                       handleTabClick("Payments");
+                      handleDrawerClose();
+                    }}
+                  />
+                  <SidebarItem
+                    title="Receipts"
+                    icon={ReceiptLongIcon}
+                    open={open}
+                    isActive={activeTab === "Receipts"}
+                    onClick={() => {
+                      navigate("/Receipts");
+                      handleTabClick("Receipts");
                       handleDrawerClose();
                     }}
                   />
