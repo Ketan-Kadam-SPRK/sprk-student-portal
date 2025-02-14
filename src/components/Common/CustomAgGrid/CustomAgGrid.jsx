@@ -54,7 +54,7 @@ const CustomAgGrid = ({
                 <TableCell
                   key={column?.id}
                   style={{
-                    minWidth: column.minWidth,
+                    minWidth: column?.minWidth,
                     backgroundColor: "#6560F0",
                     color: "white",
                     fontWeight: "bold",
@@ -75,17 +75,17 @@ const CustomAgGrid = ({
                     hover
                     role="checkbox"
                     tabIndex={-1}
-                    key={row.id || rowIndex}
+                    key={row?.id || rowIndex}
                   >
-                    {columns.map((column) => {
-                      const value = row[column.id];
+                    {columns?.map((column) => {
+                      const value = row[column?.id];
                       return (
                         <TableCell
-                          key={column.id}
-                          align={column.align}
-                          sx={{ padding: "12px 20px" }}
+                          key={column?.id}
+                          align={column?.align}
+                          sx={{ padding: "12px 15px" }}
                         >
-                          {column.format ? column.format(value, row) : value}
+                          {column?.format ? column?.format(value, row) : value}
                         </TableCell>
                       );
                     })}
@@ -93,7 +93,7 @@ const CustomAgGrid = ({
                 ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} align="center">
+                <TableCell colSpan={columns?.length} align="center">
                   <NoDataPage
                     errorImgPublicId={errorImgPublicId}
                     errorHeading={errorHeading}
@@ -108,7 +108,7 @@ const CustomAgGrid = ({
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={rows?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
