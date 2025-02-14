@@ -599,8 +599,8 @@ function Dashboard() {
                     borderRadius: "10px",
                     // justifyContent: "center",
                     alignItems: "center",
-                    width: "150px",
-                    minWidth: "150px",
+                    width: "250px",
+                    minWidth: "250px",
                     flex: 1,
                     overflow: "hidden",
                     backgroundColor: ["READY", "RELEASED"].includes(
@@ -612,14 +612,16 @@ function Dashboard() {
                 >
                   <Image
                     style={{
-                      width: "80px",
+                      width: "200px",
                       height: "auto",
                       objectFit: "contain",
                     }}
                     publicId={
                       ["RELEASED", "READY"].includes(certificate.status)
-                        ? "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737461523/Reward_badge_with_star_and_ribbon_tkvffi.svg"
-                        : "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739185789/Reward_badge_with_star_and_ribbon_2_owdvvg.svg"
+                        ? "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739507762/certificate_1_hts2yk.svg"
+                        : "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739507762/Vector_3_f9j8ip.svg"
+                      // ? "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737461523/Reward_badge_with_star_and_ribbon_tkvffi.svg"
+                      // : "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739185789/Reward_badge_with_star_and_ribbon_2_owdvvg.svg"
                     }
                     cloudName="dxlzzgbfw"
                   />
@@ -627,9 +629,12 @@ function Dashboard() {
                     sx={{
                       fontSize: "var(--font-size-small)",
                       fontWeight: "bold",
+                      color: ["RELEASED", "READY"].includes(certificate.status)
+                        ? "black"
+                        : "grey",
                     }}
                   >
-                    {convertToTitleCase(certificate.status)}
+                    {convertToTitleCase(certificate?.status)}
                   </Typography>
                   <Typography
                     sx={{
@@ -640,6 +645,9 @@ function Dashboard() {
                       // whiteSpace: "nowrap",
                       // width: "100px",
                       textAlign: "center",
+                      color: ["RELEASED", "READY"].includes(certificate.status)
+                        ? "#085186"
+                        : "grey",
                     }}
                   >
                     {certificate.cou_name}
