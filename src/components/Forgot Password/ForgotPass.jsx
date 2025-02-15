@@ -148,6 +148,7 @@ function ForgotPass() {
           <TextField
             size="small"
             variant="outlined"
+            placeholder="Enter Student ID or Email"
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, eid: e.target.value }))
             }
