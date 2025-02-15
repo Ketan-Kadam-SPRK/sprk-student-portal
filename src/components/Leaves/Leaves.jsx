@@ -52,6 +52,8 @@ function Leaves() {
   const [proofFile, setProofFile] = useState(null);
   const [rows, setRows] = useState([]);
   const [withdrawnLoad, setWithdrawnLoad] = useState(false);
+  const [error500, setError500] = useState(false);
+  const [error404, setError404] = useState(false);
   const handleClose = () => {
     setOpen(!open);
     setFormData(initialState);
@@ -65,7 +67,15 @@ function Leaves() {
       const res = await dispatch(getAllLeaves({ headers }));
       const data = res?.payload?.data?.data || [];
       const modifiedData = data.reverse();
-      setleaveData(modifiedData);
+
+      if (status === 500 || status === 503) {
+        setError500(true);
+      } else if (status === 404 || status === 400) {
+        setError404(true);
+      } else {
+        setleaveData(modifiedData);
+      }
+
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -280,7 +290,8 @@ function Leaves() {
             <Typography>{value || "--"}</Typography>
           </Box>
         );
-    }},
+      },
+    },
     {
       headerName: "Document",
       id: "file",
@@ -305,7 +316,13 @@ function Leaves() {
   console.log(leaveId);
 
   if (loading) {
-    return <ErrorHandling error500={false} loadData={loading} />;
+    return (
+      <ErrorHandling
+        error500={error500}
+        loadData={loading}
+        notFound={error404}
+      />
+    );
   }
 
   return (
@@ -336,7 +353,7 @@ function Leaves() {
         </Box>
         <Typography
           fontSize={"var(--font-size-medium)"}
-          sx={{ color: "#4D535A",}}
+          sx={{ color: "#4D535A" }}
         >
           Track your leave history easily.
         </Typography>
