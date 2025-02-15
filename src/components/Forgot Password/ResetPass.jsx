@@ -1,11 +1,13 @@
 import {
   Box,
-  TextField,
   Typography,
   Button,
   FormHelperText,
   IconButton,
   CircularProgress,
+  OutlinedInput,
+  InputAdornment,
+  FormControl,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -187,11 +189,12 @@ function ResetPass() {
             Your new password must be different to previously used passwords.
           </Typography>
         </Box>
-        <Box sx={{ width: "400px" }}>
+
+        <FormControl sx={{ width: "400px" }}>
           <Typography variant="body1" sx={{ fontWeight: "600" }}>
             New Password
           </Typography>
-          <TextField
+          <OutlinedInput
             size="small"
             type={showPassword ? "text" : "password"}
             variant="outlined"
@@ -201,50 +204,51 @@ function ResetPass() {
             onChange={handleInputChange}
             placeholder="Enter new password"
             error={Boolean(errors.password)}
-            helperText={errors.password}
-            slotProps={{
-              input: {
-                endAdornment: (
-                  <IconButton onClick={handlePasswordVisibility} edge="end">
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
-                ),
-              },
-            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={handlePasswordVisibility} edge="end">
+                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+              </InputAdornment>
+            }
             fullWidth
           />
-        </Box>
-        <Box sx={{ width: "400px" }}>
+          <FormHelperText id="password-helper-text" error>
+            {errors.password}
+          </FormHelperText>
+        </FormControl>
+        <FormControl sx={{ width: "400px" }}>
           <Typography variant="body1" sx={{ fontWeight: "600" }}>
             Confirm New Password
           </Typography>
-          <TextField
-            size="small"
+
+          <OutlinedInput
+            id="confirm-new-password"
             type={showConfirmPassword ? "text" : "password"}
-            variant="outlined"
             name="confirmPassword"
             autoComplete="current-password"
             placeholder="Confirm new password"
             value={formData.confirmPassword}
             onChange={handleInputChange}
-            slotProps={{
-              input: {
-                endAdornment: (
-                  <IconButton onClick={handleConfirmPassVisibility} edge="end">
-                    {showConfirmPassword ? (
-                      <VisibilityIcon />
-                    ) : (
-                      <VisibilityOffIcon />
-                    )}
-                  </IconButton>
-                ),
-              },
-            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={handleConfirmPassVisibility} edge="end">
+                  {showConfirmPassword ? (
+                    <VisibilityIcon />
+                  ) : (
+                    <VisibilityOffIcon />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            }
             error={Boolean(errors.confirmPassword)}
-            helperText={errors.confirmPassword}
             fullWidth
+            size="small"
           />
-        </Box>
+          <FormHelperText id="confirm-password-helper-text" error>
+            {errors.confirmPassword}
+          </FormHelperText>
+        </FormControl>
 
         <Box
           sx={{
