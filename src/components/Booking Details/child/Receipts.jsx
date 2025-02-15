@@ -1,6 +1,6 @@
 import { Box, Button, Dialog, Typography } from "@mui/material";
 import { Image } from "cloudinary-react";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import CustomAgGrid from "../../Common/CustomAgGrid/CustomAgGrid";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,9 @@ import dateFormator from "../../../Utils/dateFormator";
 import { formatForDisplay } from "../../../Utils/formateForDisplay";
 import { LightTooltip } from "../../../Utils/LightToolTip";
 import Receipt from "../modals/Receipt/Receipt";
+import NoDataPage from "../../Common/NoDataPage";
+import { getAllReceipts } from "../action/Payment.action";
+import ErrorHandling from "../../Common/ErrorHandling";
 
 function Receipts() {
   const navigate = useNavigate();
@@ -20,52 +23,47 @@ function Receipts() {
   const [loading, setLoading] = useState(false);
   const [receiptId, setReceiptId] = useState(null);
   const { booking_uid } = useParams();
-  //   const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [error500, setError500] = useState(false);
+  const [error404, setError404] = useState(false);
 
-  const data = [
-    {
-      Receipt_No: "R2502126A3",
-      BCN_NO: "B2502KHARCB9AD8",
-      Course_Group: "Full Stack in Java",
-      Receipt_Status: "Active",
-      Receipt_Amount: 50000,
-      Mode_of_Payment: "UPI",
-      Paid_On: "2025-01-07T00:00:00Z",
-    },
-    {
-      Receipt_No: "R2502126A4",
-      BCN_NO: "B2502KHARCB9AE9",
-      Course_Group: "Data Science with Python",
-      Receipt_Status: "Active",
-      Receipt_Amount: 60000,
-      Mode_of_Payment: "Credit Card",
-      Paid_On: "2025-01-08T00:00:00Z",
-    },
-    {
-      Receipt_No: "R2502126A5",
-      BCN_NO: "B2502KHARCB9AF0",
-      Course_Group: "MERN Stack Development",
-      Receipt_Status: "Cancelled",
-      Receipt_Amount: 55000,
-      Mode_of_Payment: "Net Banking",
-      Paid_On: "2025-01-09T00:00:00Z",
-    },
-    {
-      Receipt_No: "R2502126A6",
-      BCN_NO: "B2502KHARCB9AG1",
-      Course_Group: "Web Designing Track (HTML, CSS3, Bootstrap, Javascript)",
-      Receipt_Status: "Active",
-      Receipt_Amount: 45000,
-      Mode_of_Payment: "Debit Card",
-      Paid_On: "2025-01-10T00:00:00Z",
-    },
-  ];
+  const handleGetAllReceipts = async () => {
+    setLoading(true);
+    try {
+      const res = await dispatch(getAllReceipts({ headers }));
+      const data = res?.payload?.data?.data || [];
+
+      // Sort by date (assuming paid_at is a valid date string)
+      const sortedData = data.sort(
+        (a, b) => new Date(b.paid_at) - new Date(a.paid_at)
+      );
+
+      if (status === 500 || status === 503) {
+        setError500(true);
+      } else if (status === 404 || status === 400) {
+        setError404(true);
+      } else {
+        setData(sortedData);
+      }
+
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching receipts:", err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    handleGetAllReceipts();
+  }, []);
+  console.log(data);
 
   const handleDetailModal = () => {
     setOpenDetailModal(!openDetailModal);
   };
 
   const handleOpenPayment = (row) => {
+    console.log(row);
     setOpenReciept(!openReciept);
     setReceiptId(row?.receipt_code);
   };
@@ -78,9 +76,9 @@ function Receipts() {
 
   const getColorAndBackground = (installment_status) => {
     switch (installment_status) {
-      case "Active":
+      case "ACTIVE":
         return { color: "#1F5200", backgroundColor: "#CBFFAC" };
-      case "Cancelled":
+      case "CANCELLED":
         return { color: "#9F0000", backgroundColor: "#FFB5B5" };
       default:
         return { color: "", backgroundColor: "" };
@@ -116,41 +114,46 @@ function Receipts() {
   const columns = [
     {
       headerName: "Receipt No",
-      id: "Receipt_No",
+      id: "receipt_code",
       minWidth: 150,
       filterable: false,
     },
     {
       headerName: "BCN No",
-      id: "BCN_NO",
+      id: "booked_code",
       minWidth: 150,
       filterable: false,
     },
 
     {
       headerName: "Course Group",
-      id: "Course_Group",
+      id: "course_group",
       minWidth: 200,
       filterable: false,
-      format: (value) => (
-        <LightTooltip title={value} arrow>
-          <span
-            style={{
-              display: "block",
-              maxWidth: "180px",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {value}
-          </span>
-        </LightTooltip>
-      ),
+      format: (value) => {
+        const displayValue = Array.isArray(value) ? value.join(", ") : value;
+
+        return (
+          <LightTooltip title={displayValue} arrow>
+            <span
+              style={{
+                display: "block",
+                maxWidth: "180px",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {displayValue}
+            </span>
+          </LightTooltip>
+        );
+      },
     },
+
     {
       headerName: "Receipt Status",
-      id: "Receipt_Status",
+      id: "receipt_status",
       minWidth: 150,
       style: {
         display: "flex",
@@ -163,21 +166,21 @@ function Receipts() {
     },
     {
       headerName: "Receipt Amount",
-      id: "Receipt_Amount",
+      id: "paid_amount",
       minWidth: 150,
       format: (value) => AmountFormat(value),
     },
-    { headerName: "MOP", id: "Mode_of_Payment", minWidth: 120 },
+    { headerName: "MOP", id: "payment_mode", minWidth: 120 },
     {
       headerName: "Paid On",
-      id: "Paid_On",
+      id: "paid_at",
       minWidth: 120,
       style: { color: "#0074BD", fontWeight: 600 },
-      format: (value) => dateFormator(value, 1),
+      format: (value) => dateFormator(value),
     },
     {
       headerName: "Action",
-      id: "leaveRequestUid",
+      id: "receipt_id",
       width: 300,
       format: (action, row) => {
         return (
@@ -197,8 +200,15 @@ function Receipts() {
   ];
 
   if (loading) {
-    return <ErrorHandling error500={false} loadData={loading} />;
+    return (
+      <ErrorHandling
+        error500={error500}
+        loadData={loading}
+        notFound={error404}
+      />
+    );
   }
+  
   return (
     <Box
       sx={{
@@ -232,19 +242,32 @@ function Receipts() {
           Keep track of all your receipts in one place.
         </Typography>
       </Box>
-      <Box>
-        <CustomAgGrid
-          rows={data}
-          columns={columns}
-          noDatalength={data}
-          paginationModel={{ page: 0, pageSize: 10 }}
-          height={450}
-          checkboxSelection={false}
-          errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739358129/OBJECTS_1_vfdewq_qsbbyy.svg"
-          errorHeading="No payments left!"
-          errorDescription="Looks like you've already cleared all your payments. Enjoy your course!"
+      {data.length > 0 ? (
+        <Box>
+          <CustomAgGrid
+            rows={data}
+            columns={columns}
+            noDatalength={data}
+            paginationModel={{ page: 0, pageSize: 10 }}
+            height={450}
+            checkboxSelection={false}
+            errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739358129/OBJECTS_1_vfdewq_qsbbyy.svg"
+            errorHeading="No payments left!"
+            errorDescription="Looks like you've already cleared all your payments. Enjoy your course!"
+          />
+        </Box>
+      ) : (
+        <NoDataPage
+          errorImgPublicId={
+            "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739604325/Calculator_of_modern_design_two_billing_checks_and_bank_plastic_card_kvi8v4.svg"
+          }
+          errorHeading={"No Receipts!"}
+          errorDescription={
+            "Your admission is processed using the credit method, so no receipt is generated."
+          }
         />
-      </Box>
+      )}
+
       <Dialog
         open={openReciept}
         onClose={() => handleOpenPayment(null)}
