@@ -59,7 +59,7 @@ function PaymentDetails() {
       data.instal =
         data.instal?.map((installment) => ({
           ...installment,
-          month: installment.due_at,
+          month: installment?.due_at,
         })) || [];
       setData(data);
       setLoading(false);
@@ -194,7 +194,7 @@ function PaymentDetails() {
               size="small"
               variant="contained"
               onClick={() => handleOpenPayment(row)}
-              disabled={row.installment_status !== "PAID"}
+              disabled={row?.installment_status !== "PAID"}
             >
               view Receipt
             </Button>
@@ -203,6 +203,8 @@ function PaymentDetails() {
       },
     },
   ];
+
+  console.log(data);
 
   if (loading) {
     return <ErrorHandling error500={false} loadData={loading} />;
@@ -286,13 +288,13 @@ function PaymentDetails() {
                   Course groups : {data?.course_grp?.join(" | ")}
                 </Typography>
                 <Typography>
-                  Booking Date : {dateFormator(data.booked_at)}
+                  Booking Date : {dateFormator(data?.booked_at)}
                 </Typography>
                 <Typography>
-                  Batch Preference : {CapitalFirstLetterOnly(data.batch_prefer)}
+                  Batch Preference : {CapitalFirstLetterOnly(data?.batch_prefer)}
                 </Typography>
                 <Typography>
-                  Payment Pattern : {CapitalFirstLetterOnly(data.payment_term)}
+                  Payment Pattern : {CapitalFirstLetterOnly(data?.payment_term)}
                 </Typography>
               </div>
             </AccordionDetails>

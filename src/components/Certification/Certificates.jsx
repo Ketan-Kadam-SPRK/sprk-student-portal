@@ -140,6 +140,8 @@ function Certificates() {
     setIsChecked(event.target.checked);
   };
 
+  console.log(data)
+
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
   }
@@ -220,20 +222,20 @@ function Certificates() {
             }}
           >
             {data?.map((item, index) => {
-              const activeStep = getStepFromStatus(item.status); // Get activeStep for each item
+              const activeStep = getStepFromStatus(item?.status); // Get activeStep for each item
               return (
                 <Accordion
-                  key={`${item.boo_uid}-${index}`}
-                  expanded={expanded === `${item.boo_uid}-${index}`}
+                  key={`${item?.boo_uid}-${index}`}
+                  expanded={expanded === `${item?.boo_uid}-${index}`}
                   sx={{ p: 2 }}
                   onClick={(e) => {
-                    handleToggle(`${item.boo_uid}-${index}`);
+                    handleToggle(`${item?.boo_uid}-${index}`);
                   }}
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
-                    aria-controls={`${item.boo_uid}-${index}-content`}
-                    id={`${item.boo_uid}-${index}-header`}
+                    aria-controls={`${item?.boo_uid}-${index}-content`}
+                    id={`${item?.boo_uid}-${index}-header`}
                   >
                     <Box
                       sx={{
@@ -270,7 +272,7 @@ function Certificates() {
                           }}
                         >
                           <Image
-                            publicId={item.logo}
+                            publicId={item?.logo}
                             cloudName="dxlzzgbfw"
                             style={{
                               width: "60px",
@@ -287,10 +289,10 @@ function Certificates() {
                           }}
                         >
                           <Typography variant="h6" fontWeight={600}>
-                            {item.cou_name}
+                            {item?.cou_name}
                           </Typography>
                           <Typography variant="body2" sx={{ color: "#4D535A" }}>
-                            {item.boo_uid}
+                            {item?.boo_uid}
                           </Typography>
                         </Box>
                       </Box>
@@ -311,15 +313,15 @@ function Certificates() {
                       <Box sx={{ display: "flex", gap: 2, mr: 2 }}>
                         <Button
                           variant="contained"
-                          onClick={() => handlePreviewDialog(item.cer_mpg_uid)}
+                          onClick={() => handlePreviewDialog(item?.cer_mpg_uid)}
                           disabled={item?.cer_mpg_uid === null}
                         >
-                          Preview
+                         {item.status === "RELEASED" ? "Preview" : "verify"}
                         </Button>
                         <Button
                           variant="contained"
                           disabled={item?.status !== "RELEASED"}
-                          onClick={() => handleDownloadDialog(item.cer_mpg_uid)}
+                          onClick={() => handleDownloadDialog(item?.cer_mpg_uid)}
                         >
                           <SaveAltIcon />
                         </Button>
@@ -348,19 +350,19 @@ function Certificates() {
                     >
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <Typography>Theory Exam</Typography>
-                        {renderStatusIcon(item.theory)}
+                        {renderStatusIcon(item?.theory)}
                       </Box>
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <Typography>Project Exam</Typography>
-                        {renderStatusIcon(item.project)}
+                        {renderStatusIcon(item?.project)}
                       </Box>
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <Typography>Attendance</Typography>
-                        {renderStatusIcon(item.attendance)}
+                        {renderStatusIcon(item?.attendance)}
                       </Box>
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <Typography>Fees Paid</Typography>
-                        {renderStatusIcon(item.pendingFees === 0)}
+                        {renderStatusIcon(item?.pendingFees === 0)}
                       </Box>
                     </Box>
                   </AccordionDetails>
@@ -388,7 +390,6 @@ function Certificates() {
             position: "relative",
             display: "flex",
             flexDirection: "column",
-            // alignItems: "center",
             gap: 2,
           }}
         >
