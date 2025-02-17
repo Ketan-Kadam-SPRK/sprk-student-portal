@@ -9,6 +9,8 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import NoDataPage from "../NoDataPage";
+import { Typography } from "@mui/material";
+import NoDataAvailableUI from "./NoDataAvailableUI";
 
 const CustomAgGrid = ({
   rows = [],
@@ -68,29 +70,34 @@ const CustomAgGrid = ({
           </TableHead>
           <TableBody>
             {noDatalength?.length > 0 ? (
-              rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, rowIndex) => (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row?.id || rowIndex}
-                  >
-                    {columns?.map((column) => {
-                      const value = row[column?.id];
-                      return (
-                        <TableCell
-                          key={column?.id}
-                          align={column?.align}
-                          sx={{ padding: "12px 15px" }}
-                        >
-                          {column?.format ? column?.format(value, row) : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))
+              rows.length > 0 ? (
+                rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, rowIndex) => (
+                    <TableRow hover tabIndex={-1} key={row?.id || rowIndex}>
+                      {columns?.map((column) => {
+                        const value = row[column?.id];
+                        return (
+                          <TableCell
+                            key={column?.id}
+                            align={column?.align}
+                            sx={{ padding: "12px 15px" }}
+                          >
+                            {column?.format
+                              ? column?.format(value, row)
+                              : value}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns?.length} align="center">
+                    <NoDataAvailableUI />
+                  </TableCell>
+                </TableRow>
+              )
             ) : (
               <TableRow>
                 <TableCell colSpan={columns?.length} align="center">

@@ -66,6 +66,7 @@ function Leaves() {
     try {
       const res = await dispatch(getAllLeaves({ headers }));
       const data = res?.payload?.data?.data || [];
+      const status = res?.payload?.status;
       const modifiedData = data.reverse();
 
       if (status === 500 || status === 503) {
