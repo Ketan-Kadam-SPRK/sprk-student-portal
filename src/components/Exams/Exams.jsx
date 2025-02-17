@@ -167,7 +167,7 @@ function Exams() {
               ...buttonStyle,
               backgroundColor: activeTab === 0 ? "#6560F0" : "#E0DFFF",
               color: activeTab === 0 && "white",
-              minWidth: "100px",
+              minWidth: "150px",
             }}
             onClick={() => handleTabChange(0)}
             endIcon={
@@ -186,7 +186,7 @@ function Exams() {
               ...buttonStyle,
               backgroundColor: activeTab === 1 ? "#6560F0" : "#E0DFFF",
               color: activeTab === 1 && "white",
-              minWidth: "100px",
+              minWidth: "150px",
             }}
             onClick={() => handleTabChange(1)}
             endIcon={
@@ -200,7 +200,7 @@ function Exams() {
               ...buttonStyle,
               backgroundColor: activeTab === 2 ? "#6560F0" : "#E0DFFF",
               color: activeTab === 2 && "white",
-              minWidth: "100px",
+              minWidth: "150px",
             }}
             onClick={() => handleTabChange(2)}
             endIcon={
