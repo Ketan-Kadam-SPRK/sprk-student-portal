@@ -42,7 +42,7 @@ function Theory({ count }) {
         position: "relative",
       }}
     >
-      <Box sx={{ display: "flex", gap: 1 }}>
+      <Box sx={{ display: "flex", gap: 1, overflowY: "auto" }}>
         <Button
           // variant="text"
           sx={{
