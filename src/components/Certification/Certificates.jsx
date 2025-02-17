@@ -26,9 +26,14 @@ import CertificateModal from "./CertificateModal";
 import NoDataPage from "../Common/NoDataPage";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { downloadCertificate, getAllCertificates, getVerifiedCertificate } from "./certificate.actions";
+import {
+  downloadCertificate,
+  getAllCertificates,
+  getVerifiedCertificate,
+} from "./certificate.actions";
 import ErrorHandling from "../../components/Common/ErrorHandling";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import dateFormator from "../../Utils/dateFormator";
 
 function Certificates() {
   const dispatch = useDispatch();
@@ -46,16 +51,20 @@ function Certificates() {
   const [certId, setCertId] = useState(null);
   const [downloading, setDownloading] = useState(false);
   const [openDownload, setOpenDownload] = useState(false);
-  const [certificateID,setCertificateId] = useState(null)
+  const [certificateID, setCertificateId] = useState(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [certificateStatus, setCertificateStatus] = useState(null);
+  const [releasedDate, setReleasedDate] = useState(null);
 
   const handleDownloadDialog = (id) => {
     setOpenDownload(!openDownload);
     setCertId(id);
   };
 
-  const handlePreviewDialog = (id) => {
-    setCertId(id);
+  const handlePreviewDialog = (item) => {
+    console.log(item);
+    setCertId(item?.cer_mpg_uid);
+    setCertificateStatus(item?.status);
     setOpen(!open);
   };
   const handleToggle = (id) => {
@@ -66,8 +75,8 @@ function Certificates() {
 
   const handleClose = () => {
     setOpen(false);
-    handleGetAllCertificates()
-    setIsChecked(false)
+    handleGetAllCertificates();
+    setIsChecked(false);
   };
 
   useEffect(() => {
@@ -95,18 +104,20 @@ function Certificates() {
   };
 
   const handleConfirmClick = async () => {
-    setConfirmLoading(true)
-    dispatch(getVerifiedCertificate({ headers, id: certificateID })).then((res) => {
-      if (res.payload !== undefined) {
-        handleClose()
-        handleGetAllCertificates()
-        setIsChecked(false)
-      }
-      setConfirmLoading(false)
-    }).catch((err) => {
-      console.log(err);
-      setConfirmLoading(false)
-    });
+    setConfirmLoading(true);
+    dispatch(getVerifiedCertificate({ headers, id: certificateID }))
+      .then((res) => {
+        if (res.payload !== undefined) {
+          handleClose();
+          handleGetAllCertificates();
+          setIsChecked(false);
+        }
+        setConfirmLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setConfirmLoading(false);
+      });
   };
 
   const handleDownloadCerti = async () => {
@@ -159,8 +170,8 @@ function Certificates() {
     setIsChecked(event.target.checked);
   };
 
-  console.log(data)
-  console.log(certificateID)
+  console.log(data);
+  console.log(certificateID);
 
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
@@ -333,15 +344,17 @@ function Certificates() {
                       <Box sx={{ display: "flex", gap: 2, mr: 2 }}>
                         <Button
                           variant="contained"
-                          onClick={() => handlePreviewDialog(item?.cer_mpg_uid)}
+                          onClick={() => handlePreviewDialog(item)}
                           disabled={item?.cer_mpg_uid === null}
                         >
-                         {item.status === "RELEASED" ? "Preview" : "verify"}
+                          {item.status === "RELEASED" ? "Preview" : "verify"}
                         </Button>
                         <Button
                           variant="contained"
                           disabled={item?.status !== "RELEASED"}
-                          onClick={() => handleDownloadDialog(item?.cer_mpg_uid)}
+                          onClick={() =>
+                            handleDownloadDialog(item?.cer_mpg_uid)
+                          }
                         >
                           <SaveAltIcon />
                         </Button>
@@ -493,7 +506,9 @@ function Certificates() {
             <Typography
               sx={{ fontSize: "18px", fontWeight: 600, color: "#333333" }}
             >
-              Verify Your Certificate Details
+              {certificateStatus !== "RELEASED"
+                ? "Verify Your Certificate"
+                : "Your Certificate"}
             </Typography>
             <IconButton onClick={handleClose}>
               <Close />
@@ -503,101 +518,125 @@ function Certificates() {
 
         <DialogContent sx={{ px: 2 }}>
           {/* Flex container to center everything */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-            }}
-          >
-            {/* Instruction Text */}
-            <Box sx={{ textAlign: "center", pb: 2 }}>
-              <Typography sx={{ fontSize: "14px" }} fontStyle="italic">
-                Please verify your name, course details, and other information
-                before confirming your certificate.
-              </Typography>
-              <Typography sx={{ fontSize: "12px" }}>
-                (Note: If any details require correction, contact us at your
-                earliest convenience.)
-              </Typography>
-            </Box>
-
-            {/* Centered Certificate */}
+          {certificateStatus !== "RELEASED" ? (
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                flexDirection: "column",
                 width: "100%",
               }}
             >
-              <CertificateModal
-                targetRef={targetRef}
-                sprkLogo={sprkLogo}
-                certId={certId}
-                setCertificateId={setCertificateId}
-                setIsConfirmed={setIsConfirmed}
-              />
-            </Box>
-
-            {/* Acknowledgment Text */}
-            {!isConfirmed ? (
-              <Box>
-                <Box
-                  sx={{
-                    textAlign: "left",
-                    px: 3,
-                    pt: 2,
-                    display: "flex",
-                    alignItems: "flex-start", // Align items at the top
-                  }}
-                >
-                  <Checkbox
-                    checked={isChecked}
-                    onChange={handleCheckboxChange}
-                    sx={{ mt: -1 }} // Adjust vertical alignment slightly
-                  />
-                  <Typography sx={{ fontSize: "14px" }}>
-                    I acknowledge that my name, course details, and all other
-                    information are accurate to the best of my knowledge and
-                    approve the issuance of my certificate.
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    mt: 2,
-                    px: 3,
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    onClick={handleConfirmClick}
-                    disabled={!isChecked || confirmLoading}
-                  >
-                    {confirmLoading ? <CircularProgress size={24} /> : "Confirm"}
-                  </Button>
-                </Box>
+              {/* Instruction Text */}
+              <Box sx={{ textAlign: "center", pb: 2 }}>
+                <Typography sx={{ fontSize: "14px" }} fontStyle="italic">
+                  Please verify your name, course details, and other information
+                  before confirming your certificate.
+                </Typography>
+                <Typography sx={{ fontSize: "12px" }}>
+                  (Note: If any details require correction, contact us at your
+                  earliest convenience.)
+                </Typography>
               </Box>
-            ) : (
+
+              {/* Centered Certificate */}
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  mt: 2,
-                  px: 3,
+                  width: "100%",
                 }}
               >
-                <Typography sx={{ textAlign: "center", fontWeight: 600 }}>
-                  Your certificate details have been confirmed. Your certificate
-                  is now being processed.
-                  <br /> Stay tuned for updates on its release!
+                <CertificateModal
+                  targetRef={targetRef}
+                  sprkLogo={sprkLogo}
+                  certId={certId}
+                  setCertificateId={setCertificateId}
+                  setIsConfirmed={setIsConfirmed}
+                />
+              </Box>
+
+              {/* Acknowledgment Text */}
+              {!isConfirmed ? (
+                <Box>
+                  <Box
+                    sx={{
+                      textAlign: "left",
+                      px: 3,
+                      pt: 2,
+                      display: "flex",
+                      alignItems: "flex-start", // Align items at the top
+                    }}
+                  >
+                    <Checkbox
+                      checked={isChecked}
+                      onChange={handleCheckboxChange}
+                      sx={{ mt: -1 }} // Adjust vertical alignment slightly
+                    />
+                    <Typography sx={{ fontSize: "14px" }}>
+                      I acknowledge that my name, course details, and all other
+                      information are accurate to the best of my knowledge and
+                      approve the issuance of my certificate.
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      mt: 2,
+                      px: 3,
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={handleConfirmClick}
+                      disabled={!isChecked || confirmLoading}
+                    >
+                      {confirmLoading ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        "Confirm"
+                      )}
+                    </Button>
+                  </Box>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    mt: 2,
+                    px: 3,
+                  }}
+                >
+                  <Typography sx={{ textAlign: "center", fontWeight: 600 }}>
+                    Your certificate details have been confirmed. Your
+                    certificate is now being processed.
+                    <br /> Stay tuned for updates on its release!
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          ) : (
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <CertificateModal
+                  targetRef={targetRef}
+                  sprkLogo={sprkLogo}
+                  certId={certId}
+                  setCertificateId={setCertificateId}
+                  setIsConfirmed={setIsConfirmed}
+                  setReleasedDate={setReleasedDate}
+                />
+              </Box>
+              <Box sx={{mt:2,pl:2}}>
+                <Typography>
+                  {`Released on ${dateFormator(releasedDate) } `}
                 </Typography>
               </Box>
-            )}
-          </Box>
+            </Box>
+          )}
         </DialogContent>
       </Dialog>
     </Box>
