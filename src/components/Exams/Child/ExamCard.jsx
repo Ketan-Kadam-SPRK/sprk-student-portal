@@ -106,6 +106,7 @@ function ExamCard({ item }) {
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
         // width: "350px",
         width: "100%",
+        height: "100%",
         // maxWidth: "90%",
       }}
     >

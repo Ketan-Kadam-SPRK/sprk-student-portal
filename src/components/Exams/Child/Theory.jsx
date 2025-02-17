@@ -128,7 +128,7 @@ function Theory({ count }) {
         }}
       >
         {examData?.length > 0 ? (
-          <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
+          <Grid2 container spacing={2} sx={{ width: "100%", margin: 0,alignItems:"stretch"}}>
             {examData?.map((item, index) => (
               <Grid2
                 key={`${item.exam_uid}-${index}`}
