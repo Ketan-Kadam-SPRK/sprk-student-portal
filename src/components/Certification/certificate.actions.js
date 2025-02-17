@@ -70,3 +70,28 @@ export const downloadCertificate = createAsyncThunk(
     }
   }
 );
+
+export const getVerifiedCertificate = createAsyncThunk(
+  "certificate/getVerifiedCertificate",
+  async ({ headers, id }) => {
+    try {
+      // Send a GET request to fetch user details using the access token and user ID
+      const res = await axiosInstance.post(
+        `/student-portal/verify/${id}`,
+        null,
+        {
+          headers,
+        }
+      );
+
+      // Extract and return the data from the response
+      const data = await res.data;
+
+      // Return the user details
+
+      return handleResponse(data);
+    } catch (err) {
+      return handleError(err);
+    }
+  }
+);

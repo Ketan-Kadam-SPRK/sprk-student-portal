@@ -26,7 +26,7 @@ import CertificateModal from "./CertificateModal";
 import NoDataPage from "../Common/NoDataPage";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { downloadCertificate, getAllCertificates } from "./certificate.actions";
+import { downloadCertificate, getAllCertificates, getVerifiedCertificate } from "./certificate.actions";
 import ErrorHandling from "../../components/Common/ErrorHandling";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 
@@ -46,6 +46,8 @@ function Certificates() {
   const [certId, setCertId] = useState(null);
   const [downloading, setDownloading] = useState(false);
   const [openDownload, setOpenDownload] = useState(false);
+  const [certificateID,setCertificateId] = useState(null)
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const handleDownloadDialog = (id) => {
     setOpenDownload(!openDownload);
@@ -64,13 +66,15 @@ function Certificates() {
 
   const handleClose = () => {
     setOpen(false);
+    handleGetAllCertificates()
+    setIsChecked(false)
   };
 
   useEffect(() => {
-    getJobs();
+    handleGetAllCertificates();
   }, []);
 
-  const getJobs = async () => {
+  const handleGetAllCertificates = async () => {
     try {
       setLoading(true);
 
@@ -88,6 +92,21 @@ function Certificates() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleConfirmClick = async () => {
+    setConfirmLoading(true)
+    dispatch(getVerifiedCertificate({ headers, id: certificateID })).then((res) => {
+      if (res.payload !== undefined) {
+        handleClose()
+        handleGetAllCertificates()
+        setIsChecked(false)
+      }
+      setConfirmLoading(false)
+    }).catch((err) => {
+      console.log(err);
+      setConfirmLoading(false)
+    });
   };
 
   const handleDownloadCerti = async () => {
@@ -131,16 +150,17 @@ function Certificates() {
   const [isChecked, setIsChecked] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
-  const handleConfirmClick = () => {
-    setIsConfirmed(true);
-    // handleClose();
-  };
+  // const handleConfirmClick = () => {
+  //   setIsConfirmed(true);
+  //   // handleClose();
+  // };
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
   };
 
   console.log(data)
+  console.log(certificateID)
 
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
@@ -515,6 +535,8 @@ function Certificates() {
                 targetRef={targetRef}
                 sprkLogo={sprkLogo}
                 certId={certId}
+                setCertificateId={setCertificateId}
+                setIsConfirmed={setIsConfirmed}
               />
             </Box>
 
@@ -552,9 +574,9 @@ function Certificates() {
                   <Button
                     variant="contained"
                     onClick={handleConfirmClick}
-                    disabled={!isChecked}
+                    disabled={!isChecked || confirmLoading}
                   >
-                    Confirm
+                    {confirmLoading ? <CircularProgress size={24} /> : "Confirm"}
                   </Button>
                 </Box>
               </Box>
