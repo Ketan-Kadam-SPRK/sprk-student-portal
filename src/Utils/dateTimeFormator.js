@@ -1,14 +1,17 @@
 export function convertToLocalTime(utcString) {
-  const date = new Date(utcString); // Parse the UTC string
-  const localDate = new Date(date.toLocaleString()); // Convert to local time
+  if (!utcString) return "Invalid Time"; // Handle null or undefined cases
 
-  let hours = localDate.getHours();
-  const minutes = localDate.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12; // Convert to 12-hour format, 0 should be 12
-  const formattedMinutes = minutes.toString().padStart(2, "0"); // Ensure minutes are two digits
+  const date = new Date(utcString);
+  if (isNaN(date.getTime())) return "Invalid Time"; // Handle parsing errors
 
-  return `${hours}:${formattedMinutes} ${ampm}`;
+  return date
+    .toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })
+    .replace(" am", " AM")
+    .replace(" pm", " PM"); // Ensure AM/PM is uppercase
 }
 
 export function getRemainingTime(targetTimeUTC) {

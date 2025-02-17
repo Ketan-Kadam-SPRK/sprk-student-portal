@@ -1,5 +1,5 @@
 import { Typography, Box } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   convertToLocalTime,
   getRemainingTime,
@@ -82,6 +82,14 @@ function BatchCard({ item }) {
     return null;
   };
 
+  const batchTiming = useMemo(
+    () =>
+      `${convertToLocalTime(item?.start_time)} - ${convertToLocalTime(
+        item?.end_time
+      )}`,
+    [item]
+  );
+
   return (
     <Box
       sx={{
@@ -145,9 +153,7 @@ function BatchCard({ item }) {
               fontWeight: "bold",
             }}
           >
-            {`${convertToLocalTime(item?.start_time)} - ${convertToLocalTime(
-              item?.end_time
-            )}`}
+            {batchTiming}
           </Typography>
         </Box>
         <Box
