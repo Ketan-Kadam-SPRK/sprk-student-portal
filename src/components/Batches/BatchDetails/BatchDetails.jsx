@@ -42,6 +42,7 @@ function BatchDetails() {
   const [loading, setLoading] = useState(false);
   const [sessionData, setSessionData] = useState([]);
   const [error500, setError500] = useState(false);
+  const [error404, setError404] = useState(false);
 
   const getSessionsDetail = async () => {
     setLoading(true);
@@ -51,9 +52,12 @@ function BatchDetails() {
       const status = res?.payload?.status;
       if (status === 500 || status === 503) {
         setError500(true);
+      } else if (status === 404 || status === 400) {
+        setError404(true);
+      }else {
+        setSessionData(data);
       }
-      console.log(data);
-      setSessionData(data);
+
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -94,8 +98,8 @@ function BatchDetails() {
     }
   };
 
-  if (loading || error500) {
-    return <ErrorHandling error500={error500} loadData={loading} />;
+  if (loading || error500 || error404) {
+    return <ErrorHandling error500={error500} loadData={loading} notFound={error404} />;
   }
 
   return (

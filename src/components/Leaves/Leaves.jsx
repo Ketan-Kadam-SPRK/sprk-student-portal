@@ -53,7 +53,7 @@ function Leaves() {
   const [rows, setRows] = useState([]);
   const [withdrawnLoad, setWithdrawnLoad] = useState(false);
   const [error500, setError500] = useState(false);
-  const [error404, setError404] = useState(false);
+
   const handleClose = () => {
     setOpen(!open);
     setFormData(initialState);
@@ -71,8 +71,6 @@ function Leaves() {
 
       if (status === 500 || status === 503) {
         setError500(true);
-      } else if (status === 404 || status === 400) {
-        setError404(true);
       } else {
         setleaveData(modifiedData);
       }
@@ -316,12 +314,11 @@ function Leaves() {
 
   console.log(leaveId);
 
-  if (loading) {
+  if (loading || error500) {
     return (
       <ErrorHandling
         error500={error500}
         loadData={loading}
-        notFound={error404}
       />
     );
   }

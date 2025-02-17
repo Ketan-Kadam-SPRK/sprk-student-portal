@@ -46,6 +46,7 @@ function BookingDetailsCard({ item }) {
     <Box
       sx={{
         width: "100%",
+        minWidth: "200px",
         display: "flex",
         flexDirection: "column",
         gap: "20px",
@@ -53,6 +54,7 @@ function BookingDetailsCard({ item }) {
         p: 2,
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
         backgroundColor: "white",
+        overflow:'scroll'
       }}
     >
       <Box
