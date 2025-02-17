@@ -76,21 +76,15 @@ function BatchDetails() {
           style: { bgcolor: "#E0C8FF", color: "#2C004E" },
           icon: <ArrowCircleUpIcon />,
         };
-      case "CANCELLED":
+      case "ON_HOLD":
         return {
-          style: { bgcolor: "#FFC0C0", color: "#A30000" },
+          style: { bgcolor: "#FFF3A4", color: "#755200" },
           icon: <PauseCircleOutlineIcon />,
         };
       case "COMPLETED":
         return {
           style: { bgcolor: "#B0F7CC", color: "#239A60" },
           icon: <CheckCircleOutlineIcon />,
-        };
-      case "ON HOLD":
-      case "BOOKED":
-        return {
-          style: { bgcolor: "#FFFFB8", color: "#783B09" },
-          icon: <PauseCircleOutlineIcon />,
         };
       default:
         return {
@@ -158,8 +152,6 @@ function BatchDetails() {
               ...getStatusProperties(sessionData?.status).style,
             }}
           >
-            {getStatusProperties(sessionData?.status).icon}{" "}
-            {/* Render the icon */}
             <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
               {sessionData?.status
                 ? sessionData?.status.replace("_", " ").toUpperCase()
@@ -208,7 +200,7 @@ function BatchDetails() {
             gap: "10px",
             backgroundColor: "white",
             borderRadius: "10px",
-            p: 2,
+            // p: 2,
           }}
         >
           <Accordion>

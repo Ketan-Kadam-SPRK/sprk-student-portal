@@ -369,7 +369,7 @@ function PaymentDetails() {
               columns={columns}
               noDatalength={data?.instal}
               paginationModel={{ page: 0, pageSize: 10 }}
-              height={450}
+              height={500}
               checkboxSelection={false}
               errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739358129/OBJECTS_1_vfdewq_qsbbyy.svg"
               errorHeading="No payments left!"

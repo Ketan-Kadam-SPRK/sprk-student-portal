@@ -11,11 +11,12 @@ import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
 import NoDataPage from "../../../../Common/NoDataPage";
 import PopupFilterComponent from "../../../../Common/FilterMenuComponent/PopupFilterComponent";
+import NoDataAvailableUI from "../../../../Common/CustomAgGrid/NoDataAvailableUI";
 
 function Sessions({ sessionData }) {
   const [show, setShow] = useState(false);
   const [showAttendanceDrawer, setShowAttendanceDrawer] = useState(false);
-   const [filterData, setFilterData] = useState([]);
+  const [filterData, setFilterData] = useState([]);
 
   const handleToggleDrawer = () => {
     setShowAttendanceDrawer(!showAttendanceDrawer);
@@ -45,139 +46,141 @@ function Sessions({ sessionData }) {
         };
     }
   };
-  console.log(sessionData)
-  console.log(filterData)
+  console.log(sessionData);
+  console.log(filterData);
 
   return (
     <>
       {sessionData?.list?.length > 0 ? (
         <Box className={styles.mainBox}>
           <Box sx={{ px: 3, py: 2 }}>
-            <Box sx={{display: "flex", justifyContent: "flex-end"}}>
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
               <PopupFilterComponent
                 rowData={sessionData?.list}
-                statusOptions={["PRESENT", "ABSENT","ON_LEAVE"]}
+                statusOptions={["PRESENT", "ABSENT", "ON_LEAVE"]}
                 setFilterData={setFilterData}
                 dateKey={null}
                 statusKey="studentAttendanceStatus"
                 search={false}
               />
             </Box>
-            {filterData?.map((sessionData) => (
-              <Accordion
-                key={sessionData?.session_id}
-                sx={{ marginBottom: "25px" }}
-              >
-                {/* Accordion header */}
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
+            {filterData?.length > 0 ? (
+              filterData.map((sessionData) => (
+                <Accordion
+                  key={sessionData?.session_id}
+                  sx={{ marginBottom: "25px" }}
                 >
-                  {/* Session information */}
-
-                  <Box className={styles.infoBox}>
-                    <Box
-                      className={styles.SummeryBox}
-                      onClick={() => setShow(!show)}
-                    >
-                      {/* Icon indicating if the session is taken */}
-
-                      <CheckCircleIcon className={styles.iconStyle} />
-
-                      {/* Session details */}
-                      <Typography
-                        className={styles.sessionsNumb}
-                        onClick={() => {
-                          if (!isBAtchScheduling) {
-                            handleToggleDrawer();
-                          }
-                        }}
-                      >
-                        Session <span>{sessionData.serial_number}</span>{" "}
-                        <span style={{ color: "grey", fontSize: "12px" }}>
-                          {sessionData.type !== "REGULAR" && "(BACKUP)"}
-                        </span>
-                      </Typography>
-                    </Box>
-
-                    {/* Additional session information */}
-                    <Typography className={styles.sessionInfo}>
-                      Faculty: {sessionData.faculty}
-                    </Typography>
-                    <Box
-                      sx={{ display: "flex", gap: "50px", flexWrap: "wrap" }}
-                    >
-                      <Box>
-                        <Typography className={styles.sessionInfo}>
-                          Session Date:{" "}
-                          {formatDateTimeRange(
-                            sessionData.start_time,
-                            sessionData.end_time
-                          )}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flex: 1,
-                    }}
+                  {/* Accordion header */}
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
                   >
-                    <Box>
-                      {sessionData?.attendance !== null && (
+                    {/* Session information */}
+                    <Box className={styles.infoBox}>
+                      <Box
+                        className={styles.SummeryBox}
+                        onClick={() => setShow(!show)}
+                      >
+                        {/* Icon indicating if the session is taken */}
+                        <CheckCircleIcon className={styles.iconStyle} />
+
+                        {/* Session details */}
                         <Typography
-                          sx={{
-                            p: "5px 15px",
-                            borderRadius: "15px",
-                            fontWeight: 600,
-                            fontSize: "14px",
-                            ...getStatusStyles(
-                              sessionData?.studentAttendanceStatus
-                            ),
+                          className={styles.sessionsNumb}
+                          onClick={() => {
+                            if (!isBAtchScheduling) {
+                              handleToggleDrawer();
+                            }
                           }}
                         >
-                          {formatForDisplay(
-                            sessionData?.studentAttendanceStatus
-                          )}
+                          Session <span>{sessionData.serial_number}</span>{" "}
+                          <span style={{ color: "grey", fontSize: "12px" }}>
+                            {sessionData.type !== "REGULAR" && "(BACKUP)"}
+                          </span>
+                        </Typography>
+                      </Box>
+
+                      {/* Additional session information */}
+                      <Typography className={styles.sessionInfo}>
+                        Faculty: {sessionData.faculty}
+                      </Typography>
+                      <Box
+                        sx={{ display: "flex", gap: "50px", flexWrap: "wrap" }}
+                      >
+                        <Box>
+                          <Typography className={styles.sessionInfo}>
+                            Session Date:{" "}
+                            {formatDateTimeRange(
+                              sessionData.start_time,
+                              sessionData.end_time
+                            )}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flex: 1,
+                      }}
+                    >
+                      <Box>
+                        {sessionData?.attendance !== null && (
+                          <Typography
+                            sx={{
+                              p: "5px 15px",
+                              borderRadius: "15px",
+                              fontWeight: 600,
+                              fontSize: "14px",
+                              ...getStatusStyles(
+                                sessionData?.studentAttendanceStatus
+                              ),
+                            }}
+                          >
+                            {formatForDisplay(
+                              sessionData?.studentAttendanceStatus
+                            )}
+                          </Typography>
+                        )}
+                      </Box>
+                    </Box>
+                  </AccordionSummary>
+
+                  {/* Accordion content */}
+                  <AccordionDetails>
+                    {/* Display modules for the session */}
+                    <div style={{maxHeight:'400px',overflowY:'scroll'}}>
+                      {sessionData?.moduleDetails?.length ? (
+                        sessionData.moduleDetails
+                          .filter((module) => module.status !== "PENDING")
+                          .map((module, index) => (
+                            <div key={index} className={styles.modules}>
+                              {/* Icon indicating if the module is taken */}
+                              {module.moduleCompletionStatus === "COMPLETED" ? (
+                                <CheckCircleIcon className={styles.takenIcon} />
+                              ) : (
+                                <RotateRightIcon className={styles.takenIcon} />
+                              )}
+                              <Typography>{module.module}</Typography>
+                            </div>
+                          ))
+                      ) : (
+                        // Displayed when no modules are available for the session
+                        <Typography className={styles.noData}>
+                          No data available
                         </Typography>
                       )}
-                    </Box>
-                  </Box>
-                </AccordionSummary>
-                {/* Accordion content */}
-
-                <AccordionDetails>
-                  {/* Display modules for the session */}
-                  <div>
-                    {sessionData?.moduleDetails?.length ? (
-                      sessionData.moduleDetails
-                        .filter((module) => module.status !== "PENDING")
-                        .map((module, index) => (
-                          <div key={index} className={styles.modules}>
-                            {/* Icon indicating if the module is taken */}
-                            {module.moduleCompletionStatus === "COMPLETED" ? (
-                              <CheckCircleIcon className={styles.takenIcon} />
-                            ) : (
-                              <RotateRightIcon className={styles.takenIcon} />
-                            )}
-                            <Typography>{module.module}</Typography>
-                          </div>
-                        ))
-                    ) : (
-                      // Displayed when no modules are available for the session
-                      <Typography className={styles.noData}>
-                        No data available
-                      </Typography>
-                    )}
-                  </div>
-                </AccordionDetails>
-              </Accordion>
-            ))}
+                    </div>
+                  </AccordionDetails>
+                </Accordion>
+              ))
+            ) : (
+              <NoDataAvailableUI/>
+            )}
           </Box>
         </Box>
       ) : (

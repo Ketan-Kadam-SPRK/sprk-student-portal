@@ -13,6 +13,7 @@ import Receipt from "../modals/Receipt/Receipt";
 import NoDataPage from "../../Common/NoDataPage";
 import { getAllReceipts } from "../action/Payment.action";
 import ErrorHandling from "../../Common/ErrorHandling";
+import PopupFilterComponent from "../../Common/FilterMenuComponent/PopupFilterComponent";
 
 function Receipts() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function Receipts() {
   const [receiptId, setReceiptId] = useState(null);
   const { booking_uid } = useParams();
   const [data, setData] = useState([]);
+  const [filterData, setFilterData] = useState([]);
   const [error500, setError500] = useState(false);
   const [error404, setError404] = useState(false);
 
@@ -32,6 +34,7 @@ function Receipts() {
     try {
       const res = await dispatch(getAllReceipts({ headers }));
       const data = res?.payload?.data?.data || [];
+      const status = res?.payload?.status;
 
       // Sort by date (assuming paid_at is a valid date string)
       const sortedData = data.sort(
@@ -127,7 +130,7 @@ function Receipts() {
 
     {
       headerName: "Course Group",
-      id: "course_group",
+      id: "course_groups",
       minWidth: 200,
       filterable: false,
       format: (value) => {
@@ -208,7 +211,7 @@ function Receipts() {
       />
     );
   }
-  
+
   return (
     <Box
       sx={{
@@ -242,32 +245,30 @@ function Receipts() {
           Keep track of all your receipts in one place.
         </Typography>
       </Box>
-      {data.length > 0 ? (
-        <Box>
-          <CustomAgGrid
-            rows={data}
-            columns={columns}
-            noDatalength={data}
-            paginationModel={{ page: 0, pageSize: 10 }}
-            height={450}
-            checkboxSelection={false}
-            errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739358129/OBJECTS_1_vfdewq_qsbbyy.svg"
-            errorHeading="No payments left!"
-            errorDescription="Looks like you've already cleared all your payments. Enjoy your course!"
-          />
-        </Box>
-      ) : (
-        <NoDataPage
-          errorImgPublicId={
-            "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739604325/Calculator_of_modern_design_two_billing_checks_and_bank_plastic_card_kvi8v4.svg"
-          }
-          errorHeading={"No Receipts!"}
-          errorDescription={
-            "Your admission is processed using the credit method, so no receipt is generated."
-          }
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <PopupFilterComponent
+          rowData={data}
+          statusOptions={["CANCELLED", "ACTIVE"]}
+          setFilterData={setFilterData}
+          dateKey="paid_at"
+          statusKey="receipt_status"
+          tabName="Receipts"
         />
-      )}
+      </Box>
 
+      <Box>
+        <CustomAgGrid
+          rows={filterData}
+          columns={columns}
+          noDatalength={data}
+          paginationModel={{ page: 0, pageSize: 10 }}
+          height={500}
+          checkboxSelection={false}
+          errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739604325/Calculator_of_modern_design_two_billing_checks_and_bank_plastic_card_kvi8v4.svg"
+          errorHeading="No Receipts!"
+          errorDescription="Your admission is processed using the credit method, so no receipt is generated."
+        />
+      </Box>
       <Dialog
         open={openReciept}
         onClose={() => handleOpenPayment(null)}

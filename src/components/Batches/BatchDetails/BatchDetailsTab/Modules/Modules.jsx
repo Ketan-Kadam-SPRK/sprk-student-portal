@@ -5,11 +5,14 @@ import { useDispatch } from "react-redux";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 
 import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../../../Common/ErrorHandling";
 
 import { getModulesDetails } from "../../../action/batches.actions";
+import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
+import StatusStyledComponent from "../../../../Common/StatusStyledComponent/StatusStyledComponent";
 
 function Modules({ batchId }) {
   const dispatch = useDispatch();
@@ -39,6 +42,45 @@ function Modules({ batchId }) {
     getModules();
   }, []);
 
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "COMPLETED":
+        return <CheckCircleIcon sx={{ color: "#3D37D5" }} />;
+      case "IN_PROGRESS":
+        return <RotateLeftIcon sx={{ color: "#0038A8" }} />;
+      case "PENDING":
+      default:
+        return <CircleOutlinedIcon sx={{ color: "grey" }} />;
+    }
+  };
+
+  const getStatusStyles = (status) => {
+    let color = "";
+    let backgroundColor = "";
+    
+
+    switch (status) {
+      case "COMPLETED":
+        color = "#1F5200";
+        backgroundColor = "#CBFFAC";
+        break;
+      case "IN_PROGRESS":
+        color = "#0038A8";
+        backgroundColor = "#C1D6FF";
+        break;
+      case "PENDING":
+        color = "#755200";
+        backgroundColor = "#FFF3A4";
+        break;
+      default:
+        color = "#000000";
+        backgroundColor = "#F5F5F5";
+        break;
+    }
+
+    return { color, backgroundColor };
+  };
+
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
   }
@@ -46,7 +88,7 @@ function Modules({ batchId }) {
   return (
     <Box
       sx={{
-        height: "100%",
+        height: "100vh",
         backgroundColor: "white",
         p: 2,
         display: "flex",
@@ -70,13 +112,7 @@ function Modules({ batchId }) {
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Box>
-                {item?.moduleCompletionStatus === "COMPLETED" ? (
-                  <CheckCircleIcon sx={{ color: "#3D37D5" }} />
-                ) : (
-                  <CircleOutlinedIcon />
-                )}
-              </Box>
+              <Box>{getStatusIcon(item?.moduleCompletionStatus)}</Box>
               <Box>
                 <Typography sx={{ color: "#085186", fontWeight: 600 }}>
                   {item?.module}
@@ -90,41 +126,14 @@ function Modules({ batchId }) {
                 alignItems: "center",
                 px: 3,
                 gap: "5px",
-                backgroundColor:
-                  item?.moduleCompletionStatus === "COMPLETED"
-                    ? "#CDFEE1"
-                    : "#E4AEFF",
                 py: 1,
                 borderRadius: "25px",
               }}
             >
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                {item?.moduleCompletionStatus === "COMPLETED" ? (
-                  <Image
-                    publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735798457/fluent-mdl2_completed_x9l58k.svg"
-                    cloudName="dxlzzgbfw"
-                  />
-                ) : (
-                  <Image
-                    publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1735798457/material-symbols_event-upcoming-outline-rounded_mvhlnh.svg"
-                    cloudName="dxlzzgbfw"
-                  />
-                )}
-              </Box>
-              <Typography
-                sx={{
-                  fontSize: { xs: "10px", sm: "13px", md: "13px" },
-                  fontWeight: "600",
-                  color:
-                    item?.moduleCompletionStatus === "COMPLETED"
-                      ? "#12472E"
-                      : "#52007A",
-                }}
-              >
-                {item?.moduleCompletionStatus === "COMPLETED"
-                  ? "COMPLETED"
-                  : "Upcoming"}
-              </Typography>
+              <StatusStyledComponent
+                value={item?.moduleCompletionStatus}
+                {...getStatusStyles(item?.moduleCompletionStatus)} // Spread the returned styles from getStatusStyles
+              />
             </Box>
           </Box>
         ))
