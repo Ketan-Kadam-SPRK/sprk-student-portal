@@ -138,7 +138,9 @@ function CoureseDetails() {
           </Button>
         </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center",alignContent: "center" }}>
+        <Box
+          sx={{ display: "flex", alignItems: "center", alignContent: "center" }}
+        >
           <Typography
             sx={{
               marginRight: "10px",
@@ -157,7 +159,7 @@ function CoureseDetails() {
               backgroundColor={backgroundColor}
             />
           ) : (
-            <Typography sx={{fontWeight: "bold"}}>NA</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>NA</Typography>
           )}
         </Box>
       </Box>
@@ -361,8 +363,8 @@ function CoureseDetails() {
                           publicId={item?.course_logo}
                           style={{
                             width: "70px",
-                            height: "auto",
-                            objectFit: "cover",
+                            height: "70px",
+                            objectFit: "contain",
                           }}
                           cloudName={item?.course_logo?.split("/")[0]}
                         />

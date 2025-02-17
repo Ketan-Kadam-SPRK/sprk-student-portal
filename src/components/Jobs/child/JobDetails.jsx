@@ -39,6 +39,7 @@ function JobDetails() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error500, setError500] = useState(false);
+  const [error404, setError404] = useState(false);
 
   const [openApl, setOpenApl] = useState(false);
   const handleAplDialog = () => {
@@ -60,11 +61,14 @@ function JobDetails() {
 
       const res = await dispatch(getJobDetais({ headers, id: jobid }));
       const status = res?.payload?.status;
-      const jobData = res?.payload?.data || [];
+      const jobData = res?.payload?.data?.data || {};
       console.log(res);
 
       if (status === 500 || status === 503) {
         setError500(true);
+      }
+      if (status === 404 || status === 400) {
+        setError404(true);
       } else {
         setData(jobData);
       }
@@ -94,8 +98,14 @@ function JobDetails() {
 
   const { color, backgroundColor } = getColorAndBackground(data?.status);
 
-  if (loading || error500) {
-    return <ErrorHandling error500={error500} loadData={loading} />;
+  if (loading || error500 || error404) {
+    return (
+      <ErrorHandling
+        error500={error500}
+        loadData={loading}
+        notFound={error404}
+      />
+    );
   }
   return (
     <Box
