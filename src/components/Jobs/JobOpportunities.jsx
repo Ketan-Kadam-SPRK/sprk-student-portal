@@ -98,7 +98,7 @@ function JobOpportunities() {
       <Typography variant="h4" fontWeight={"bold"}>
         Job Openings for You{" "}
         <Image
-          publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254478/ccyolkdgxmljm4bmpkai.png"
+          publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739512032/magnifying_glass_ws5lix.svg"
           style={{
             width: "30px",
             height: "auto",

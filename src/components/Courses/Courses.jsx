@@ -22,7 +22,9 @@ const Courses = () => {
       const res = await dispatch(getCourseGrpDetails({ headers }));
       const status = res?.payload?.status;
       const data = (await res.payload.data?.data) || [];
-      const sorted = data?.sort((a, b) => b.booking_date - a.booking_date);
+      const sorted = data?.sort(
+        (a, b) => new Date(b.booking_date) - new Date(a.booking_date)
+      );
       if (status === 500 || status === 503) {
         setError500(true);
       }

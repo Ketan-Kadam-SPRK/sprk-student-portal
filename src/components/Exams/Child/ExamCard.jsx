@@ -117,7 +117,8 @@ function ExamCard({ item }) {
           backgroundColor: item?.course_color || "#0073E6",
           p: 2,
           borderRadius: "10px",
-          flexWrap: "wrap",
+          flexWrap: "nowrap",
+          alignItems: "center",
         }}
       >
         <Box
@@ -126,6 +127,8 @@ function ExamCard({ item }) {
             flexDirection: "column",
             gap: 1,
             justifyContent: "center",
+            flex: "1 1 auto", // Takes remaining space but does not push image
+            minWidth: 0, // Prevents overflow issues
           }}
         >
           <Typography
@@ -136,16 +139,17 @@ function ExamCard({ item }) {
               textOverflow: "ellipsis",
               overflow: "hidden",
               whiteSpace: "nowrap",
-              maxWidth: "200px",
+              minWidth: 0, // Prevents growing beyond available space
             }}
             title={item?.course_name?.join(" , ")}
           >
             {item?.course_name?.join(" , ")}
           </Typography>
-          <Typography
-            sx={{ color: "white" }}
-          >{`Exam ID : ${item?.exam_uid}`}</Typography>
+          <Typography sx={{ color: "white" }}>
+            {`Exam ID : ${item?.exam_uid}`}
+          </Typography>
         </Box>
+
         <img
           src={
             item?.course_logo ||
@@ -154,7 +158,7 @@ function ExamCard({ item }) {
           alt="course_logo"
           style={{
             width: "80px",
-            height: "auto",
+            height: "80px",
             objectFit: "contain",
             filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
             backgroundColor: item?.course_logo ? "transparent" : "white",
@@ -165,6 +169,7 @@ function ExamCard({ item }) {
           }}
         />
       </Box>
+
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         {item?.duration >= 0 && item?.duration !== null && (
           <Typography
@@ -235,7 +240,8 @@ function ExamCard({ item }) {
                 //   backgroundColor: "#3C36EC",
                 // },
                 borderRadius: "30px",
-                width: "100px",
+                width: "120px",
+
                 boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
               }}
               onClick={() => {

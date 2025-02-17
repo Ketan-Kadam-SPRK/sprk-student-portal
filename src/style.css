@@ -29,6 +29,10 @@
   --table-header-bg-color: #085186; */
 }
 
+.swal2-container {
+  z-index: 100000000000 !important;
+}
+
 
 [data-theme="dark"] {
   --background-color: #000000;
