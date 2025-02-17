@@ -36,6 +36,8 @@ function PaymentDetails() {
   const [receiptId, setReceiptId] = useState(null);
   const { booking_uid } = useParams();
   const [data, setData] = useState([]);
+    const [error500, setError500] = useState(false);
+    const [error404, setError404] = useState(false);
 
   const handleDetailModal = () => {
     setOpenDetailModal(!openDetailModal);
@@ -61,7 +63,15 @@ function PaymentDetails() {
           ...installment,
           month: installment?.due_at,
         })) || [];
-      setData(data);
+
+        if (status === 500 || status === 503) {
+          setError500(true);
+        } else if (status === 404 || status === 400) {
+          setError404(true);
+        } else {
+          setData(data);
+        }
+
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -207,9 +217,15 @@ function PaymentDetails() {
   console.log(data);
 
   if (loading) {
-    return <ErrorHandling error500={false} loadData={loading} />;
+    return (
+      <ErrorHandling
+        error500={error500}
+        loadData={loading}
+        notFound={error404}
+      />
+    );
   }
-
+  
   return (
     <Box
       sx={{

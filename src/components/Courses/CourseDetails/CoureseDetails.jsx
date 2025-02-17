@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { getCourseGrpDetailsBYId } from "../course.actions";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../Common/ErrorHandling";
+import NoDataPage from "../../Common/NoDataPage";
 import { ExpandLessRounded, ExpandMoreRounded } from "@mui/icons-material";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 function CoureseDetails() {
@@ -137,7 +138,7 @@ function CoureseDetails() {
           </Button>
         </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center",alignContent: "center" }}>
           <Typography
             sx={{
               marginRight: "10px",
@@ -147,12 +148,17 @@ function CoureseDetails() {
           >
             COURSE GROUP STATUS :
           </Typography>
+
           {/* Display Batch Status with Styling */}
-          <StatusStyledComponent
-            value={data?.status}
-            color={color}
-            backgroundColor={backgroundColor}
-          />
+          {data?.courses?.length ? (
+            <StatusStyledComponent
+              value={data?.status}
+              color={color}
+              backgroundColor={backgroundColor}
+            />
+          ) : (
+            <Typography sx={{fontWeight: "bold"}}>NA</Typography>
+          )}
         </Box>
       </Box>
       <Box
@@ -166,91 +172,97 @@ function CoureseDetails() {
           // overflow: "hidden",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            flexWrap: "wrap",
-            gap: "10px",
-            backgroundColor: "white",
-            borderRadius: "10px",
-          }}
-        >
-          <Accordion sx={{ p: 2 }}>
-            <AccordionSummary
-              expandIcon={
-                <InfoRoundedIcon
-                  sx={{ fontSize: "30px", color: "#0073E6 !important" }}
+        {data?.courses?.length > 0 && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flexWrap: "wrap",
+              gap: "10px",
+              backgroundColor: "white",
+              borderRadius: "10px",
+            }}
+          >
+            <Accordion sx={{ p: 2 }}>
+              <AccordionSummary
+                expandIcon={
+                  <InfoRoundedIcon
+                    sx={{ fontSize: "30px", color: "#0073E6 !important" }}
+                  />
+                }
+              >
+                <Image
+                  publicId={data?.cg_logo}
+                  style={{
+                    width: "70px",
+                    height: "auto",
+                    objectFit: "cover",
+                  }}
+                  cloudName={data?.cg_logo?.split("/")[0]}
                 />
-              }
-            >
-              <Image
-                publicId={data?.cg_logo}
-                style={{
-                  width: "70px",
-                  height: "auto",
-                  objectFit: "cover",
-                }}
-                cloudName={data?.cg_logo?.split("/")[0]}
-              />
-              <Typography
-                variant="h6"
-                sx={{
-                  fontSize: { xs: "20px", sm: "25px", md: "30px" },
-                  fontWeight: "bold",
-                  ml: 2,
-                }}
-              >
-                {data?.cg_name || "NA"}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Box
-                sx={{ display: "flex", flexDirection: "column", gap: "10px" }}
-              >
-                <Box style={{ color: "#0074BD", fontWeight: 600 }}>
-                  <Typography
-                    variant="h6"
-                    sx={{ fontWeight: 600, color: "#464646" }}
-                  >
-                    Course Overview
-                  </Typography>
-                  <Typography sx={{ color: "#6E6E6E" }}>
-                    {data?.cg_overview || "No Overview Available"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography
-                    variant="h6"
-                    sx={{ fontWeight: 600, color: "#464646" }}
-                  >
-                    Key Features
-                  </Typography>
-                  {data?.key_features?.length > 0 ? (
-                    data?.key_features?.map((item, featureIndex) => (
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: { xs: "20px", sm: "25px", md: "30px" },
+                    fontWeight: "bold",
+                    ml: 2,
+                  }}
+                >
+                  {data?.cg_name || "NA"}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", gap: "10px" }}
+                >
+                  <Box style={{ color: "#0074BD", fontWeight: 600 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: 600, color: "#464646" }}
+                    >
+                      Course Overview
+                    </Typography>
+                    <Typography sx={{ color: "#6E6E6E" }}>
+                      {data?.cg_overview || "No Overview Available"}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: 600, color: "#464646" }}
+                    >
+                      Key Features
+                    </Typography>
+                    {data?.key_features?.length > 0 ? (
+                      data?.key_features?.map((item, featureIndex) => (
+                        <Typography
+                          key={item.id}
+                          sx={{
+                            marginLeft: 2,
+                            fontSize: "16px",
+                            color: "#6E6E6E",
+                          }}
+                        >
+                          {`${featureIndex + 1}. ${item?.feature}`}
+                        </Typography>
+                      ))
+                    ) : (
                       <Typography
-                        key={item.id}
                         sx={{
                           marginLeft: 2,
                           fontSize: "16px",
                           color: "#6E6E6E",
                         }}
                       >
-                        {`${featureIndex + 1}. ${item?.feature}`}
+                        No Key Features Available
                       </Typography>
-                    ))
-                  ) : (
-                    <Typography
-                      sx={{ marginLeft: 2, fontSize: "16px", color: "#6E6E6E" }}
-                    >
-                      No Key Features Available
-                    </Typography>
-                  )}
+                    )}
+                  </Box>
                 </Box>
-              </Box>
-            </AccordionDetails>
-          </Accordion>
-        </Box>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+        )}
 
         <Box
           sx={{
@@ -285,7 +297,7 @@ function CoureseDetails() {
               Ready to Learn? Here’s Your List of Courses!
             </Typography>
             <Image
-              publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739266120/fefcgtzzv4nemmqmvel8.svg"
+              publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739600628/book_shelf_v84akg.svg"
               style={{
                 width: "30px",
                 height: "auto",
@@ -296,8 +308,8 @@ function CoureseDetails() {
           </Box>
           <Box
             sx={{
-              // flex: 1,
-              height: "100vh",
+              // height: "100%",
+              minHeight: "70vh",
               display: "flex",
               flexDirection: "column",
               gap: 2,
@@ -482,18 +494,13 @@ function CoureseDetails() {
                 </Box>
               ))
             ) : (
-              <Typography
-                sx={{
-                  color: "var(--sidebar-bg-color)",
-                  fontWeight: "600",
-                  p: 2,
-                  fontSize: "var(--font-size-small)",
-                  borderRadius: "10px",
-                  textAlign: "center",
-                }}
-              >
-                No Courses Available
-              </Typography>
+              <NoDataPage
+                errorImgPublicId={
+                  "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739602175/No_data_found_kxvcuy.svg"
+                }
+                errorHeading={"No Data Available."}
+                errorDescription={""}
+              />
             )}
           </Box>
         </Box>
