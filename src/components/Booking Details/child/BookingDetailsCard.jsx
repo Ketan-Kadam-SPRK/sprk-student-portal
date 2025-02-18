@@ -32,6 +32,14 @@ function BookingDetailsCard({ item }) {
         color = "#9F0000";
         backgroundColor = "#FFB5B5";
         break;
+      case "EXPIRED":
+        color = "#3D3D3D";
+        backgroundColor = "#D1D1D1";
+        break;
+      case "CANCELLED":
+        color = "#A30000";
+        backgroundColor = "#FFC0C0";
+        break;
       default:
         color = "black";
         backgroundColor = "white";
@@ -54,7 +62,7 @@ function BookingDetailsCard({ item }) {
         p: 2,
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
         backgroundColor: "white",
-        overflow:'scroll'
+        overflow: "scroll",
       }}
     >
       <Box
@@ -81,7 +89,7 @@ function BookingDetailsCard({ item }) {
         >
           {item?.booking_uid || ""}
         </Typography>
-        <Box sx={{width:'100%'}}>
+        <Box sx={{ width: "100%" }}>
           <Typography
             sx={{
               color: "white",
@@ -89,7 +97,7 @@ function BookingDetailsCard({ item }) {
               textOverflow: "ellipsis",
               wordBreak: "normal",
               whiteSpace: "nowrap",
-              width:"100%",
+              width: "100%",
               overflow: "hidden",
               cursor: "pointer",
             }}
@@ -133,9 +141,9 @@ function BookingDetailsCard({ item }) {
           </Typography>
           <Box>
             <CircularProgressWithLabel
-              value={item.paid_installments}
-              totalValue={item.total_installments}
-              progress={`${item.paid_installments}/${item.total_installments}`}
+              value={item?.paid_installments}
+              totalValue={item?.total_installments}
+              progress={`${item?.paid_installments}/${item.total_installments}`}
             />
           </Box>
         </Box>
