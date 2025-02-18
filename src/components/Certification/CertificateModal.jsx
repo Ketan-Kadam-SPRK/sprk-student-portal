@@ -11,7 +11,14 @@ function formatDate(dateString) {
   return date.toLocaleDateString("en-GB", options).replace(/\s/g, "-");
 }
 
-function CertificateModal({ targetRef, sprkLogo, certId = null,setCertificateId,setIsConfirmed }) {
+function CertificateModal({
+  targetRef,
+  sprkLogo,
+  certId = null,
+  setCertificateId,
+  setIsConfirmed,
+  setReleasedDate,
+}) {
   const headers = useAuthHeaders();
   const dispatch = useDispatch();
   const [previewData, setPreviewData] = useState(null);
@@ -30,8 +37,9 @@ function CertificateModal({ targetRef, sprkLogo, certId = null,setCertificateId,
       const data = res?.payload?.data?.data || [];
       console.log(data);
       setPreviewData(data);
-      setCertificateId(data?.cer_sts_id)
-      setIsConfirmed(data?.isVerified)
+      setCertificateId(data?.cer_sts_id);
+      setIsConfirmed(data?.isVerified);
+      setReleasedDate(data?.rls_at);
       setLoading(false);
     } catch (err) {
       console.log(err);

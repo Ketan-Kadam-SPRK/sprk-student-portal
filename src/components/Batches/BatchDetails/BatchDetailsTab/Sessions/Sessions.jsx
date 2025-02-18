@@ -54,7 +54,7 @@ function Sessions({ sessionData }) {
       {sessionData?.list?.length > 0 ? (
         <Box className={styles.mainBox}>
           <Box sx={{ px: 3, py: 2 }}>
-            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Box sx={{ display: "flex", justifyContent: "flex-end",position:'sticky' }}>
               <PopupFilterComponent
                 rowData={sessionData?.list}
                 statusOptions={["PRESENT", "ABSENT", "ON_LEAVE"]}
