@@ -27,25 +27,22 @@ function Receipts() {
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [error500, setError500] = useState(false);
-  const [error404, setError404] = useState(false);
 
   const handleGetAllReceipts = async () => {
     setLoading(true);
     try {
       const res = await dispatch(getAllReceipts({ headers }));
       const data = res?.payload?.data?.data || [];
-      const status = res?.payload?.status;
+      const status = res?.payload.status;
 
       // Sort by date (assuming paid_at is a valid date string)
       const sortedData = data.sort(
         (a, b) => new Date(b.paid_at) - new Date(a.paid_at)
       );
-
+      console.log(status);
       if (status === 500 || status === 503) {
         setError500(true);
-      } else if (status === 404 || status === 400) {
-        setError404(true);
-      } else {
+      }  else {
         setData(sortedData);
       }
 
@@ -55,6 +52,8 @@ function Receipts() {
       setLoading(false);
     }
   };
+
+  console.log(error500);
 
   useEffect(() => {
     handleGetAllReceipts();
@@ -202,12 +201,11 @@ function Receipts() {
     },
   ];
 
-  if (loading) {
+  if (loading || error500) {
     return (
       <ErrorHandling
         error500={error500}
         loadData={loading}
-        notFound={error404}
       />
     );
   }

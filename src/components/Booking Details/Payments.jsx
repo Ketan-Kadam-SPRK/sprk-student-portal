@@ -12,18 +12,18 @@ function Payments() {
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [courseData, setCourseData] = useState([]);
-    const [error500, setError500] = useState(false);
-    const [error404, setError404] = useState(false);
+  const [error500, setError500] = useState(false);
+
   const getBookingDetail = async () => {
     setLoading(true);
     try {
       const res = await dispatch(getBookingDetails({ headers }));
       const data = res?.payload?.data?.data || [];
+      const status = res?.payload.status;
+      console.log(status)
 
       if (status === 500 || status === 503) {
         setError500(true);
-      } else if (status === 404 || status === 400) {
-        setError404(true);
       } else {
         setCourseData(data);
       }
@@ -38,12 +38,11 @@ function Payments() {
     getBookingDetail();
   }, []);
 
-  if (loading) {
+  if (loading || error500) {
     return (
       <ErrorHandling
         error500={error500}
         loadData={loading}
-        notFound={error404}
       />
     );
   }

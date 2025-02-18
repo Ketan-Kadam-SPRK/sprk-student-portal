@@ -36,8 +36,9 @@ function PaymentDetails() {
   const [receiptId, setReceiptId] = useState(null);
   const { booking_uid } = useParams();
   const [data, setData] = useState([]);
-    const [error500, setError500] = useState(false);
-    const [error404, setError404] = useState(false);
+  const [error500, setError500] = useState(false);
+  const [error404, setError404] = useState(false);
+
 
   const handleDetailModal = () => {
     setOpenDetailModal(!openDetailModal);
@@ -58,6 +59,7 @@ function PaymentDetails() {
         getBookingInstallments({ headers, booking_uid })
       );
       let data = res?.payload?.data?.data || {};
+      const status = res?.payload?.status;
       data.instal =
         data.instal?.map((installment) => ({
           ...installment,
@@ -68,7 +70,7 @@ function PaymentDetails() {
           setError500(true);
         } else if (status === 404 || status === 400) {
           setError404(true);
-        } else {
+        }  else {
           setData(data);
         }
 
@@ -216,7 +218,7 @@ function PaymentDetails() {
 
   console.log(data);
 
-  if (loading) {
+  if (loading || error500 || error404) {
     return (
       <ErrorHandling
         error500={error500}
