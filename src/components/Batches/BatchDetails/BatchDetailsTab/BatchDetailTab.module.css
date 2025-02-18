@@ -11,7 +11,15 @@
   display: flex !important;
   background-color: #ffffff !important;
   margin-top: 10px !important;
-  padding: 8px 0px !important;
+  padding: 15px 0px !important;
+}
+
+.buttonBox {
+  background-color: #fff !important;
+  position: absolute !important;
+  top: 10px !important;
+  right: 20px !important;
+  z-index: 9,
 }
 
 .tabName {

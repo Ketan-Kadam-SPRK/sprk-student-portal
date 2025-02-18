@@ -13,10 +13,9 @@ import NoDataPage from "../../../../Common/NoDataPage";
 import PopupFilterComponent from "../../../../Common/FilterMenuComponent/PopupFilterComponent";
 import NoDataAvailableUI from "../../../../Common/CustomAgGrid/NoDataAvailableUI";
 
-function Sessions({ sessionData }) {
+function Sessions({ sessionData,filterData }) {
   const [show, setShow] = useState(false);
   const [showAttendanceDrawer, setShowAttendanceDrawer] = useState(false);
-  const [filterData, setFilterData] = useState([]);
 
   const handleToggleDrawer = () => {
     setShowAttendanceDrawer(!showAttendanceDrawer);
@@ -46,26 +45,14 @@ function Sessions({ sessionData }) {
         };
     }
   };
-  console.log(sessionData);
-  console.log(filterData);
 
   return (
     <>
       {sessionData?.list?.length > 0 ? (
         <Box className={styles.mainBox}>
           <Box sx={{ px: 3, py: 2 }}>
-            <Box sx={{ display: "flex", justifyContent: "flex-end",position:'sticky' }}>
-              <PopupFilterComponent
-                rowData={sessionData?.list}
-                statusOptions={["PRESENT", "ABSENT", "ON_LEAVE"]}
-                setFilterData={setFilterData}
-                dateKey={null}
-                statusKey="studentAttendanceStatus"
-                search={false}
-              />
-            </Box>
             {filterData?.length > 0 ? (
-              filterData.map((sessionData) => (
+              filterData?.map((sessionData) => (
                 <Accordion
                   key={sessionData?.session_id}
                   sx={{ marginBottom: "25px" }}
@@ -96,14 +83,14 @@ function Sessions({ sessionData }) {
                         >
                           Session <span>{sessionData.serial_number}</span>{" "}
                           <span style={{ color: "grey", fontSize: "12px" }}>
-                            {sessionData.type !== "REGULAR" && "(BACKUP)"}
+                            {sessionData?.type !== "REGULAR" && "(BACKUP)"}
                           </span>
                         </Typography>
                       </Box>
 
                       {/* Additional session information */}
                       <Typography className={styles.sessionInfo}>
-                        Faculty: {sessionData.faculty}
+                        Faculty: {sessionData?.faculty}
                       </Typography>
                       <Box
                         sx={{ display: "flex", gap: "50px", flexWrap: "wrap" }}
@@ -112,8 +99,8 @@ function Sessions({ sessionData }) {
                           <Typography className={styles.sessionInfo}>
                             Session Date:{" "}
                             {formatDateTimeRange(
-                              sessionData.start_time,
-                              sessionData.end_time
+                              sessionData?.start_time,
+                              sessionData?.end_time
                             )}
                           </Typography>
                         </Box>
@@ -153,10 +140,10 @@ function Sessions({ sessionData }) {
                   {/* Accordion content */}
                   <AccordionDetails>
                     {/* Display modules for the session */}
-                    <div style={{maxHeight:'400px',overflowY:'scroll'}}>
+                    <div style={{ maxHeight: "400px", overflowY: "scroll" }}>
                       {sessionData?.moduleDetails?.length ? (
                         sessionData.moduleDetails
-                          .filter((module) => module.status !== "PENDING")
+                          .filter((module) => module?.status !== "PENDING")
                           .map((module, index) => (
                             <div key={index} className={styles.modules}>
                               {/* Icon indicating if the module is taken */}
@@ -165,7 +152,7 @@ function Sessions({ sessionData }) {
                               ) : (
                                 <RotateRightIcon className={styles.takenIcon} />
                               )}
-                              <Typography>{module.module}</Typography>
+                              <Typography>{module?.module}</Typography>
                             </div>
                           ))
                       ) : (
@@ -179,7 +166,7 @@ function Sessions({ sessionData }) {
                 </Accordion>
               ))
             ) : (
-              <NoDataAvailableUI/>
+              <NoDataAvailableUI />
             )}
           </Box>
         </Box>
