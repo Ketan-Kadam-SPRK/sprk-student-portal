@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //mui icons
 import CloseIcon from "@mui/icons-material/Close";
@@ -28,9 +28,12 @@ import { LightTooltip } from "../../Utils/LightToolTip";
 
 //child components and actions
 import ApplyLeaveModal from "./ApplyLeaveModal";
-import { getAllLeaves, getWithdrawnLeaves } from "./action/leaves.action";
+import {
+  getAllLeaves,
+  getWithdrawnLeaves,
+  handleDownloadFiles,
+} from "./action/leaves.action";
 import { Image } from "cloudinary-react";
-import { format } from "crypto-js";
 
 function Leaves() {
   const initialState = {
@@ -41,6 +44,7 @@ function Leaves() {
   };
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
+  const rtoken = useSelector((state) => state.authSlice.token);
   const [filterData, setFilterData] = useState([]);
   const [open, setOpen] = useState(false);
   const [openWidrow, setOpenWidrow] = useState(false);
@@ -137,9 +141,14 @@ function Leaves() {
     }
   };
 
-  const handleOpenFile = (rowData) => {
-    const fileUrl = rowData;
-    window.open(encodeURI(fileUrl), "_blank", "noopener,noreferrer");
+  const handleOpenFile = (data) => {
+    const fileid = data?.file_dto?.id;
+    if (data?.file_dto !== null) {
+      dispatch(handleDownloadFiles({ fileid, rtoken }));
+    }
+    if (data?.file !== null) {
+      window.open(encodeURI(data?.file), "_blank", "noopener,noreferrer");
+    }
   };
 
   const getInformation = (rowData) => {
@@ -295,15 +304,18 @@ function Leaves() {
       headerName: "Document",
       id: "file",
       minWidth: 120,
-      format: (row) => {
+      format: (row, data) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <IconButton
-              onClick={() => handleOpenFile(row)}
-              disabled={row === null}
+              onClick={() => handleOpenFile(data)}
+              disabled={!data?.file && !data?.file_dto?.id}
             >
               <InsertDriveFileIcon
-                sx={{ color: row === null ? "#9B9B9B" : "#0074BD" }}
+                sx={{
+                  color:
+                    !data?.file && !data?.file_dto?.id ? "#9B9B9B" : "#0074BD",
+                }}
               />
             </IconButton>
           </Box>
@@ -312,15 +324,8 @@ function Leaves() {
     },
   ];
 
-  console.log(leaveId);
-
   if (loading || error500) {
-    return (
-      <ErrorHandling
-        error500={error500}
-        loadData={loading}
-      />
-    );
+    return <ErrorHandling error500={error500} loadData={loading} />;
   }
 
   return (
