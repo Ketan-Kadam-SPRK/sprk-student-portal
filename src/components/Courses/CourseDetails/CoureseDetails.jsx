@@ -138,7 +138,9 @@ function CoureseDetails() {
           </Button>
         </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center",alignContent: "center" }}>
+        <Box
+          sx={{ display: "flex", alignItems: "center", alignContent: "center" }}
+        >
           <Typography
             sx={{
               marginRight: "10px",
@@ -157,7 +159,7 @@ function CoureseDetails() {
               backgroundColor={backgroundColor}
             />
           ) : (
-            <Typography sx={{fontWeight: "bold"}}>NA</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>NA</Typography>
           )}
         </Box>
       </Box>
@@ -419,27 +421,36 @@ function CoureseDetails() {
                           </Box>
                         </Box>
                       </Box>
-                      <IconButton
-                        sx={
-                          {
-                            // cursor: "pointer",
-                            // position: "absolute",
-                            // top: "50%",
-                            // transform: "translateY(-50%)",
-                            // right: "10px",
-                          }
-                        }
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
                       >
-                        {expandedCourseId === item?.course_uid ? (
-                          <ExpandLessRounded
-                            sx={{ color: "white", fontSize: "30px" }}
-                          />
-                        ) : (
-                          <ExpandMoreRounded
-                            sx={{ color: "white", fontSize: "30px" }}
-                          />
-                        )}
-                      </IconButton>
+                        <StatusStyledComponent
+                          value={"Ongoing"}
+                          color={"#3A35C9"}
+                          backgroundColor={"white"}
+                        />
+                        <IconButton
+                          sx={
+                            {
+                              // cursor: "pointer",
+                              // position: "absolute",
+                              // top: "50%",
+                              // transform: "translateY(-50%)",
+                              // right: "10px",
+                            }
+                          }
+                        >
+                          {expandedCourseId === item?.course_uid ? (
+                            <ExpandLessRounded
+                              sx={{ color: "white", fontSize: "30px" }}
+                            />
+                          ) : (
+                            <ExpandMoreRounded
+                              sx={{ color: "white", fontSize: "30px" }}
+                            />
+                          )}
+                        </IconButton>
+                      </Box>
                     </Box>
                   </Box>
                   {expandedCourseId === item?.course_uid && (
