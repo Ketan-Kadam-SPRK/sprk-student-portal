@@ -5,7 +5,6 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { Image } from "cloudinary-react";
 import { useNavigate, useParams } from "react-router-dom";
