@@ -40,7 +40,7 @@ function JobOpportunities() {
 
       const res = await dispatch(getAllJobs({ headers }));
       const status = res?.payload?.status;
-      const data = res?.payload?.data || [];
+      const data = res?.payload?.data?.data || [];
       const jobData = data?.sort(
         (a, b) => new Date(b?.posted_on) - new Date(a?.posted_on)
       );

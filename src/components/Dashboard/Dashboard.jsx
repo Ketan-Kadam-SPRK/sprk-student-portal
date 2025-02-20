@@ -601,6 +601,7 @@ function Dashboard() {
                     alignItems: "center",
                     width: "250px",
                     minWidth: "250px",
+                    maxWidth: "300px",
                     flex: 1,
                     overflow: "hidden",
                     backgroundColor: ["READY", "RELEASED"].includes(

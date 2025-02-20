@@ -3,6 +3,7 @@ import React from "react";
 import Error_500 from "../Error Pages/Error_500";
 import CustomBackDrop from "./CustomBackDrop";
 import Error_404 from "../Error Pages/Error_404";
+import { Box } from "@mui/material";
 
 /**
  * @function
@@ -19,11 +20,20 @@ function ErrorHandling({
   notFound = false,
 }) {
   return (
-    <div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        p: 2,
+        overflow: "auto",
+        flex: 1,
+      }}
+    >
       {!loadData && error500 && <Error_500 />}
       {loadData && <CustomBackDrop loadData={loadData} />}
       {!loadData && !error500 && notFound && <Error_404 />}
-    </div>
+    </Box>
   );
 }
 

@@ -62,7 +62,7 @@ function JobDetails() {
       const status = res?.payload?.status;
       const jobData = res?.payload?.data?.data || {};
 
-      if (status === 500 || status === 503) {
+      if (status === 500 || status === 503 || status === 502) {
         setError500(true);
       }
       if (status === 404 || status === 400) {
