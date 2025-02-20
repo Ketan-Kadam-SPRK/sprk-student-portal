@@ -44,7 +44,6 @@ function JobOpportunities() {
       const jobData = data?.sort(
         (a, b) => new Date(b?.posted_on) - new Date(a?.posted_on)
       );
-      console.log(res);
 
       if (status === 500 || status === 503) {
         setError500(true);
@@ -77,8 +76,6 @@ function JobOpportunities() {
     let filterData = data?.filter((job) => job?.status === activeTAb);
     setFilteredData(filterData);
   }, [activeTAb]);
-
-  console.log(count);
 
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;

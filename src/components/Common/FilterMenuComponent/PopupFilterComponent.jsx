@@ -29,7 +29,6 @@ function PopupFilterComponent({
   statusKey = null,
   search = true,
 }) {
-  console.log(rowData)
   const location = useLocation();
   const searchQuery = location?.state?.searchQuery;
   const bookingCode = location?.state?.bcode;
@@ -70,7 +69,7 @@ function PopupFilterComponent({
 
   useEffect(() => {
     applyFilter();
-  }, [filterState?.quickFilter,rowData]);
+  }, [filterState?.quickFilter, rowData]);
 
   const applyFilter = () => {
     if (dateError.startError !== "" || dateError.endError !== "") {
@@ -83,7 +82,9 @@ function PopupFilterComponent({
       const matchesQuickFilter =
         !filterState.quickFilter ||
         Object.values(item).some((value) =>
-          String(value).toLowerCase().includes(filterState.quickFilter.toLowerCase())
+          String(value)
+            .toLowerCase()
+            .includes(filterState.quickFilter.toLowerCase())
         );
 
       const matchesStatus =
@@ -91,8 +92,10 @@ function PopupFilterComponent({
         (statusKey && filterState.selectedStatus.includes(item[statusKey]));
 
       const matchesDateRange = dateKey
-        ? (!filterState.startDate || new Date(item[dateKey]) >= new Date(filterState.startDate)) &&
-          (!filterState.endDate || new Date(item[dateKey]) <= new Date(filterState.endDate))
+        ? (!filterState.startDate ||
+            new Date(item[dateKey]) >= new Date(filterState.startDate)) &&
+          (!filterState.endDate ||
+            new Date(item[dateKey]) <= new Date(filterState.endDate))
         : true;
 
       return matchesQuickFilter && matchesStatus && matchesDateRange;
@@ -206,9 +209,18 @@ function PopupFilterComponent({
         <TextField
           type="search"
           size="small"
-          sx={{ width: { xs: "100%", sm: "300px" }, backgroundColor: "white", borderRadius: 1 }}
+          sx={{
+            width: { xs: "100%", sm: "300px" },
+            backgroundColor: "white",
+            borderRadius: 1,
+          }}
           value={filterState.quickFilter}
-          onChange={(e) => setFilterState((prevState) => ({ ...prevState, quickFilter: e.target.value }))}
+          onChange={(e) =>
+            setFilterState((prevState) => ({
+              ...prevState,
+              quickFilter: e.target.value,
+            }))
+          }
           placeholder="Search..."
           InputProps={{
             startAdornment: (

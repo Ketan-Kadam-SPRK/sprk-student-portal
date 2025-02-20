@@ -45,7 +45,6 @@ const ReportPreviewModal = forwardRef(({ id }, ref) => {
       setLoading(true);
       const res = await dispatch(getExamResponse({ headers, id }));
 
-      console.log(res);
       setPreviewData(res.payload.data);
       setLoading(false);
     } catch (err) {

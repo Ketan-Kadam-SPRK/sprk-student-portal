@@ -122,7 +122,6 @@ function Login() {
       isPasswordValid: !formData.password,
     }));
 
-    console.log(formData);
     // If either is invalid, reset captcha and exit
     if (!formData.eid || !formData.password) {
       resetCaptcha();
@@ -135,21 +134,16 @@ function Login() {
 
     if (isHuman) {
       try {
-        console.log("Form Data:", formData);
         setIsLoading(true);
 
         const response = await dispatch(loginUser({ updatedFormData })); // console
-        console.log("response:", response);
 
         const data = response?.payload?.data;
         const status = response?.payload?.status;
         setStatus(status);
         setErrorMsg(response?.payload?.error);
 
-        console.log("data.token:", data?.token);
-
         if (data?.token) {
-          console.log("data.token:", data?.token);
           const accessToken = data?.token;
 
           const decodedToken = jwtDecode(accessToken);

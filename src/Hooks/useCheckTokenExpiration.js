@@ -81,7 +81,6 @@ const useCheckTokenExpiration = () => {
     const decodedToken = jwtDecode(rtoken);
     const currentTime = Math.floor(Date.now() / 1000);
     const timeUntilExpiration = decodedToken.exp - currentTime;
-    console.log(timeUntilExpiration);
     if (timeUntilExpiration <= 0) {
       logout();
 
@@ -94,18 +93,9 @@ const useCheckTokenExpiration = () => {
     }
 
     const alertThreshold = 600; // 10 minutes
-    console.log(
-      timeUntilExpiration < alertThreshold && !alertCanceledRef.current,
-      !alertCanceledRef.current,
-      timeUntilExpiration < alertThreshold,
-      timeUntilExpiration,
-      alertThreshold
-    );
 
-    console.log(isLoading);
     if (timeUntilExpiration < alertThreshold && !alertCanceledRef.current) {
       let timeRemaining = timeUntilExpiration;
-      console.log(timeRemaining);
 
       const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -116,7 +106,6 @@ const useCheckTokenExpiration = () => {
       };
 
       let swalTimerInterval;
-      console.log(swalTimerInterval);
 
       Swal.fire({
         icon: "question",
@@ -155,7 +144,6 @@ const useCheckTokenExpiration = () => {
               clearInterval(swalTimerInterval);
               Swal.close();
 
-              console.log("logout", timeUntilExpiration, timeRemaining);
               logout();
             } else {
               timeRemaining -= 1;
@@ -202,21 +190,14 @@ const useCheckTokenExpiration = () => {
   }, [rtoken, logout]);
 
   useEffect(() => {
-    console.log(rtoken, isSwalOpen);
-
     const checkTokenWithInterval = () => {
-      console.log("one");
       if (rtoken && !isSwalOpen) {
-        console.log("one 1");
-
         return setInterval(checkTokenExpiration, 10000);
       }
       return null;
     };
 
     const handleWindowFocus = () => {
-      console.log("focus");
-
       checkTokenExpiration(); // Recheck expiration when window gains focus
     };
 

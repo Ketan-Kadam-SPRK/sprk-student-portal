@@ -9,8 +9,6 @@ const axiosInstance = axios.create({
   baseURL: `${import.meta.env.VITE_APP_BASE_URL}/api`,
 });
 
-console.log(headers());
-
 const logout = async (errorMsg) => {
   try {
     // Dispatch logout action directly from the store

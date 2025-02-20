@@ -63,7 +63,6 @@ const BookingAknowLetter = forwardRef(
       await dispatch(getBookingConfirmation({ headers, booking_uid }))
         .then((res) => {
           const data = res?.payload?.data.data;
-          console.log(data);
           setLoading(false);
           setBookingData(data);
         })

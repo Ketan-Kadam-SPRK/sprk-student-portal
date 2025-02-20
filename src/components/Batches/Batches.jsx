@@ -25,7 +25,6 @@ function Batches() {
   }, []);
 
   const getStudentBatches = async () => {
-    console.log("getStudentBatches");
     setLoading(true);
     try {
       const res = await dispatch(getBatches({ headers }));

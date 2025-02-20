@@ -46,15 +46,19 @@ function Sessions({ sessionData }) {
         };
     }
   };
-  console.log(sessionData);
-  console.log(filterData);
 
   return (
     <>
       {sessionData?.list?.length > 0 ? (
         <Box className={styles.mainBox}>
           <Box sx={{ px: 3, py: 2 }}>
-            <Box sx={{ display: "flex", justifyContent: "flex-end",position:'sticky' }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                position: "sticky",
+              }}
+            >
               <PopupFilterComponent
                 rowData={sessionData?.list}
                 statusOptions={["PRESENT", "ABSENT", "ON_LEAVE"]}
@@ -153,7 +157,7 @@ function Sessions({ sessionData }) {
                   {/* Accordion content */}
                   <AccordionDetails>
                     {/* Display modules for the session */}
-                    <div style={{maxHeight:'400px',overflowY:'scroll'}}>
+                    <div style={{ maxHeight: "400px", overflowY: "scroll" }}>
                       {sessionData?.moduleDetails?.length ? (
                         sessionData.moduleDetails
                           .filter((module) => module.status !== "PENDING")
@@ -179,7 +183,7 @@ function Sessions({ sessionData }) {
                 </Accordion>
               ))
             ) : (
-              <NoDataAvailableUI/>
+              <NoDataAvailableUI />
             )}
           </Box>
         </Box>

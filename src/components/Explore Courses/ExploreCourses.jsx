@@ -97,10 +97,7 @@ function ExploreCourses() {
           <Button
             variant="contained"
             onClick={() => {
-              window.open(
-                "https://jnvjzs5t-5000.inc1.devtunnels.ms/courses/",
-                "_blank"
-              );
+              window.open(`${import.meta.env.VITE_APP_WEBSITE_LINK}`, "_blank");
             }}
           >
             Explore

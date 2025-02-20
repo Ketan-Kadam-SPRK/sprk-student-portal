@@ -12,7 +12,7 @@ export const getBookingDetails = createAsyncThunk(
       });
 
       const data = await res.data; // Corrected this line
-      console.log(res.data);
+
       return { data: data, status: res.status };
     } catch (err) {
       return { status: err.response.status, error: err.response.data.error };
@@ -33,7 +33,7 @@ export const getBookingInstallments = createAsyncThunk(
       );
 
       const data = await res.data; // Corrected this line
-      console.log(res.data);
+
       return { data: data, status: res.status };
     } catch (err) {
       return { status: err.response.status, error: err.response.data.error };
@@ -54,7 +54,7 @@ export const getBookingConfirmation = createAsyncThunk(
       );
 
       const data = await res.data; // Corrected this line
-      console.log(res.data);
+
       return { data: data, status: res.status };
     } catch (err) {
       return { status: err.response.status, error: err.response.data.error };
@@ -72,7 +72,7 @@ export const getReceiptData = createAsyncThunk(
       });
 
       const data = await res.data; // Corrected this line
-      console.log(res.data);
+
       return { data: data, status: res.status };
     } catch (err) {
       return { status: err.response.status, error: err.response.data.error };
@@ -101,7 +101,6 @@ export const printReceipt = createAsyncThunk(
   }
 );
 
-
 export const getAllReceipts = createAsyncThunk(
   "payment/getAllReceipts",
   async ({ headers }) => {
@@ -112,7 +111,7 @@ export const getAllReceipts = createAsyncThunk(
       });
 
       const data = await res.data; // Corrected this line
-      console.log(res.data);
+
       return { data: data, status: res.status };
     } catch (err) {
       return { status: err.response.status, error: err.response.data.error };

@@ -27,7 +27,6 @@ function ResetPass() {
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("id");
 
-  console.log(token);
   useEffect(() => {
     dispatch(setLogout());
   }, []);
@@ -128,7 +127,6 @@ function ResetPass() {
           })
         );
 
-        console.log(res);
         if (res.payload) {
           navigate("/Login");
           setFormData({});

@@ -74,7 +74,6 @@ function ForgotPass() {
         setIsLoading(true);
         const res = await dispatch(forgotPassword({ payload: formData }));
 
-        console.log(res);
         if (res.payload) {
           navigate("/Login");
           setFormData({});

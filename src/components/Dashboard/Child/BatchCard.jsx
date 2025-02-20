@@ -21,8 +21,6 @@ function BatchCard({ item }) {
     const endTime = new Date(item?.end_time);
     const startTime = new Date(item?.start_time);
 
-    console.log(endTime);
-
     if (currentTime >= startTime && currentTime <= endTime) {
       return (
         <Box

@@ -35,7 +35,6 @@ function JobDetails() {
   });
 
   const { jobid } = useParams(); // Destructure the parameter from useParams
-  console.log(jobid);
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error500, setError500] = useState(false);
@@ -62,7 +61,6 @@ function JobDetails() {
       const res = await dispatch(getJobDetais({ headers, id: jobid }));
       const status = res?.payload?.status;
       const jobData = res?.payload?.data?.data || {};
-      console.log(res);
 
       if (status === 500 || status === 503) {
         setError500(true);

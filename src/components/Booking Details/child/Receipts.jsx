@@ -39,10 +39,9 @@ function Receipts() {
       const sortedData = data.sort(
         (a, b) => new Date(b.paid_at) - new Date(a.paid_at)
       );
-      console.log(status);
       if (status === 500 || status === 503) {
         setError500(true);
-      }  else {
+      } else {
         setData(sortedData);
       }
 
@@ -53,19 +52,15 @@ function Receipts() {
     }
   };
 
-  console.log(error500);
-
   useEffect(() => {
     handleGetAllReceipts();
   }, []);
-  console.log(data);
 
   const handleDetailModal = () => {
     setOpenDetailModal(!openDetailModal);
   };
 
   const handleOpenPayment = (row) => {
-    console.log(row);
     setOpenReciept(!openReciept);
     setReceiptId(row?.receipt_code);
   };
@@ -202,12 +197,7 @@ function Receipts() {
   ];
 
   if (loading || error500) {
-    return (
-      <ErrorHandling
-        error500={error500}
-        loadData={loading}
-      />
-    );
+    return <ErrorHandling error500={error500} loadData={loading} />;
   }
 
   return (

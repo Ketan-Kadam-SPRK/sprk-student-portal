@@ -10,10 +10,8 @@ import { searchFilterData } from "../../../Utils/SearchFilterData";
 function Theory({ count }) {
   const data = useSelector((state) => state.examSlice?.examsData);
   const [searchText, setSearchText] = useState("");
-  console.log(data);
   const [toggle, setToggle] = useState("practice");
   // const myData = data || [];
-  console.log(data);
 
   const handleToggle = (name) => {
     setToggle(name);
