@@ -25,7 +25,7 @@ const CourseList = ({ data, navigate }) => {
     let color = "";
     let backgroundColor = "";
     switch (status) {
-      case "ON_GOING":
+      case "ONGOING":
         color = "#0038A8";
         backgroundColor = "#C1D6FF";
         break;
@@ -64,7 +64,6 @@ const CourseList = ({ data, navigate }) => {
         data?.courses?.map((item, index) => {
           const { color, backgroundColor } = getStatusColor(item?.cou_status);
           const isExpanded = expandedCourseId === item?.course_uid;
-
           return (
             <Accordion
               key={`${index}-${item?.course_uid}`}
@@ -137,7 +136,7 @@ const CourseList = ({ data, navigate }) => {
                 sx={{
                   backgroundColor: "white",
                   p: 2,
-                  borderRadius: 2,
+                  borderRadius: 4,
                   maxHeight: 300,
                   overflowY: "auto",
                 }}
