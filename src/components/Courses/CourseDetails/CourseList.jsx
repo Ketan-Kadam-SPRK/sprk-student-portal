@@ -62,7 +62,7 @@ const CourseList = ({ data, navigate }) => {
     >
       {data?.courses?.length > 0 ? (
         data?.courses?.map((item, index) => {
-          const { color, backgroundColor } = getStatusColor(item?.status);
+          const { color, backgroundColor } = getStatusColor(item?.cou_status);
           const isExpanded = expandedCourseId === item?.course_uid;
 
           return (
@@ -126,7 +126,7 @@ const CourseList = ({ data, navigate }) => {
                     </Stack>
                   </Stack>
                   <StatusStyledComponent
-                    value={item?.status}
+                    value={item?.cou_status}
                     color={color}
                     backgroundColor={backgroundColor}
                   />
