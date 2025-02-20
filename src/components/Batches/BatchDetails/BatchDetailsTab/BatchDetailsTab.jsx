@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Tabs, Tab, Box } from "@mui/material";
+import { Tabs, Tab, Box, Button } from "@mui/material";
 import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
 import AbsentLog from "./AbsentLog/AbsentLog";
+import PopupFilterComponent from "../../../Common/FilterMenuComponent/PopupFilterComponent";
 
 const TabPanel = ({ children, value, index }) => {
   return (
@@ -18,6 +19,7 @@ function BatchDetailsTab({ sessionData }) {
   const tabNames = ["SESSIONS", "MODULES"];
   const [activeTab, setActiveTab] = useState(0);
   const batchId = useParams().batchId || null;
+  const [filterData, setFilterData] = useState([]);
 
   const handleTabChange = (event, newTabIndex) => {
     setActiveTab(newTabIndex);
@@ -25,8 +27,7 @@ function BatchDetailsTab({ sessionData }) {
 
   return (
     <Box className={styles.mainBox}>
-      {/* Create tabs with labels based on tabNames */}
-      <Box className={styles.tabBox}>
+      <Box className={styles.tabBox} >
         <Tabs
           variant="scrollable"
           scrollButtons="auto"
@@ -44,7 +45,7 @@ function BatchDetailsTab({ sessionData }) {
               fontWeight: 600,
               textTransform: "none",
               borderRadius: "8px",
-              marginLeft: "8px",
+              marginLeft: "20px",
             },
             "& .MuiTab-root.Mui-selected": {
               backgroundColor: "#6560F0",
@@ -56,10 +57,22 @@ function BatchDetailsTab({ sessionData }) {
             <Tab key={index} label={tabName} />
           ))}
         </Tabs>
+        {activeTab === 0 && (
+          <Box className={styles.buttonBox}>
+            <PopupFilterComponent
+              rowData={sessionData?.list}
+              statusOptions={["PRESENT", "ABSENT", "ON_LEAVE"]}
+              setFilterData={setFilterData}
+              dateKey={null}
+              statusKey="studentAttendanceStatus"
+              search={false}
+            />
+          </Box>
+        )}
       </Box>
 
       <TabPanel value={activeTab} index={0}>
-        <Sessions sessionData={sessionData} />
+        <Sessions sessionData={sessionData} filterData={filterData} />
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
         <Modules batchId={batchId} />

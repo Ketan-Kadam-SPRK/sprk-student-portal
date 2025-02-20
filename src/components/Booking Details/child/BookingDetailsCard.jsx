@@ -142,7 +142,7 @@ function BookingDetailsCard({ item }) {
             <CircularProgressWithLabel
               value={item?.paid_installments}
               totalValue={item?.total_installments}
-              progress={`${item?.paid_installments}/${item.total_installments}`}
+              progress={`${item?.paid_installments}/${item?.total_installments}`}
             />
           </Box>
         </Box>

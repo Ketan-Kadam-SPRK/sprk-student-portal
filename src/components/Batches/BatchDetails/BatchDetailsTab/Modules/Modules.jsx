@@ -111,8 +111,8 @@ function Modules({ batchId }) {
               borderRadius: "8px", // Rounds the corners
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Box>{getStatusIcon(item?.moduleCompletionStatus)}</Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: "10px",}}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>{getStatusIcon(item?.moduleCompletionStatus)}</Box>
               <Box>
                 <Typography sx={{ color: "#085186", fontWeight: 600 }}>
                   {item?.module}

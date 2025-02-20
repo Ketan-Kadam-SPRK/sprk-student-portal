@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../../axios/axiosInstance";
-import { handleResponse } from "../../../Utils/apiHelpers";
+import { handleError, handleResponse } from "../../../Utils/apiHelpers";
 
 export const getBookingDetails = createAsyncThunk(
   "payment/getBookingDetails",
