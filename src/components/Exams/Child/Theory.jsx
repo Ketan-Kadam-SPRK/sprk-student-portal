@@ -42,18 +42,20 @@ function Theory({ count }) {
         position: "relative",
       }}
     >
-      <Box sx={{ display: "flex", gap: 1 }}>
+      <Box sx={{ display: "flex", gap: 1, overflowY: "auto" }}>
         <Button
           // variant="text"
           sx={{
-            minWidth: "120px",
+            minWidth: "150px",
             display: "flex",
             gap: 2,
             px: 2,
+            borderRadius: 0,
             alignItems: "center",
             color: toggle === "practice" ? "#6560F0" : "grey",
             fontWeight: "bold",
-            borderBottom: toggle === "practice" ? "4px solid #6560F0" : "",
+            borderBottom:
+              toggle === "practice" ? "3px solid #6560F0" : "2px solid grey",
           }}
           onClick={() => handleToggle("practice")}
         >
@@ -62,15 +64,18 @@ function Theory({ count }) {
         <Button
           // variant="text"
           sx={{
-            minWidth: "120px",
+            minWidth: "150px",
             display: "flex",
             gap: 2,
             px: 2,
+            borderRadius: 0,
             alignItems: "center",
             color: toggle === "internal_assessment" ? "#6560F0" : "grey",
             fontWeight: "bold",
             borderBottom:
-              toggle === "internal_assessment" ? "4px solid #6560F0" : "",
+              toggle === "internal_assessment"
+                ? "3px solid #6560F0"
+                : "2px solid grey",
           }}
           onClick={() => handleToggle("internal_assessment")}
         >
@@ -81,14 +86,16 @@ function Theory({ count }) {
         <Button
           variant="text"
           sx={{
-            minWidth: "120px",
+            minWidth: "150px",
             display: "flex",
             gap: 2,
             px: 2,
+            borderRadius: 0,
             alignItems: "center",
             color: toggle === "final" ? "#6560F0" : "grey",
             fontWeight: "bold",
-            borderBottom: toggle === "final" ? "4px solid #6560F0" : "",
+            borderBottom:
+              toggle === "final" ? "3px solid #6560F0" : "2px solid grey",
           }}
           onClick={() => handleToggle("final")}
         >
@@ -128,7 +135,11 @@ function Theory({ count }) {
         }}
       >
         {examData?.length > 0 ? (
-          <Grid2 container spacing={2} sx={{ width: "100%", margin: 0,alignItems:"stretch"}}>
+          <Grid2
+            container
+            spacing={2}
+            sx={{ width: "100%", margin: 0, alignItems: "stretch" }}
+          >
             {examData?.map((item, index) => (
               <Grid2
                 key={`${item.exam_uid}-${index}`}

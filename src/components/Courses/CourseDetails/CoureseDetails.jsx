@@ -363,8 +363,8 @@ function CoureseDetails() {
                           publicId={item?.course_logo}
                           style={{
                             width: "70px",
-                            height: "auto",
-                            objectFit: "cover",
+                            height: "70px",
+                            objectFit: "contain",
                           }}
                           cloudName={item?.course_logo?.split("/")[0]}
                         />

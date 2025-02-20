@@ -62,3 +62,8 @@ p {
 ::-webkit-scrollbar {
   width: 0px;
 }
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}

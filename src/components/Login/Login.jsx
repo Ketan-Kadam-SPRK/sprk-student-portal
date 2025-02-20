@@ -144,7 +144,8 @@ function Login() {
         const data = response?.payload?.data;
         const status = response?.payload?.status;
         setStatus(status);
-        // setErrorMsg(error);
+        setErrorMsg(response?.payload?.error);
+
         console.log("data.token:", data?.token);
 
         if (data?.token) {

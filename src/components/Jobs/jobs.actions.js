@@ -36,10 +36,9 @@ export const getJobDetais = createAsyncThunk(
       const data = await res.data;
 
       // Return the user details
-      return data;
+      return { data: data, status: res.status };
     } catch (err) {
-      console.log(err);
-      throw err; // Throw an error if there's an issue with the request
+      return { status: err.response.status, error: err.response.data.error };
     }
   }
 );

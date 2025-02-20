@@ -13,7 +13,7 @@ import { setExamsData } from "./examSlice";
 const buttonStyle = {
   borderRadius: "5px",
   padding: "10px",
-  width: "150px",
+
   // boxShadow:
   //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
   backgroundColor: "white",
@@ -161,12 +161,13 @@ function Exams() {
           gap: 2,
         }}
       >
-        <Box sx={{ display: "flex", gap: 2 }}>
+        <Box sx={{ display: "flex", gap: 2, overflowY: "auto" }}>
           <Button
             sx={{
               ...buttonStyle,
               backgroundColor: activeTab === 0 ? "#6560F0" : "#E0DFFF",
               color: activeTab === 0 && "white",
+              minWidth: "150px",
             }}
             onClick={() => handleTabChange(0)}
             endIcon={
@@ -185,6 +186,7 @@ function Exams() {
               ...buttonStyle,
               backgroundColor: activeTab === 1 ? "#6560F0" : "#E0DFFF",
               color: activeTab === 1 && "white",
+              minWidth: "150px",
             }}
             onClick={() => handleTabChange(1)}
             endIcon={
@@ -198,6 +200,7 @@ function Exams() {
               ...buttonStyle,
               backgroundColor: activeTab === 2 ? "#6560F0" : "#E0DFFF",
               color: activeTab === 2 && "white",
+              minWidth: "150px",
             }}
             onClick={() => handleTabChange(2)}
             endIcon={
