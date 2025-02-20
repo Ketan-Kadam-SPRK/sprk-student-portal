@@ -421,14 +421,6 @@ function CoureseDetails() {
                           </Box>
                         </Box>
                       </Box>
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
-                      >
-                        <StatusStyledComponent
-                          value={"Ongoing"}
-                          color={"#3A35C9"}
-                          backgroundColor={"white"}
-                        />
                         <IconButton
                           sx={
                             {
@@ -450,7 +442,6 @@ function CoureseDetails() {
                             />
                           )}
                         </IconButton>
-                      </Box>
                     </Box>
                   </Box>
                   {expandedCourseId === item?.course_uid && (
