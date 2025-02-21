@@ -166,6 +166,19 @@ function Certificates() {
     setIsChecked(event.target.checked);
   };
 
+  function getButtonLabel(item) {
+    if (item?.status === "READY" && item?.isVerified === true) {
+      return "Preview";
+    } else if (
+      (item?.status === "RELEASED" && item?.isVerified === true) ||
+      (item?.status === "RELEASED" && item?.isVerified === false)
+    ) {
+      return "View";
+    } else {
+      return "verify";
+    }
+  }
+
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
   }
@@ -251,7 +264,7 @@ function Certificates() {
                 <Accordion
                   key={`${item?.boo_uid}-${index}`}
                   expanded={expanded === `${item?.boo_uid}-${index}`}
-                  sx={{ p: 2,borderRadius:"10px 10px" }}
+                  sx={{ p: 2, borderRadius: "10px 10px" }}
                   onClick={(e) => {
                     handleToggle(`${item?.boo_uid}-${index}`);
                   }}
@@ -340,7 +353,7 @@ function Certificates() {
                           onClick={() => handlePreviewDialog(item)}
                           disabled={item?.cer_mpg_uid === null}
                         >
-                          {item.status === "RELEASED" ? "Preview" : "verify"}
+                          {getButtonLabel(item)}
                         </Button>
                         <Button
                           variant="contained"
