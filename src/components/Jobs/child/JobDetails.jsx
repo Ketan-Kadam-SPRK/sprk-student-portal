@@ -89,6 +89,8 @@ function JobDetails() {
         return { backgroundColor: "#B0F7CC", color: "#239A60" };
       case "DENIED":
         return { backgroundColor: "#E0C8FF", color: "#2C004E" };
+      case "EXCLUDED":
+        return { backgroundColor: "#FFB5B5", color: "#9F0000" };
       default:
         return { backgroundColor: "white", color: "black" };
     }
