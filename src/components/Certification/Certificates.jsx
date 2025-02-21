@@ -42,7 +42,6 @@ function Certificates() {
     "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg";
 
   const mailID = useSelector((state) => state.authSlice.userDetails?.email);
-  console.log(mailID);
   const [expanded, setExpanded] = useState(null);
   const targetRef = useRef(null);
   const [data, setData] = useState([]);
@@ -62,7 +61,6 @@ function Certificates() {
   };
 
   const handlePreviewDialog = (item) => {
-    console.log(item);
     setCertId(item?.cer_mpg_uid);
     setCertificateStatus(item?.status);
     setOpen(!open);
@@ -124,13 +122,11 @@ function Certificates() {
     setDownloading(true);
     try {
       const res = await dispatch(downloadCertificate({ headers, id: certId }));
-      console.log(res);
       if (res.payload) {
         handleDownloadDialog(null);
       }
       setDownloading(false);
     } catch (err) {
-      console.log(err);
       setDownloading(false);
     }
   };
@@ -169,9 +165,6 @@ function Certificates() {
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
   };
-
-  console.log(data);
-  console.log(certificateID);
 
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
@@ -630,9 +623,9 @@ function Certificates() {
                   setReleasedDate={setReleasedDate}
                 />
               </Box>
-              <Box sx={{mt:2,pl:2}}>
+              <Box sx={{ mt: 2, pl: 2 }}>
                 <Typography>
-                  {`Released on ${dateFormator(releasedDate) } `}
+                  {`Released on ${dateFormator(releasedDate)} `}
                 </Typography>
               </Box>
             </Box>

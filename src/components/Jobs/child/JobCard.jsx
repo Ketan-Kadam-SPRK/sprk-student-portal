@@ -11,8 +11,6 @@ import dateFormator from "../../../Utils/dateFormator";
 function JobCard({ item }) {
   const navigate = useNavigate();
 
-  console.log(item);
-
   const getColorAndBackground = (status) => {
     switch (status) {
       case "APPLIED":

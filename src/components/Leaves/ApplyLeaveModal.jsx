@@ -28,7 +28,7 @@ function ApplyLeaveModal({
   proofFile,
   setProofFile,
   leaveId,
-  getAllLeavesData
+  getAllLeavesData,
 }) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
@@ -174,7 +174,6 @@ function ApplyLeaveModal({
     setValidationErrors(newErrors);
   };
 
-
   const handleProofFile = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -215,26 +214,24 @@ function ApplyLeaveModal({
       setProofFile(file);
     }
   };
-console.log(formData, "formData");
 
-const handleClearFile = () => {
-  setProofFile(null); // Clear the file in the state
+  const handleClearFile = () => {
+    setProofFile(null); // Clear the file in the state
 
-  // Check if formData.file is a string and reset proofFile after clearing
-  if (formData?.file && typeof formData.file === "string") {
-    setTimeout(() => {
-      setProofFile(formData.file);
-    }, 0); // Use a timeout to ensure state update flow is maintained
-  }
+    // Check if formData.file is a string and reset proofFile after clearing
+    if (formData?.file && typeof formData.file === "string") {
+      setTimeout(() => {
+        setProofFile(formData.file);
+      }, 0); // Use a timeout to ensure state update flow is maintained
+    }
 
-  // Clear the input field
-  const fileInput = document.getElementById("proof-file-input");
-  if (fileInput) {
-    fileInput.value = null;
-  }
-};
+    // Clear the input field
+    const fileInput = document.getElementById("proof-file-input");
+    if (fileInput) {
+      fileInput.value = null;
+    }
+  };
 
- 
   function formatDateToISOString(dateString, addDays = 0) {
     const date = new Date(dateString);
     date.setDate(date.getDate() + addDays); // Add the specified number of days
@@ -244,8 +241,6 @@ const handleClearFile = () => {
     ).toISOString();
     return formattedDate;
   }
-
-  console.log(initialState, "initialState");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -263,7 +258,7 @@ const handleClearFile = () => {
       end: formatDateToISOString(formData.end, 1),
       file: proofFile,
     };
-    
+
     setIsLoading(true);
     const action =
       leaveId !== null
@@ -272,9 +267,7 @@ const handleClearFile = () => {
 
     dispatch(action)
       .then((res) => {
-        
         if (res.payload !== undefined) {
-          console.log(res, "res");
           setFormData(initialState);
           handleClearFile();
           setProofFile(null);
@@ -298,9 +291,6 @@ const handleClearFile = () => {
   const sixMonthsFromNow = new Date();
   sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 12);
 
-  console.log(formData,"formData");
-  console.log(proofFile,"proofFile");
-
   return (
     <Box sx={{ p: 3 }}>
       <Box
@@ -312,7 +302,9 @@ const handleClearFile = () => {
         }}
       >
         <Box>
-          <Typography sx={{ fontSize: "20px" }}>{leaveId === null ? "Apply Leave" : "Edit Leave"}</Typography>
+          <Typography sx={{ fontSize: "20px" }}>
+            {leaveId === null ? "Apply Leave" : "Edit Leave"}
+          </Typography>
         </Box>
         <CloseIcon
           onClick={() => {
@@ -323,7 +315,6 @@ const handleClearFile = () => {
         />
       </Box>
       <Box>
-
         <Box
           sx={{
             display: "flex",
@@ -400,16 +391,18 @@ const handleClearFile = () => {
                   : proofFile?.name
                   ? proofFile?.name
                   : typeof proofFile === "string"
-                  ? proofFile.substring(
-                      proofFile.lastIndexOf("/") + 1
-                    )
+                  ? proofFile.substring(proofFile.lastIndexOf("/") + 1)
                   : "No file chosen"
               }
               name="proof_file"
               InputProps={{
                 endAdornment: proofFile && (
                   <InputAdornment position="end">
-                    <IconButton onClick={handleClearFile} edge="end" disabled={typeof proofFile === "string"}>
+                    <IconButton
+                      onClick={handleClearFile}
+                      edge="end"
+                      disabled={typeof proofFile === "string"}
+                    >
                       <CloseIcon />
                     </IconButton>
                   </InputAdornment>
@@ -484,5 +477,4 @@ const handleClearFile = () => {
   );
 }
 
-
-export default ApplyLeaveModal
+export default ApplyLeaveModal;

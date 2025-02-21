@@ -13,7 +13,7 @@ import NoDataPage from "../../../../Common/NoDataPage";
 import PopupFilterComponent from "../../../../Common/FilterMenuComponent/PopupFilterComponent";
 import NoDataAvailableUI from "../../../../Common/CustomAgGrid/NoDataAvailableUI";
 
-function Sessions({ sessionData,filterData }) {
+function Sessions({ sessionData, filterData }) {
   const [show, setShow] = useState(false);
   const [showAttendanceDrawer, setShowAttendanceDrawer] = useState(false);
 

@@ -11,7 +11,6 @@ import { AmountFormat } from "../../../Utils/AmountFormat";
 function BookingDetailsCard({ item }) {
   const navigate = useNavigate();
 
-  console.log(item);
   const getStatusColor = (status) => {
     let color = "";
     let backgroundColor = "";

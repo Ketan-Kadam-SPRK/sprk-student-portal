@@ -60,7 +60,6 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
       const res = await dispatch(getReceiptData({ headers, id: receiptID }));
 
       const data = res?.payload?.data?.data || [];
-      console.log(data);
       setIsLoading(false);
 
       setReceiptData(data);
@@ -70,8 +69,6 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
       console.error("Error fetching receipt data:", error);
     }
   };
-
-  console.log(receiptData);
 
   // Initialize loading state
 

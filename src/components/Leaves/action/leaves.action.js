@@ -82,7 +82,6 @@ export const editStudentLeave = createAsyncThunk(
 export const getWithdrawnLeaves = createAsyncThunk(
   "getWithdrawnLeaves",
   async ({ headers, leaveId }) => {
-    console.log(headers, leaveId);
     try {
       // Send a POST request to the API endpoint with headers properly set
       const res = await axiosInstance.post(
@@ -94,7 +93,6 @@ export const getWithdrawnLeaves = createAsyncThunk(
       );
 
       const data = await res.data; // Access response data
-      console.log(data);
 
       return handleResponse(data);
     } catch (error) {
@@ -122,7 +120,6 @@ function extractFilename(contentDisposition) {
 export const handleDownloadFiles = createAsyncThunk(
   "handleDownloadFiles",
   async ({ fileid, rtoken }) => {
-    console.log(fileid, rtoken);
     try {
       const res = await axiosInstance.get(
         `/student-portal/download/${fileid}`,

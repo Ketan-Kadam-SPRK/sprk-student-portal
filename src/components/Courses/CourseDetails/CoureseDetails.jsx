@@ -25,7 +25,6 @@ function CoureseDetails() {
   const [error500, setError500] = useState(false);
   const [error404, setError404] = useState(false);
   const { courseId } = useParams();
-  console.log(courseId);
 
   // const [data, setData] = useState(dummyData);
   const [expandedCourseId, setExpandedCourseId] = useState(null); // Track expanded course
@@ -39,7 +38,6 @@ function CoureseDetails() {
       );
       const status = res?.payload?.status;
       const data = res?.payload?.data?.data || {};
-      console.log(res);
 
       if (status === 500 || status === 503) {
         setError500(true);
@@ -49,8 +47,6 @@ function CoureseDetails() {
         setData(data);
       }
       setLoading(false);
-
-      console.log(res);
     } catch (err) {
       console.log(err);
       setLoading(false);

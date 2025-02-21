@@ -20,14 +20,13 @@ function Payments() {
       const res = await dispatch(getBookingDetails({ headers }));
       const data = res?.payload?.data?.data || [];
       const status = res?.payload.status;
-      console.log(status)
 
       if (status === 500 || status === 503) {
         setError500(true);
       } else {
         setCourseData(data);
       }
-      
+
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -39,12 +38,7 @@ function Payments() {
   }, []);
 
   if (loading || error500) {
-    return (
-      <ErrorHandling
-        error500={error500}
-        loadData={loading}
-      />
-    );
+    return <ErrorHandling error500={error500} loadData={loading} />;
   }
   return (
     <Box

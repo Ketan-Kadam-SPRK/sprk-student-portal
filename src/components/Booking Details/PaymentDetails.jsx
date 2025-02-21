@@ -39,7 +39,6 @@ function PaymentDetails() {
   const [error500, setError500] = useState(false);
   const [error404, setError404] = useState(false);
 
-
   const handleDetailModal = () => {
     setOpenDetailModal(!openDetailModal);
   };
@@ -66,13 +65,13 @@ function PaymentDetails() {
           month: installment?.due_at,
         })) || [];
 
-        if (status === 500 || status === 503) {
-          setError500(true);
-        } else if (status === 404 || status === 400) {
-          setError404(true);
-        }  else {
-          setData(data);
-        }
+      if (status === 500 || status === 503) {
+        setError500(true);
+      } else if (status === 404 || status === 400) {
+        setError404(true);
+      } else {
+        setData(data);
+      }
 
       setLoading(false);
     } catch (err) {
@@ -91,10 +90,6 @@ function PaymentDetails() {
     if (statuses.includes("PENDING")) return "PENDING";
     return "PAID";
   };
-
-  console.log(data.instal);
-  console.log(data?.instal?.installment_status);
-  console.log(determinePaymentStatus(data?.instal));
 
   const getMonthName = (dateString) => {
     if (!dateString) return ""; // Handle invalid or undefined date
@@ -216,8 +211,6 @@ function PaymentDetails() {
     },
   ];
 
-  console.log(data);
-
   if (loading || error500 || error404) {
     return (
       <ErrorHandling
@@ -227,7 +220,7 @@ function PaymentDetails() {
       />
     );
   }
-  
+
   return (
     <Box
       sx={{
@@ -259,8 +252,10 @@ function PaymentDetails() {
             {<ArrowBackIcon />}
           </Button>
         </Box>
-        <Box sx={{ display: "flex", gap: "10px",alignItems:"center" }}>
-          <Typography sx={{ fontWeight: 600,fontSize:"16px" }}>PAYMENT STATUS:</Typography>
+        <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <Typography sx={{ fontWeight: 600, fontSize: "16px" }}>
+            PAYMENT STATUS:
+          </Typography>
           <StatusBadge status={determinePaymentStatus(data?.instal)} />
         </Box>
       </Box>
@@ -309,7 +304,8 @@ function PaymentDetails() {
                   Booking Date : {dateFormator(data?.booked_at)}
                 </Typography>
                 <Typography>
-                  Batch Preference : {CapitalFirstLetterOnly(data?.batch_prefer)}
+                  Batch Preference :{" "}
+                  {CapitalFirstLetterOnly(data?.batch_prefer)}
                 </Typography>
                 <Typography>
                   Payment Pattern : {CapitalFirstLetterOnly(data?.payment_term)}

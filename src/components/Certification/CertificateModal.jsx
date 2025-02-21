@@ -35,14 +35,13 @@ function CertificateModal({
         getPreviewCertificate({ headers, id: certId })
       );
       const data = res?.payload?.data?.data || [];
-      console.log(data);
       setPreviewData(data);
       setCertificateId(data?.cer_sts_id);
       setIsConfirmed(data?.isVerified);
       setReleasedDate(data?.rls_at);
       setLoading(false);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setLoading(false);
     }
   };

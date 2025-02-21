@@ -24,13 +24,11 @@ function LogoutAll({ handleClose }) {
     setIsSigningOut(true);
     dispatch(freshToken({ headers, isLogoutAll: true }))
       .then((res) => {
-        console.log(res);
         if (res.payload !== undefined) {
           const newAccessToken = res.payload.token;
           const decodedToken = jwtDecode(newAccessToken);
           const userId = decodedToken.sub;
           handleClose();
-          console.log(newAccessToken);
 
           // console.log(data.token)
           localStorage.setItem("token", newAccessToken);
