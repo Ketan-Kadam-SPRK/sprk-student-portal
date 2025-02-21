@@ -258,7 +258,7 @@ function Certificates() {
                 <Accordion
                   key={`${item?.boo_uid}-${index}`}
                   expanded={expanded === `${item?.boo_uid}-${index}`}
-                  sx={{ p: 2 }}
+                  sx={{ p: 2,borderRadius:"10px 10px" }}
                   onClick={(e) => {
                     handleToggle(`${item?.boo_uid}-${index}`);
                   }}
