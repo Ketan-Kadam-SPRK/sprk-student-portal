@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import ChangePassword from "./Modal/ChangePassword";
 import LogoutAll from "./Modal/LogoutAll";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Image } from "cloudinary-react";
 
 function Profile() {
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
@@ -124,9 +125,20 @@ function Profile() {
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Typography variant="h3" color="white">
               Hello,
             </Typography>
+                      <Image
+                        publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740204094/hand_waving_yellow_smf1ym.svg"
+                        cloudName="dxlzzgbfw"
+                        style={{
+                          width: "auto",
+                          height: "40px",
+                          objectFit: "contain",
+                        }}
+                      />
+            </Box>
             <Typography variant="h3" color="white">
               {userDetails?.name || ""}
             </Typography>
