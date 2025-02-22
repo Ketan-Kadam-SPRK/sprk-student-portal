@@ -60,8 +60,8 @@ function Payments() {
             publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739256894/payment-method-credit-card-svgrepo-com_2_1_bcecrt.svg"
             cloudName="dxlzzgbfw"
             style={{
-              width: "30px",
-              height: "auto",
+              width: "auto",
+              height: "40px",
               objectFit: "contain",
               marginLeft: "5px",
             }}

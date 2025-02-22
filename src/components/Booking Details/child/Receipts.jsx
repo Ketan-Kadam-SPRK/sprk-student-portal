@@ -220,8 +220,8 @@ function Receipts() {
             publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739512431/receipt_slip_b5rwn8.svg"
             cloudName="dxlzzgbfw"
             style={{
-              width: "30px",
-              height: "auto",
+              width: "auto",
+              height: "40px",
               objectFit: "contain",
             }}
           />

@@ -63,18 +63,20 @@ const Courses = () => {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h4" fontWeight={600}>
-          Your Programs at a Glance{" "}
+        <Box sx={{ display: "flex", alignItems: "center",gap:1}}> 
+          <Typography variant="h4" fontWeight={600}>
+            Your Programs at a Glance{" "}
+          </Typography>
           <Image
             publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739265190/diary-education-learning-pencil-school-study-svgrepo-com_1_qyg6bi.svg"
             style={{
-              width: "30px",
-              height: "auto",
+              width: "auto",
+              height: "40px",
               objectFit: "contain",
             }}
             cloudName="dxlzzgbfw"
           />
-        </Typography>
+        </Box>
         <Typography fontSize={"var(--font-size-medium)"} color="#4D535A">
           The road to mastery is through continuous learning. Stay curious, stay
           inspired.{" "}

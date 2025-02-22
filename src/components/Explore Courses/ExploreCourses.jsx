@@ -16,19 +16,21 @@ function ExploreCourses() {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Typography variant="h4" fontWeight={600}>
-          Want To Keep Learning?{" "}
+        <Box sx={{ display: "flex", alignItems: "center",gap:1 }}>
+          <Typography variant="h4" fontWeight={600}>
+            Want To Keep Learning?{" "}
+          </Typography>
           <Image
             publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739422719/yellow_light_bulb_tpoisp.svg"
             style={{
-              width: "25px",
-              height: "auto",
+              width: "auto",
+              height: "40px",
               objectFit: "contain",
               marginLeft: "5px",
             }}
             cloudName="dxlzzgbfw"
           />
-        </Typography>
+        </Box>
         <Typography
           sx={{
             color: "#4D535A",

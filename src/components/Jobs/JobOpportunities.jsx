@@ -92,19 +92,21 @@ function JobOpportunities() {
         flex: 1,
       }}
     >
-      <Typography variant="h4" fontWeight={"bold"}>
-        Job Openings for You{" "}
+      <Box sx={{ display: "flex", alignItems: "center",gap:1}}>
+        <Typography variant="h4" fontWeight={"bold"}>
+          Job Openings for You{" "}
+        </Typography>
         <Image
           publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739512032/magnifying_glass_ws5lix.svg"
           style={{
-            width: "30px",
-            height: "auto",
+            width: "auto",
+            height: "40px",
             objectFit: "contain",
             marginLeft: "5px",
           }}
           cloudName="dxlzzgbfw"
         />
-      </Typography>
+      </Box>
       <Box>
         <Typography fontSize={"var(--font-size-medium)"}>
           Stay ahead with opportunities selected just for you.{" "}

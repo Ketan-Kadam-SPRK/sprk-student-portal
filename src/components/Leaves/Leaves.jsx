@@ -348,8 +348,8 @@ function Leaves() {
             publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739277438/calendar-with-checklist-date-schedule-3d-icon-removebg-preview_1_vtiyrw.svg"
             cloudName="dxlzzgbfw"
             style={{
-              width: "30px",
-              height: "auto",
+              width: "40px",
+              height: "40px",
               objectFit: "contain",
             }}
           />

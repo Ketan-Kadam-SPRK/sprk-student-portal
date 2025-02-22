@@ -127,19 +127,21 @@ function Exams() {
       }}
     >
       <Box sx={{ mt: 1 }}>
-        <Typography variant="h4" fontWeight={"600"}>
-          Your Exams
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h4" fontWeight={"600"}>
+            Your Exams
+          </Typography>
           <Image
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254460/ndjoyyrgaezboup67csd.png"
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740202998/your_exam_hrlt8t.svg"
             style={{
-              width: "30px",
-              height: "auto",
+              width: "auto",
+              height: "40px",
               objectFit: "contain",
               marginLeft: "5px",
             }}
             cloudName="dxlzzgbfw"
           />
-        </Typography>
+        </Box>
         <Typography
           fontSize={"var(--font-size-medium)"}
           color="#4D535A"

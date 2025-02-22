@@ -196,19 +196,21 @@ function Certificates() {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Typography variant="h4" fontWeight={600}>
-          Your Certificates{" "}
+        <Box sx={{ display: "flex", alignItems: "center",gap:1 }}>
+          <Typography variant="h4" fontWeight={600}>
+            Your Certificates{" "}
+          </Typography>
           <Image
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739265190/diary-education-learning-pencil-school-study-svgrepo-com_1_qyg6bi.svg"
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740203145/receipt_slip01_neabsa.svg"
             style={{
-              width: "25px",
-              height: "auto",
+              width: "auto",
+              height: "40px",
               objectFit: "contain",
               marginLeft: "5px",
             }}
             cloudName="dxlzzgbfw"
           />
-        </Typography>
+        </Box>
         <Typography
           sx={{
             color: "#4D535A",
