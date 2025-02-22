@@ -201,7 +201,7 @@ function Certificates() {
             Your Certificates{" "}
           </Typography>
           <Image
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740203145/receipt_slip01_neabsa.svg"
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740202809/certificate_d6ccvh.svg"
             style={{
               width: "auto",
               height: "40px",

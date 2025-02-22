@@ -217,7 +217,7 @@ function Receipts() {
             Your Receipt History
           </Typography>
           <Image
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739512431/receipt_slip_b5rwn8.svg"
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740203145/receipt_slip01_neabsa.svg"
             cloudName="dxlzzgbfw"
             style={{
               width: "auto",
