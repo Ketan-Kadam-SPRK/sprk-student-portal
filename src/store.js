@@ -10,13 +10,11 @@ import {
   REGISTER,
 } from "redux-persist";
 import authSlice from "./components/Login/store/authSlice";
-import encryptTransform from "./crypto";
 import examSlice from "./components/Exams/examSlice";
 const persistConfig = {
   key: "auth",
   storage,
   version: 1,
-  // transforms: [enc ryptTransform], // Apply the encryption transform
 };
 
 const persistedReducer = persistReducer(persistConfig, authSlice);
