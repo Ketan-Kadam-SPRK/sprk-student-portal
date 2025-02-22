@@ -130,8 +130,9 @@ function ResetPass() {
         if (res.payload) {
           navigate("/Login");
           setFormData({});
-          resetCaptcha();
         }
+        resetCaptcha();
+
         setIsLoading(false);
       } catch (err) {
         console.log(err);
@@ -143,6 +144,7 @@ function ResetPass() {
         ...prev,
         captchaError: true,
       }));
+      resetCaptcha();
     }
   };
 
@@ -180,15 +182,25 @@ function ResetPass() {
             p: 2,
           }}
         >
-          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+          <Typography
+            sx={{ fontWeight: "bold", fontSize: "var(--font-size-large)" }}
+          >
             Set new password
           </Typography>
-          <Typography variant="h6" maxWidth={"500px"}>
+          <Typography
+            sx={{
+              fontSize: "var(--font-size-medium)",
+              width: { xs: "320px", sm: "400px" },
+              maxWidth: "100%",
+            }}
+          >
             Your new password must be different to previously used passwords.
           </Typography>
         </Box>
 
-        <FormControl sx={{ width: "400px" }}>
+        <FormControl
+          sx={{ width: { xs: "320px", sm: "400px" }, maxWidth: "100%" }}
+        >
           <Typography variant="body1" sx={{ fontWeight: "600" }}>
             New Password
           </Typography>
@@ -215,7 +227,9 @@ function ResetPass() {
             {errors.password}
           </FormHelperText>
         </FormControl>
-        <FormControl sx={{ width: "400px" }}>
+        <FormControl
+          sx={{ width: { xs: "320px", sm: "400px" }, maxWidth: "100%" }}
+        >
           <Typography variant="body1" sx={{ fontWeight: "600" }}>
             Confirm New Password
           </Typography>
@@ -250,7 +264,8 @@ function ResetPass() {
 
         <Box
           sx={{
-            width: "400px",
+            width: { xs: "320px", sm: "400px" },
+            maxWidth: "100%",
             display: "flex",
             justifyContent: "center",
             flexDirection: "column",
@@ -274,7 +289,7 @@ function ResetPass() {
           color="primary"
           onClick={handleSubmit}
           disabled={isLoading}
-          sx={{ width: "400px" }}
+          sx={{ width: { xs: "320px", sm: "400px" }, maxWidth: "100%" }}
         >
           {isLoading ? <CircularProgress size={24} /> : "Submit"}
         </Button>

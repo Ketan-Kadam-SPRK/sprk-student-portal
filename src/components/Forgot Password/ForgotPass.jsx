@@ -77,8 +77,8 @@ function ForgotPass() {
         if (res.payload) {
           navigate("/Login");
           setFormData({});
-          resetCaptcha();
         }
+        resetCaptcha();
         setIsLoading(false);
       } catch (err) {
         console.log(err);
@@ -90,6 +90,7 @@ function ForgotPass() {
         ...prev,
         captchaError: true,
       }));
+      resetCaptcha();
     }
   };
 
@@ -133,14 +134,16 @@ function ForgotPass() {
             p: 2,
           }}
         >
-          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+          <Typography
+            sx={{ fontWeight: "bold", fontSize: "var(--font-size-large)" }}
+          >
             Forgot Your Password?
           </Typography>
-          <Typography variant="h6">
+          <Typography sx={{ fontSize: "var(--font-size-medium)" }}>
             No worries, we’ll send you reset instructions.
           </Typography>
         </Box>
-        <Box sx={{ width: "400px" }}>
+        <Box sx={{ width: { xs: "320px", sm: "400px" }, maxWidth: "100%" }}>
           <Typography variant="body1" sx={{ fontWeight: "600" }}>
             Student ID or Email
           </Typography>
@@ -160,7 +163,8 @@ function ForgotPass() {
         </Box>
         <Box
           sx={{
-            width: "400px",
+            width: { xs: "320px", sm: "400px" },
+            maxWidth: "100%",
             display: "flex",
             justifyContent: "center",
             flexDirection: "column",
@@ -183,7 +187,7 @@ function ForgotPass() {
           variant="contained"
           color="primary"
           onClick={handleSubmit}
-          sx={{ width: "400px" }}
+          sx={{ width: { xs: "320px", sm: "400px" }, maxWidth: "100%" }}
           disabled={isLoading}
         >
           {isLoading ? <CircularProgress size={24} /> : "Submit"}
