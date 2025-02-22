@@ -416,7 +416,7 @@ function Certificates() {
             errorImgPublicId={
               "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737804838/Certificate_medal_and_graduation_cap_u3nply.svg"
             }
-            errorHeading={"No Certificates yes"}
+            errorHeading={"No Certificates yet!"}
             errorDescription={
               "Your certificates will appear here once they are issued."
             }
