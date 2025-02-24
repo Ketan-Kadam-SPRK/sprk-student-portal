@@ -21,6 +21,12 @@ function Sessions({ sessionData, filterData }) {
     setShowAttendanceDrawer(!showAttendanceDrawer);
   };
 
+/**
+ * Given a status, returns the corresponding color and background color for the status.
+ *
+ * @param {string} status - The status to get the styles for. Can be "PRESENT", "ABSENT", or "ON_LEAVE"
+ * @returns {object} - An object containing the color and backgroundColor for the given status
+ */
   const getStatusStyles = (status) => {
     switch (status) {
       case "PRESENT":

@@ -23,6 +23,13 @@ function AbsentLog({ batchId }) {
   const [data, setData] = useState([]);
   const [error500, setError500] = useState(false);
 
+  /**
+   * Fetches the absent logs for a given batch
+   * @async
+   * @function
+   * @param {number} batchId - The ID of the batch to fetch absent logs for
+   * @returns {Promise<void>}
+   */
   const getAbsentLog = async () => {
     setLoading(true);
     try {

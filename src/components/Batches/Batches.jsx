@@ -24,6 +24,15 @@ function Batches() {
     getStudentBatches();
   }, []);
 
+/**
+ * Fetches the list of student batches and updates the component state.
+ *
+ * This function dispatches the `getBatches` action to fetch batches from the server.
+ * It updates the `batches` state with the retrieved data. If the server returns an error
+ * status of 500 or 503, it sets the `error500` state to true. The loading state is managed
+ * by setting `loading` to true at the start of the operation and false upon completion.
+ */
+
   const getStudentBatches = async () => {
     setLoading(true);
     try {
