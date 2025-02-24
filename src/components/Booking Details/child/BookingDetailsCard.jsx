@@ -11,6 +11,7 @@ import { AmountFormat } from "../../../Utils/AmountFormat";
 function BookingDetailsCard({ item }) {
   const navigate = useNavigate();
 
+  // Function to get the color and background color based on the payment status
   const getStatusColor = (status) => {
     let color = "";
     let backgroundColor = "";

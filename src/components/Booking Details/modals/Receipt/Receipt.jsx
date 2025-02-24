@@ -35,25 +35,19 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
 
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
-  // const receiptData = {
-  //   receipt_id: 1791,
-  //   receipt_code: "R2501218144D46",
-  //   booked_code: "B2501KHAR5D5C18A",
-  //   student_name: "Namdev Pise",
-  //   student_address: "859, Solapur, Maharashtra, 851458, India",
-  //   receipt_status: "ACTIVE",
-  //   paid_amount: 8300,
-  //   payment_mode: "CREDIT_CARD",
-  //   transaction_id: null,
-  //   cheque_number: null,
-  //   authorization_code: "4444555648",
-  //   paid_at: "2025-01-21T00:00:00Z",
-  // };
+
 
   useEffect(() => {
     getReceipt();
   }, []);
 
+  /**
+   * Fetches the receipt data from the server and updates the component's state.
+   * If a receipt ID is provided, fetches the receipt data for that specific receipt.
+   * If no receipt ID is provided, fetches all receipts.
+   * @returns {void}
+   */
+  
   const getReceipt = async () => {
     try {
       setIsLoading(true);
@@ -121,6 +115,12 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
       toWords.convert(Number(String(paidAmount).split(".")[1])) +
       " Paise";
 
+  /**
+   * Handles printing of the receipt.
+   * Dispatches an action to get the receipt data for printing, and then
+   * triggers the print function from useReactToPrint.
+   * After printing is done, it closes the modal after a delay of 1 second.
+   */
   const handlePrintReceipt = async () => {
     setIsPrinting(true);
     try {

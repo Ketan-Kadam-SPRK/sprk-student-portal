@@ -51,6 +51,10 @@ function PaymentDetails() {
     setOpenReciept(!openReciept);
   };
 
+  /**
+   * Fetches the booking installments from the server
+   * Sets the 'data' state with the response from the server
+   */
   const getBookingInstallmentDetails = async () => {
     setLoading(true);
     try {
@@ -83,6 +87,16 @@ function PaymentDetails() {
     getBookingInstallmentDetails();
   }, []);
 
+/**
+ * Determines the overall payment status of an array of installments.
+ * The order of precedence for statuses is OVERDUE > DUE > PENDING > PAID.
+ * If any installment is OVERDUE, the overall status is OVERDUE.
+ * If no installment is OVERDUE, but at least one is DUE, the overall status is DUE.
+ * If no installment is OVERDUE or DUE, but at least one is PENDING, the overall status is PENDING.
+ * If no installment is OVERDUE, DUE, or PENDING, the overall status is PAID.
+ * @param {Array} installments - An array of installment objects, each containing an `installment_status` property.
+ * @returns {string} - The overall payment status.
+ */
   const determinePaymentStatus = (installments) => {
     let statuses = installments?.map((i) => i.installment_status) || [];
     if (statuses.includes("OVERDUE")) return "OVERDUE";
@@ -91,11 +105,24 @@ function PaymentDetails() {
     return "PAID";
   };
 
+/**
+ * Retrieves the full month name from a given date string.
+ * @param {string} dateString - A string representing a date.
+ * @returns {string} - The full name of the month (e.g., "January"). Returns an empty string if the date is invalid or undefined.
+ */
+
   const getMonthName = (dateString) => {
     if (!dateString) return ""; // Handle invalid or undefined date
     const date = new Date(dateString);
     return date.toLocaleString("en-US", { month: "long" }); // Returns full month name (e.g., "January")
   };
+
+/**
+ * Given an installment status, returns an object containing the corresponding
+ * color and backgroundColor.
+ * @param {string} installment_status - The status of the installment.
+ * @returns {object} - An object with `color` and `backgroundColor` properties.
+ */
 
   const getColorAndBackground = (installment_status) => {
     switch (installment_status) {
@@ -112,6 +139,12 @@ function PaymentDetails() {
     }
   };
 
+/**
+ * A component that displays a badge indicating the status of an installment.
+ * The badge has a different color and background color depending on the status.
+ * @param {string} status - The status of the installment.
+ * @returns {JSX.Element} - A badge displaying the status.
+ */
   const StatusBadge = ({ status }) => {
     const { color, backgroundColor } = getColorAndBackground(status);
 

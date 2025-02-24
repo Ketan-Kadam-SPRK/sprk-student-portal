@@ -14,6 +14,10 @@ function Payments() {
   const [courseData, setCourseData] = useState([]);
   const [error500, setError500] = useState(false);
 
+/**
+ * Fetches booking details and updates state with the retrieved data.
+ */
+
   const getBookingDetail = async () => {
     setLoading(true);
     try {
