@@ -21,6 +21,16 @@ const CourseList = ({ data, navigate }) => {
     setExpandedCourseId(expandedCourseId === courseId ? null : courseId);
   };
 
+/**
+ * Returns the text and background color associated with a given course status.
+ *
+ * @param {string} status - The current status of the course, which can be one of the following:
+ *                          "ONGOING", "COMPLETED", "EXPIRED", "PENDING".
+ * @returns {Object} An object containing the `color` and `backgroundColor` properties that represent
+ *                   the text and background colors associated with the status.
+ *                   Defaults to black text on white background for unrecognized statuses.
+ */
+
   const getStatusColor = (status) => {
     let color = "";
     let backgroundColor = "";

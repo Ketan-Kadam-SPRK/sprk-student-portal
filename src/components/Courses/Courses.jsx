@@ -16,6 +16,13 @@ const Courses = () => {
   const [loading, setLoading] = useState(false);
   const [error500, setError500] = useState(false);
 
+/**
+ * Fetches course group details from the server, sorts them by booking date
+ * in descending order, and updates the courseData state with the sorted data.
+ * Sets loading state to true while fetching data and false after fetching.
+ * Handles server errors by setting error500 state if a 500 or 503 status code is returned.
+ */
+
   const getCourseDetailsAPi = async () => {
     try {
       setLoading(true);
@@ -51,7 +58,6 @@ const Courses = () => {
         flexDirection: "column",
         gap: 2,
         p: 2,
-        // minHeight: "100vh",
         overflow: "auto",
         flex: 1,
       }}
@@ -117,7 +123,6 @@ const Courses = () => {
             display: "flex",
             gap: 4,
             flexWrap: "wrap",
-            // flex: 1,
             p: 2,
             overflow: "auto",
             height: "100vh",
