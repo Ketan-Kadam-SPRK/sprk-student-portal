@@ -167,7 +167,9 @@ function PaymentDetails() {
       minWidth: 150,
       format: (value) => AmountFormat(value),
     },
-    { headerName: "Mode of Payment", id: "mode_of_Payment", minWidth: 150 },
+    { headerName: "Mode of Payment", id: "mode_of_Payment", minWidth: 150,
+       format: (value) => formatForDisplay(value),
+     },
     {
       headerName: "Paid On",
       id: "paid_at",

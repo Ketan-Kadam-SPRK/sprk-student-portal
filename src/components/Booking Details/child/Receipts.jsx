@@ -167,7 +167,9 @@ function Receipts() {
       minWidth: 150,
       format: (value) => AmountFormat(value),
     },
-    { headerName: "MOP", id: "payment_mode", minWidth: 120 },
+    { headerName: "MOP", id: "payment_mode", minWidth: 120,
+      format: (value) => formatForDisplay(value),
+     },
     {
       headerName: "Paid On",
       id: "paid_at",
