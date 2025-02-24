@@ -28,6 +28,14 @@ function CertificateModal({
     getData();
   }, [certId]);
 
+/**
+ * Fetches the preview data for a certificate using the provided certificate ID.
+ * Updates the component's state with the fetched data including certificate status,
+ * verification status, and release date.
+ * 
+ * @returns {void}
+ */
+
   const getData = async () => {
     setLoading(true);
     try {

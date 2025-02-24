@@ -60,6 +60,11 @@ function Certificates() {
     setCertId(id);
   };
 
+/**
+ * Function to open the preview dialog for a particular certificate. It sets the 
+ * cer_mpg_uid of the certificate in the state and toggles the open state of the dialog.
+ * @param {object} item - The certificate object with cer_mpg_uid and status properties.
+ */
   const handlePreviewDialog = (item) => {
     setCertId(item?.cer_mpg_uid);
     setCertificateStatus(item?.status);
@@ -156,11 +161,6 @@ function Certificates() {
 
   const [isChecked, setIsChecked] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-
-  // const handleConfirmClick = () => {
-  //   setIsConfirmed(true);
-  //   // handleClose();
-  // };
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
