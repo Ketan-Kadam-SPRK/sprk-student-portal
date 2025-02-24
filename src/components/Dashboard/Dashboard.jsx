@@ -19,8 +19,6 @@ import ErrorHandling from "../Common/ErrorHandling";
 import { useNavigate } from "react-router-dom";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import TypingAnimation from "./Child/TypingAnimation";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { Circle } from "@mui/icons-material";
 function Dashboard() {
   function convertToTitleCase(text) {
     if (!text) return "";
@@ -41,6 +39,20 @@ function Dashboard() {
     fetchAllDashboardData();
   }, []);
 
+
+  /**
+   * Fetches all data required for the dashboard and updates the state
+   *
+   * Fetches the following data:
+   * - Today's batches
+   * - All certificates
+   * - Upcoming exams
+   * - New job postings
+   *
+   * Processes the data and updates the state with the sorted/extracted data
+   *
+   * @returns {Promise<void>}
+   */
   const fetchAllDashboardData = async () => {
     try {
       setLoading(true);
@@ -75,29 +87,6 @@ function Dashboard() {
   };
 
   const Events = [];
-  // const Events = [
-  //   {
-  //     id: "1",
-  //     title: "Hacketon 2024",
-  //     start: "2024-01-01T05:00:00.000Z",
-  //     end: "2024-01-02T08:00:00.000Z",
-  //     logo: "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Vision 2024",
-  //     start: "2024-01-01T05:00:00.000Z",
-  //     end: "2024-01-02T08:00:00.000Z",
-  //     logo: "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "Diwali 2024",
-  //     start: "2024-01-01T05:00:00.000Z",
-  //     end: "2024-01-02T08:00:00.000Z",
-  //     logo: "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg",
-  //   },
-  // ];
 
   if (loading) {
     return <ErrorHandling loadData={loading} />;
