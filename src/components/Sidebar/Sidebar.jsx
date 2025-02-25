@@ -411,16 +411,16 @@ function Sidebar() {
                   />
 
                   <Typography sx={{ ...headingTextStyle, mt: 3 }}>
-                    Booking Details
+                    Payment Details
                   </Typography>
                   <SidebarItem
-                    title="Payments"
+                    title="Bookings"
                     icon={PaymentsRoundedIcon}
                     open={open}
-                    isActive={activeTab === "Payments"}
+                    isActive={activeTab === "Bookings"}
                     onClick={() => {
-                      navigate("/Payments");
-                      handleTabClick("Payments");
+                      navigate("/Bookings");
+                      handleTabClick("Bookings");
                       handleDrawerClose();
                     }}
                   />

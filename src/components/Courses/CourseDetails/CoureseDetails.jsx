@@ -77,6 +77,10 @@ function CoureseDetails() {
         color = "#755200";
         backgroundColor = "#FFF3A4";
         break;
+      case "CANCELLED":
+        color = "#A30000";
+        backgroundColor = "#FFC0C0";
+        break;
       default:
         color = "black";
         backgroundColor = "white";

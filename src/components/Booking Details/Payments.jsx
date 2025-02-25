@@ -6,6 +6,7 @@ import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { getBookingDetails } from "./action/Payment.action";
 import ErrorHandling from "../Common/ErrorHandling";
 import { Image } from "cloudinary-react";
+import NoDataPage from "../Common/NoDataPage";
 
 function Payments() {
   const dispatch = useDispatch();
@@ -94,14 +95,22 @@ function Payments() {
             Track Your Booking Details
           </Typography>
         </Box>
-        <Box sx={{ p: "20px" }}>
-          <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
-            {courseData?.map((item, index) => (
-              <Grid2 key={index} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
-                <BookingDetailsCard item={item} />
-              </Grid2>
-            ))}
-          </Grid2>
+        <Box sx={{ p: "20px", height: "100vh" }}>
+          {courseData?.length > 0 ? (
+            <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
+              {courseData?.map((item, index) => (
+                <Grid2 key={index} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
+                  <BookingDetailsCard item={item} />
+                </Grid2>
+              ))}
+            </Grid2>
+          ) : (
+            <NoDataPage
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737363456/Online_education_with_laptop_and_books_zsko0t.svg"
+              errorHeading="No Bookings  Yet!"
+              errorDescription="Looks like you’re not enrolled in any bookings yet. Once you join a course, all the details will show up here."
+            />
+          )}
         </Box>
       </Box>
     </Box>
