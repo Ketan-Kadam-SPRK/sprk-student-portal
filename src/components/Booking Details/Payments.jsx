@@ -106,9 +106,9 @@ function Payments() {
             </Grid2>
           ) : (
             <NoDataPage
-              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737363456/Online_education_with_laptop_and_books_zsko0t.svg"
-              errorHeading="No Bookings  Yet!"
-              errorDescription="Looks like you’re not enrolled in any bookings yet. Once you join a course, all the details will show up here."
+              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740488992/stack_of_books_gvl1uh.svg"
+              errorHeading="No Bookings Made!"
+              errorDescription="You haven’t booked any courses yet. Secure your spot and start learning today!"
             />
           )}
         </Box>
