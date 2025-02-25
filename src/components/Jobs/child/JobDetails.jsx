@@ -54,6 +54,10 @@ function JobDetails() {
     getJobsDetailsById();
   }, [jobid]);
 
+/**
+ * Fetches job details by id from the server and updates the state.
+ * @returns {Promise<void>}
+ */
   const getJobsDetailsById = async () => {
     try {
       setLoading(true);

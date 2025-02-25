@@ -25,6 +25,14 @@ function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  
+  /**
+   * Handles file selection. Checks if the file is PDF and less than 1MB.
+   * If valid, sets the file in the state and clears the error.
+   * If invalid, shows an error message using swal.
+   * @param {Event} e The event object.
+   */
   const hadleFileSelect = (e) => {
     const file = e.target.files[0];
 
@@ -57,6 +65,10 @@ function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
     }
   };
 
+  /**
+   * Submits the job application with the selected PDF file.
+   * @throws {Error} If the file is invalid or the API call fails.
+   */
   const submit = async () => {
     if (!doc) {
       setError("Please select a file.");

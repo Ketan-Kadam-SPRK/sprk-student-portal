@@ -25,6 +25,10 @@ function JobOpportunities() {
     PLACED: 0,
     DENIED: 0,
   });
+/**
+ * Handles tab change event. Sets the activeTab state to the selected tab.
+ * @param {string} tab - The selected tab.
+ */
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -33,6 +37,11 @@ function JobOpportunities() {
   useEffect(() => {
     getJobs();
   }, []);
+
+/**
+ * Fetches job opportunities from the server and updates the state accordingly.
+ * @return {Promise<void>}
+ */
 
   const getJobs = async () => {
     try {

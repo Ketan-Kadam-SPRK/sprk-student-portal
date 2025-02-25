@@ -21,6 +21,13 @@ function DenyJobDialog({ handleClose, getJobsDetailsById, jobID }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reason, setReason] = useState("");
   const [reasonError, setReasonError] = useState("");
+
+  
+  /**
+   * Handles changes in the reason input field, validates that the input is within
+   * the required length and updates the reason state accordingly
+   * @param {React.ChangeEvent<HTMLInputElement>} event - The input change event
+   */
   const handleReasonChange = (event) => {
     const value = event.target.value;
 
@@ -34,6 +41,10 @@ function DenyJobDialog({ handleClose, getJobsDetailsById, jobID }) {
     setReason(value);
   };
 
+  /**
+   * Submits the job deny request with the selected reason.
+   * @throws {Error} If the reason is invalid or the API call fails.
+   */
   const submit = async () => {
     let newReason = reason?.trim();
     if (newReason.length < 10 || newReason.length > 200) {
