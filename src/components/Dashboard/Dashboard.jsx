@@ -23,8 +23,11 @@ function Dashboard() {
   function convertToTitleCase(text) {
     if (!text) return "";
 
-    // Lowercase all characters and capitalize the first letter
-    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    return text
+      .toLowerCase()
+      .split("_") // Split words by underscore
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" "); // Join words with a space
   }
   const headers = useAuthHeaders();
   const dispatch = useDispatch();

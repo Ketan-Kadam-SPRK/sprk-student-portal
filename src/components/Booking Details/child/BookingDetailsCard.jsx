@@ -256,7 +256,7 @@ function BookingDetailsCard({ item }) {
         >
           <Typography
             onClick={() => {
-              navigate(`/Payments/${item?.booking_uid}`);
+              navigate(`/Bookings/${item?.booking_uid}`);
             }}
             color="primary"
             fontSize={"var(--font-size-small)"}
