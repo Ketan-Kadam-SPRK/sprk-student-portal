@@ -46,6 +46,12 @@ function Exams() {
     getAllTheoryExams();
   }, []);
 
+/**
+ * getAllTheoryExams
+ * Fetches all theory exams and sets the count for ongoing and scheduled exams
+ * @function
+ * @return {void}
+ */
   const getAllTheoryExams = async () => {
     try {
       setLoading(true);
