@@ -39,6 +39,7 @@ function Receipts() {
       const sortedData = data.sort(
         (a, b) => new Date(b.paid_at) - new Date(a.paid_at)
       );
+      // const sortedData = data.sort((a, b) => b.receipt_id - a.receipt_id);
       if (status === 500 || status === 503) {
         setError500(true);
       } else {
@@ -167,9 +168,12 @@ function Receipts() {
       minWidth: 150,
       format: (value) => AmountFormat(value),
     },
-    { headerName: "MOP", id: "payment_mode", minWidth: 120,
+    {
+      headerName: "MOP",
+      id: "payment_mode",
+      minWidth: 120,
       format: (value) => formatForDisplay(value),
-     },
+    },
     {
       headerName: "Paid On",
       id: "paid_at",
@@ -190,7 +194,7 @@ function Receipts() {
               variant="contained"
               onClick={() => handleOpenPayment(row)}
             >
-              view Receipt
+              View Receipt
             </Button>
           </Box>
         );

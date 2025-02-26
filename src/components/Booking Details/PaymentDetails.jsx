@@ -167,9 +167,12 @@ function PaymentDetails() {
       minWidth: 150,
       format: (value) => AmountFormat(value),
     },
-    { headerName: "Mode of Payment", id: "mode_of_Payment", minWidth: 150,
-       format: (value) => formatForDisplay(value),
-     },
+    {
+      headerName: "Mode of Payment",
+      id: "mode_of_Payment",
+      minWidth: 150,
+      format: (value) => formatForDisplay(value),
+    },
     {
       headerName: "Paid On",
       id: "paid_at",
@@ -205,7 +208,7 @@ function PaymentDetails() {
               onClick={() => handleOpenPayment(row)}
               disabled={row?.installment_status !== "PAID"}
             >
-              view Receipt
+              View Receipt
             </Button>
           </Box>
         );
@@ -338,7 +341,7 @@ function PaymentDetails() {
               </Box>
               <Box>
                 <Button variant="contained" onClick={handleDetailModal}>
-                  view Details
+                  View Details
                 </Button>
               </Box>
             </Box>
