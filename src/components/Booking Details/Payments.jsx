@@ -1,12 +1,13 @@
-import { Box, Grid, Grid2, Typography } from "@mui/material";
+import { Box,Grid2, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import BookingDetailsCard from "./child/BookingDetailsCard";
 import { useDispatch } from "react-redux";
-import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { getBookingDetails } from "./action/Payment.action";
-import ErrorHandling from "../Common/ErrorHandling";
 import { Image } from "cloudinary-react";
+
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import BookingDetailsCard from "./child/BookingDetailsCard";
+import ErrorHandling from "../Common/ErrorHandling";
 import NoDataPage from "../Common/NoDataPage";
+import { getBookingDetails } from "./action/Payment.action";
 
 function Payments() {
   const dispatch = useDispatch();

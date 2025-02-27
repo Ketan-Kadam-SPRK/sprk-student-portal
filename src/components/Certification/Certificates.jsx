@@ -8,32 +8,32 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogActions,
   DialogTitle,
   IconButton,
   CircularProgress,
   Checkbox,
-  FormControlLabel,
 } from "@mui/material";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
-import ProgressBar from "../Common/ProgressBar/ProgressBar";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Close } from "@mui/icons-material";
 import { Image } from "cloudinary-react";
-import CertificateModal from "./CertificateModal";
-import NoDataPage from "../Common/NoDataPage";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import ProgressBar from "../Common/ProgressBar/ProgressBar";
+import CertificateModal from "./CertificateModal";
+import NoDataPage from "../Common/NoDataPage";
+import ErrorHandling from "../../components/Common/ErrorHandling";
+import dateFormator from "../../Utils/dateFormator";
 import {
   downloadCertificate,
   getAllCertificates,
   getVerifiedCertificate,
 } from "./certificate.actions";
-import ErrorHandling from "../../components/Common/ErrorHandling";
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import dateFormator from "../../Utils/dateFormator";
 
 function Certificates() {
   const dispatch = useDispatch();

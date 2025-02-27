@@ -127,6 +127,7 @@ const CourseList = ({ data, navigate }) => {
                       {item?.batches?.map((batch, batchIndex) => (
                         <IconButton
                           key={batchIndex}
+                          id="batch_details_btn"
                           onClick={() => navigate(`/Batches/${batch}`)}
                         >
                           <StatusStyledComponent

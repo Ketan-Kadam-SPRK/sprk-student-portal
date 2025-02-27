@@ -5,8 +5,6 @@ import {
   CircularProgress,
   Dialog,
   IconButton,
-  styled,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -84,7 +82,7 @@ function Leaves() {
       const res = await dispatch(getAllLeaves({ headers }));
       const data = res?.payload?.data?.data || [];
       const status = res?.payload?.status;
-      const modifiedData = data.reverse();
+      const modifiedData = data?.reverse();
 
       if (status === 500 || status === 503) {
         setError500(true);
@@ -104,7 +102,7 @@ function Leaves() {
 
   useEffect(() => {
     const data = Array.isArray(leaveData)
-      ? leaveData.map((item, index) => ({
+      ? leaveData?.map((item, index) => ({
           ...item,
           id: item?.leaveRequestUid || index,
         }))
@@ -158,7 +156,7 @@ function Leaves() {
     try {
       const res = await dispatch(getWithdrawnLeaves({ headers, leaveId })).then(
         (res) => {
-          if (res.payload !== undefined) {
+          if (res?.payload !== undefined) {
             handleCloseWidrow();
             getAllLeavesData();
             setWithdrawnLoad(false);

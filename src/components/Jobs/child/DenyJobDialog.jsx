@@ -10,8 +10,10 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { useDispatch } from "react-redux";
+
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import { denyJob } from "../jobs.actions";
 

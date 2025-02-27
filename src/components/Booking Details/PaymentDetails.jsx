@@ -9,22 +9,24 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import dateFormator from "../../Utils/dateFormator";
 import { Image } from "cloudinary-react";
+import { useDispatch } from "react-redux";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+
+import dateFormator from "../../Utils/dateFormator";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
 import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
 import { AmountFormat } from "../../Utils/AmountFormat";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import BookingAknowLetter from "./modals/BookingAknowLetter";
-import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { getBookingInstallments } from "./action/Payment.action";
 import FormatDate from "../../Utils/FormatDate";
 import Receipt from "./modals/Receipt/Receipt";
 import { CapitalFirstLetterOnly } from "../../Utils/CapitalFirstLetterOnly";
 import ErrorHandling from "../Common/ErrorHandling";
+import { getBookingInstallments } from "./action/Payment.action";
 
 function PaymentDetails() {
   const navigate = useNavigate();
@@ -263,7 +265,6 @@ function PaymentDetails() {
         flexDirection: "column",
         gap: 2,
         pb: 2,
-        // minHeight: "100vh",
         overflow: "auto",
         flex: 1,
       }}

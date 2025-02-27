@@ -8,12 +8,13 @@ import {
   DialogTitle,
   DialogContent,
 } from "@mui/material";
-import { useReactToPrint } from "react-to-print";
-import { ToWords } from "to-words";
 import "./receipt.css";
+
+import { ToWords } from "to-words";
 import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../Hooks/useAuthHeaders";
+import { useReactToPrint } from "react-to-print";
 import { getReceiptData, printReceipt } from "../../action/Payment.action";
 
 const text1 = {

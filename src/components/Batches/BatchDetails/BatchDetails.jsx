@@ -227,6 +227,7 @@ function BatchDetails() {
               expandIcon={
                 <InfoRoundedIcon
                   sx={{ fontSize: "30px", color: "#0073E6 !important" }}
+                  id="expand-info_click"
                 />
               }
             >

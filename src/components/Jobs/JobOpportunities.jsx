@@ -1,13 +1,15 @@
 import { Badge, Box, Button, Grid2, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import JobCard from "./child/JobCard";
+
+import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import JobCard from "./child/JobCard";
 import { getAllJobs } from "./jobs.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
 import NoDataPage from "../Common/NoDataPage";
-import { Image } from "cloudinary-react";
+
 
 function JobOpportunities() {
   const dispatch = useDispatch();

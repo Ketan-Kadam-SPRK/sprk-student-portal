@@ -1,11 +1,12 @@
 import { Typography, Box } from "@mui/material";
 import React from "react";
-import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { useNavigate } from "react-router-dom";
+
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { formatDateTime } from "../../../Utils/dateTimeFormator";
+
 import { Image } from "cloudinary-react";
+import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import dateFormator from "../../../Utils/dateFormator";
 
 function JobCard({ item }) {
@@ -43,7 +44,6 @@ function JobCard({ item }) {
     <Box
       sx={{
         width: "100%",
-        // height: "100%",
         display: "flex",
         flexDirection: "column",
         gap: "20px",
@@ -59,7 +59,6 @@ function JobCard({ item }) {
           justifyContent: "space-between",
           alignItems: "center",
           borderRadius: "10px",
-          // width: "100%",
           color: "white",
           background:
             "conic-gradient(from 270deg at 33.39% 0%, #0A2647 -53.54deg, #6560F0 192.88deg, #0A2647 306.46deg, #6560F0 552.88deg)",
@@ -82,7 +81,6 @@ function JobCard({ item }) {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               overflow: "hidden",
-              // color: "#505050",
               fontSize: "var(--font-size-medium)",
               color: "white",
             }}

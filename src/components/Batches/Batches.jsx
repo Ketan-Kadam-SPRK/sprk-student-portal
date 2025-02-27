@@ -1,17 +1,19 @@
 import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import BoxCard from "../Dashboard/Child/BoxCard";
-import BatchCardHorizontal from "./child/BatchCardHorizontal";
 import { useDispatch } from "react-redux";
-import { getBatches } from "./action/batches.actions";
-import ErrorHandling from "../Common/ErrorHandling";
-import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import NoDataPage from "../Common/NoDataPage";
+
 import PauseCircleOutlineRoundedIcon from "@mui/icons-material/PauseCircleOutlineRounded";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import BookIcon from "@mui/icons-material/Book";
+
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import BoxCard from "../Dashboard/Child/BoxCard";
+import BatchCardHorizontal from "./child/BatchCardHorizontal";
+import ErrorHandling from "../Common/ErrorHandling";
+import NoDataPage from "../Common/NoDataPage";
+import { getBatches } from "./action/batches.actions";
 
 function Batches() {
   const dispatch = useDispatch();
@@ -60,7 +62,6 @@ function Batches() {
         flexDirection: "column",
         gap: 2,
         p: 2,
-        // minHeight: "100vh",
         overflow: "auto",
         flex: 1,
       }}
@@ -70,14 +71,13 @@ function Batches() {
           display: "flex",
           flexDirection: "row",
           flexWrap: "wrap",
-          //   justifyContent: "space-around",
           gap: 2,
         }}
       >
         <BoxCard
           title="Ongoing Batches"
           number={
-            batches?.filter((batch) => batch.batch_status === "ONGOING")?.length
+            batches?.filter((batch) => batch?.batch_status === "ONGOING")?.length
           }
           image={
             <RotateLeftOutlinedIcon sx={{ color: "white", fontSize: "40px" }} />
@@ -88,7 +88,7 @@ function Batches() {
         <BoxCard
           title="Upcoming Batches"
           number={
-            batches?.filter((batch) => batch.batch_status === "UPCOMING")
+            batches?.filter((batch) => batch?.batch_status === "UPCOMING")
               ?.length
           }
           image={
@@ -101,7 +101,7 @@ function Batches() {
         <BoxCard
           title="Onhold Batches"
           number={
-            batches?.filter((batch) => batch.batch_status === "ONHOLD")?.length
+            batches?.filter((batch) => batch?.batch_status === "ONHOLD")?.length
           }
           image={
             <PauseCircleOutlineRoundedIcon
@@ -114,7 +114,7 @@ function Batches() {
         <BoxCard
           title="Completed Batches"
           number={
-            batches?.filter((batch) => batch.batch_status === "COMPLETED")
+            batches?.filter((batch) => batch?.batch_status === "COMPLETED")
               ?.length
           }
           image={
@@ -178,7 +178,6 @@ function Batches() {
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            // flex: 1,
             p: 2,
             height: "100vh",
             overflow: "auto",
@@ -186,7 +185,7 @@ function Batches() {
         >
           {batches?.length > 0 ? (
             batches?.map((item) => (
-              <BatchCardHorizontal key={item.batch_uid} item={item} />
+              <BatchCardHorizontal key={item?.batch_uid} item={item} />
             ))
           ) : (
             <NoDataPage

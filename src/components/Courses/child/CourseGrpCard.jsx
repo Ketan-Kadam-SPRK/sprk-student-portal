@@ -162,6 +162,7 @@ function CourseGrpCard({ item }) {
               navigate(`/Course_Groups/${item?.cg_id}`);
             }}
             color="primary"
+            id='course_view_details'
             fontSize={"var(--font-size-extra-small)"}
             fontWeight={"bold"}
             sx={{

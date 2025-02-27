@@ -12,10 +12,13 @@ import {
   CircularProgress,
 } from "@mui/material";
 import React, { useState } from "react";
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { applyJob } from "../jobs.actions";
-import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import { useDispatch, useSelector } from "react-redux";
+
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+
+import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import { applyJob } from "../jobs.actions";
+
 function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
   const headers = useAuthHeaders();
   const dispatch = useDispatch();
@@ -150,7 +153,6 @@ function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
               fullWidth
               value={doc?.name}
               placeholder="Choose File"
-              // sx={{ width: "100%", minWidth: "200px" }}
               inputProps={{
                 readOnly: true,
                 sx: {

@@ -3,16 +3,19 @@ import { Box, Button,Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import { Image } from "cloudinary-react";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
-import { Image } from "cloudinary-react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { getCourseGrpDetailsBYId } from "../course.actions";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../Common/ErrorHandling";
 import CourseList from "./CourseList";
+import { getCourseGrpDetailsBYId } from "../course.actions";
+
 function CoureseDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

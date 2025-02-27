@@ -10,7 +10,6 @@ import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
 import NoDataPage from "../../../../Common/NoDataPage";
-import PopupFilterComponent from "../../../../Common/FilterMenuComponent/PopupFilterComponent";
 import NoDataAvailableUI from "../../../../Common/CustomAgGrid/NoDataAvailableUI";
 
 function Sessions({ sessionData, filterData }) {
@@ -111,7 +110,7 @@ function Sessions({ sessionData, filterData }) {
                           </Typography>
                         </Box>
                       </Box>
-                      {sessionData?.reason && (
+                      {sessionData?.lev_reason && (
                         <Box>
                           <Typography
                             sx={{ fontSize: "13px", color: "#6E6E6E" }}
@@ -125,7 +124,7 @@ function Sessions({ sessionData, filterData }) {
                             >
                               Reason :{" "}
                             </span>
-                            {sessionData?.reason}
+                            {sessionData?.lev_reason}
                           </Typography>
                         </Box>
                       )}

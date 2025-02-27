@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Tabs, Tab, Box, Button } from "@mui/material";
+import { Tabs, Tab, Box} from "@mui/material";
 import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";

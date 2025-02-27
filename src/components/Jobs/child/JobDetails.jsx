@@ -7,13 +7,13 @@ import {
   Dialog,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Image } from "cloudinary-react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { formatDateTime } from "../../../Utils/dateTimeFormator";
-import { Language, LinkedIn, Mail } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Language, LinkedIn, Mail } from "@mui/icons-material";
+
+import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
-import { getJobDetais } from "../jobs.actions";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../Common/ErrorHandling";
 import { formatForDisplay } from "../../../Utils/formateForDisplay";
@@ -21,6 +21,7 @@ import DenyJobDialog from "./DenyJobDialog";
 import ApplyJobDialog from "./ApplyJobDialog";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import dateFormator from "../../../Utils/dateFormator";
+import { getJobDetais } from "../jobs.actions";
 
 function JobDetails() {
   const navigate = useNavigate();

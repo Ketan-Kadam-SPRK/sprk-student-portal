@@ -1,13 +1,15 @@
 import { Box, Button, Dialog, Typography, Avatar } from "@mui/material";
 import React, { useState } from "react";
+
 import PersonIcon from "@mui/icons-material/Person";
 import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
+import { Image } from "cloudinary-react";
 import { useSelector } from "react-redux";
 import ChangePassword from "./Modal/ChangePassword";
 import LogoutAll from "./Modal/LogoutAll";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Image } from "cloudinary-react";
 
 function Profile() {
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};

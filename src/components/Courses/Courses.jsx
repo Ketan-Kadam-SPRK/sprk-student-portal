@@ -7,7 +7,6 @@ import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import ErrorHandling from "../Common/ErrorHandling";
 import NoDataPage from "../Common/NoDataPage";
 import { Image } from "cloudinary-react";
-import { objectShallowCompare } from "@mui/x-data-grid/hooks/utils/useGridSelector";
 
 const Courses = () => {
   const dispatch = useDispatch();
