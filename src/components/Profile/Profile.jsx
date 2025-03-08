@@ -1,16 +1,34 @@
-import { Box, Button, Dialog, Typography, Avatar } from "@mui/material";
-import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Dialog,
+  Typography,
+  Avatar,
+  IconButton,
+  TextField,
+  CircularProgress,
+} from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ChangePassword from "./Modal/ChangePassword";
 import LogoutAll from "./Modal/LogoutAll";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Image } from "cloudinary-react";
+import { Edit, Close } from "@mui/icons-material";
+import Dropzone from "../Common/Dropzonn/DropZone";
+import { uploadUserProfilePic } from "../Login/store/login.actions";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { setUserProfilePic } from "../Login/store/authSlice";
 
 function Profile() {
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
+  const userProfilePic = useSelector((state) => state.authSlice.userProfilePic);
+
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const handleToogleChangePassword = () => {
     setOpenChangePassword(!openChangePassword);
@@ -20,6 +38,53 @@ function Profile() {
   const handleLogoutModal = () => {
     setOpenLogout(!openLogout);
   };
+
+  const [openUpload, setOpenUpload] = useState(false);
+  const [loadingFile, setLoadingFile] = useState(false);
+
+  const handleUpload = () => setOpenUpload(!openUpload);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleFileSelect = async (event) => {
+    setSelectedFile(event);
+  };
+
+  const UploadProfilePic = async () => {
+    try {
+      setIsUploading(true);
+      console.log(selectedFile);
+      const res = await dispatch(
+        uploadUserProfilePic({
+          headers,
+          selectedFile,
+        })
+      );
+
+      if (res.payload) {
+        // getProfilePic();
+        handleUpload();
+        setSelectedFile(null);
+      }
+      setIsUploading(false);
+    } catch (err) {
+      // console.log(err);
+      setIsUploading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   getProfilePic();
+  // }, []);
+
+  // const getProfilePic = () => {
+  //   // if(userDetails.profile === true){
+  //   dispatch(getUserPic({ headers })).then((res) => {
+  //     dispatch(setUserProfilePic({ userProfilePic: res?.payload }));
+  //   });
+  // };
 
   const renderBox = ({ Icon, title, value }) => {
     return (
@@ -94,17 +159,7 @@ function Profile() {
             borderRadius: "20px 20px 0px 0px",
           }}
         >
-          <Box>
-            {/* <img
-              src="https://png.pngtree.com/png-clipart/20230927/original/pngtree-man-avatar-image-for-profile-png-image_13001882.png"
-              alt=""
-              style={{
-                width: "200px",
-                height: "200px",
-                borderRadius: "50%",
-                objectFit: "cover",
-              }}
-            /> */}
+          {/* <Box>
             <Avatar
               sx={{
                 width: "200px",
@@ -122,22 +177,149 @@ function Profile() {
                 }}
               />
             </Avatar>
+          </Box> */}
+          <Box
+            sx={{
+              width: "200px",
+              height: "200px",
+              my: 2,
+              borderRadius: "50%",
+              position: "relative",
+              boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+            }}
+          >
+            {userProfilePic ? (
+              <img
+                src={userProfilePic}
+                alt="Image from API"
+                loading="lazy"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+              />
+            ) : (
+              <AccountCircleIcon
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  color: "white",
+                }}
+              />
+            )}
+            <Button
+              variant="contained"
+              color="inherit"
+              sx={{
+                position: "absolute",
+                bottom: "5px",
+                right: "5px",
+                minWidth: "40px",
+                height: "40px",
+                padding: "5px",
+                borderRadius: "50%",
+              }}
+              onClick={handleUpload}
+            >
+              <Edit size="small" color="primary" />
+            </Button>
+            <Dialog
+              open={openUpload}
+              onClose={() => setOpenUpload(false)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              // disableBackdropClick={true}
+            >
+              <Box
+                sx={{
+                  padding: 3,
+                  boxShadow: "rgba(0, 0, 0, 0.5) 0px 0px 24px",
+                  width: { xs: "80vw", sm: "500px" },
+                }}
+              >
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                  }}
+                  onClick={() => {
+                    setOpenUpload(false);
+                    setSelectedFile("");
+                  }}
+                >
+                  <Close />
+                </IconButton>
+                <Box>
+                  <Typography
+                    sx={{
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                    Upload
+                  </Typography>
+                  {loadingFile ? (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: "150px",
+                      }}
+                    >
+                      <CircularProgress size={24} />
+                    </Box>
+                  ) : (
+                    <Dropzone
+                      onFileAccepted={handleFileSelect}
+                      fileInputRef={fileInputRef}
+                      fileTypeForm="img"
+                      setLoadingFile={setLoadingFile}
+                    />
+                  )}
+                  <TextField
+                    sx={{
+                      mt: 2,
+                    }}
+                    value={selectedFile?.name}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    disabled
+                  />
+                  <Box sx={{ display: "flex", mt: 2 }}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      onClick={UploadProfilePic}
+                      disabled={isUploading || !selectedFile}
+                    >
+                      {isUploading ? <CircularProgress size={24} /> : "Upload"}
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+            </Dialog>
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Typography variant="h3" color="white">
-              Hello,
-            </Typography>
-                      <Image
-                        publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740204094/hand_waving_yellow_smf1ym.svg"
-                        cloudName="dxlzzgbfw"
-                        style={{
-                          width: "auto",
-                          height: "40px",
-                          objectFit: "contain",
-                        }}
-                      />
+              <Typography variant="h3" color="white">
+                Hello,
+              </Typography>
+              <Image
+                publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740204094/hand_waving_yellow_smf1ym.svg"
+                cloudName="dxlzzgbfw"
+                style={{
+                  width: "auto",
+                  height: "40px",
+                  objectFit: "contain",
+                }}
+              />
             </Box>
             <Typography variant="h3" color="white">
               {userDetails?.name || ""}

@@ -1,0 +1,9 @@
+.browseDiv {
+    border: 1px #384EB7 dashed;
+    border-radius: 2px;
+    display: flex;
+    background-color: #EEF7FF;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

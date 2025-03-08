@@ -147,3 +147,27 @@ export const changePassword = createAsyncThunk(
     }
   }
 );
+
+export const uploadUserProfilePic = createAsyncThunk(
+  "profile/uploadUserProfilePic",
+  async ({ headers, selectedFile }) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+      formData.append("type", "PROFILE");
+
+      const res = await axiosInstance.post(`/student-portal/upload`, formData, {
+        headers: {
+          ...headers,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const data = await res.data; // Corrected this line
+      // console.log(res.data)
+      return handleResponse(data);
+    } catch (err) {
+      handleError(err);
+    }
+  }
+);

@@ -6,6 +6,7 @@ const initialState = {
   userId: null,
   userDetails: null,
   examsData: null,
+  userProfilePic: null,
 };
 
 export const authSlice = createSlice({
@@ -26,9 +27,13 @@ export const authSlice = createSlice({
     setUserDetails: (state, action) => {
       state.userDetails = action.payload.userDetails;
     },
+    setUserProfilePic: (state, action) => {
+      state.userProfilePic = action.payload.userProfilePic;
+    },
   },
 });
 
-export const { setLogin, setLogout, setUserDetails } = authSlice.actions;
+export const { setLogin, setLogout, setUserDetails, setUserProfilePic } =
+  authSlice.actions;
 
 export default authSlice.reducer;
