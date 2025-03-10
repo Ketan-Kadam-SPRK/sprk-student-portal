@@ -21,8 +21,8 @@ const ProfileMenu = forwardRef(
   ({ handleMenuClose, isMenuOpen = null }, ref) => {
     const navigate = useNavigate();
     const logout = LogOut();
-    const userProfilePic = null;
-    // const userProfilePic = useSelector((state) => state.profile.userProfilePic);
+    const userProfilePic =
+      useSelector((state) => state.authSlice.userProfilePic) || "";
     const userDetails = useSelector((state) => state.authSlice.userDetails);
 
     /**
@@ -100,6 +100,7 @@ const ProfileMenu = forwardRef(
                 overflow: "hidden",
                 whiteSpace: "nowrap",
               }}
+              title={userDetails?.name}
             >
               {/* Display user details (employee id) */}
               {userDetails?.name}

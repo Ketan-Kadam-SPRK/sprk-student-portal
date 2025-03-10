@@ -19,7 +19,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Image } from "cloudinary-react";
 import { Edit, Close } from "@mui/icons-material";
 import Dropzone from "../Common/Dropzonn/DropZone";
-import { uploadUserProfilePic } from "../Login/store/login.actions";
+import { getUserPic, uploadUserProfilePic } from "../Login/store/login.actions";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { setUserProfilePic } from "../Login/store/authSlice";
 
@@ -64,7 +64,7 @@ function Profile() {
       );
 
       if (res.payload) {
-        // getProfilePic();
+        getProfilePic();
         handleUpload();
         setSelectedFile(null);
       }
@@ -75,16 +75,16 @@ function Profile() {
     }
   };
 
-  // useEffect(() => {
-  //   getProfilePic();
-  // }, []);
+  useEffect(() => {
+    getProfilePic();
+  }, []);
 
-  // const getProfilePic = () => {
-  //   // if(userDetails.profile === true){
-  //   dispatch(getUserPic({ headers })).then((res) => {
-  //     dispatch(setUserProfilePic({ userProfilePic: res?.payload }));
-  //   });
-  // };
+  const getProfilePic = () => {
+    // if(userDetails.profile === true){
+    dispatch(getUserPic({ headers })).then((res) => {
+      dispatch(setUserProfilePic({ userProfilePic: res?.payload }));
+    });
+  };
 
   const renderBox = ({ Icon, title, value }) => {
     return (

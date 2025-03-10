@@ -171,3 +171,23 @@ export const uploadUserProfilePic = createAsyncThunk(
     }
   }
 );
+
+export const getUserPic = createAsyncThunk(
+  "profile/getUserPic",
+  async ({ headers }) => {
+    const config = {
+      headers,
+      responseType: "blob", // Set the response type to 'blob' to receive binary data
+    };
+
+    const res = await axiosInstance.get(
+      `/student-portal/profile`,
+      config // Pass the config object here
+    );
+
+    const blob = await res.data;
+    const blobUrl = URL.createObjectURL(blob); // Create a Blob URL
+
+    return blobUrl;
+  }
+);
