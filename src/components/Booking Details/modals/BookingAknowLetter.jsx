@@ -139,6 +139,7 @@ const BookingAknowLetter = forwardRef(
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
+            minHeight:'50vh',
             backgroundColor: "transparent",
           }}
         >

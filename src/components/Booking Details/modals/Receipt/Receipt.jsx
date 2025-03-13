@@ -147,6 +147,7 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
+          minHeight:'50vh',
           backgroundColor: "transparent",
         }}
       >
