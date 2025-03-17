@@ -25,10 +25,10 @@ function Receipts() {
   const [filterData, setFilterData] = useState([]);
   const [error500, setError500] = useState(false);
 
-/**
- * Fetches all receipts from the server and updates the component's state.
- * It dispatches an action to retrieve receipts, sorts them by date, and updates the state with sorted data.
- */
+  /**
+   * Fetches all receipts from the server and updates the component's state.
+   * It dispatches an action to retrieve receipts, sorts them by date, and updates the state with sorted data.
+   */
 
   const handleGetAllReceipts = async () => {
     setLoading(true);
@@ -59,11 +59,11 @@ function Receipts() {
     handleGetAllReceipts();
   }, []);
 
-/**
- * Handles opening of the receipt modal when a receipt is clicked.
- * Toggles openReciept state and sets receiptId state to the clicked receipt's id.
- * @param {Object} row - A receipt object with receipt_code property.
- */
+  /**
+   * Handles opening of the receipt modal when a receipt is clicked.
+   * Toggles openReciept state and sets receiptId state to the clicked receipt's id.
+   * @param {Object} row - A receipt object with receipt_code property.
+   */
   const handleOpenPayment = (row) => {
     setOpenReciept(!openReciept);
     setReceiptId(row?.receipt_code);
@@ -190,6 +190,7 @@ function Receipts() {
               size="small"
               variant="contained"
               onClick={() => handleOpenPayment(row)}
+              data-testid={`view-receipt-btn`}
             >
               View Receipt
             </Button>

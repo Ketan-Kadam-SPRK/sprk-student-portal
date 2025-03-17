@@ -15,12 +15,12 @@ const Courses = () => {
   const [loading, setLoading] = useState(false);
   const [error500, setError500] = useState(false);
 
-/**
- * Fetches course group details from the server, sorts them by booking date
- * in descending order, and updates the courseData state with the sorted data.
- * Sets loading state to true while fetching data and false after fetching.
- * Handles server errors by setting error500 state if a 500 or 503 status code is returned.
- */
+  /**
+   * Fetches course group details from the server, sorts them by booking date
+   * in descending order, and updates the courseData state with the sorted data.
+   * Sets loading state to true while fetching data and false after fetching.
+   * Handles server errors by setting error500 state if a 500 or 503 status code is returned.
+   */
 
   const getCourseDetailsAPi = async () => {
     try {
@@ -68,7 +68,7 @@ const Courses = () => {
           flexDirection: "column",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center",gap:1}}> 
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography variant="h4" fontWeight={600}>
             Your Programs at a Glance{" "}
           </Typography>
@@ -134,8 +134,9 @@ const Courses = () => {
                 <Grid2
                   key={`${index}-${item.cg_uid}-${item.bcn}`}
                   size={{ xs: 12, sm: 12, md: 6, lg: 4 }}
+                  data-testid={`course-grp-card-${index + 1}`}
                 >
-                  <CourseGrpCard item={item} />
+                  <CourseGrpCard item={item} index={index} />
                 </Grid2>
               ))}
             </Grid2>
