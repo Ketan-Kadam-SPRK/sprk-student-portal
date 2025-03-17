@@ -10,7 +10,6 @@ import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
 import NoDataPage from "../../../../Common/NoDataPage";
-import PopupFilterComponent from "../../../../Common/FilterMenuComponent/PopupFilterComponent";
 import NoDataAvailableUI from "../../../../Common/CustomAgGrid/NoDataAvailableUI";
 
 function Sessions({ sessionData, filterData }) {
@@ -21,6 +20,12 @@ function Sessions({ sessionData, filterData }) {
     setShowAttendanceDrawer(!showAttendanceDrawer);
   };
 
+  /**
+   * Given a status, returns the corresponding color and background color for the status.
+   *
+   * @param {string} status - The status to get the styles for. Can be "PRESENT", "ABSENT", or "ON_LEAVE"
+   * @returns {object} - An object containing the color and backgroundColor for the given status
+   */
   const getStatusStyles = (status) => {
     switch (status) {
       case "PRESENT":
@@ -83,7 +88,7 @@ function Sessions({ sessionData, filterData }) {
                         >
                           Session <span>{sessionData.serial_number}</span>{" "}
                           <span style={{ color: "grey", fontSize: "12px" }}>
-                            {sessionData?.type !== "REGULAR" && "(BACKUP)"}
+                          {sessionData?.type !== "REGULAR" ? "(Backup Session)" : ""}
                           </span>
                         </Typography>
                       </Box>
@@ -105,7 +110,26 @@ function Sessions({ sessionData, filterData }) {
                           </Typography>
                         </Box>
                       </Box>
+                      {sessionData?.lev_reason && (
+                        <Box>
+                          <Typography
+                            sx={{ fontSize: "13px", color: "#6E6E6E" }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "14px",
+                                color: "#085186",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Reason :{" "}
+                            </span>
+                            {sessionData?.lev_reason}
+                          </Typography>
+                        </Box>
+                      )}
                     </Box>
+
                     <Box
                       sx={{
                         display: "flex",
@@ -155,6 +179,7 @@ function Sessions({ sessionData, filterData }) {
                               <Typography>{module?.module}</Typography>
                             </div>
                           ))
+
                       ) : (
                         // Displayed when no modules are available for the session
                         <Typography className={styles.noData}>
@@ -162,6 +187,24 @@ function Sessions({ sessionData, filterData }) {
                         </Typography>
                       )}
                     </div>
+                    {sessionData?.remark && (
+                        <Box sx={{ mt: 1,ml:2}}>
+                          <Typography
+                            sx={{ fontSize: "14px", color: "#6E6E6E",fontWeight:600 }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "14px",
+                                color: "#085186",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Remark :{" "}
+                            </span>
+                            {sessionData?.remark}
+                          </Typography>
+                        </Box>
+                      )}
                   </AccordionDetails>
                 </Accordion>
               ))

@@ -13,6 +13,7 @@ import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import { useState } from "react";
 import NoDataPage from "../../Common/NoDataPage";
 import { Image } from "cloudinary-react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 
 const CourseList = ({ data, navigate }) => {
@@ -20,6 +21,16 @@ const CourseList = ({ data, navigate }) => {
   const handleExpandToggle = (courseId) => {
     setExpandedCourseId(expandedCourseId === courseId ? null : courseId);
   };
+
+  /**
+   * Returns the text and background color associated with a given course status.
+   *
+   * @param {string} status - The current status of the course, which can be one of the following:
+   *                          "ONGOING", "COMPLETED", "EXPIRED", "PENDING".
+   * @returns {Object} An object containing the `color` and `backgroundColor` properties that represent
+   *                   the text and background colors associated with the status.
+   *                   Defaults to black text on white background for unrecognized statuses.
+   */
 
   const getStatusColor = (status) => {
     let color = "";
@@ -80,13 +91,7 @@ const CourseList = ({ data, navigate }) => {
               }}
             >
               <AccordionSummary
-                expandIcon={
-                  isExpanded ? (
-                    <ExpandLess sx={{ color: "white", fontSize: 30 }} />
-                  ) : (
-                    <ExpandMore sx={{ color: "white", fontSize: 30 }} />
-                  )
-                }
+                expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
                 sx={{
                   backgroundColor: item?.course_color,
                   borderRadius: 2,
@@ -117,6 +122,7 @@ const CourseList = ({ data, navigate }) => {
                       {item?.batches?.map((batch, batchIndex) => (
                         <IconButton
                           key={batchIndex}
+                          id="batch_details_btn"
                           onClick={() => navigate(`/Batches/${batch}`)}
                         >
                           <StatusStyledComponent

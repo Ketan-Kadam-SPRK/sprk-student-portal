@@ -11,7 +11,6 @@ import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../../../Common/ErrorHandling";
 
 import { getModulesDetails } from "../../../action/batches.actions";
-import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import StatusStyledComponent from "../../../../Common/StatusStyledComponent/StatusStyledComponent";
 
 function Modules({ batchId }) {
@@ -42,6 +41,12 @@ function Modules({ batchId }) {
     getModules();
   }, []);
 
+  /**
+   * Returns the icon for a given status of a module.
+   * 
+   * @param {string} status The status of the module. Can be "COMPLETED", "IN_PROGRESS", or "PENDING".
+   * @returns {React.ReactElement} The icon to be displayed.
+   */
   const getStatusIcon = (status) => {
     switch (status) {
       case "COMPLETED":
@@ -54,6 +59,7 @@ function Modules({ batchId }) {
     }
   };
 
+  // Function to get the color and background color based on the status
   const getStatusStyles = (status) => {
     let color = "";
     let backgroundColor = "";

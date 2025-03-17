@@ -1,4 +1,4 @@
-import { Typography, Box, Button, CircularProgress } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React from "react";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
 function CourseGrpCard({ item }) {
   const navigate = useNavigate();
 
+  // Function to get the color and background color based on the status
   const getStatusColor = (status) => {
     let color = "";
     let backgroundColor = "";
@@ -49,8 +50,6 @@ function CourseGrpCard({ item }) {
       sx={{
         minWidth: "250px",
         display: "flex",
-        // f: 4,
-        // flex: 1,
         flexDirection: "column",
         gap: "20px",
         borderRadius: "10px",
@@ -163,6 +162,7 @@ function CourseGrpCard({ item }) {
               navigate(`/Course_Groups/${item?.cg_id}`);
             }}
             color="primary"
+            id='course_view_details'
             fontSize={"var(--font-size-extra-small)"}
             fontWeight={"bold"}
             sx={{

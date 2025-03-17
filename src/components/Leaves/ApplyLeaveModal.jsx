@@ -174,6 +174,13 @@ function ApplyLeaveModal({
     setValidationErrors(newErrors);
   };
 
+/**
+ * Handles file selection for proof file. Checks if the file size exceeds 1MB
+ * and if the file type is valid. If the file size exceeds 1MB, it will show an
+ * error message and reset the file input to null. If the file type is invalid,
+ * it will also show an error message and reset the file input to null.
+ * @param {Event} event The event object from the file input.
+ */
   const handleProofFile = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -215,6 +222,12 @@ function ApplyLeaveModal({
     }
   };
 
+/**
+ * Clears the proof file from the state and resets the file input field.
+ * If the file data in formData is a string, it resets the proof file after clearing.
+ * Ensures the state update flow is maintained by using a timeout.
+ */
+
   const handleClearFile = () => {
     setProofFile(null); // Clear the file in the state
 
@@ -242,6 +255,14 @@ function ApplyLeaveModal({
     return formattedDate;
   }
 
+/**
+ * Handles form submission by validating the form data and calling
+ * the appropriate Redux action (applyForLeave or editStudentLeave)
+ * based on whether the leave ID is null or not.
+ *
+ * @param {Event} event - The form submission event
+ * @returns {void}
+ */
   const handleSubmit = (event) => {
     event.preventDefault();
 

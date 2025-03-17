@@ -11,8 +11,10 @@ import {
   CircularProgress,
   InputAdornment,
 } from "@mui/material";
+
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+
 import { useLocation } from "react-router-dom";
 
 function modifyCapitalization(inputString) {

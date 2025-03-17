@@ -8,10 +8,12 @@ import {
   IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
-import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
-import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
-import { formatDateTime } from "../../../Utils/dateTimeFormator";
+
 import { Close, InfoRounded } from "@mui/icons-material";
+import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
+
+import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
+import { formatDateTime } from "../../../Utils/dateTimeFormator";
 import ReportPreviewModal from "./ReportPreviewModal";
 import LightTooltip from "../../Common/LightTooltip";
 
@@ -104,10 +106,8 @@ function ExamCard({ item }) {
         borderRadius: "10px",
         backgroundColor: "white",
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
-        // width: "350px",
         width: "100%",
         height: "100%",
-        // maxWidth: "90%",
       }}
     >
       <Box
@@ -235,11 +235,7 @@ function ExamCard({ item }) {
             <Button
               variant="contained"
               sx={{
-                // backgroundColor: "#3C36EC",
                 color: "white",
-                // ":hover": {
-                //   backgroundColor: "#3C36EC",
-                // },
                 borderRadius: "30px",
                 width: "120px",
 
@@ -263,9 +259,6 @@ function ExamCard({ item }) {
                   backgroundColor:
                     item?.status !== "EVALUATING" ? "#9D28E0" : "#D8D8D8",
                   color: item?.status !== "EVALUATING" ? "white" : "black",
-                  // ":hover": {
-                  //   backgroundColor: "#3C36EC",
-                  // },
                   borderRadius: "30px",
                   width: "120px",
                   boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",

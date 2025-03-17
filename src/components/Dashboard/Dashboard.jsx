@@ -2,29 +2,29 @@ import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 import BatchCard from "./Child/BatchCard";
 import { Image } from "cloudinary-react";
-import { useSelector } from "react-redux";
+
 import NoDataPageDashboard from "../Common/NoDataPageDashboard";
 import dateFormator from "../../Utils/dateFormator";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+
+import { formatDateTime } from "../../Utils/dateTimeFormator";
+import ErrorHandling from "../Common/ErrorHandling";
+import { useNavigate } from "react-router-dom";
+import TypingAnimation from "./Child/TypingAnimation";
+import { getAllCertificates } from "../Certification/certificate.actions";
 import {
   getDashExams,
   getDashJobs,
   getTodaysBatches,
 } from "./dashboard.actions";
-import { getAllCertificates } from "../Certification/certificate.actions";
-import { formatDateTime } from "../../Utils/dateTimeFormator";
-import ErrorHandling from "../Common/ErrorHandling";
-import { useNavigate } from "react-router-dom";
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import TypingAnimation from "./Child/TypingAnimation";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { Circle } from "@mui/icons-material";
+
 function Dashboard() {
   function convertToTitleCase(text) {
     if (!text) return "";
-
     return text
       .toLowerCase()
       .split("_") // Split words by underscore
@@ -44,6 +44,20 @@ function Dashboard() {
     fetchAllDashboardData();
   }, []);
 
+
+  /**
+   * Fetches all data required for the dashboard and updates the state
+   *
+   * Fetches the following data:
+   * - Today's batches
+   * - All certificates
+   * - Upcoming exams
+   * - New job postings
+   *
+   * Processes the data and updates the state with the sorted/extracted data
+   *
+   * @returns {Promise<void>}
+   */
   const fetchAllDashboardData = async () => {
     try {
       setLoading(true);
@@ -78,29 +92,6 @@ function Dashboard() {
   };
 
   const Events = [];
-  // const Events = [
-  //   {
-  //     id: "1",
-  //     title: "Hacketon 2024",
-  //     start: "2024-01-01T05:00:00.000Z",
-  //     end: "2024-01-02T08:00:00.000Z",
-  //     logo: "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Vision 2024",
-  //     start: "2024-01-01T05:00:00.000Z",
-  //     end: "2024-01-02T08:00:00.000Z",
-  //     logo: "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "Diwali 2024",
-  //     start: "2024-01-01T05:00:00.000Z",
-  //     end: "2024-01-02T08:00:00.000Z",
-  //     logo: "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1736771092/Cup_of_coffee_top_view_clipboard_with_clip_sheet_of_paper_and_two_pencils_sugnga.svg",
-  //   },
-  // ];
 
   if (loading) {
     return <ErrorHandling loadData={loading} />;
@@ -272,7 +263,7 @@ function Dashboard() {
                           marginRight: "8px", // Space between the bullet and text
                         }}
                       ></Box>
-                      {`Start on : ${formatDateTime(res.start)}`}
+                      {`Start on : ${formatDateTime(res?.start)}`}
                     </Typography>
                   </Box>
                 </Box>
@@ -357,8 +348,8 @@ function Dashboard() {
             }}
           >
             {batches?.length > 0 ? (
-              batches.map((item, index) => (
-                <BatchCard key={`${item.batch_uid}-${index}`} item={item} />
+              batches?.map((item, index) => (
+                <BatchCard key={`${item?.batch_uid}-${index}`} item={item} />
               ))
             ) : (
               <NoDataPageDashboard
@@ -425,7 +416,7 @@ function Dashboard() {
           {exams?.length > 0 ? (
             exams?.map((res, index) => (
               <Box
-                key={`${res.exam_uid}-${index}`}
+                key={`${res?.exam_uid}-${index}`}
                 sx={{
                   display: "flex",
                   p: 2,
@@ -462,14 +453,14 @@ function Dashboard() {
                     sx={{
                       fontWeight: "bold",
                     }}
-                  >{`${res.cou_name}`}</Typography>
+                  >{`${res?.cou_name}`}</Typography>
                   <Typography
                     sx={{
                       fontSize: "var(--font-size-small)",
                       color: "#565656",
                       fontWeight: "bold",
                     }}
-                  >{`Exam ID: ${res.exam_uid}`}</Typography>
+                  >{`Exam ID: ${res?.exam_uid}`}</Typography>
 
                   <Typography
                     sx={{
@@ -490,7 +481,7 @@ function Dashboard() {
                         marginRight: "8px", // Space between the bullet and text
                       }}
                     ></Box>
-                    {`Start on : ${formatDateTime(res.exam_startDate)}`}
+                    {`Start on : ${formatDateTime(res?.exam_startDate)}`}
                   </Typography>
                 </Box>
               </Box>
@@ -591,7 +582,7 @@ function Dashboard() {
             {certificates?.length > 0 ? (
               certificates?.map((certificate, index) => (
                 <Box
-                  key={`${certificate.boo_uid}-${index}`}
+                  key={`${certificate?.boo_uid}-${index}`}
                   sx={{
                     display: "flex",
                     flexDirection: "column",
@@ -600,7 +591,6 @@ function Dashboard() {
                       "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
                     p: 2,
                     borderRadius: "10px",
-                    // justifyContent: "center",
                     alignItems: "center",
                     width: "250px",
                     minWidth: "250px",
@@ -608,7 +598,7 @@ function Dashboard() {
                     flex: 1,
                     overflow: "hidden",
                     backgroundColor: ["READY", "RELEASED"].includes(
-                      certificate.status
+                      certificate?.status
                     )
                       ? "#E6E6FF"
                       : "#EFEFEF",
@@ -621,7 +611,7 @@ function Dashboard() {
                       objectFit: "contain",
                     }}
                     publicId={
-                      ["RELEASED", "READY"].includes(certificate.status)
+                      ["RELEASED", "READY"].includes(certificate?.status)
                         ? "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739507762/certificate_1_hts2yk.svg"
                         : "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739507762/Vector_3_f9j8ip.svg"
                       // ? "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1737461523/Reward_badge_with_star_and_ribbon_tkvffi.svg"
@@ -633,7 +623,7 @@ function Dashboard() {
                     sx={{
                       fontSize: "var(--font-size-small)",
                       fontWeight: "bold",
-                      color: ["RELEASED", "READY"].includes(certificate.status)
+                      color: ["RELEASED", "READY"].includes(certificate?.status)
                         ? "black"
                         : "grey",
                     }}
@@ -649,12 +639,12 @@ function Dashboard() {
                       // whiteSpace: "nowrap",
                       // width: "100px",
                       textAlign: "center",
-                      color: ["RELEASED", "READY"].includes(certificate.status)
+                      color: ["RELEASED", "READY"].includes(certificate?.status)
                         ? "#085186"
                         : "grey",
                     }}
                   >
-                    {certificate.cou_name}
+                    {certificate?.cou_name}
                   </Typography>
                 </Box>
               ))
@@ -737,7 +727,7 @@ function Dashboard() {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  navigate(`/Job_Opportunities/${res.job_uid}`);
+                  navigate(`/Job_Opportunities/${res?.job_uid}`);
                 }}
               >
                 <Image
@@ -765,7 +755,7 @@ function Dashboard() {
                     }}
                   >
                     {" "}
-                    {`${res.post_name} `}
+                    {`${res?.post_name} `}
                   </Typography>
 
                   <Typography
@@ -775,7 +765,7 @@ function Dashboard() {
                       fontWeight: "bold",
                     }}
                   >
-                    {res.comp_name}
+                    {res?.comp_name}
                   </Typography>
 
                   <Typography
@@ -783,7 +773,7 @@ function Dashboard() {
                       fontSize: "var(--font-size-extra-small)",
                       color: "#858585",
                     }}
-                  >{`Posted On: ${formatDateTime(res.created_at)}`}</Typography>
+                  >{`Posted On: ${formatDateTime(res?.created_at)}`}</Typography>
                 </Box>
               </Box>
             ))

@@ -1,32 +1,34 @@
 import { Box, Button, Dialog, Typography } from "@mui/material";
 import { Image } from "cloudinary-react";
-import React, { use, useEffect, useState } from "react";
-import CustomAgGrid from "../../Common/CustomAgGrid/CustomAgGrid";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+
+import CustomAgGrid from "../../Common/CustomAgGrid/CustomAgGrid";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import { AmountFormat } from "../../../Utils/AmountFormat";
 import dateFormator from "../../../Utils/dateFormator";
 import { formatForDisplay } from "../../../Utils/formateForDisplay";
 import { LightTooltip } from "../../../Utils/LightToolTip";
 import Receipt from "../modals/Receipt/Receipt";
-import NoDataPage from "../../Common/NoDataPage";
-import { getAllReceipts } from "../action/Payment.action";
 import ErrorHandling from "../../Common/ErrorHandling";
 import PopupFilterComponent from "../../Common/FilterMenuComponent/PopupFilterComponent";
+import { getAllReceipts } from "../action/Payment.action";
 
 function Receipts() {
-  const navigate = useNavigate();
   const [openReciept, setOpenReciept] = useState(false);
   const [openDetailModal, setOpenDetailModal] = useState(false);
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [receiptId, setReceiptId] = useState(null);
-  const { booking_uid } = useParams();
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [error500, setError500] = useState(false);
+
+/**
+ * Fetches all receipts from the server and updates the component's state.
+ * It dispatches an action to retrieve receipts, sorts them by date, and updates the state with sorted data.
+ */
 
   const handleGetAllReceipts = async () => {
     setLoading(true);
@@ -57,19 +59,14 @@ function Receipts() {
     handleGetAllReceipts();
   }, []);
 
-  const handleDetailModal = () => {
-    setOpenDetailModal(!openDetailModal);
-  };
-
+/**
+ * Handles opening of the receipt modal when a receipt is clicked.
+ * Toggles openReciept state and sets receiptId state to the clicked receipt's id.
+ * @param {Object} row - A receipt object with receipt_code property.
+ */
   const handleOpenPayment = (row) => {
     setOpenReciept(!openReciept);
     setReceiptId(row?.receipt_code);
-  };
-
-  const getMonthName = (dateString) => {
-    if (!dateString) return ""; // Handle invalid or undefined date
-    const date = new Date(dateString);
-    return date.toLocaleString("en-US", { month: "long" }); // Returns full month name (e.g., "January")
   };
 
   const getColorAndBackground = (installment_status) => {

@@ -5,8 +5,6 @@ import {
   CircularProgress,
   Dialog,
   IconButton,
-  styled,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -58,6 +56,11 @@ function Leaves() {
   const [withdrawnLoad, setWithdrawnLoad] = useState(false);
   const [error500, setError500] = useState(false);
 
+/**
+ * Closes the leave modal, resets the form data, and clears the proof file and leave ID.
+ * Toggles the open state to close the modal.
+ */
+
   const handleClose = () => {
     setOpen(!open);
     setFormData(initialState);
@@ -65,13 +68,21 @@ function Leaves() {
     setLeaveId(null);
   };
 
+/**
+ * Fetches all leave data from the server and updates the component state.
+ * Sets loading state to true before initiating the request and false after the request completes.
+ * If the server returns a 500 or 503 status, sets the error500 state to true.
+ * Otherwise, updates the leave data state with the modified data.
+ * Handles any errors by setting the loading state to false.
+ */
+
   const getAllLeavesData = async () => {
     setLoading(true);
     try {
       const res = await dispatch(getAllLeaves({ headers }));
       const data = res?.payload?.data?.data || [];
       const status = res?.payload?.status;
-      const modifiedData = data.reverse();
+      const modifiedData = data?.reverse();
 
       if (status === 500 || status === 503) {
         setError500(true);
@@ -91,7 +102,7 @@ function Leaves() {
 
   useEffect(() => {
     const data = Array.isArray(leaveData)
-      ? leaveData.map((item, index) => ({
+      ? leaveData?.map((item, index) => ({
           ...item,
           id: item?.leaveRequestUid || index,
         }))
@@ -101,6 +112,13 @@ function Leaves() {
     setFilterData(data);
   }, [leaveData]);
 
+/**
+ * Opens the leave modal in edit mode and populates the form fields with the
+ * selected leave data. Modifies the start date by adding 1 day to the selected
+ * start date. Updates the form data state with the modified data, sets the
+ * proof file and leave ID states to the selected file and leave ID respectively.
+ * @param {Object} rowData - The leave data to be edited
+ */
   const handleEdit = (rowData) => {
     setOpen(true);
     const startDate = new Date(rowData?.start);
@@ -118,16 +136,27 @@ function Leaves() {
     setLeaveId(rowData?.leaveRequestUid);
   };
 
+/**
+ * Opens the withdrawal modal and populates the leave ID state with the selected
+ * leave data.
+ * @param {Object} rowData - The leave data to be withdrawn
+ */
   const handleWithdraw = (rowData) => {
     setOpenWidrow(true);
     setLeaveId(rowData?.leaveRequestUid);
   };
+  
+/**
+ * Handles the withdrawal of a leave request by dispatching the getWithdrawnLeaves thunk
+ * and updating the UI accordingly.
+ * @returns {Promise<void>}
+ */
   const handleWithdrawConfirm = async () => {
     setWithdrawnLoad(true);
     try {
       const res = await dispatch(getWithdrawnLeaves({ headers, leaveId })).then(
         (res) => {
-          if (res.payload !== undefined) {
+          if (res?.payload !== undefined) {
             handleCloseWidrow();
             getAllLeavesData();
             setWithdrawnLoad(false);

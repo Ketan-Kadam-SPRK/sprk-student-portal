@@ -12,10 +12,13 @@ import {
   CircularProgress,
 } from "@mui/material";
 import React, { useState } from "react";
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { applyJob } from "../jobs.actions";
-import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import { useDispatch, useSelector } from "react-redux";
+
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+
+import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import { applyJob } from "../jobs.actions";
+
 function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
   const headers = useAuthHeaders();
   const dispatch = useDispatch();
@@ -25,6 +28,14 @@ function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  
+  /**
+   * Handles file selection. Checks if the file is PDF and less than 1MB.
+   * If valid, sets the file in the state and clears the error.
+   * If invalid, shows an error message using swal.
+   * @param {Event} e The event object.
+   */
   const hadleFileSelect = (e) => {
     const file = e.target.files[0];
 
@@ -57,6 +68,10 @@ function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
     }
   };
 
+  /**
+   * Submits the job application with the selected PDF file.
+   * @throws {Error} If the file is invalid or the API call fails.
+   */
   const submit = async () => {
     if (!doc) {
       setError("Please select a file.");
@@ -138,7 +153,6 @@ function ApplyJobDialog({ handleClose, getJobsDetailsById, jobData = {} }) {
               fullWidth
               value={doc?.name}
               placeholder="Choose File"
-              // sx={{ width: "100%", minWidth: "200px" }}
               inputProps={{
                 readOnly: true,
                 sx: {

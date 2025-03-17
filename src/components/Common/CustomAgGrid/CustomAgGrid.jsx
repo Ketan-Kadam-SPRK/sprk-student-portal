@@ -9,7 +9,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import NoDataPage from "../NoDataPage";
-import { Typography } from "@mui/material";
 import NoDataAvailableUI from "./NoDataAvailableUI";
 
 const CustomAgGrid = ({

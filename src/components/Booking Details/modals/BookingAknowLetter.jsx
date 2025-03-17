@@ -1,8 +1,4 @@
 import React, { useRef, useEffect, useState, forwardRef } from "react";
-import { Image } from "cloudinary-react";
-import "./BookingAk.css";
-import { useDispatch, useSelector } from "react-redux";
-import { ToWords } from "to-words";
 import {
   Box,
   Typography,
@@ -16,8 +12,12 @@ import {
   DialogTitle,
   DialogContent,
 } from "@mui/material";
+import "./BookingAk.css";
 import { useReactToPrint } from "react-to-print";
-// import { usePDF } from "react-to-pdf";
+import { Image } from "cloudinary-react";
+import { useDispatch, useSelector } from "react-redux";
+import { ToWords } from "to-words";
+
 import FormatDate from "../../../Utils/FormatDate";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import Styles from "./booking.module.css";
@@ -25,8 +25,8 @@ import { getBookingConfirmation } from "../action/Payment.action";
 
 const tableStyle = {
   border: "1px solid black",
-  py: "5px", // Padding on the Y-axis
-  px: 1, // Padding on the X-axis
+  py: "5px",
+  px: 1, 
   fontSize: "12px",
   fontWeight: "bold",
   width: "200px",
@@ -34,22 +34,20 @@ const tableStyle = {
 
 const tableStyle2 = {
   border: "1px solid black",
-  py: "5px", // Padding on the Y-axis
-  px: 1, // Padding on the X-axis
+  py: "5px",
+  px: 1,
   fontSize: "12px",
 };
 
 const textStyle = {
-  mt: 1, // Margin on the top
+  mt: 1,
   fontSize: "14px",
 };
 
 const BookingAknowLetter = forwardRef(
   ({ handleDetailModal, booking_uid }, ref) => {
     const headers = useAuthHeaders();
-    // const data = useSelector((state) => state.booking.bookingAkData);
     const dispatch = useDispatch();
-    // const [bookingData, setBookingData] = useState(null);
     const toWords = new ToWords();
     const [loading, setLoading] = useState(false);
     const [bookingData, setBookingData] = useState(null);
@@ -58,6 +56,11 @@ const BookingAknowLetter = forwardRef(
       fetchBookingData();
     }, [booking_uid]);
 
+/**
+ * Fetches booking confirmation data from the server
+ * Sets the 'bookingData' state with the response from the server
+ * @returns {void}
+ */
     const fetchBookingData = async () => {
       setLoading(true);
       await dispatch(getBookingConfirmation({ headers, booking_uid }))
@@ -81,8 +84,8 @@ const BookingAknowLetter = forwardRef(
     useEffect(() => {
       const handleKeyDown = (event) => {
         if (event.ctrlKey && event.key === "p") {
-          event.preventDefault(); // Prevent the default browser print dialog
-          handlePrint(); // Trigger the print function from useReactToPrint
+          event.preventDefault(); 
+          handlePrint(); 
           // handlePrintReceipt();
         }
       };
@@ -96,10 +99,6 @@ const BookingAknowLetter = forwardRef(
       };
     }, [handlePrint]);
 
-    // const { targetRef } = usePDF({
-    //   filename: `sprk_booking_aknowledgement-${new Date().toISOString()}.pdf`,
-    // });
-
     const courseNames = bookingData?.booked_course?.map(
       (course) => course.course_group_name
     );
@@ -107,12 +106,6 @@ const BookingAknowLetter = forwardRef(
     let totalFees = bookingData?.total_fees;
 
     const joinedNames = courseNames?.join(", "); // Join course names into a string
-
-    // const paidPayments =
-    //   .map((res) => ({
-    //     ...res,
-    //     balance: res.paid_amount,
-    //   }));
 
     const paidPayments = bookingData?.payments
       ?.filter((payment) => payment.installment_status === "PAID")
@@ -146,6 +139,7 @@ const BookingAknowLetter = forwardRef(
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
+            minHeight:'50vh',
             backgroundColor: "transparent",
           }}
         >
@@ -163,9 +157,6 @@ const BookingAknowLetter = forwardRef(
               display: "flex",
               justifyContent: "flex-end",
               overFlow: "auto",
-              // position: "sticky",
-              // top: "0px",
-              // right: "0px",
               backgroundColor: "#263238",
               width: "100%",
               "@media print": {
@@ -184,7 +175,6 @@ const BookingAknowLetter = forwardRef(
               sx={{
                 px: 3,
                 color: "white",
-                // backgroundColor:'#414D54'
               }}
             >
               Print

@@ -1,21 +1,19 @@
 import { Badge, Box, Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { Image } from "cloudinary-react";
+import { useDispatch } from "react-redux";
+
 import Theory from "./Child/Theory";
 import Practical from "./Child/Practical";
 import Project from "./Child/Project";
 import { getAllExams } from "./exams.actions";
 import ErrorHandling from "../Common/ErrorHandling";
-import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { Image } from "cloudinary-react";
 import { setExamsData } from "./examSlice";
 
 const buttonStyle = {
   borderRadius: "5px",
   padding: "10px",
-
-  // boxShadow:
-  //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
   backgroundColor: "white",
   color: "#6560F0",
   fontWeight: "bold",
@@ -46,6 +44,12 @@ function Exams() {
     getAllTheoryExams();
   }, []);
 
+/**
+ * getAllTheoryExams
+ * Fetches all theory exams and sets the count for ongoing and scheduled exams
+ * @function
+ * @return {void}
+ */
   const getAllTheoryExams = async () => {
     try {
       setLoading(true);
@@ -81,23 +85,23 @@ function Exams() {
 
         setCount({
           practice:
-            modified.theory.practice?.filter((res) =>
+            modified?.theory?.practice?.filter((res) =>
               ["SCHEDULED", "ONGOING"].includes(res.status)
             ).length || 0,
           internal_assessment:
-            modified.theory.internal_assessment?.filter((res) =>
+            modified?.theory?.internal_assessment?.filter((res) =>
               ["SCHEDULED", "ONGOING"].includes(res.status)
             )?.length || 0,
           final:
-            modified.theory.final?.filter((res) =>
+            modified?.theory?.final?.filter((res) =>
               ["SCHEDULED", "ONGOING"].includes(res.status)
             )?.length || 0,
           practical:
-            modified.practical?.filter((res) =>
+            modified?.practical?.filter((res) =>
               ["SCHEDULED", "ONGOING"].includes(res.status)
             )?.length || 0,
           project:
-            modified.project?.filter((res) =>
+            modified?.project?.filter((res) =>
               ["SCHEDULED", "ONGOING"].includes(res.status)
             )?.length || 0,
         });
@@ -145,10 +149,6 @@ function Exams() {
         <Typography
           fontSize={"var(--font-size-medium)"}
           color="#4D535A"
-          // sx={{
-          //   display: "flex",
-          //   gap: 1,
-          // }}
         >
           Track your upcoming exams here
         </Typography>

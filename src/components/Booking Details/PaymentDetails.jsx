@@ -9,22 +9,24 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import dateFormator from "../../Utils/dateFormator";
 import { Image } from "cloudinary-react";
+import { useDispatch } from "react-redux";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+
+import dateFormator from "../../Utils/dateFormator";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
 import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
 import { AmountFormat } from "../../Utils/AmountFormat";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import BookingAknowLetter from "./modals/BookingAknowLetter";
-import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { getBookingInstallments } from "./action/Payment.action";
 import FormatDate from "../../Utils/FormatDate";
 import Receipt from "./modals/Receipt/Receipt";
 import { CapitalFirstLetterOnly } from "../../Utils/CapitalFirstLetterOnly";
 import ErrorHandling from "../Common/ErrorHandling";
+import { getBookingInstallments } from "./action/Payment.action";
 
 function PaymentDetails() {
   const navigate = useNavigate();
@@ -51,6 +53,10 @@ function PaymentDetails() {
     setOpenReciept(!openReciept);
   };
 
+  /**
+   * Fetches the booking installments from the server
+   * Sets the 'data' state with the response from the server
+   */
   const getBookingInstallmentDetails = async () => {
     setLoading(true);
     try {
@@ -83,6 +89,16 @@ function PaymentDetails() {
     getBookingInstallmentDetails();
   }, []);
 
+/**
+ * Determines the overall payment status of an array of installments.
+ * The order of precedence for statuses is OVERDUE > DUE > PENDING > PAID.
+ * If any installment is OVERDUE, the overall status is OVERDUE.
+ * If no installment is OVERDUE, but at least one is DUE, the overall status is DUE.
+ * If no installment is OVERDUE or DUE, but at least one is PENDING, the overall status is PENDING.
+ * If no installment is OVERDUE, DUE, or PENDING, the overall status is PAID.
+ * @param {Array} installments - An array of installment objects, each containing an `installment_status` property.
+ * @returns {string} - The overall payment status.
+ */
   const determinePaymentStatus = (installments) => {
     let statuses = installments?.map((i) => i.installment_status) || [];
     if (statuses.includes("OVERDUE")) return "OVERDUE";
@@ -91,11 +107,24 @@ function PaymentDetails() {
     return "PAID";
   };
 
+/**
+ * Retrieves the full month name from a given date string.
+ * @param {string} dateString - A string representing a date.
+ * @returns {string} - The full name of the month (e.g., "January"). Returns an empty string if the date is invalid or undefined.
+ */
+
   const getMonthName = (dateString) => {
     if (!dateString) return ""; // Handle invalid or undefined date
     const date = new Date(dateString);
     return date.toLocaleString("en-US", { month: "long" }); // Returns full month name (e.g., "January")
   };
+
+/**
+ * Given an installment status, returns an object containing the corresponding
+ * color and backgroundColor.
+ * @param {string} installment_status - The status of the installment.
+ * @returns {object} - An object with `color` and `backgroundColor` properties.
+ */
 
   const getColorAndBackground = (installment_status) => {
     switch (installment_status) {
@@ -112,6 +141,12 @@ function PaymentDetails() {
     }
   };
 
+/**
+ * A component that displays a badge indicating the status of an installment.
+ * The badge has a different color and background color depending on the status.
+ * @param {string} status - The status of the installment.
+ * @returns {JSX.Element} - A badge displaying the status.
+ */
   const StatusBadge = ({ status }) => {
     const { color, backgroundColor } = getColorAndBackground(status);
 
@@ -233,7 +268,6 @@ function PaymentDetails() {
         flexDirection: "column",
         gap: 2,
         pb: 2,
-        // minHeight: "100vh",
         overflow: "auto",
         flex: 1,
       }}

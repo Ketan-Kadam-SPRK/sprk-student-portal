@@ -1,13 +1,15 @@
 import { Badge, Box, Button, Grid2, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import JobCard from "./child/JobCard";
+
+import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import JobCard from "./child/JobCard";
 import { getAllJobs } from "./jobs.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
 import NoDataPage from "../Common/NoDataPage";
-import { Image } from "cloudinary-react";
+
 
 function JobOpportunities() {
   const dispatch = useDispatch();
@@ -25,6 +27,10 @@ function JobOpportunities() {
     PLACED: 0,
     DENIED: 0,
   });
+/**
+ * Handles tab change event. Sets the activeTab state to the selected tab.
+ * @param {string} tab - The selected tab.
+ */
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -33,6 +39,11 @@ function JobOpportunities() {
   useEffect(() => {
     getJobs();
   }, []);
+
+/**
+ * Fetches job opportunities from the server and updates the state accordingly.
+ * @return {Promise<void>}
+ */
 
   const getJobs = async () => {
     try {

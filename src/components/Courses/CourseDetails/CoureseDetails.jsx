@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button,Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import { Image } from "cloudinary-react";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
-import { Image } from "cloudinary-react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { getCourseGrpDetailsBYId } from "../course.actions";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../Common/ErrorHandling";
-import NoDataPage from "../../Common/NoDataPage";
-import { ExpandLessRounded, ExpandMoreRounded } from "@mui/icons-material";
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import CourseList from "./CourseList";
+import { getCourseGrpDetailsBYId } from "../course.actions";
+
 function CoureseDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,6 +29,7 @@ function CoureseDetails() {
   // const [data, setData] = useState(dummyData);
   const [expandedCourseId, setExpandedCourseId] = useState(null); // Track expanded course
 
+// Function to fetch course details
   const getCourseDetailsAPi = async () => {
     try {
       setLoading(true);
@@ -57,6 +58,7 @@ function CoureseDetails() {
     getCourseDetailsAPi();
   }, [courseId]);
 
+  // Function to get the color and background color based on the status
   const getStatusColor = (status) => {
     let color = "";
     let backgroundColor = "";
@@ -91,8 +93,12 @@ function CoureseDetails() {
 
   const { color, backgroundColor } = getStatusColor(data?.status);
 
+/**
+ * Toggles the expansion of a course.
+ * @param {string} courseId
+ * the id of the course to toggle expansion for
+ */
   const handleExpandToggle = (courseId) => {
-    // Toggle the expanded state of the course
     setExpandedCourseId((prev) => (prev === courseId ? null : courseId));
   };
 

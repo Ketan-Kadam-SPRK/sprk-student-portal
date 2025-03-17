@@ -8,32 +8,32 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogActions,
   DialogTitle,
   IconButton,
   CircularProgress,
   Checkbox,
-  FormControlLabel,
 } from "@mui/material";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
-import ProgressBar from "../Common/ProgressBar/ProgressBar";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Close } from "@mui/icons-material";
 import { Image } from "cloudinary-react";
-import CertificateModal from "./CertificateModal";
-import NoDataPage from "../Common/NoDataPage";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import ProgressBar from "../Common/ProgressBar/ProgressBar";
+import CertificateModal from "./CertificateModal";
+import NoDataPage from "../Common/NoDataPage";
+import ErrorHandling from "../../components/Common/ErrorHandling";
+import dateFormator from "../../Utils/dateFormator";
 import {
   downloadCertificate,
   getAllCertificates,
   getVerifiedCertificate,
 } from "./certificate.actions";
-import ErrorHandling from "../../components/Common/ErrorHandling";
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import dateFormator from "../../Utils/dateFormator";
 
 function Certificates() {
   const dispatch = useDispatch();
@@ -60,6 +60,11 @@ function Certificates() {
     setCertId(id);
   };
 
+/**
+ * Function to open the preview dialog for a particular certificate. It sets the 
+ * cer_mpg_uid of the certificate in the state and toggles the open state of the dialog.
+ * @param {object} item - The certificate object with cer_mpg_uid and status properties.
+ */
   const handlePreviewDialog = (item) => {
     setCertId(item?.cer_mpg_uid);
     setCertificateStatus(item?.status);
@@ -156,11 +161,6 @@ function Certificates() {
 
   const [isChecked, setIsChecked] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-
-  // const handleConfirmClick = () => {
-  //   setIsConfirmed(true);
-  //   // handleClose();
-  // };
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
