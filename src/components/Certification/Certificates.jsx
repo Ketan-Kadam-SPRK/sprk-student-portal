@@ -60,11 +60,11 @@ function Certificates() {
     setCertId(id);
   };
 
-/**
- * Function to open the preview dialog for a particular certificate. It sets the 
- * cer_mpg_uid of the certificate in the state and toggles the open state of the dialog.
- * @param {object} item - The certificate object with cer_mpg_uid and status properties.
- */
+  /**
+   * Function to open the preview dialog for a particular certificate. It sets the
+   * cer_mpg_uid of the certificate in the state and toggles the open state of the dialog.
+   * @param {object} item - The certificate object with cer_mpg_uid and status properties.
+   */
   const handlePreviewDialog = (item) => {
     setCertId(item?.cer_mpg_uid);
     setCertificateStatus(item?.status);
@@ -196,7 +196,7 @@ function Certificates() {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Box sx={{ display: "flex", alignItems: "center",gap:1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography variant="h4" fontWeight={600}>
             Your Certificates{" "}
           </Typography>
@@ -265,6 +265,7 @@ function Certificates() {
               return (
                 <Accordion
                   key={`${item?.boo_uid}-${index}`}
+                  data-testid={`${item?.boo_uid}-${index}`}
                   expanded={expanded === `${item?.boo_uid}-${index}`}
                   sx={{ p: 2, borderRadius: "10px 10px" }}
                   onClick={(e) => {
@@ -354,6 +355,7 @@ function Certificates() {
                           variant="contained"
                           onClick={() => handlePreviewDialog(item)}
                           disabled={item?.cer_mpg_uid === null}
+                          data-testid={`preview-button-${index}`}
                         >
                           {getButtonLabel(item)}
                         </Button>
@@ -363,6 +365,7 @@ function Certificates() {
                           onClick={() =>
                             handleDownloadDialog(item?.cer_mpg_uid)
                           }
+                          data-testid={`download-button-${index}`}
                         >
                           <SaveAltIcon />
                         </Button>

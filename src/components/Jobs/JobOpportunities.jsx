@@ -10,7 +10,6 @@ import ErrorHandling from "../Common/ErrorHandling";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
 import NoDataPage from "../Common/NoDataPage";
 
-
 function JobOpportunities() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
@@ -27,10 +26,10 @@ function JobOpportunities() {
     PLACED: 0,
     DENIED: 0,
   });
-/**
- * Handles tab change event. Sets the activeTab state to the selected tab.
- * @param {string} tab - The selected tab.
- */
+  /**
+   * Handles tab change event. Sets the activeTab state to the selected tab.
+   * @param {string} tab - The selected tab.
+   */
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -40,10 +39,10 @@ function JobOpportunities() {
     getJobs();
   }, []);
 
-/**
- * Fetches job opportunities from the server and updates the state accordingly.
- * @return {Promise<void>}
- */
+  /**
+   * Fetches job opportunities from the server and updates the state accordingly.
+   * @return {Promise<void>}
+   */
 
   const getJobs = async () => {
     try {
@@ -103,7 +102,7 @@ function JobOpportunities() {
         flex: 1,
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center",gap:1}}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         <Typography variant="h4" fontWeight={"bold"}>
           Job Openings for You{" "}
         </Typography>
@@ -144,6 +143,7 @@ function JobOpportunities() {
               // variant={activeTAb === res ? "contained" : "outlined"}
               key={index}
               onClick={() => handleTabChange(res)}
+              data-testid={`button-${res}`}
               sx={{
                 borderRadius: "5px",
                 padding: "10px",
