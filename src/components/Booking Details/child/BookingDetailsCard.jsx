@@ -83,8 +83,11 @@ function BookingDetailsCard({ item }) {
             fontWeight: "bold",
             fontSize: "var(--font-size-medium)",
             textTransform: "capitalize",
-            maxWidth: "100%",
-            wordBreak: "break-word",
+            textOverflow: "ellipsis",
+            wordBreak: "normal",
+            whiteSpace: "nowrap",
+            width: "100%",
+            overflow: "hidden",
           }}
         >
           {item?.booking_uid || ""}
