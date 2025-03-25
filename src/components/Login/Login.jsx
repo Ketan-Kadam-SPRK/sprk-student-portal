@@ -31,11 +31,13 @@ function Login() {
   const [formData, setFormData] = useState({
     eid: "",
     password: "",
+    orgId: "",
   });
 
   const [errors, setErrors] = useState({
     isLoginIdValid: false,
     isPasswordValid: false,
+    isOrgIdValid: false,
     captchaError: false,
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -96,6 +98,7 @@ function Login() {
       ...prev,
       isLoginIdValid: name === "eid" && value?.length > 0 ? "" : "",
       isPasswordValid: name === "password" && value?.length > 0 ? "" : "",
+      isOrgIdValid: name === "orgId" && value?.length > 0 ? "" : "",
     }));
   };
 
@@ -120,10 +123,11 @@ function Login() {
       ...prev,
       isLoginIdValid: !formData.eid,
       isPasswordValid: !formData.password,
+      isOrgIdValid: !formData.orgId,
     }));
 
     // If either is invalid, reset captcha and exit
-    if (!formData.eid || !formData.password) {
+    if (!formData.eid || !formData.password || !formData.orgId) {
       resetCaptcha();
 
       return;
@@ -324,7 +328,7 @@ function Login() {
             {/* Password Input */}
             <Typography
               component="h1"
-              sx={{ mt: 3, fontSize: "15px", fontWeight: "600" }}
+              sx={{ mt: 2, fontSize: "15px", fontWeight: "600" }}
             >
               Password
             </Typography>
@@ -355,6 +359,27 @@ function Login() {
               }}
               error={!!errors.isPasswordValid}
               helperText={errors.isPasswordValid && "Password is required"}
+            />
+
+            <Typography
+              component="p"
+              sx={{ mt: 2, fontSize: "15px", fontWeight: "600" }}
+            >
+              Organization ID
+            </Typography>
+            <TextField
+              aria-required
+              fullWidth
+              size="small"
+              placeholder="Organization ID"
+              id="orgId"
+              name="orgId"
+              autoComplete="orgId"
+              autoFocus
+              onChange={handleFormInputs}
+              value={formData.orgId}
+              error={!!errors.isOrgIdValid}
+              helperText={errors.isOrgIdValid && "Organization ID is required"}
             />
 
             {/* <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
