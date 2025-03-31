@@ -30,6 +30,8 @@ export function getRemainingTime(targetTimeUTC) {
     return `${diffInSeconds} secs to go`;
   } else if (diffInMinutes < 60) {
     return `${diffInMinutes} mins to go`;
+  } else if (diffInHours < 1) {
+    return `${diffInHours} hr to go`;
   } else if (diffInHours < 24) {
     return `${diffInHours} hrs to go`;
   } else {

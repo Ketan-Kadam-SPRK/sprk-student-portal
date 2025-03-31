@@ -55,7 +55,7 @@ function Profile() {
   const UploadProfilePic = async () => {
     try {
       setIsUploading(true);
-      console.log(selectedFile);
+      // console.log(selectedFile);
       const res = await dispatch(
         uploadUserProfilePic({
           headers,

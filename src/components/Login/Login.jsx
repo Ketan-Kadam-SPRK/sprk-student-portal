@@ -299,7 +299,7 @@ function Login() {
               <Alert severity="error"> {errorMsg} </Alert>
             ) : (
               status === 401 && (
-                <Alert severity="error"> Incorrect Username Or Password </Alert>
+                <Alert severity="error">Invalid credentials !</Alert>
               )
             )}
 
