@@ -13,7 +13,6 @@ function formatDate(dateString) {
 
 function CertificateModal({
   targetRef,
-  sprkLogo,
   certId = null,
   setCertificateId,
   setIsConfirmed,
@@ -23,18 +22,22 @@ function CertificateModal({
   const dispatch = useDispatch();
   const [previewData, setPreviewData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const logo = useSelector((state) => state.authSlice?.orgDetails?.orgLogo);
+  const orgAddress = useSelector(
+    (state) => state.authSlice?.orgDetails?.orgAddress
+  );
 
   useEffect(() => {
     getData();
   }, [certId]);
 
-/**
- * Fetches the preview data for a certificate using the provided certificate ID.
- * Updates the component's state with the fetched data including certificate status,
- * verification status, and release date.
- * 
- * @returns {void}
- */
+  /**
+   * Fetches the preview data for a certificate using the provided certificate ID.
+   * Updates the component's state with the fetched data including certificate status,
+   * verification status, and release date.
+   *
+   * @returns {void}
+   */
 
   const getData = async () => {
     setLoading(true);
@@ -82,11 +85,17 @@ function CertificateModal({
           <tbody>
             <tr className={styles.certificateTopDiv}>
               <td colSpan={2} className={styles.logoTd}>
-                <img
-                  className={styles.certificationLogo}
-                  src={sprkLogo}
-                  alt="sprk-logo"
-                />
+                {logo && (
+                  <img
+                    style={{
+                      width: "160px",
+                      padding: "5px",
+                      objectFit: "contain",
+                    }}
+                    src={logo}
+                    alt="logo"
+                  />
+                )}
               </td>
             </tr>
 
@@ -172,12 +181,18 @@ function CertificateModal({
                 ></div>
               </td>
             </tr>
-            <tr>
-              <td colSpan={3}>
-                <p className={styles.address}>
-                  102-105, Royal Palace, Plot no-11, opposite to Glomax Mall,
-                  Sector 2, Kharghar, Navi Mumbai, Maharashtra 410210
-                </p>
+            <tr
+              style={{
+                position: "absolute",
+                bottom: "5px",
+                left: "0",
+                right: "0",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <td colSpan={3} className={styles.address}>
+                {orgAddress || ""}
               </td>
             </tr>
           </tbody>

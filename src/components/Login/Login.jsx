@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import Lottie, { LottiePlayer } from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
-import { setLogin, setUserDetails } from "./store/authSlice";
+import { setLogin, setOrgDetails, setUserDetails } from "./store/authSlice";
 import { Checkbox } from "@mui/material";
 import { getUser, loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
@@ -169,6 +169,16 @@ function Login() {
             })
           );
 
+          dispatch(
+            setOrgDetails({
+              orgDetails: {
+                orgName: userDetails?.org_name,
+                orgLogo: userDetails?.org_logo,
+                orgAddress: userDetails?.org_address,
+              },
+            })
+          );
+
           navigate(`/Dashboard`);
         } else {
           resetCaptcha();
@@ -299,7 +309,7 @@ function Login() {
               <Alert severity="error"> {errorMsg} </Alert>
             ) : (
               status === 401 && (
-                <Alert severity="error">Invalid credentials !</Alert>
+                <Alert severity="error">Invalid Credentials !</Alert>
               )
             )}
 

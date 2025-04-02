@@ -250,34 +250,33 @@ function ExamCard({ item }) {
             </Button>
           )}
 
-          {["FAIL", "PASS", "EVALUATING"].includes(item?.status) &&
-            !["PROJECT", "PRACTICAL"].includes(item?.assessment_type) && (
-              <Button
-                color={item?.status !== "EVALUATING" ? "secondary" : "inherit"}
-                variant="contained"
-                sx={{
-                  backgroundColor:
-                    item?.status !== "EVALUATING" ? "#9D28E0" : "#D8D8D8",
-                  color: item?.status !== "EVALUATING" ? "white" : "black",
-                  borderRadius: "30px",
-                  width: "120px",
-                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                }}
-                onClick={() => {
-                  item?.status !== "EVALUATING" &&
-                    handleDialog(item?.exam_user_uid);
-                }}
-                endIcon={
-                  item?.status === "EVALUATING" ? (
-                    <LightTooltip title={evaluting()} arrow>
-                      <InfoRounded sx={{ color: "black" }} />
-                    </LightTooltip>
-                  ) : null
-                }
-              >
-                RESULT
-              </Button>
-            )}
+          {["FAIL", "PASS", "EVALUATING"].includes(item?.status) && (
+            <Button
+              color={item?.status !== "EVALUATING" ? "secondary" : "inherit"}
+              variant="contained"
+              sx={{
+                backgroundColor:
+                  item?.status !== "EVALUATING" ? "#9D28E0" : "#D8D8D8",
+                color: item?.status !== "EVALUATING" ? "white" : "black",
+                borderRadius: "30px",
+                width: "120px",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+              }}
+              onClick={() => {
+                item?.status !== "EVALUATING" &&
+                  handleDialog(item?.exam_user_uid);
+              }}
+              endIcon={
+                item?.status === "EVALUATING" ? (
+                  <LightTooltip title={evaluting()} arrow>
+                    <InfoRounded sx={{ color: "black" }} />
+                  </LightTooltip>
+                ) : null
+              }
+            >
+              RESULT
+            </Button>
+          )}
         </Box>
       </Box>
 
@@ -287,7 +286,7 @@ function ExamCard({ item }) {
             <Close />
           </IconButton>
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ p: { xs: 2, md: 4 } }}>
           <ReportPreviewModal id={responseID} />
         </DialogContent>
       </Dialog>

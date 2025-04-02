@@ -71,6 +71,9 @@ function Sidebar() {
 
   const userProfilePic =
     useSelector((state) => state.authSlice.userProfilePic) || "";
+
+  const orglogo = useSelector((state) => state.authSlice.orgDetails.orgLogo);
+
   // State to manage the main sidebar open/close state
   const [open, setOpen] = useState(false);
 
@@ -199,9 +202,14 @@ function Sidebar() {
               <Box>
                 {/* Display the logo */}
                 <Image
-                  className={Styles.logo}
-                  publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg"
-                  cloudName="dxlzzgbfw"
+                  // className={Styles.logo}
+                  style={{
+                    width: "160px",
+                    padding: "10px",
+                    objectFit: "contain",
+                  }}
+                  publicId={`${orglogo}`}
+                  cloudName={`${orglogo?.split("/")[3]}`}
                 />
               </Box>
             </Box>
