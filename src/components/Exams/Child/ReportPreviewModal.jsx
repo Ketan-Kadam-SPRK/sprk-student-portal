@@ -177,10 +177,27 @@ const ReportPreviewModal = forwardRef(({ id }, ref) => {
               </Typography>
               <TextField
                 multiline
+                maxRows={8}
                 fullWidth
                 value={data?.answer}
                 InputProps={{ readOnly: true }}
                 placeholder={data?.answer ? "" : "No Input Provided"}
+                sx={{
+                  "& textarea": {
+                    overflowY: "auto", // Enables vertical scrolling
+                    scrollbarWidth: "thin", // For Firefox
+                    "&::-webkit-scrollbar": {
+                      width: "6px", // Scrollbar width
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888", // Scroll thumb color
+                      borderRadius: "6px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555",
+                    },
+                  },
+                }}
               ></TextField>
             </Box>
           ))}
