@@ -213,7 +213,7 @@ function PaymentDetails() {
       id: "paid_at",
       minWidth: 150,
       style: { color: "#0074BD", fontWeight: 600 },
-      format: (value) => dateFormator(value, 1),
+      format: (value) => dateFormator(value),
     },
 
     {
