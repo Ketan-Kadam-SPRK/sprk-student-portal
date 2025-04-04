@@ -1,6 +1,6 @@
 .Certification {
     width: 700px !important;
-    height: 500px !important;
+    height: 520px !important;
     background-image: url("https://res.cloudinary.com/dxlzzgbfw/image/upload/v1717153008/Group_1499_bzt9p7.svg") !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
@@ -21,7 +21,7 @@
     padding: 10px !important;
     align-items: center !important;
     border: 1px solid #085186 !important;
-    height: 415px !important;
+    height: 430px !important;
     width: 600px !important;
     background-color: white !important;
     box-shadow: 2px 2px 5px grey !important;
@@ -163,6 +163,7 @@
     margin: 0 !important;
     margin-top: 10px !important;
     font-family: Arial !important;
+    max-width: 500px !important;
 }
 
 .imgStyle {

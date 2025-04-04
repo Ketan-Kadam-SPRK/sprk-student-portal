@@ -3,7 +3,11 @@ import { Image } from "cloudinary-react";
 import Lottie from "lottie-light-react";
 import React from "react";
 import courseLottie from "./explore-courses.json";
+import { useSelector } from "react-redux";
 function ExploreCourses() {
+  const weburl =
+    useSelector((state) => state.authSlice?.orgDetails?.orgWeb) || "";
+
   return (
     <Box
       sx={{
@@ -16,7 +20,7 @@ function ExploreCourses() {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Box sx={{ display: "flex", alignItems: "center",gap:1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography variant="h4" fontWeight={600}>
             Want To Keep Learning?{" "}
           </Typography>
@@ -99,7 +103,7 @@ function ExploreCourses() {
           <Button
             variant="contained"
             onClick={() => {
-              window.open(`${import.meta.env.VITE_APP_WEBSITE_LINK}`, "_blank");
+              window.open(`${weburl}`, "_blank");
             }}
           >
             Explore

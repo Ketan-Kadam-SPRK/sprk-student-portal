@@ -11,6 +11,7 @@ const initialState = {
     orgName: null,
     orgLogo: null,
     orgAddress: null,
+    org_web: null,
   },
 };
 

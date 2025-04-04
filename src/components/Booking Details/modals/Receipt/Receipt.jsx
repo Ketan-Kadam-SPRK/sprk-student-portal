@@ -29,11 +29,11 @@ const text2 = {
 
 const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
   // Get receipt data from the Redux store
-  const orglogo = useSelector((state) => state.authSlice.orgDetails.orgLogo);
+  const orglogo = useSelector((state) => state.authSlice?.orgDetails?.orgLogo);
   const orgAddress = useSelector(
-    (state) => state.authSlice.orgDetails.orgAddress
+    (state) => state.authSlice?.orgDetails?.orgAddress
   );
-  const orgName = useSelector((state) => state.authSlice.orgDetails.orgName);
+  const orgName = useSelector((state) => state.authSlice?.orgDetails?.orgName);
   const [receiptData, setReceiptData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -240,7 +240,7 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
                   {" "}
                   Office Address :
                 </span>{" "}
-                {`${orgName || ""} , ${orgAddress || ""}`}
+                {`${orgAddress || ""}`}
               </Typography>
             </Box>
           </Box>

@@ -224,7 +224,7 @@ const BookingAknowLetter = forwardRef(
                         {" "}
                         Office Address :
                       </span>{" "}
-                      {`${orgName || ""} , ${orgAddress || ""}`}
+                      {`${orgAddress || ""}`}
                     </Typography>
                   </td>
                 </tr>
@@ -507,8 +507,8 @@ const BookingAknowLetter = forwardRef(
                         )}
                       </TableBody>
                     </Table>
-                    <Typography sx={{ marginTop: "10px" }}>
-                      <span style={{ fontWeight: "bold" }}>
+                    <Typography sx={{ marginTop: "10px", fontSize: "12px" }}>
+                      <span style={{ fontWeight: "bold", fontSize: "12px" }}>
                         Total Amount Paid (In INR)
                       </span>{" "}
                       is Rs. {totalPaidAmount?.toLocaleString()} (
@@ -517,8 +517,8 @@ const BookingAknowLetter = forwardRef(
                       only)
                     </Typography>
                     {totalBalance !== 0 && (
-                      <Typography sx={{ marginTop: "10px" }}>
-                        <span style={{ fontWeight: "bold" }}>
+                      <Typography sx={{ marginTop: "10px", fontSize: "12px" }}>
+                        <span style={{ fontWeight: "bold", fontSize: "12px" }}>
                           Total Generated Credit (In INR)
                         </span>{" "}
                         is Rs. {totalBalance?.toLocaleString()} (
