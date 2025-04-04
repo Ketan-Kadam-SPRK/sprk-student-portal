@@ -26,7 +26,7 @@ import { getBookingConfirmation } from "../action/Payment.action";
 const tableStyle = {
   border: "1px solid black",
   py: "5px",
-  px: 1, 
+  px: 1,
   fontSize: "12px",
   fontWeight: "bold",
   width: "200px",
@@ -49,6 +49,12 @@ const BookingAknowLetter = forwardRef(
     const headers = useAuthHeaders();
     const dispatch = useDispatch();
     const toWords = new ToWords();
+    const orglogo = useSelector((state) => state.authSlice.orgDetails.orgLogo);
+    const orgAddress = useSelector(
+      (state) => state.authSlice.orgDetails.orgAddress
+    );
+    const orgName = useSelector((state) => state.authSlice.orgDetails.orgName);
+
     const [loading, setLoading] = useState(false);
     const [bookingData, setBookingData] = useState(null);
 
@@ -56,11 +62,11 @@ const BookingAknowLetter = forwardRef(
       fetchBookingData();
     }, [booking_uid]);
 
-/**
- * Fetches booking confirmation data from the server
- * Sets the 'bookingData' state with the response from the server
- * @returns {void}
- */
+    /**
+     * Fetches booking confirmation data from the server
+     * Sets the 'bookingData' state with the response from the server
+     * @returns {void}
+     */
     const fetchBookingData = async () => {
       setLoading(true);
       await dispatch(getBookingConfirmation({ headers, booking_uid }))
@@ -78,14 +84,14 @@ const BookingAknowLetter = forwardRef(
 
     const handlePrint = useReactToPrint({
       contentRef: printRef, // Pass the ref directly to contentRef
-      documentTitle: `Sprk_Booking_Acknowledgment_${bookingData?.booking_code}`,
+      documentTitle: `Booking_Acknowledgment_${bookingData?.booking_code}`,
     });
 
     useEffect(() => {
       const handleKeyDown = (event) => {
         if (event.ctrlKey && event.key === "p") {
-          event.preventDefault(); 
-          handlePrint(); 
+          event.preventDefault();
+          handlePrint();
           // handlePrintReceipt();
         }
       };
@@ -139,7 +145,7 @@ const BookingAknowLetter = forwardRef(
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
-            minHeight:'50vh',
+            minHeight: "50vh",
             backgroundColor: "transparent",
           }}
         >
@@ -201,23 +207,24 @@ const BookingAknowLetter = forwardRef(
               <thead className="header">
                 <tr>
                   <td colSpan="2">
-                    <Image
-                      style={{ width: "180px" }}
-                      publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg"
-                      cloudName="dxlzzgbfw"
-                    />
+                    {orglogo && (
+                      <Image
+                        style={{ width: "180px", padding: "10px" }}
+                        publicId={orglogo}
+                        cloudName={orglogo?.split("/")[3]}
+                      />
+                    )}
                   </td>
                 </tr>
                 <tr>
                   <td colSpan="2">
                     <Typography sx={{ fontSize: "12px", textAlign: "center" }}>
-                      <span style={{ fontWeight: "bold" }}>
+                      {/* Display the company's office address and contact information */}
+                      <span style={{ fontWeight: "bold", fontSize: "12px" }}>
                         {" "}
                         Office Address :
                       </span>{" "}
-                      SPRK Technologies, Office no: 102-105, 1st floor, Royal
-                      Palace, Sector-2, Plot no.11, Opp. Glomax Mall, Kharghar,
-                      Navi Mumbai, Maharashtra, India, Telephone - 9082572832
+                      {`${orgAddress || ""}`}
                     </Typography>
                   </td>
                 </tr>
@@ -500,8 +507,8 @@ const BookingAknowLetter = forwardRef(
                         )}
                       </TableBody>
                     </Table>
-                    <Typography sx={{ marginTop: "10px" }}>
-                      <span style={{ fontWeight: "bold" }}>
+                    <Typography sx={{ marginTop: "10px", fontSize: "12px" }}>
+                      <span style={{ fontWeight: "bold", fontSize: "12px" }}>
                         Total Amount Paid (In INR)
                       </span>{" "}
                       is Rs. {totalPaidAmount?.toLocaleString()} (
@@ -510,8 +517,8 @@ const BookingAknowLetter = forwardRef(
                       only)
                     </Typography>
                     {totalBalance !== 0 && (
-                      <Typography sx={{ marginTop: "10px" }}>
-                        <span style={{ fontWeight: "bold" }}>
+                      <Typography sx={{ marginTop: "10px", fontSize: "12px" }}>
+                        <span style={{ fontWeight: "bold", fontSize: "12px" }}>
                           Total Generated Credit (In INR)
                         </span>{" "}
                         is Rs. {totalBalance?.toLocaleString()} (
@@ -531,8 +538,8 @@ const BookingAknowLetter = forwardRef(
                       CODE OF CONDUCT
                     </Typography>
                     <Typography sx={{ ...textStyle }}>
-                      1. SPRK Technologies is not an university and does not
-                      award degrees/diplomas.
+                      1. {orgName} is not an university and does not award
+                      degrees/diplomas.
                     </Typography>
                     <Typography sx={{ ...textStyle }}>
                       2. After the module/course completion, it is mandatory for
@@ -547,7 +554,7 @@ const BookingAknowLetter = forwardRef(
                       of any leave.
                     </Typography>
                     <Typography sx={{ ...textStyle }}>
-                      5. SPRK TECHNOLOGIES do not claim 100% guarantee about the
+                      5. {orgName} do not claim 100% guarantee about the
                       placement.
                     </Typography>
                     <Typography sx={{ ...textStyle }}>
@@ -555,8 +562,8 @@ const BookingAknowLetter = forwardRef(
                     </Typography>
                     <Typography sx={{ ...textStyle }}>
                       7. Goods & Service Tax is not charged on the services
-                      provided by SPRK Technologies to Students. Hence SPRK
-                      Technologies is not liable to provide Tax invoice.
+                      provided by {orgName} to Students. Hence {orgName} is not
+                      liable to provide Tax invoice.
                     </Typography>
                     <Typography sx={{ ...textStyle }}>
                       8. In RBC, the payment should be equal to or greater than
@@ -574,13 +581,7 @@ const BookingAknowLetter = forwardRef(
                 </tr>
               </tbody>
               <tfoot className="footer">
-                <tr>
-                  {/* <td colSpan="2" >
-                <Typography sx={{ fontSize: "12px", mt: 2, mb:1, textAlign: "center" }}>
-                  <span style={{ fontWeight: "bold" }}> Office Address :</span> SPRK Technologies, Office no: 102-105, 1st floor, Royal Palace, Sector-2, Plot no.11, Opp. Glomax Mall, Kharghar, Navi Mumbai, Maharashtra, India, Telephone - 9082572832
-                </Typography>
-              </td> */}
-                </tr>
+                <tr></tr>
               </tfoot>
             </table>
           </Box>

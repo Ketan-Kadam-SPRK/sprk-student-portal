@@ -7,7 +7,7 @@ import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import dateFormator from "../../../Utils/dateFormator";
 import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
 
-function CourseGrpCard({ item }) {
+function CourseGrpCard({ item, index }) {
   const navigate = useNavigate();
 
   // Function to get the color and background color based on the status
@@ -162,7 +162,7 @@ function CourseGrpCard({ item }) {
               navigate(`/Course_Groups/${item?.cg_id}`);
             }}
             color="primary"
-            id='course_view_details'
+            id="course_view_details"
             fontSize={"var(--font-size-extra-small)"}
             fontWeight={"bold"}
             sx={{
@@ -171,6 +171,7 @@ function CourseGrpCard({ item }) {
               alignItems: "center",
               gap: "5px",
             }}
+            data-testid={`view-btn-${index + 1}`}
           >
             View Details{" "}
             <ArrowForwardIosRoundedIcon color="primary" fontSize="inherit" />

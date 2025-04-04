@@ -8,7 +8,7 @@ import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
 import { CapitalFirstLetterOnly } from "../../../Utils/CapitalFirstLetterOnly";
 import { AmountFormat } from "../../../Utils/AmountFormat";
 
-function BookingDetailsCard({ item }) {
+function BookingDetailsCard({ item, index }) {
   const navigate = useNavigate();
 
   // Function to get the color and background color based on the payment status
@@ -270,6 +270,7 @@ function BookingDetailsCard({ item }) {
               alignItems: "center",
               gap: "5px",
             }}
+            data-testid={`view-btn-${index + 1}`}
           >
             View Booking Details{" "}
             <ArrowForwardIosRoundedIcon color="primary" fontSize="inherit" />

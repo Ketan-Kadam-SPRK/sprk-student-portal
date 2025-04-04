@@ -6,6 +6,13 @@ const initialState = {
   userId: null,
   userDetails: null,
   examsData: null,
+  userProfilePic: null,
+  orgDetails: {
+    orgName: null,
+    orgLogo: null,
+    orgAddress: null,
+    org_web: null,
+  },
 };
 
 export const authSlice = createSlice({
@@ -26,9 +33,21 @@ export const authSlice = createSlice({
     setUserDetails: (state, action) => {
       state.userDetails = action.payload.userDetails;
     },
+    setUserProfilePic: (state, action) => {
+      state.userProfilePic = action.payload.userProfilePic;
+    },
+    setOrgDetails: (state, action) => {
+      state.orgDetails = action.payload.orgDetails;
+    },
   },
 });
 
-export const { setLogin, setLogout, setUserDetails } = authSlice.actions;
+export const {
+  setLogin,
+  setLogout,
+  setUserDetails,
+  setUserProfilePic,
+  setOrgDetails,
+} = authSlice.actions;
 
 export default authSlice.reducer;

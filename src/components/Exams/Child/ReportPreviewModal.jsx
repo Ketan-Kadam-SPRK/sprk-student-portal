@@ -177,10 +177,27 @@ const ReportPreviewModal = forwardRef(({ id }, ref) => {
               </Typography>
               <TextField
                 multiline
+                maxRows={8}
                 fullWidth
                 value={data?.answer}
                 InputProps={{ readOnly: true }}
                 placeholder={data?.answer ? "" : "No Input Provided"}
+                sx={{
+                  "& textarea": {
+                    overflowY: "auto", // Enables vertical scrolling
+                    scrollbarWidth: "thin", // For Firefox
+                    "&::-webkit-scrollbar": {
+                      width: "6px", // Scrollbar width
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888", // Scroll thumb color
+                      borderRadius: "6px",
+                    },
+                    "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555",
+                    },
+                  },
+                }}
               ></TextField>
             </Box>
           ))}
@@ -200,31 +217,44 @@ const ReportPreviewModal = forwardRef(({ id }, ref) => {
                   <Box
                     sx={{
                       display: "flex",
+                      flexDirection: { xs: "column-reverse", md: "row" },
                       justifyContent: "space-between",
+                      gap: "20px",
                       width: "100%",
-                      mr: 2,
                     }}
                   >
-                    <Box>
+                    <Typography
+                      // className={style.textWrap}
+                      sx={{ fontWeight: 500 }}
+                    >
+                      {`Q${questionIndex + 1}. ${
+                        data?.type === "FILL_UPS"
+                          ? modifyQuestionTextFillUps(data?.question)
+                          : data?.question
+                      }`}
+                      {"  "}
+                    </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "end" }}>
                       <Typography
-                        // className={style.textWrap}
-                        sx={{ fontWeight: 500 }}
+                        sx={{
+                          p: "5px",
+                          fontWeight: 500,
+                          textAlign: "center",
+                          border: "1px solid #8D8D8D",
+                          borderRadius: "5px",
+                          minWidth: "60px",
+                          height: "30px",
+                          maxWidth: "100px",
+                        }}
                       >
-                        {`Question ${questionIndex + 1}`}
-                        {"  "}
+                        {`${data?.obtained} /${data?.marks} `}
                       </Typography>
                     </Box>
-
-                    <Typography
-                      sx={{ mr: "3px", fontWeight: 500, minWidth: "40px" }}
-                    >
-                      {`${data?.obtained} /${data?.marks} `}
-                    </Typography>
                   </Box>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Box>
-                    <Box sx={{ display: "flex", gap: "10px" }}>
+                    {/* <Box sx={{ display: "flex", gap: "10px" }}>
                       <Typography
                         // className={style.textWrap}
                         sx={{ fontWeight: 500, fontSize: "14px" }}
@@ -243,7 +273,7 @@ const ReportPreviewModal = forwardRef(({ id }, ref) => {
                           ? modifyQuestionTextFillUps(data?.question)
                           : data?.question}{" "}
                       </Typography>
-                    </Box>
+                    </Box> */}
 
                     <PracticalQinstruction data={data} />
                   </Box>
@@ -288,7 +318,7 @@ const ReportPreviewModal = forwardRef(({ id }, ref) => {
                         </Typography>
                       </Box>
                     </Box>
-                    <Box>
+                    {/* <Box>
                       <IconButton
                       // onClick={() =>
                       //   handleDownloadFile(data?.file_id, rtoken)
@@ -296,7 +326,7 @@ const ReportPreviewModal = forwardRef(({ id }, ref) => {
                       >
                         <FileDownloadOutlinedIcon />
                       </IconButton>
-                    </Box>
+                    </Box> */}
                   </Box>
                 )}
               </Box>

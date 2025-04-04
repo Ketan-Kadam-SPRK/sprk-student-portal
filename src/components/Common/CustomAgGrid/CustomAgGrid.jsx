@@ -81,6 +81,7 @@ const CustomAgGrid = ({
                             key={column?.id}
                             align={column?.align}
                             sx={{ padding: "12px 15px" }}
+                            data-testid={`cell-${rowIndex}-${column?.id}`}
                           >
                             {column?.format
                               ? column?.format(value, row)

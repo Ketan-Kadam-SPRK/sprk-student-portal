@@ -25,10 +25,10 @@ function Receipts() {
   const [filterData, setFilterData] = useState([]);
   const [error500, setError500] = useState(false);
 
-/**
- * Fetches all receipts from the server and updates the component's state.
- * It dispatches an action to retrieve receipts, sorts them by date, and updates the state with sorted data.
- */
+  /**
+   * Fetches all receipts from the server and updates the component's state.
+   * It dispatches an action to retrieve receipts, sorts them by date, and updates the state with sorted data.
+   */
 
   const handleGetAllReceipts = async () => {
     setLoading(true);
@@ -41,6 +41,7 @@ function Receipts() {
       const sortedData = data.sort(
         (a, b) => new Date(b.paid_at) - new Date(a.paid_at)
       );
+      // const sortedData = data.sort((a, b) => b.receipt_id - a.receipt_id);
       if (status === 500 || status === 503) {
         setError500(true);
       } else {
@@ -58,11 +59,11 @@ function Receipts() {
     handleGetAllReceipts();
   }, []);
 
-/**
- * Handles opening of the receipt modal when a receipt is clicked.
- * Toggles openReciept state and sets receiptId state to the clicked receipt's id.
- * @param {Object} row - A receipt object with receipt_code property.
- */
+  /**
+   * Handles opening of the receipt modal when a receipt is clicked.
+   * Toggles openReciept state and sets receiptId state to the clicked receipt's id.
+   * @param {Object} row - A receipt object with receipt_code property.
+   */
   const handleOpenPayment = (row) => {
     setOpenReciept(!openReciept);
     setReceiptId(row?.receipt_code);
@@ -164,9 +165,12 @@ function Receipts() {
       minWidth: 150,
       format: (value) => AmountFormat(value),
     },
-    { headerName: "MOP", id: "payment_mode", minWidth: 120,
+    {
+      headerName: "MOP",
+      id: "payment_mode",
+      minWidth: 120,
       format: (value) => formatForDisplay(value),
-     },
+    },
     {
       headerName: "Paid On",
       id: "paid_at",
@@ -186,8 +190,9 @@ function Receipts() {
               size="small"
               variant="contained"
               onClick={() => handleOpenPayment(row)}
+              data-testid={`view-receipt-btn`}
             >
-              view Receipt
+              View Receipt
             </Button>
           </Box>
         );

@@ -23,6 +23,7 @@ function ForgotPass() {
   const [isHuman, setIsHuman] = useState(false);
   const [errors, setErrors] = useState({
     isLoginIdValid: false,
+    isOrgIdValid: false,
     captchaError: false,
   });
 
@@ -56,15 +57,32 @@ function ForgotPass() {
     captchaRef.current.resetCaptcha(); // Properly reset the HCaptcha challenge
   };
 
+  const handleFormInputs = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+
+    setErrors((prev) => ({
+      ...prev,
+      isLoginIdValid: name === "eid" && value?.length > 0 ? "" : "",
+      isOrgIdValid: name === "orgId" && value?.length > 0 ? "" : "",
+    }));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     setErrors((prev) => ({
       ...prev,
       isLoginIdValid: !formData.eid,
+      isOrgIdValid: !formData.orgId,
     }));
 
-    if (!formData.eid) {
+    if (!formData.eid || !formData.orgId) {
       resetCaptcha();
       return;
     }
@@ -90,9 +108,11 @@ function ForgotPass() {
         ...prev,
         captchaError: true,
       }));
-      resetCaptcha();
+      // resetCaptcha();
     }
   };
+
+  console.log(errors);
 
   return (
     <Box
@@ -151,14 +171,31 @@ function ForgotPass() {
             size="small"
             variant="outlined"
             placeholder="Enter Student ID or Email"
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, eid: e.target.value }))
-            }
+            name="eid"
+            onChange={handleFormInputs}
             error={errors.isLoginIdValid}
             helperText={
               errors.isLoginIdValid && "Student ID or Email is required"
             }
             fullWidth
+          />
+        </Box>
+        <Box sx={{ width: { xs: "320px", sm: "400px" }, maxWidth: "100%" }}>
+          <Typography variant="body1" sx={{ fontWeight: "600" }}>
+            Organization ID
+          </Typography>
+          <TextField
+            aria-required
+            fullWidth
+            size="small"
+            placeholder="Organization ID"
+            id="orgId"
+            name="orgId"
+            autoComplete="orgId"
+            onChange={handleFormInputs}
+            value={formData.orgId}
+            error={!!errors.isOrgIdValid}
+            helperText={errors.isOrgIdValid && "Organization ID is required"}
           />
         </Box>
         <Box

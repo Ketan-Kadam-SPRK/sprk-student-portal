@@ -1,4 +1,4 @@
-import { Box,Grid2, Typography } from "@mui/material";
+import { Box, Grid2, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Image } from "cloudinary-react";
@@ -16,9 +16,9 @@ function Payments() {
   const [courseData, setCourseData] = useState([]);
   const [error500, setError500] = useState(false);
 
-/**
- * Fetches booking details and updates state with the retrieved data.
- */
+  /**
+   * Fetches booking details and updates state with the retrieved data.
+   */
 
   const getBookingDetail = async () => {
     setLoading(true);
@@ -104,8 +104,12 @@ function Payments() {
           {courseData?.length > 0 ? (
             <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
               {courseData?.map((item, index) => (
-                <Grid2 key={index} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
-                  <BookingDetailsCard item={item} />
+                <Grid2
+                  key={index}
+                  size={{ xs: 12, sm: 6, md: 6, lg: 4 }}
+                  data-testid={`booking-card-${index + 1}`}
+                >
+                  <BookingDetailsCard item={item} index={index} />
                 </Grid2>
               ))}
             </Grid2>

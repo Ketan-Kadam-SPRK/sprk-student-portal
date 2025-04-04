@@ -12,7 +12,7 @@ import "./receipt.css";
 
 import { ToWords } from "to-words";
 import { Image } from "cloudinary-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAuthHeaders } from "../../../../Hooks/useAuthHeaders";
 import { useReactToPrint } from "react-to-print";
 import { getReceiptData, printReceipt } from "../../action/Payment.action";
@@ -29,6 +29,11 @@ const text2 = {
 
 const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
   // Get receipt data from the Redux store
+  const orglogo = useSelector((state) => state.authSlice?.orgDetails?.orgLogo);
+  const orgAddress = useSelector(
+    (state) => state.authSlice?.orgDetails?.orgAddress
+  );
+  const orgName = useSelector((state) => state.authSlice?.orgDetails?.orgName);
   const [receiptData, setReceiptData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,7 +41,6 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
 
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
-
 
   useEffect(() => {
     getReceipt();
@@ -48,7 +52,7 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
    * If no receipt ID is provided, fetches all receipts.
    * @returns {void}
    */
-  
+
   const getReceipt = async () => {
     try {
       setIsLoading(true);
@@ -147,7 +151,7 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
-          minHeight:'50vh',
+          minHeight: "50vh",
           backgroundColor: "transparent",
         }}
       >
@@ -221,19 +225,22 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
           >
             <Box>
               {/* Display the company logo */}
-              <Image
-                style={{ width: "180px" }}
-                publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg"
-                cloudName="dxlzzgbfw"
-              />
+              {orglogo && (
+                <Image
+                  style={{ width: "180px", padding: "10px" }}
+                  publicId={orglogo}
+                  cloudName={orglogo?.split("/")[3]}
+                />
+              )}
             </Box>
-            <Box sx={{ px: 2 }}>
+            <Box sx={{ px: 2, mt: 1 }}>
               <Typography sx={{ fontSize: "12px", textAlign: "center" }}>
                 {/* Display the company's office address and contact information */}
-                Office Address : SPRK Technologies, Office no: 102-105, 1st
-                floor, Royal Palace, Sector-2, Plot no.11, Opp. Glomax Mall,
-                Kharghar, Navi Mumbai, Maharashtra, India. Telephone -
-                9082572832
+                <span style={{ fontWeight: "bold", fontSize: "12px" }}>
+                  {" "}
+                  Office Address :
+                </span>{" "}
+                {`${orgAddress || ""}`}
               </Typography>
             </Box>
           </Box>
@@ -438,7 +445,9 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
                   mb: 12,
                 }}
               >
-                <Typography style={text1}>M/S. SPRK TECHNOLOGIES </Typography>
+                <Typography style={text1}>
+                  {`M/S. ${orgName?.toUpperCase()}`}{" "}
+                </Typography>{" "}
               </Box>
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 <Typography style={text1}>AUTHORISED SIGNATORY </Typography>

@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import Lottie, { LottiePlayer } from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
-import { setLogin, setUserDetails } from "./store/authSlice";
+import { setLogin, setOrgDetails, setUserDetails } from "./store/authSlice";
 import { Checkbox } from "@mui/material";
 import { getUser, loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
@@ -31,11 +31,13 @@ function Login() {
   const [formData, setFormData] = useState({
     eid: "",
     password: "",
+    orgId: "",
   });
 
   const [errors, setErrors] = useState({
     isLoginIdValid: false,
     isPasswordValid: false,
+    isOrgIdValid: false,
     captchaError: false,
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -96,6 +98,7 @@ function Login() {
       ...prev,
       isLoginIdValid: name === "eid" && value?.length > 0 ? "" : "",
       isPasswordValid: name === "password" && value?.length > 0 ? "" : "",
+      isOrgIdValid: name === "orgId" && value?.length > 0 ? "" : "",
     }));
   };
 
@@ -120,10 +123,11 @@ function Login() {
       ...prev,
       isLoginIdValid: !formData.eid,
       isPasswordValid: !formData.password,
+      isOrgIdValid: !formData.orgId,
     }));
 
     // If either is invalid, reset captcha and exit
-    if (!formData.eid || !formData.password) {
+    if (!formData.eid || !formData.password || !formData.orgId) {
       resetCaptcha();
 
       return;
@@ -162,6 +166,17 @@ function Login() {
           dispatch(
             setUserDetails({
               userDetails: userDetails,
+            })
+          );
+
+          dispatch(
+            setOrgDetails({
+              orgDetails: {
+                orgName: userDetails?.org_name,
+                orgLogo: userDetails?.org_logo,
+                orgAddress: userDetails?.org_address,
+                orgWeb: userDetails?.org_web,
+              },
             })
           );
 
@@ -295,7 +310,7 @@ function Login() {
               <Alert severity="error"> {errorMsg} </Alert>
             ) : (
               status === 401 && (
-                <Alert severity="error"> Incorrect Username Or Password </Alert>
+                <Alert severity="error">Invalid Credentials !</Alert>
               )
             )}
 
@@ -324,7 +339,7 @@ function Login() {
             {/* Password Input */}
             <Typography
               component="h1"
-              sx={{ mt: 3, fontSize: "15px", fontWeight: "600" }}
+              sx={{ mt: 2, fontSize: "15px", fontWeight: "600" }}
             >
               Password
             </Typography>
@@ -355,6 +370,27 @@ function Login() {
               }}
               error={!!errors.isPasswordValid}
               helperText={errors.isPasswordValid && "Password is required"}
+            />
+
+            <Typography
+              component="p"
+              sx={{ mt: 2, fontSize: "15px", fontWeight: "600" }}
+            >
+              Organization ID
+            </Typography>
+            <TextField
+              aria-required
+              fullWidth
+              size="small"
+              placeholder="Organization ID"
+              id="orgId"
+              name="orgId"
+              autoComplete="orgId"
+              autoFocus
+              onChange={handleFormInputs}
+              value={formData.orgId}
+              error={!!errors.isOrgIdValid}
+              helperText={errors.isOrgIdValid && "Organization ID is required"}
             />
 
             {/* <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>

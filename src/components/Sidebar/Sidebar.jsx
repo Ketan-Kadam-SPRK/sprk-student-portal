@@ -50,6 +50,9 @@ import RoutesConfig from "../../Routes/RoutesConfig";
 import { EventBusyRounded } from "@mui/icons-material";
 import CategoryIcon from "@mui/icons-material/Category";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import { getUserPic } from "../Login/store/login.actions";
+import { setUserProfilePic } from "../Login/store/authSlice";
+import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 
 /**
  * @class Sidebar
@@ -60,12 +63,17 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 function Sidebar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const headers = useAuthHeaders();
   const theme = useTheme();
   // useConvertImgToBase64();
 
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
 
-  const userProfilePic = null;
+  const userProfilePic =
+    useSelector((state) => state.authSlice.userProfilePic) || "";
+
+  const orglogo = useSelector((state) => state.authSlice.orgDetails.orgLogo);
+
   // State to manage the main sidebar open/close state
   const [open, setOpen] = useState(false);
 
@@ -130,27 +138,17 @@ function Sidebar() {
     setOpen(false);
   };
 
-  /**
-   * @memberof Sidebar
-   * Fetches the user's profile picture if it exists.
-   * If the picture exists, it dispatches an action to store the picture in the state.
-   * If the picture does not exist, it dispatches an action to set the picture as null.
-   */
-  // const getProfilePic = () => {
-  //   if (userDetails?.profile === true) {
-  //     dispatch(getUserPic({ headers })).then((res) => {
-  //       dispatch(setUserProfilePic({ userProfilePic: res?.payload }));
-  //     });
-  //   } else {
-  //     dispatch(setUserProfilePic({ userProfilePic: null }));
-  //   }
-  // };
+  useEffect(() => {
+    getProfilePic();
+  }, []);
 
-  /**
-   * @memberof Sidebar
-   * Toggles the sidebar open or closed by negating the current open state.
-   * @returns {void}
-   */
+  const getProfilePic = () => {
+    // if(userDetails.profile === true){
+    dispatch(getUserPic({ headers })).then((res) => {
+      dispatch(setUserProfilePic({ userProfilePic: res?.payload || "" }));
+    });
+  };
+
   const handleToggleSidebar = () => {
     setOpen((prevState) => !prevState);
   };
@@ -204,9 +202,14 @@ function Sidebar() {
               <Box>
                 {/* Display the logo */}
                 <Image
-                  className={Styles.logo}
-                  publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1690809251/sprk-logoRR_isa0xp.svg"
-                  cloudName="dxlzzgbfw"
+                  // className={Styles.logo}
+                  style={{
+                    width: "160px",
+                    padding: "10px",
+                    objectFit: "contain",
+                  }}
+                  publicId={`${orglogo}`}
+                  cloudName={`${orglogo?.split("/")[3]}`}
                 />
               </Box>
             </Box>
@@ -275,12 +278,14 @@ function Sidebar() {
                       color: "#085084",
                       fontWeight: "600",
                       cursor: "pointer",
-                      width: "120px",
+                      // width: "120px",
+                      maxWidth: "120px",
                       wordBreak: "break-all",
                       textOverflow: "ellipsis",
                       overflow: "hidden",
                       whiteSpace: "nowrap",
                     }}
+                    title={userDetails?.name}
                   >
                     {/* Display user details (employee id) */}
                     {userDetails?.name}

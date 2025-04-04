@@ -147,3 +147,47 @@ export const changePassword = createAsyncThunk(
     }
   }
 );
+
+export const uploadUserProfilePic = createAsyncThunk(
+  "profile/uploadUserProfilePic",
+  async ({ headers, selectedFile }) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+      formData.append("type", "PROFILE");
+
+      const res = await axiosInstance.post(`/student-portal/upload`, formData, {
+        headers: {
+          ...headers,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const data = await res.data; // Corrected this line
+      // console.log(res.data)
+      return handleResponse(data);
+    } catch (err) {
+      handleError(err);
+    }
+  }
+);
+
+export const getUserPic = createAsyncThunk(
+  "profile/getUserPic",
+  async ({ headers }) => {
+    const config = {
+      headers,
+      responseType: "blob", // Set the response type to 'blob' to receive binary data
+    };
+
+    const res = await axiosInstance.get(
+      `/student-portal/profile`,
+      config // Pass the config object here
+    );
+
+    const blob = await res.data;
+    const blobUrl = URL.createObjectURL(blob); // Create a Blob URL
+
+    return blobUrl;
+  }
+);

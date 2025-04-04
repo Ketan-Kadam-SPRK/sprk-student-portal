@@ -122,7 +122,14 @@ function BatchCard({ item }) {
           publicId={item?.cou_img_url}
           cloudName={item?.cou_img_url?.split("/")[2]}
         />
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            width: "250px",
+          }}
+        >
           <Typography
             sx={{ fontSize: "var(--font-size-small)", fontWeight: "bold" }}
           >

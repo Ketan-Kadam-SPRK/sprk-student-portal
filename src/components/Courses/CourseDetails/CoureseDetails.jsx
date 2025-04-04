@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button,Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -29,7 +29,7 @@ function CoureseDetails() {
   // const [data, setData] = useState(dummyData);
   const [expandedCourseId, setExpandedCourseId] = useState(null); // Track expanded course
 
-// Function to fetch course details
+  // Function to fetch course details
   const getCourseDetailsAPi = async () => {
     try {
       setLoading(true);
@@ -93,11 +93,11 @@ function CoureseDetails() {
 
   const { color, backgroundColor } = getStatusColor(data?.status);
 
-/**
- * Toggles the expansion of a course.
- * @param {string} courseId
- * the id of the course to toggle expansion for
- */
+  /**
+   * Toggles the expansion of a course.
+   * @param {string} courseId
+   * the id of the course to toggle expansion for
+   */
   const handleExpandToggle = (courseId) => {
     setExpandedCourseId((prev) => (prev === courseId ? null : courseId));
   };
@@ -228,7 +228,7 @@ function CoureseDetails() {
                       variant="h6"
                       sx={{ fontWeight: 600, color: "#464646" }}
                     >
-                      Course Overview
+                      Course Group Overview
                     </Typography>
                     <Typography sx={{ color: "#6E6E6E" }}>
                       {data?.cg_overview || "No Overview Available"}

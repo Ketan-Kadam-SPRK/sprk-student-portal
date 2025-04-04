@@ -12,14 +12,14 @@ import dateFormator from "../../../Utils/dateFormator";
 function JobCard({ item }) {
   const navigate = useNavigate();
 
-/**
- * Returns the color and background color based on the given job status.
- *
- * @param {string} status - The status of the job. Can be "APPLIED", "NOT_APPLIED", 
- * "UNPLACED", "PLACED", "DENIED", or any other unspecified status.
- * @returns {object} An object containing `color` and `backgroundColor` properties 
- * corresponding to the provided status.
- */
+  /**
+   * Returns the color and background color based on the given job status.
+   *
+   * @param {string} status - The status of the job. Can be "APPLIED", "NOT_APPLIED",
+   * "UNPLACED", "PLACED", "DENIED", or any other unspecified status.
+   * @returns {object} An object containing `color` and `backgroundColor` properties
+   * corresponding to the provided status.
+   */
 
   const getColorAndBackground = (status) => {
     switch (status) {
@@ -234,6 +234,7 @@ function JobCard({ item }) {
             width: "100%",
             alignItems: "center",
             mt: 2,
+            gap: 1,
           }}
         >
           <Typography
@@ -241,7 +242,7 @@ function JobCard({ item }) {
               navigate(`/Job_Opportunities/${item?.job_uid}`);
             }}
             color="primary"
-            fontSize={"var(--font-size-extra-small)"}
+            fontSize={"var(--font-size-small)"}
             fontWeight={"bold"}
             sx={{
               cursor: "pointer",
