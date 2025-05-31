@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Box,
   Typography,
@@ -7,12 +7,8 @@ import {
   AccordionDetails,
   Button,
   Dialog,
-  DialogContent,
-  DialogTitle,
   IconButton,
   CircularProgress,
-  Checkbox,
-  DialogActions,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -22,19 +18,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Close } from "@mui/icons-material";
 import { Image } from "cloudinary-react";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import ProgressBar from "../Common/ProgressBar/ProgressBar";
-import CertificateModal from "./CertificateModal";
+import CertificateModal from "./certificateModal/CertificateModal";
 import NoDataPage from "../Common/NoDataPage";
 import ErrorHandling from "../../components/Common/ErrorHandling";
-import dateFormator from "../../Utils/dateFormator";
-import {
-  downloadCertificate,
-  getAllCertificates,
-  getVerifiedCertificate,
-} from "./certificate.actions";
+import { downloadCertificate, getAllCertificates } from "./certificate.actions";
 
 function Certificates() {
   const dispatch = useDispatch();
@@ -42,17 +32,13 @@ function Certificates() {
 
   const mailID = useSelector((state) => state.authSlice.userDetails?.email);
   const [expanded, setExpanded] = useState(null);
-  const targetRef = useRef(null);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error500, setError500] = useState(false);
   const [certId, setCertId] = useState(null);
-  const [downloading, setDownloading] = useState(false);
-  const [openDownload, setOpenDownload] = useState(false);
-  const [certificateID, setCertificateId] = useState(null);
-  const [confirmLoading, setConfirmLoading] = useState(false);
   const [certificateStatus, setCertificateStatus] = useState(null);
-  const [releasedDate, setReleasedDate] = useState(null);
+  const [openDownload, setOpenDownload] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const handleDownloadDialog = (id) => {
     setOpenDownload(!openDownload);
@@ -78,7 +64,6 @@ function Certificates() {
   const handleClose = () => {
     setOpen(false);
     handleGetAllCertificates();
-    setIsChecked(false);
   };
 
   useEffect(() => {
@@ -103,23 +88,6 @@ function Certificates() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleConfirmClick = async () => {
-    setConfirmLoading(true);
-    dispatch(getVerifiedCertificate({ headers, id: certificateID }))
-      .then((res) => {
-        if (res.payload !== undefined) {
-          handleClose();
-          handleGetAllCertificates();
-          setIsChecked(false);
-        }
-        setConfirmLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setConfirmLoading(false);
-      });
   };
 
   const handleDownloadCerti = async () => {
@@ -156,13 +124,6 @@ function Certificates() {
     ) : (
       <CancelIcon sx={{ color: "#FF5252" }} />
     );
-  };
-
-  const [isChecked, setIsChecked] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
-
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
   };
 
   function getButtonLabel(item) {
@@ -425,7 +386,6 @@ function Certificates() {
           />
         )}
       </Box>
-
       <Dialog open={openDownload} fullWidth maxWidth="sm">
         <Box
           sx={{
@@ -502,147 +462,12 @@ function Certificates() {
         </Box>
       </Dialog>
 
-      <Dialog open={open} fullWidth maxWidth="md" scroll="body">
-        <DialogTitle sx={{ p: 0 }}>
-          <>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                px: 3,
-                pt: 2,
-              }}
-            >
-              <Typography
-                sx={{ fontSize: "18px", fontWeight: 600, color: "#333333" }}
-              >
-                {certificateStatus !== "RELEASED"
-                  ? "Verify Your Certificate"
-                  : "Your Certificate"}
-              </Typography>
-              <IconButton onClick={handleClose}>
-                <Close />
-              </IconButton>
-            </Box>
-
-            {!isConfirmed && certificateStatus !== "RELEASED" && (
-              <Box sx={{ textAlign: "center", pb: 2 }}>
-                <Typography sx={{ fontSize: "14px" }} fontStyle="italic">
-                  Please verify your name, course details, and other information
-                  before confirming your certificate.
-                </Typography>
-                <Typography sx={{ fontSize: "12px" }}>
-                  (Note: If any details require correction, contact us at your
-                  earliest convenience.)
-                </Typography>
-              </Box>
-            )}
-          </>
-        </DialogTitle>
-
-        {/* <DialogContent sx={{ px: 2 }}> */}
-        <DialogContent
-          sx={{
-            px: 2,
-            display: "flex",
-            justifyContent: "center",
-            overflow: "auto", // Enable scrolling
-            maxHeight: "80vh", // Limit height for scrolling
-            width: "100%",
-            boxSizing: "border-box",
-          }}
-        >
-          {/* Centered Certificate */}
-          <Box
-            sx={{
-              maxWidth: "100%",
-              overflowX: "auto", // Horizontal scrolling
-            }}
-          >
-            <CertificateModal
-              targetRef={targetRef}
-              certId={certId}
-              setCertificateId={setCertificateId}
-              setIsConfirmed={setIsConfirmed}
-              setReleasedDate={setReleasedDate}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {!isConfirmed && certificateStatus !== "RELEASED" ? (
-            <Box>
-              <Box
-                sx={{
-                  textAlign: "left",
-                  px: 3,
-                  pt: 2,
-                  display: "flex",
-                  alignItems: "flex-start", // Align items at the top
-                }}
-              >
-                <Checkbox
-                  checked={isChecked}
-                  onChange={handleCheckboxChange}
-                  sx={{ mt: -1 }} // Adjust vertical alignment slightly
-                />
-                <Typography sx={{ fontSize: "14px" }}>
-                  I acknowledge that my name, course details, and all other
-                  information are accurate to the best of my knowledge and
-                  approve the issuance of my certificate.
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  mt: 2,
-                  px: 3,
-                }}
-              >
-                <Button
-                  variant="contained"
-                  onClick={handleConfirmClick}
-                  disabled={!isChecked || confirmLoading}
-                >
-                  {confirmLoading ? <CircularProgress size={24} /> : "Confirm"}
-                </Button>
-              </Box>
-            </Box>
-          ) : (
-            certificateStatus !== "RELEASED" && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  mt: 2,
-                  px: 3,
-                }}
-              >
-                <Typography sx={{ textAlign: "center", fontWeight: 600 }}>
-                  Your certificate details have been confirmed. Your certificate
-                  is now being processed.
-                  <br /> Stay tuned for updates on its release!
-                </Typography>
-              </Box>
-            )
-          )}
-
-          {releasedDate && certificateStatus === "RELEASED" && (
-            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-              <Typography sx={{ textAlign: "center" }}>
-                {`Released on ${dateFormator(releasedDate)} `}
-              </Typography>
-            </Box>
-          )}
-        </DialogActions>
+      <Dialog open={open} fullWidth maxWidth="sm" scroll="body">
+        <CertificateModal
+          certId={certId}
+          certificateStatus={certificateStatus}
+          handleClose={handleClose}
+        />
       </Dialog>
     </Box>
   );

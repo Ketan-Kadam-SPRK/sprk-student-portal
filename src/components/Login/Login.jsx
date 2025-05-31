@@ -176,6 +176,7 @@ function Login() {
                 orgLogo: userDetails?.org_logo,
                 orgAddress: userDetails?.org_address,
                 orgWeb: userDetails?.org_web,
+                orgCertificate: userDetails?.org_certificate,
               },
             })
           );

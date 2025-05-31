@@ -27,6 +27,7 @@
     "browser-image-compression": "^2.0.2",
     "cloudinary-react": "^1.8.1",
     "crypto-js": "^4.2.0",
+    "html2canvas": "^1.4.1",
     "jwt-decode": "^4.0.0",
     "lottie-light-react": "^2.4.0",
     "lottie-react": "^2.4.0",
