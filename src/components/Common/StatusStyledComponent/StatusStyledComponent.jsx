@@ -19,7 +19,17 @@ function StatusStyledComponent({ color, backgroundColor, value }) {
         maxWidth: "200px",
       }}
     >
-      {formatForDisplay(value)}
+      <p
+        style={{
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          width: "100%",
+          margin: 0,
+        }}
+      >
+        {formatForDisplay(value)}
+      </p>
     </div>
   );
 }
