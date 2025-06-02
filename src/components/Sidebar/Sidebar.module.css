@@ -8,6 +8,8 @@
   width: 0px;
 }
 
+
+
 .drawer {
   display: flex;
   justify-content: "space-between";
@@ -31,10 +33,7 @@
   width: 3px;
 }
 
-::-webkit-scrollbar {
-  width: 0px;
-  color: grey;
-}
+
 
 .listItemText {
   font-size: 13px !important;

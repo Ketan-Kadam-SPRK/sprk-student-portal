@@ -62,7 +62,6 @@ function BookingDetailsCard({ item, index }) {
         p: 2,
         boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
         backgroundColor: "white",
-        overflow: "scroll",
       }}
     >
       <Box

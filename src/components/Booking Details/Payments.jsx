@@ -100,7 +100,7 @@ function Payments() {
             Track Your Booking Details
           </Typography>
         </Box>
-        <Box sx={{ p: "20px", height: "100vh" }}>
+        <Box sx={{ p: "20px", height: "100vh", overflow: "auto" }}>
           {courseData?.length > 0 ? (
             <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
               {courseData?.map((item, index) => (

@@ -316,6 +316,17 @@ function Sidebar() {
             variant="permanent"
             open={open}
             className={Styles.drawer}
+            PaperProps={{
+              sx: {
+                width: 240,
+                bgcolor: "primary.main",
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                overflow: "hidden", // Prevent scroll on the drawer itself
+              },
+            }}
             // onMouseEnter={handleDrawerOpen}
             // onMouseLeave={handleDrawerClose}
           >
@@ -325,6 +336,10 @@ function Sidebar() {
                 justifyContent: "space-between",
                 flexDirection: "column",
                 height: "100%",
+                overflowY: "auto",
+                flexGrow: 1,
+                scrollbarWidth: "none", // Firefox
+                msOverflowStyle: "none", // IE/Edge
               }}
             >
               <div>
