@@ -289,7 +289,7 @@ function Certificates() {
                           }}
                         >
                           <Typography variant="h6" fontWeight={600}>
-                            {item?.cou_name}
+                            {item?.cou_cert_name}
                           </Typography>
                           <Typography variant="body2" sx={{ color: "#4D535A" }}>
                             {item?.boo_uid}
