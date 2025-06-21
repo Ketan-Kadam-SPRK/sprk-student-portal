@@ -191,7 +191,7 @@ function Certificates() {
           <Box
             sx={{
               display: "flex",
-              backgroundColor: "#6560F0",
+              backgroundColor: "var(--secondary-color)",
               p: 2,
               borderRadius: "10px 10px 0px 0px",
             }}

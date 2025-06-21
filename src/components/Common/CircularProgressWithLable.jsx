@@ -23,7 +23,7 @@ function CircularProgressWithLabel({ value, totalValue, progress }) {
         variant="determinate"
         value={(value / totalValue) * 100}
         sx={{
-          color: "#1976D2", // Primary blue color
+          color: "var(--primary-color)", // Primary blue color
         }}
         thickness={4.5} // Optional: Match thickness with the background
       />
@@ -43,7 +43,7 @@ function CircularProgressWithLabel({ value, totalValue, progress }) {
         <Typography
           variant="caption"
           component="div"
-          sx={{ color: "#1976D2", fontWeight: "bold" }}
+          sx={{ color: "var(--primary-color)", fontWeight: "bold" }}
         >
           {progress}
         </Typography>

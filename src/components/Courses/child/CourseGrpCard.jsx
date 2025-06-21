@@ -63,7 +63,7 @@ function CourseGrpCard({ item, index }) {
           display: "flex",
           gap: "10px",
           p: 2,
-          backgroundColor: "#7570FC",
+          backgroundColor: "var(--secondary-color)",
           borderRadius: "10px",
           alignItems: "center",
           height: "130px",
@@ -116,7 +116,7 @@ function CourseGrpCard({ item, index }) {
               alignItems: "center",
               justifyContent: "flex-start",
               gap: "5px",
-              color: "#1976D2",
+              color: "var(--primary-color)",
             }}
           >
             <MenuBookRoundedIcon color="primary" fontSize="small" /> Total

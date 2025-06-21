@@ -91,7 +91,7 @@ function Payments() {
       >
         <Box
           sx={{
-            backgroundColor: "#6560F0",
+            backgroundColor: "var(--secondary-color)",
             borderRadius: "10px 10px 0px 0px",
             p: 2,
           }}

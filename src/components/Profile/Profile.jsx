@@ -154,7 +154,7 @@ function Profile() {
             gap: 5,
             p: 3,
             justifyContent: { xs: "center", sm: "center", md: "flex-start" },
-            backgroundColor: "#6560F0",
+            backgroundColor: "var(--secondary-color)",
             flexWrap: "wrap",
             borderRadius: "20px 20px 0px 0px",
           }}

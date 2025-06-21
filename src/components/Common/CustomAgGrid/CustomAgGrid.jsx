@@ -56,7 +56,7 @@ const CustomAgGrid = ({
                   key={column?.id}
                   style={{
                     minWidth: column?.minWidth,
-                    backgroundColor: "#6560F0",
+                    backgroundColor: "var(--secondary-color)",
                     color: "white",
                     fontWeight: "bold",
                     fontSize: "14px",

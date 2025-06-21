@@ -44,10 +44,10 @@ function BatchDetails() {
   const [error500, setError500] = useState(false);
   const [error404, setError404] = useState(false);
 
-/**
- * Fetches session details for a specific batch and updates the state.
- * Sets loading state to true while fetching data and to false once
- */
+  /**
+   * Fetches session details for a specific batch and updates the state.
+   * Sets loading state to true while fetching data and to false once
+   */
 
   const getSessionsDetail = async () => {
     setLoading(true);
@@ -59,7 +59,7 @@ function BatchDetails() {
         setError500(true);
       } else if (status === 404 || status === 400) {
         setError404(true);
-      }else {
+      } else {
         setSessionData(data);
       }
 
@@ -72,17 +72,16 @@ function BatchDetails() {
   useEffect(() => {
     getSessionsDetail();
   }, []);
-  
 
-/**
- * Returns the style properties and icon associated with a given status.
- *
- * @param {string} status - The status for which to retrieve properties.
- *                          Can be "ONGOING", "UPCOMING", "ON_HOLD", "COMPLETED", or other.
- * @returns {object} An object containing the style (background color and text color)
- *                   and an icon corresponding to the status.
- */
- 
+  /**
+   * Returns the style properties and icon associated with a given status.
+   *
+   * @param {string} status - The status for which to retrieve properties.
+   *                          Can be "ONGOING", "UPCOMING", "ON_HOLD", "COMPLETED", or other.
+   * @returns {object} An object containing the style (background color and text color)
+   *                   and an icon corresponding to the status.
+   */
+
   const getStatusProperties = (status) => {
     switch (status) {
       case "ONGOING":
@@ -114,7 +113,13 @@ function BatchDetails() {
   };
 
   if (loading || error500 || error404) {
-    return <ErrorHandling error500={error500} loadData={loading} notFound={error404} />;
+    return (
+      <ErrorHandling
+        error500={error500}
+        loadData={loading}
+        notFound={error404}
+      />
+    );
   }
 
   return (
@@ -194,7 +199,7 @@ function BatchDetails() {
             title="Sessions Completed"
             number={sessionData?.completedSessions}
             image={<CheckCircleIcon style={{ fontSize: 30, color: "white" }} />}
-            bgColor="#6560F0"
+            bgColor="var(--secondary-color)"
           />
 
           <BoxCard

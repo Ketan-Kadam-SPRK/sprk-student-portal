@@ -91,7 +91,7 @@ const ProfileMenu = forwardRef(
             <Typography
               sx={{
                 fontSize: "14px",
-                color: "#085084",
+                color: "var(--sidebar-bg-color)",
                 fontWeight: "600",
                 cursor: "pointer",
                 width: "120px",

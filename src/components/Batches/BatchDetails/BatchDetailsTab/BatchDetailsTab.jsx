@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Tabs, Tab, Box} from "@mui/material";
+import { Tabs, Tab, Box } from "@mui/material";
 import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
@@ -27,7 +27,7 @@ function BatchDetailsTab({ sessionData }) {
 
   return (
     <Box className={styles.mainBox}>
-      <Box className={styles.tabBox} >
+      <Box className={styles.tabBox}>
         <Tabs
           variant="scrollable"
           scrollButtons="auto"
@@ -39,8 +39,8 @@ function BatchDetailsTab({ sessionData }) {
               display: "none",
             },
             "& .MuiTab-root": {
-              backgroundColor: "#E0DFFF",
-              color: "#3D37D5",
+              backgroundColor: "var(--background-color)",
+              color: "var(--primary-color)",
               fontSize: { xs: "14px", sm: "16px", md: "16px" },
               fontWeight: 600,
               textTransform: "none",
@@ -48,7 +48,7 @@ function BatchDetailsTab({ sessionData }) {
               marginLeft: "20px",
             },
             "& .MuiTab-root.Mui-selected": {
-              backgroundColor: "#6560F0",
+              backgroundColor: "var(--secondary-color)",
               color: "#FFFFFF",
             },
           }}

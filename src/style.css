@@ -7,30 +7,53 @@
 
 
 
-:root {
-  --background-color: #EDF6FF;
-  --text-color: #000000;
+/* :root {
+  --background-color: #F4F7FC;
+  --text-color: #1A1A1A;
   --primary-color: #007bff;
-  --secondry-color: #F0F4FF;
-
-
-  /* sidebar colors*/
-
+  --secondary-color: #007bff;
   --sidebar-bg-color: #0A2647;
-  --sidebar-acitve-tab: #0073E6;
-  --sidebar-onhover-tab: #9ccdff;
-  --sidebar-onhover-tab-text: #0073E6;
-  --sidebar-active-tab-text: white;
-  --table-header-bg-color: #085186;
+  --sidebar-acitve-tab: #0056b3;
+  --sidebar-onhover-tab: #cce5ff;
+  --sidebar-onhover-tab-text: #0056b3;
+  --sidebar-active-tab-text: #ffffff;
+
   --font-size-extra-small: clamp(12px, 1vw, 13px);
 
   --font-size-small: clamp(14px, 1vw, 16px);
   --font-size-medium: clamp(16px, 3vw, 20px);
   --font-size-large: clamp(20px, 4vw, 32px);
-  /* --breadcrumb-bg-color: */
 
-  /* --sidebar-bg-color: #0d1821;
-  --table-header-bg-color: #085186; */
+} */
+
+:root {
+  --background-color: #FDF7F7;
+  /* Soft pinkish-white background */
+  --text-color: #1A1A1A;
+  /* Soft black for readability */
+
+  --primary-color: #800000;
+  /* Classic maroon */
+  --secondary-color: #B22222;
+  /* Firebrick – warm and complementary */
+
+  /* Sidebar colors */
+  --sidebar-bg-color: #4B0000;
+  /* Deep maroon for sidebar background */
+  --sidebar-acitve-tab: #990000;
+  /* Bright maroon for active tab */
+  --sidebar-onhover-tab: #e6b8b8;
+  /* Soft pink hover */
+  --sidebar-onhover-tab-text: #800000;
+  /* Maroon text on hover */
+  --sidebar-active-tab-text: #ffffff;
+  /* White text for contrast */
+
+  /* Font sizes (responsive) */
+  --font-size-extra-small: clamp(12px, 1vw, 13px);
+  --font-size-small: clamp(14px, 1vw, 16px);
+  --font-size-medium: clamp(16px, 3vw, 20px);
+  --font-size-large: clamp(20px, 4vw, 32px);
 }
 
 .swal2-container {

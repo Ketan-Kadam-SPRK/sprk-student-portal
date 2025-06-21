@@ -275,7 +275,7 @@ function Sidebar() {
                   <Typography
                     sx={{
                       fontSize: "14px",
-                      color: "#085084",
+                      color: "var(--sidebar-bg-color)",
                       fontWeight: "600",
                       cursor: "pointer",
                       // width: "120px",
@@ -290,7 +290,7 @@ function Sidebar() {
                     {/* Display user details (employee id) */}
                     {userDetails?.name}
                   </Typography>
-                  <KeyboardArrowDownIcon sx={{ color: "grey" }} />
+                  <KeyboardArrowDownIcon color="primary" />
                 </Box>
               </IconButton>
             </Box>
@@ -308,7 +308,7 @@ function Sidebar() {
           width: "100%",
           height: "100%",
           overflowY: "auto",
-          backgroundColor: "var(--secondry-color)",
+          backgroundColor: "var(--background-color)",
         }}
       >
         <div className={open ? Styles.DrawerDiv : Styles.DrawerDiv2}>

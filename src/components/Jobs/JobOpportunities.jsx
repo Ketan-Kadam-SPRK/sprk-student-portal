@@ -154,7 +154,10 @@ function JobOpportunities() {
                 fontWeight: "bold",
                 fontSize: "14px",
                 gap: "10px",
-                backgroundColor: activeTAb === res ? "#6560F0" : "#E0DFFF",
+                backgroundColor:
+                  activeTAb === res
+                    ? "var(--secondary-color)"
+                    : "var(--background-color)",
                 color: activeTAb === res && "white",
               }}
               endIcon={

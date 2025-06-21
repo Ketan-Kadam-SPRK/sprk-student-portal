@@ -18,7 +18,7 @@
 
 .iconStyle {
     font-size: 19px;
-    color:#6560F0;
+    color: var(--secondary-color);
 }
 
 .sessionsNumb {

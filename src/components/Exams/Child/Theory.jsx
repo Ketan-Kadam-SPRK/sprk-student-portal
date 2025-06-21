@@ -50,10 +50,12 @@ function Theory({ count }) {
             px: 2,
             borderRadius: 0,
             alignItems: "center",
-            color: toggle === "practice" ? "#6560F0" : "grey",
+            color: toggle === "practice" ? "var(--secondary-color)" : "grey",
             fontWeight: "bold",
             borderBottom:
-              toggle === "practice" ? "3px solid #6560F0" : "2px solid grey",
+              toggle === "practice"
+                ? "3px solid var(--secondary-color)"
+                : "2px solid grey",
           }}
           onClick={() => handleToggle("practice")}
         >
@@ -68,11 +70,14 @@ function Theory({ count }) {
             px: 2,
             borderRadius: 0,
             alignItems: "center",
-            color: toggle === "internal_assessment" ? "#6560F0" : "grey",
+            color:
+              toggle === "internal_assessment"
+                ? "var(--secondary-color)"
+                : "grey",
             fontWeight: "bold",
             borderBottom:
               toggle === "internal_assessment"
-                ? "3px solid #6560F0"
+                ? "3px solid var(--secondary-color)"
                 : "2px solid grey",
           }}
           onClick={() => handleToggle("internal_assessment")}
@@ -90,10 +95,12 @@ function Theory({ count }) {
             px: 2,
             borderRadius: 0,
             alignItems: "center",
-            color: toggle === "final" ? "#6560F0" : "grey",
+            color: toggle === "final" ? "var(--secondary-color)" : "grey",
             fontWeight: "bold",
             borderBottom:
-              toggle === "final" ? "3px solid #6560F0" : "2px solid grey",
+              toggle === "final"
+                ? "3px solid var(--secondary-color)"
+                : "2px solid grey",
           }}
           onClick={() => handleToggle("final")}
         >

@@ -44,7 +44,6 @@ function Dashboard() {
     fetchAllDashboardData();
   }, []);
 
-
   /**
    * Fetches all data required for the dashboard and updates the state
    *
@@ -600,7 +599,7 @@ function Dashboard() {
                     backgroundColor: ["READY", "RELEASED"].includes(
                       certificate?.status
                     )
-                      ? "#E6E6FF"
+                      ? "var(--background-color)"
                       : "#EFEFEF",
                   }}
                 >
@@ -773,7 +772,9 @@ function Dashboard() {
                       fontSize: "var(--font-size-extra-small)",
                       color: "#858585",
                     }}
-                  >{`Posted On: ${formatDateTime(res?.created_at)}`}</Typography>
+                  >{`Posted On: ${formatDateTime(
+                    res?.created_at
+                  )}`}</Typography>
                 </Box>
               </Box>
             ))

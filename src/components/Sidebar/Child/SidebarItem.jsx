@@ -48,7 +48,7 @@ const SidebarItem = ({ title, icon: Icon, open, isActive, onClick }) => {
           ) : (
             React.createElement(Icon, {
               sx: {
-                color: isHover ? "#0073E6" : "white",
+                color: isHover ? "var(--primary-color)" : "white",
               },
             })
           )}
@@ -57,7 +57,7 @@ const SidebarItem = ({ title, icon: Icon, open, isActive, onClick }) => {
           primary={title}
           primaryTypographyProps={{
             style: {
-              color: isHover ? "#0073E6" : "white",
+              color: isHover ? "var(--primary-color)" : "white",
               fontSize: "var(--font-size-small)",
               fontWeight: 600,
               overflow: "hidden",

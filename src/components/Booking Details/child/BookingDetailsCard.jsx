@@ -69,7 +69,8 @@ function BookingDetailsCard({ item, index }) {
           display: "flex",
           flexDirection: "column",
           p: 2,
-          background: "linear-gradient(270deg, #6560F0 0.13%, #0A2647 91.8%)",
+          background:
+            "linear-gradient(270deg, var(--secondary-color) 0.13%, var(--sidebar-bg-color) 91.8%)",
           borderRadius: "10px",
           alignItems: "flex-start",
           height: "120px",
@@ -133,7 +134,7 @@ function BookingDetailsCard({ item, index }) {
               alignItems: "center",
               justifyContent: "flex-start",
               gap: "5px",
-              color: "#1976D2",
+              color: "var(--primary-color)",
             }}
           >
             Total Installments : {item?.total_installments}

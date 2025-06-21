@@ -43,16 +43,16 @@ function Modules({ batchId }) {
 
   /**
    * Returns the icon for a given status of a module.
-   * 
+   *
    * @param {string} status The status of the module. Can be "COMPLETED", "IN_PROGRESS", or "PENDING".
    * @returns {React.ReactElement} The icon to be displayed.
    */
   const getStatusIcon = (status) => {
     switch (status) {
       case "COMPLETED":
-        return <CheckCircleIcon sx={{ color: "#3D37D5" }} />;
+        return <CheckCircleIcon color="primary" />;
       case "IN_PROGRESS":
-        return <RotateLeftIcon sx={{ color: "#0038A8" }} />;
+        return <RotateLeftIcon color="primary" />;
       case "PENDING":
       default:
         return <CircleOutlinedIcon sx={{ color: "grey" }} />;
@@ -63,7 +63,6 @@ function Modules({ batchId }) {
   const getStatusStyles = (status) => {
     let color = "";
     let backgroundColor = "";
-    
 
     switch (status) {
       case "COMPLETED":
@@ -117,8 +116,10 @@ function Modules({ batchId }) {
               borderRadius: "8px", // Rounds the corners
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: "10px",}}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>{getStatusIcon(item?.moduleCompletionStatus)}</Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                {getStatusIcon(item?.moduleCompletionStatus)}
+              </Box>
               <Box>
                 <Typography sx={{ color: "#085186", fontWeight: 600 }}>
                   {item?.module}

@@ -15,7 +15,7 @@ const buttonStyle = {
   borderRadius: "5px",
   padding: "10px",
   backgroundColor: "white",
-  color: "#6560F0",
+  color: "var(--secondary-color)",
   fontWeight: "bold",
   fontSize: "14px",
   gap: "10px",
@@ -44,12 +44,12 @@ function Exams() {
     getAllTheoryExams();
   }, []);
 
-/**
- * getAllTheoryExams
- * Fetches all theory exams and sets the count for ongoing and scheduled exams
- * @function
- * @return {void}
- */
+  /**
+   * getAllTheoryExams
+   * Fetches all theory exams and sets the count for ongoing and scheduled exams
+   * @function
+   * @return {void}
+   */
   const getAllTheoryExams = async () => {
     try {
       setLoading(true);
@@ -146,10 +146,7 @@ function Exams() {
             cloudName="dxlzzgbfw"
           />
         </Box>
-        <Typography
-          fontSize={"var(--font-size-medium)"}
-          color="#4D535A"
-        >
+        <Typography fontSize={"var(--font-size-medium)"} color="#4D535A">
           Track your upcoming exams here
         </Typography>
       </Box>
@@ -167,7 +164,10 @@ function Exams() {
           <Button
             sx={{
               ...buttonStyle,
-              backgroundColor: activeTab === 0 ? "#6560F0" : "#E0DFFF",
+              backgroundColor:
+                activeTab === 0
+                  ? "var(--secondary-color)"
+                  : "var(--background-color)",
               color: activeTab === 0 && "white",
               minWidth: "150px",
             }}
@@ -186,7 +186,10 @@ function Exams() {
           <Button
             sx={{
               ...buttonStyle,
-              backgroundColor: activeTab === 1 ? "#6560F0" : "#E0DFFF",
+              backgroundColor:
+                activeTab === 1
+                  ? "var(--secondary-color)"
+                  : "var(--background-color)",
               color: activeTab === 1 && "white",
               minWidth: "150px",
             }}
@@ -200,7 +203,10 @@ function Exams() {
           <Button
             sx={{
               ...buttonStyle,
-              backgroundColor: activeTab === 2 ? "#6560F0" : "#E0DFFF",
+              backgroundColor:
+                activeTab === 2
+                  ? "var(--secondary-color)"
+                  : "var(--background-color)",
               color: activeTab === 2 && "white",
               minWidth: "150px",
             }}

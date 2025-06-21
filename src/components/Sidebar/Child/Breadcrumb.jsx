@@ -31,7 +31,7 @@ const Breadcrumb = () => {
     <div
       style={{
         background:
-          "linear-gradient(139deg, var(--table-header-bg-color) 11.37%, var(--sidebar-bg-color) 64.56%)",
+          "linear-gradient(139deg, var(--primary-color) 11.37%, var(--sidebar-bg-color) 64.56%)",
         padding: "7px 5px",
         color: "white",
         // position: "fixed",

@@ -20,7 +20,7 @@ import {
  * @returns {React.ReactElement} The Pagination component
  */
 function Pagination({
-  gridApi=null,
+  gridApi = null,
   setDesiredPage,
   goToPage,
   desiredPage,
@@ -63,7 +63,7 @@ function Pagination({
             htmlFor="jumpToPageInput"
             sx={{
               fontSize: "12px",
-              color: "var(--table-header-bg-color)",
+              color: "var(--secondary-color)",
               fontWeight: "500",
             }}
           >
@@ -105,7 +105,7 @@ function Pagination({
             sx={{
               fontSize: "12px",
               display: { xs: "none", sm: "block" },
-              color: "var(--table-header-bg-color)",
+              color: "var(--secondary-color)",
               fontWeight: "500",
             }}
           >

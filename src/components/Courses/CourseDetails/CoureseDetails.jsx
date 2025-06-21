@@ -287,7 +287,7 @@ function CoureseDetails() {
           <Box
             sx={{
               p: 2,
-              backgroundColor: "#6560F0",
+              backgroundColor: "var(--secondary-color)",
               borderTopLeftRadius: "10px",
               borderTopRightRadius: "10px",
               display: "flex",

@@ -61,7 +61,7 @@ function JobCard({ item }) {
           borderRadius: "10px",
           color: "white",
           background:
-            "conic-gradient(from 270deg at 33.39% 0%, #0A2647 -53.54deg, #6560F0 192.88deg, #0A2647 306.46deg, #6560F0 552.88deg)",
+            "conic-gradient(from 270deg at 33.39% 0%, #0A2647 -53.54deg, var(--secondary-color) 192.88deg, #0A2647 306.46deg, var(--secondary-color) 552.88deg)",
           p: 3,
           gap: 3,
           overflow: "hidden",
