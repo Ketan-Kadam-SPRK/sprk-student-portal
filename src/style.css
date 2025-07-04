@@ -7,7 +7,7 @@
 
 
 
-/* :root {
+:root {
   --background-color: #F4F7FC;
   --text-color: #1A1A1A;
   --primary-color: #007bff;
@@ -24,37 +24,27 @@
   --font-size-medium: clamp(16px, 3vw, 20px);
   --font-size-large: clamp(20px, 4vw, 32px);
 
-} */
+}
 
-:root {
+/* :root {
   --background-color: #FDF7F7;
-  /* Soft pinkish-white background */
   --text-color: #1A1A1A;
-  /* Soft black for readability */
 
   --primary-color: #800000;
-  /* Classic maroon */
+
   --secondary-color: #B22222;
-  /* Firebrick – warm and complementary */
 
-  /* Sidebar colors */
   --sidebar-bg-color: #4B0000;
-  /* Deep maroon for sidebar background */
   --sidebar-acitve-tab: #990000;
-  /* Bright maroon for active tab */
   --sidebar-onhover-tab: #e6b8b8;
-  /* Soft pink hover */
   --sidebar-onhover-tab-text: #800000;
-  /* Maroon text on hover */
   --sidebar-active-tab-text: #ffffff;
-  /* White text for contrast */
 
-  /* Font sizes (responsive) */
   --font-size-extra-small: clamp(12px, 1vw, 13px);
   --font-size-small: clamp(14px, 1vw, 16px);
   --font-size-medium: clamp(16px, 3vw, 20px);
   --font-size-large: clamp(20px, 4vw, 32px);
-}
+} */
 
 .swal2-container {
   z-index: 100000000000 !important;
