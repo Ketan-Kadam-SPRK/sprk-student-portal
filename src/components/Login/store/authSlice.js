@@ -13,6 +13,7 @@ const initialState = {
     orgAddress: null,
     orgWeb: null,
     orgCertificate: null,
+    orgCode: null,
   },
 };
 

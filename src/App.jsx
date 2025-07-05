@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import ForgotPass from "./components/Forgot Password/ForgotPass";
 import ResetPass from "./components/Forgot Password/ResetPass";
 import useCheckTokenExpiration from "./Hooks/useCheckTokenExpiration";
+import { ThemeProvider } from "./context/ThemeContextProvider";
 
 function App() {
   const { checkTokenExpiration } = useCheckTokenExpiration(); // Token expiration handling
@@ -24,7 +25,15 @@ function App() {
       <Routes>
         <Route
           path="/*"
-          element={isAuthenticated ? <Sidebar /> : <Navigate to="/Login" />}
+          element={
+            isAuthenticated ? (
+              <ThemeProvider>
+                <Sidebar />
+              </ThemeProvider>
+            ) : (
+              <Navigate to="/Login" />
+            )
+          }
         />
         <Route
           path="/Login"

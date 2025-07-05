@@ -123,7 +123,7 @@ function Dashboard() {
           sx={{
             display: "flex",
             gap: 2,
-            backgroundColor: "#0073E6",
+            backgroundColor: "var(--primary-color)",
             justifyContent: "space-between",
             p: 2,
             borderRadius: "10px",
