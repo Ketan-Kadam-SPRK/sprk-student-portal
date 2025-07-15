@@ -1,0 +1,23 @@
+.blinkingLight {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgb(255, 77, 0);
+    animation: blinkRed 1s infinite;
+    position: relative;
+    cursor: pointer;
+}
+
+@keyframes blinkRed {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

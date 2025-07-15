@@ -53,6 +53,7 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import { getUserPic } from "../Login/store/login.actions";
 import { setUserProfilePic } from "../Login/store/authSlice";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import BlinkedStatus from "../Common/BlinkedStatus/BlinkedStatus";
 
 /**
  * @class Sidebar
@@ -231,6 +232,8 @@ function Sidebar() {
                   <NotificationsIcon size="large" color="action" />
                 </Badge>
               </IconButton> */}
+
+              <BlinkedStatus status={userDetails?.student_status || ""} />
 
               <IconButton
                 size="large"

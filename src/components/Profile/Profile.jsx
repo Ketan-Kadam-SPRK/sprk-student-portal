@@ -22,6 +22,7 @@ import Dropzone from "../Common/Dropzonn/DropZone";
 import { getUserPic, uploadUserProfilePic } from "../Login/store/login.actions";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { setUserProfilePic } from "../Login/store/authSlice";
+import StudentStatus from "../Common/student status/StudentStatus";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -343,11 +344,21 @@ function Profile() {
             p: 3,
           }}
         >
-          {renderBox({
-            Icon: PersonIcon,
-            title: "Student ID",
-            value: `${userDetails?.student_id || ""}`,
-          })}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 2,
+              flexWrap: "wrap-reverse",
+            }}
+          >
+            {renderBox({
+              Icon: PersonIcon,
+              title: "Student ID",
+              value: `${userDetails?.student_id || ""}`,
+            })}
+            <StudentStatus status={userDetails?.student_status || "ACTIVE"} />
+          </Box>
           {renderBox({
             Icon: CallIcon,
             title: "Contact Number",

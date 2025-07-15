@@ -57,9 +57,9 @@ function Sessions({ sessionData, filterData }) {
         <Box className={styles.mainBox}>
           <Box sx={{ px: 3, py: 2 }}>
             {filterData?.length > 0 ? (
-              filterData?.map((sessionData) => (
+              filterData?.map((sessionData, index) => (
                 <Accordion
-                  key={sessionData?.session_id}
+                  key={`${index + 1}-${sessionData?.session_id}`}
                   sx={{ marginBottom: "25px" }}
                 >
                   {/* Accordion header */}
@@ -88,7 +88,9 @@ function Sessions({ sessionData, filterData }) {
                         >
                           Session <span>{sessionData.serial_number}</span>{" "}
                           <span style={{ color: "grey", fontSize: "12px" }}>
-                          {sessionData?.type !== "REGULAR" ? "(Backup Session)" : ""}
+                            {sessionData?.type !== "REGULAR"
+                              ? "(Backup Session)"
+                              : ""}
                           </span>
                         </Typography>
                       </Box>
@@ -179,7 +181,6 @@ function Sessions({ sessionData, filterData }) {
                               <Typography>{module?.module}</Typography>
                             </div>
                           ))
-
                       ) : (
                         // Displayed when no modules are available for the session
                         <Typography className={styles.noData}>
@@ -188,23 +189,27 @@ function Sessions({ sessionData, filterData }) {
                       )}
                     </div>
                     {sessionData?.remark && (
-                        <Box sx={{ mt: 1,ml:2}}>
-                          <Typography
-                            sx={{ fontSize: "14px", color: "#6E6E6E",fontWeight:600 }}
+                      <Box sx={{ mt: 1, ml: 2 }}>
+                        <Typography
+                          sx={{
+                            fontSize: "14px",
+                            color: "#6E6E6E",
+                            fontWeight: 600,
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: "14px",
+                              color: "#085186",
+                              fontWeight: "bold",
+                            }}
                           >
-                            <span
-                              style={{
-                                fontSize: "14px",
-                                color: "#085186",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              Remark :{" "}
-                            </span>
-                            {sessionData?.remark}
-                          </Typography>
-                        </Box>
-                      )}
+                            Remark :{" "}
+                          </span>
+                          {sessionData?.remark}
+                        </Typography>
+                      </Box>
+                    )}
                   </AccordionDetails>
                 </Accordion>
               ))

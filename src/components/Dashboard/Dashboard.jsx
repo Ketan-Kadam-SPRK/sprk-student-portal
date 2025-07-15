@@ -6,7 +6,7 @@ import { Image } from "cloudinary-react";
 import NoDataPageDashboard from "../Common/NoDataPageDashboard";
 import dateFormator from "../../Utils/dateFormator";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
@@ -21,6 +21,7 @@ import {
   getDashJobs,
   getTodaysBatches,
 } from "./dashboard.actions";
+import StudentStatus from "../Common/student status/StudentStatus";
 
 function Dashboard() {
   function convertToTitleCase(text) {
@@ -34,6 +35,9 @@ function Dashboard() {
   const headers = useAuthHeaders();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const studentStatus = useSelector(
+    (state) => state.authSlice.userDetails?.student_status
+  );
   const [batches, setBatches] = useState([]);
   const [certificates, setCertificates] = useState([]);
   const [jobs, setJobs] = useState([]);
@@ -155,11 +159,23 @@ function Dashboard() {
               between knowledge and curiosity ".
             </Typography>
           </Box>
-          <Image
-            cloudName="dxlzzgbfw"
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738920467/Educational_video_for_online_education_egzdnt.svg"
-            style={{ width: "200px", height: "auto" }}
-          />
+          <Box
+            sx={{
+              flex: 1,
+              gap: 2,
+              display: "flex",
+              alignItems: "end",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <StudentStatus status={studentStatus || "ACTIVE"} />
+            <Image
+              cloudName="dxlzzgbfw"
+              publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738920467/Educational_video_for_online_education_egzdnt.svg"
+              style={{ width: "200px", height: "auto" }}
+            />
+          </Box>
         </Box>
         <Box
           sx={{
