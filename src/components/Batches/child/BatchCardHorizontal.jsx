@@ -53,20 +53,57 @@ function BatchCardHorizontal({ item = {} }) {
     <Box
       key={item?.batch_uid}
       sx={{
-        backgroundColor: "#EDF6FF",
+        backgroundColor: item?.is_removed
+          ? "lightgray"
+          : "var(--background-color)",
         borderRadius: "10px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         p: 2,
         gap: 4,
+        opacity: item?.is_removed ? 0.7 : 1,
+        position: "relative",
         flexWrap: "wrap",
+
         flexDirection: { xs: "column", sm: "column", md: "column", lg: "row" },
         boxShadow:
           "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
         // "rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px",
       }}
     >
+      {item?.is_removed && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            right: "50%",
+            transform: "translate(50%, -50%) rotate(-20deg)",
+            zIndex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            px: 2,
+            borderRadius: "5px",
+            backgroundColor: "red",
+            boxShadow:
+              "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "30px",
+              fontWeight: "bold",
+
+              cursor: "pointer",
+              color: "white",
+              filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.6))",
+            }}
+          >
+            REMOVED
+          </Typography>
+        </Box>
+      )}
       <Box
         sx={{
           display: "flex",
@@ -89,7 +126,7 @@ function BatchCardHorizontal({ item = {} }) {
               cursor: "pointer",
               color: "#0064C9",
             }}
-            id='batch-uid_btn'
+            id="batch-uid_btn"
             onClick={() => {
               navigate(`/Batches/${item?.batch_uid}`);
             }}
