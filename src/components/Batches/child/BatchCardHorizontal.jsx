@@ -85,7 +85,8 @@ function BatchCardHorizontal({ item = {} }) {
             alignItems: "center",
             px: 2,
             borderRadius: "5px",
-            backgroundColor: "red",
+            backgroundColor: "white",
+            border: "2px solid red",
             boxShadow:
               "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
           }}
@@ -96,8 +97,7 @@ function BatchCardHorizontal({ item = {} }) {
               fontWeight: "bold",
 
               cursor: "pointer",
-              color: "white",
-              filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.6))",
+              color: "red",
             }}
           >
             REMOVED
