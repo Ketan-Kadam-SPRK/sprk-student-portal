@@ -54,6 +54,7 @@ export const ThemeProvider = ({ children }) => {
 
   const orgCode =
     useSelector((state) => state.authSlice?.orgDetails?.orgCode) || "KHAR";
+  console.log(orgCode);
 
   const applyThemeColors = (colors) => {
     if (!colors) return;
@@ -137,32 +138,34 @@ export const ThemeProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    const fetchThemeColors = async () => {
-      try {
-        const response = await fetch("/api/theme-colors");
-        const colorsData = await response.json();
-        if (colorsData) {
-          setColors(colorsData);
-          applyThemeColors(colorsData);
-        }
-      } catch (error) {
-        console.error("Error fetching theme colors:", error);
-        const fallbackThemeName =
-          orgCode === "SRA" ? "customMaroon" : "defaultBlue";
-        const fallbackTheme = themesJson.find(
-          (theme) => theme.name === fallbackThemeName
-        )?.colors;
+    // const fetchThemeColors = async () => {
+    //   try {
+    //     const response = await fetch("/api/theme-colors");
+    //     const colorsData = await response.json();
+    //     if (colorsData) {
+    //       setColors(colorsData);
+    //       applyThemeColors(colorsData);
+    //     }
+    //   } catch (error) {
+    // console.error("Error fetching theme colors:", error);
+    const fallbackThemeName =
+      orgCode === "SRA" ? "customMaroon" : "defaultBlue";
+    const fallbackTheme = themesJson?.find(
+      (theme) => theme.name === fallbackThemeName
+    )?.colors;
 
-        if (fallbackTheme) {
-          setColors(fallbackTheme);
-          applyThemeColors(fallbackTheme);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    console.log(fallbackTheme);
 
-    fetchThemeColors();
+    if (fallbackTheme) {
+      setColors(fallbackTheme);
+      applyThemeColors(fallbackTheme);
+    }
+    // } finally {
+    //   setIsLoading(false);
+    // }
+    // };
+
+    // fetchThemeColors();
   }, [orgCode]);
 
   return (
