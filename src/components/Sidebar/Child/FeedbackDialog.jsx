@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -10,13 +10,13 @@ import {
   Typography,
   FormControl,
   Select,
-  FormHelperText,
   MenuItem,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import swal from "sweetalert";
-import { useSelector } from "react-redux";
-import { Feedback } from "@mui/icons-material";
 
 const FeedbackDialog = ({ open, handleClose }) => {
   const initialState = {
@@ -24,95 +24,110 @@ const FeedbackDialog = ({ open, handleClose }) => {
     Feedback_type: "",
     Feedback_desc: "",
   };
-  const [proofFile, setProofFile] = useState(null);
-  const [formData, setFormData] = useState({});
-  const userDetails = useSelector((state) => state.authSlice.userDetails);
+  const [proofFiles, setProofFiles] = useState([]);
+  const [formData, setFormData] = useState(initialState);
+  const [errors, setErrors] = useState({});
 
-  //   console.log(userDetails.name, "userDetails");
+const handleFormInputs = (e) => {
+  const { name, value } = e.target;
 
-  useEffect(() => {
-    if (userDetails) {
-      setFormData((pre) => {
-        return {
-          ...pre,
-          name: userDetails?.name,
-        };
-      });
+  // Update form data
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  // Validate individual field
+  let errorMsg = "";
+
+  if (name === "Feedback_type" && value.trim() === "") {
+    errorMsg = "Feedback type is required";
+  }
+
+  if (name === "Feedback_desc") {
+    if (value.trim() === "") {
+      errorMsg = "Feedback description is required";
+    } else if (value.trim().length < 10) {
+      errorMsg = "Feedback description should be at least 10 characters long";
+    } else if (value.length > 500) {
+      errorMsg = "Feedback description should be at most 500 characters long";
     }
-  }, [userDetails]);
+  }
 
-  const handleFormInputs = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // Update errors
+  setErrors((prev) => ({
+    ...prev,
+    [name]: errorMsg,
+  }));
+};
 
-  console.log(formData, "formData");
 
   const handleProofFile = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      // Check if file size exceeds maxSize
-      if (file.size > 1024 * 1024) {
-        // Update error message for size exceeding
-        swal({
-          title: "Failed",
-          text: "File size exceeds 1MB. Please choose a smaller file.",
-          icon: "error",
-          dangerMode: true,
-        });
-        event.target.value = null;
-        setProofFile(null);
-        if (formData?.file?.id) {
-          setProofFile(formData?.file);
-        }
-        return;
-      }
-      // Check if file type is valid
-      const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
-      if (!allowedTypes.includes(file.type)) {
-        // Update error message for invalid file type
-        swal({
-          title: "Failed",
-          text: "Invalid file type. Please choose a file of type: .pdf, .png, .jpeg, .jpg",
-          icon: "error",
-          dangerMode: true,
-        });
-        event.target.value = null;
-        setProofFile(null);
-        if (formData?.file?.id) {
-          setProofFile(formData?.file);
-        }
+    const files = Array.from(event.target.files);
 
-        return;
+    const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    const maxSize = 1024 * 1024;
+
+    const validFiles = files.filter((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        swal({
+          title: "Invalid File Type",
+          text: `${file.name} is not a supported file type.`,
+          icon: "error",
+        });
+        return false;
       }
-      setProofFile(file);
-    }
+
+      if (file.size > maxSize) {
+        swal({
+          title: "File Too Large",
+          text: `${file.name} exceeds 1MB limit.`,
+          icon: "error",
+        });
+        return false;
+      }
+
+      return true;
+    });
+
+    setProofFiles(validFiles);
   };
 
   const handleClearFile = () => {
-    // if (proofFile?.id) {
-    //   dispatch(deleteLeaveDoc({ headers, leaveId })).then((res) => {
-    //     setProofFile(null); // Clear the file in the state
-    //     document.getElementById("proof-file-input").value = null;
-    //   });
-    // }
-    // setProofFile(null); // Clear the file in the state
-    // if (formData?.file?.id) {
-    //   setProofFile(formData?.file);
-    // }
-    // document.getElementById("proof-file-input").value = null;
-    // Clear the input field
+    setProofFiles([]);
+    document.getElementById("proof-file-input").value = null;
   };
 
   const handleDialogClose = () => {
-  setFormData(initialState);
-  setProofFile(null);
-  handleClose();
-};
+    setFormData(initialState);
+    setProofFiles([]);
+    setErrors({});
+    handleClose();
+  };
 
+  const handleSubmit = () => {
+    const newErrors = {};
+    if (!formData.Feedback_type) {
+      newErrors.Feedback_type = "Feedback type is required";
+    }
+    if (!formData.Feedback_desc || formData.Feedback_desc.trim().length < 10) {
+      newErrors.Feedback_desc =
+        "Feedback description should be at least 10 characters long";
+    } else if (formData.Feedback_desc.length > 500) {
+      newErrors.Feedback_desc =
+        "Feedback description should be at most 500 characters long";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Submit logic here
+    console.log("Submitted:", formData, proofFiles);
+
+    handleDialogClose();
+  };
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
@@ -125,17 +140,12 @@ const FeedbackDialog = ({ open, handleClose }) => {
       <DialogContent>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <Box>
-            <Typography sx={{ mb: 1 }}>Full Name:</Typography>
-            <TextField
-              name="name"
+            <FormControl
               fullWidth
+              sx={{ marginRight: 2 }}
               size="small"
-              value={formData.name}
-              InputProps={{ readOnly: true }} // ✅ makes it read-only
-            />
-          </Box>
-          <Box>
-            <FormControl fullWidth sx={{ marginRight: 2 }} size="small">
+              error={!!errors.Feedback_type}
+            >
               <Typography id="feedback_type" sx={{ mb: 1 }}>
                 What would you like to give feedback on :
               </Typography>
@@ -151,7 +161,9 @@ const FeedbackDialog = ({ open, handleClose }) => {
                 <MenuItem value="Faculty_Feedback">Faculty Feedback</MenuItem>
                 <MenuItem value="Other">Other</MenuItem>
               </Select>
-              {/* <FormHelperText error>{errors.type}</FormHelperText> */}
+              {errors.Feedback_type && (
+                <FormHelperText>{errors.Feedback_type}</FormHelperText>
+              )}
             </FormControl>
           </Box>
           <Box>
@@ -166,6 +178,8 @@ const FeedbackDialog = ({ open, handleClose }) => {
               rows={4}
               value={formData.Feedback_desc}
               onChange={handleFormInputs}
+              error={!!errors.Feedback_desc}
+              helperText={errors.Feedback_desc}
             />
           </Box>
           <Box>
@@ -185,15 +199,13 @@ const FeedbackDialog = ({ open, handleClose }) => {
                   size="small"
                   fullWidth
                   value={
-                    proofFile === null
+                    proofFiles.length === 0
                       ? "No file chosen"
-                      : proofFile?.name
-                      ? proofFile?.name
-                      : proofFile
+                      : proofFiles.map((f) => f.name).join(", ")
                   }
                   name="proof_file"
                   InputProps={{
-                    endAdornment: proofFile && (
+                    endAdornment: proofFiles?.length > 0 && (
                       <InputAdornment position="end">
                         <IconButton onClick={handleClearFile} edge="end">
                           <CloseIcon />
@@ -212,7 +224,8 @@ const FeedbackDialog = ({ open, handleClose }) => {
                 <input
                   id="proof-file-input"
                   type="file"
-                  accept=".pdf,.png,.jpeg,.jpg" // Set accepted file types as needed
+                  accept=".pdf,.png,.jpeg,.jpg"
+                  multiple
                   style={{ display: "none" }}
                   onChange={handleProofFile}
                 />
@@ -231,16 +244,10 @@ const FeedbackDialog = ({ open, handleClose }) => {
             mb: 2,
           }}
         >
-          <Button variant="outlined" onClick={handleClose}>
+          <Button variant="outlined" onClick={handleDialogClose}>
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              handleClose();
-              // You can add feedback submit logic here
-            }}
-          >
+          <Button variant="contained" onClick={handleSubmit}>
             Submit
           </Button>
         </Box>
