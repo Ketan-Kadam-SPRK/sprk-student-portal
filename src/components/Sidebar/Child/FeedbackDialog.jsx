@@ -14,53 +14,58 @@ import {
   InputAdornment,
   IconButton,
   FormHelperText,
+  CircularProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import swal from "sweetalert";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
+import { sentFeedback } from "./feedback.action";
 
 const FeedbackDialog = ({ open, handleClose }) => {
   const initialState = {
-    name: "",
-    Feedback_type: "",
-    Feedback_desc: "",
+    type: "",
+    subject: "",
   };
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
   const [proofFiles, setProofFiles] = useState([]);
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState({});
+  const [isloading, setIsLoading] = useState(false);
 
-const handleFormInputs = (e) => {
-  const { name, value } = e.target;
+  const handleFormInputs = (e) => {
+    const { name, value } = e.target;
 
-  // Update form data
-  setFormData((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
+    // Update form data
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
-  // Validate individual field
-  let errorMsg = "";
+    // Validate individual field
+    let errorMsg = "";
 
-  if (name === "Feedback_type" && value.trim() === "") {
-    errorMsg = "Feedback type is required";
-  }
-
-  if (name === "Feedback_desc") {
-    if (value.trim() === "") {
-      errorMsg = "Feedback description is required";
-    } else if (value.trim().length < 10) {
-      errorMsg = "Feedback description should be at least 10 characters long";
-    } else if (value.length > 500) {
-      errorMsg = "Feedback description should be at most 500 characters long";
+    if (name === "type" && value.trim() === "") {
+      errorMsg = "Feedback type is required";
     }
-  }
 
-  // Update errors
-  setErrors((prev) => ({
-    ...prev,
-    [name]: errorMsg,
-  }));
-};
+    if (name === "subject") {
+      if (value.trim() === "") {
+        errorMsg = "Feedback description is required";
+      } else if (value.trim().length < 10) {
+        errorMsg = "Feedback description should be at least 10 characters long";
+      } else if (value.length > 500) {
+        errorMsg = "Feedback description should be at most 500 characters long";
+      }
+    }
 
+    // Update errors
+    setErrors((prev) => ({
+      ...prev,
+      [name]: errorMsg,
+    }));
+  };
 
   const handleProofFile = (event) => {
     const files = Array.from(event.target.files);
@@ -105,16 +110,18 @@ const handleFormInputs = (e) => {
     handleClose();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newErrors = {};
-    if (!formData.Feedback_type) {
-      newErrors.Feedback_type = "Feedback type is required";
+    if (!formData.type) {
+      newErrors.type = "Feedback type is required";
     }
-    if (!formData.Feedback_desc || formData.Feedback_desc.trim().length < 10) {
-      newErrors.Feedback_desc =
+    if (!formData.subject || formData.subject.trim().length === 0) {
+      newErrors.subject = "Feedback description is required";
+    } else if (formData.subject.trim().length < 10) {
+      newErrors.subject =
         "Feedback description should be at least 10 characters long";
-    } else if (formData.Feedback_desc.length > 500) {
-      newErrors.Feedback_desc =
+    } else if (formData.subject.length > 500) {
+      newErrors.subject =
         "Feedback description should be at most 500 characters long";
     }
 
@@ -123,14 +130,26 @@ const handleFormInputs = (e) => {
       return;
     }
 
-    // Submit logic here
-    console.log("Submitted:", formData, proofFiles);
+    setIsLoading(true);
 
-    handleDialogClose();
+    try {
+      const res = await dispatch(
+        sentFeedback({ headers, formData, proofFiles })
+      );
+
+      if (res.payload !== undefined) {
+        handleDialogClose();
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error sending feedback:", error);
+      setIsLoading(false);
+    }
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+    <Dialog open={open} fullWidth maxWidth="sm">
       <DialogTitle>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">Feedback</Typography>
@@ -144,26 +163,24 @@ const handleFormInputs = (e) => {
               fullWidth
               sx={{ marginRight: 2 }}
               size="small"
-              error={!!errors.Feedback_type}
+              error={!!errors.type}
             >
-              <Typography id="feedback_type" sx={{ mb: 1 }}>
+              <Typography id="type" sx={{ mb: 1 }}>
                 What would you like to give feedback on :
               </Typography>
               <Select
-                labelId="feedback_type"
-                id="feedback_type"
-                name="Feedback_type"
-                value={formData.Feedback_type}
+                labelId="type"
+                id="type"
+                name="type"
+                value={formData.type}
                 onChange={handleFormInputs}
               >
-                <MenuItem value="Technical_Issue">Technical Issue</MenuItem>
-                <MenuItem value="Center_Experience">Center Experience</MenuItem>
-                <MenuItem value="Faculty_Feedback">Faculty Feedback</MenuItem>
-                <MenuItem value="Other">Other</MenuItem>
+                <MenuItem value="TECHNICAL_ISSUE">Technical Issue</MenuItem>
+                <MenuItem value="CENTER_EXPERIENCE">Center Experience</MenuItem>
+                <MenuItem value="FACULTY_FEEDBACK">Faculty Feedback</MenuItem>
+                <MenuItem value="OTHER">Other</MenuItem>
               </Select>
-              {errors.Feedback_type && (
-                <FormHelperText>{errors.Feedback_type}</FormHelperText>
-              )}
+              {errors.type && <FormHelperText>{errors.type}</FormHelperText>}
             </FormControl>
           </Box>
           <Box>
@@ -171,15 +188,15 @@ const handleFormInputs = (e) => {
               Describe your issue or feedback :
             </Typography>
             <TextField
-              name="Feedback_desc"
+              name="subject"
               fullWidth
               size="small"
               multiline
               rows={4}
-              value={formData.Feedback_desc}
+              value={formData.subject}
               onChange={handleFormInputs}
-              error={!!errors.Feedback_desc}
-              helperText={errors.Feedback_desc}
+              error={!!errors.subject}
+              helperText={errors.subject}
             />
           </Box>
           <Box>
@@ -247,8 +264,12 @@ const handleFormInputs = (e) => {
           <Button variant="outlined" onClick={handleDialogClose}>
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleSubmit}>
-            Submit
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            disabled={isloading}
+          >
+            {isloading ? <CircularProgress size={24} /> : "Submit"}
           </Button>
         </Box>
       </DialogActions>
