@@ -25,6 +25,7 @@ import CertificateModal from "./certificateModal/CertificateModal";
 import NoDataPage from "../Common/NoDataPage";
 import ErrorHandling from "../../components/Common/ErrorHandling";
 import { downloadCertificate, getAllCertificates } from "./certificate.actions";
+import { Helmet } from "react-helmet-async";
 
 function Certificates() {
   const dispatch = useDispatch();
@@ -155,6 +156,20 @@ function Certificates() {
         flex: 1,
       }}
     >
+      <Helmet>
+        <title>{meta.certificates.title}</title>
+        <meta name="description" content={meta.certificates.description} />
+        <meta property="og:title" content={meta.certificates.title} />
+        <meta
+          property="og:description"
+          content={meta.certificates.description}
+        />
+        <meta property="og:image" content={meta.certificates.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.certificates.url}`}
+        />
+      </Helmet>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography variant="h4" fontWeight={600}>

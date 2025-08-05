@@ -10,6 +10,8 @@ import { getAllExams } from "./exams.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { setExamsData } from "./examSlice";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 const buttonStyle = {
   borderRadius: "5px",
@@ -130,6 +132,17 @@ function Exams() {
         flex: 1,
       }}
     >
+      <Helmet>
+        <title>{meta.exams.title}</title>
+        <meta name="description" content={meta.exams.description} />
+        <meta property="og:title" content={meta.exams.title} />
+        <meta property="og:description" content={meta.exams.description} />
+        <meta property="og:image" content={meta.exams.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.exams.url}`}
+        />
+      </Helmet>
       <Box sx={{ mt: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography variant="h4" fontWeight={"600"}>

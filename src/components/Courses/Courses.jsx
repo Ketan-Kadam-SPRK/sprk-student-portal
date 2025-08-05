@@ -7,6 +7,8 @@ import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import ErrorHandling from "../Common/ErrorHandling";
 import NoDataPage from "../Common/NoDataPage";
 import { Image } from "cloudinary-react";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 const Courses = () => {
   const dispatch = useDispatch();
@@ -61,6 +63,20 @@ const Courses = () => {
         flex: 1,
       }}
     >
+      <Helmet>
+        <title>{meta.courseGroup.title}</title>
+        <meta name="description" content={meta.courseGroup.description} />
+        <meta property="og:title" content={meta.courseGroup.title} />
+        <meta
+          property="og:description"
+          content={meta.courseGroup.description}
+        />
+        <meta property="og:image" content={meta.courseGroup.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.courseGroup.url}`}
+        />
+      </Helmet>
       <Box
         sx={{
           display: "flex",
