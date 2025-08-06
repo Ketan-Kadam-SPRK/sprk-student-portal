@@ -15,11 +15,12 @@ export const sentFeedback = createAsyncThunk(
     }
 
     // Append each file (if any)
-    if (proofFiles && Array.isArray(proofFiles)) {
-      proofFiles.forEach((file) => {
-        payload.append("images[]", file); // ✅ use "images[]" to send as an array
-      });
-    }
+if (proofFiles && Array.isArray(proofFiles)) {
+  proofFiles.forEach((file) => {
+    payload.append("images", file);
+  });
+}
+
 
     try {
       const res = await axiosInstance.post(
