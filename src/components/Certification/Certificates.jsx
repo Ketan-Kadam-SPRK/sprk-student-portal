@@ -26,6 +26,7 @@ import NoDataPage from "../Common/NoDataPage";
 import ErrorHandling from "../../components/Common/ErrorHandling";
 import { downloadCertificate, getAllCertificates } from "./certificate.actions";
 import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 function Certificates() {
   const dispatch = useDispatch();

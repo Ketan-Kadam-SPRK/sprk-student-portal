@@ -98,7 +98,6 @@ function Batches() {
           }
           bgColor="var(--secondary-color)"
         />
-
         <BoxCard
           title="Upcoming Batches"
           number={
