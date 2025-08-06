@@ -53,9 +53,9 @@ const FeedbackDialog = ({ open, handleClose }) => {
     if (name === "subject") {
       if (value.trim() === "") {
         errorMsg = "Feedback description is required";
-      } else if (value.trim().length < 10) {
+      } else if (value?.trim().length < 10) {
         errorMsg = "Feedback description should be at least 10 characters long";
-      } else if (value.length > 500) {
+      } else if (value?.trim().length > 500) {
         errorMsg = "Feedback description should be at most 500 characters long";
       }
     }
@@ -110,43 +110,49 @@ const FeedbackDialog = ({ open, handleClose }) => {
     handleClose();
   };
 
-  const handleSubmit = async () => {
-    const newErrors = {};
-    if (!formData.type) {
-      newErrors.type = "Feedback type is required";
+const handleSubmit = async () => {
+  const newErrors = {};
+  if (!formData.type) {
+    newErrors.type = "Feedback type is required";
+  }
+  if (!formData?.subject || formData?.subject?.trim().length === 0) {
+    newErrors.subject = "Feedback description is required";
+  } else if (formData?.subject?.trim().length < 10) {
+    newErrors.subject =
+      "Feedback description should be at least 10 characters long";
+  } else if (formData?.subject?.trim().length > 500) {
+    newErrors.subject =
+      "Feedback description should be at most 500 characters long";
+  }
+
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const trimmedFormData = {
+      ...formData,
+      subject: formData?.subject?.trim(),
+    };
+
+    const res = await dispatch(
+      sentFeedback({ headers, formData: trimmedFormData, proofFiles })
+    );
+
+    if (res?.payload !== undefined) {
+      handleDialogClose();
     }
-    if (!formData.subject || formData.subject.trim().length === 0) {
-      newErrors.subject = "Feedback description is required";
-    } else if (formData.subject.trim().length < 10) {
-      newErrors.subject =
-        "Feedback description should be at least 10 characters long";
-    } else if (formData.subject.length > 500) {
-      newErrors.subject =
-        "Feedback description should be at most 500 characters long";
-    }
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+    setIsLoading(false);
+  } catch (error) {
+    console.error("Error sending feedback:", error);
+    setIsLoading(false);
+  }
+};
 
-    setIsLoading(true);
-
-    try {
-      const res = await dispatch(
-        sentFeedback({ headers, formData, proofFiles })
-      );
-
-      if (res.payload !== undefined) {
-        handleDialogClose();
-      }
-
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error sending feedback:", error);
-      setIsLoading(false);
-    }
-  };
 
   return (
     <Dialog open={open} fullWidth maxWidth="sm">
