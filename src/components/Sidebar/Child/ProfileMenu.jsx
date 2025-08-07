@@ -8,6 +8,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "../../../Utils/LogOut";
+import FeedbackDialog from "./FeedbackDialog";
+import { Image } from "cloudinary-react"; // Ensure this is installed or replace with <img src="..." />
 
 /**
  * @memberof Sidebar
@@ -17,30 +19,33 @@ import { LogOut } from "../../../Utils/LogOut";
  * @returns {JSX.Element} The profile menu component
  */
 
-const ProfileMenu = forwardRef(
-  ({ handleMenuClose, isMenuOpen = null }, ref) => {
-    const navigate = useNavigate();
-    const logout = LogOut();
-    const userProfilePic =
-      useSelector((state) => state.authSlice.userProfilePic) || "";
-    const userDetails = useSelector((state) => state.authSlice.userDetails);
+const ProfileMenu = forwardRef(({ handleMenuClose, isMenuOpen = false }, ref) => {
+  const navigate = useNavigate();
+  const logout = LogOut();
+  const userProfilePic =
+    useSelector((state) => state.authSlice.userProfilePic) || "";
+  const userDetails = useSelector((state) => state.authSlice.userDetails);
 
-    /**
-     * @memberof ProfileMenu
-     * Logs out the current user, clears local storage and redirects to the login page
-     * @function
-     * @async
-     * @returns {undefined}
-     */
+  const handleIdClick = () => {
+    navigator.clipboard.writeText(userDetails?.student_id);
+    toast.success("Copied to clipboard");
+  };
 
-    const handleIdClick = () => {
-      navigator.clipboard.writeText(userDetails?.student_id);
-      toast.success("Copied to clipboard");
-    };
+  const [isFeedbackOpen, setFeedbackOpen] = React.useState(false);
 
-    return (
+  const handleFeedbackOpen = () => {
+    setFeedbackOpen(true);
+    handleMenuClose();
+  };
+
+  const handleFeedbackClose = () => {
+    setFeedbackOpen(false);
+  };
+
+  return (
+    <>
       <Menu
-        aria-hidden={isMenuOpen ? "false" : "true"} // Apply aria-hidden based on focus state
+        aria-hidden={isMenuOpen ? "false" : "true"}
         sx={{ mt: isMenuOpen ? "49px" : "0px" }}
         anchorOrigin={{
           vertical: "top",
@@ -52,14 +57,12 @@ const ProfileMenu = forwardRef(
         }}
         open={isMenuOpen}
         onClose={handleMenuClose}
-        // Ensure autoFocusItem is not being passed or is handled as a boolean
         MenuListProps={{
-          autoFocusItem: false, // If necessary, explicitly set autoFocusItem to false
+          autoFocusItem: false,
         }}
       >
         <MenuItem sx={{ display: "flex", gap: "10px" }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {/* Display user profile picture if available */}
             {userProfilePic ? (
               <img
                 alt="userProfile"
@@ -73,7 +76,6 @@ const ProfileMenu = forwardRef(
                 loading="lazy"
               />
             ) : (
-              // Display a default avatar if no user profile picture
               <Avatar>
                 <AccountCircleIcon
                   sx={{
@@ -102,7 +104,6 @@ const ProfileMenu = forwardRef(
               }}
               title={userDetails?.name}
             >
-              {/* Display user details (employee id) */}
               {userDetails?.name}
             </Typography>
             <Typography sx={{ fontSize: "14px" }}>
@@ -110,6 +111,7 @@ const ProfileMenu = forwardRef(
             </Typography>
           </Box>
         </MenuItem>
+
         <MenuItem
           onClick={() => {
             handleMenuClose();
@@ -120,12 +122,27 @@ const ProfileMenu = forwardRef(
           <PersonOutlineIcon fontSize="medium" />
           My Profile
         </MenuItem>
+
+        <MenuItem onClick={handleFeedbackOpen}>
+          <Image
+            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1753951462/newsprk/Vector_3_wfostn.svg"
+            cloudName="dxlzzgbfw"
+            style={{ width: 24, height: 24, marginRight: 10, }}
+          />
+          FeedBack
+        </MenuItem>
+
         <MenuItem onClick={logout} sx={{ gap: "5%", my: 1 }}>
           <LogoutIcon /> Logout
         </MenuItem>
       </Menu>
-    );
-  }
-);
+
+      <FeedbackDialog
+        open={isFeedbackOpen}
+        handleClose={handleFeedbackClose}
+      />
+    </>
+  );
+});
 
 export default ProfileMenu;
