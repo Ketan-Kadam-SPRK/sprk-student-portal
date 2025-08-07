@@ -9,6 +9,8 @@ import { getAllJobs } from "./jobs.actions";
 import ErrorHandling from "../Common/ErrorHandling";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
 import NoDataPage from "../Common/NoDataPage";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 function JobOpportunities() {
   const dispatch = useDispatch();
@@ -102,6 +104,20 @@ function JobOpportunities() {
         flex: 1,
       }}
     >
+      <Helmet>
+        <title>{meta.jobOpportunities.title}</title>
+        <meta name="description" content={meta.jobOpportunities.description} />
+        <meta property="og:title" content={meta.jobOpportunities.title} />
+        <meta
+          property="og:description"
+          content={meta.jobOpportunities.description}
+        />
+        <meta property="og:image" content={meta.jobOpportunities.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.jobOpportunities.url}`}
+        />
+      </Helmet>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         <Typography variant="h4" fontWeight={"bold"}>
           Job Openings for You{" "}

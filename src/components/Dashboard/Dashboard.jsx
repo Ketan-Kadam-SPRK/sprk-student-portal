@@ -22,6 +22,8 @@ import {
   getTodaysBatches,
 } from "./dashboard.actions";
 import StudentStatus from "../Common/student status/StudentStatus";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 function Dashboard() {
   function convertToTitleCase(text) {
@@ -111,6 +113,17 @@ function Dashboard() {
         flex: 1,
       }}
     >
+      <Helmet>
+        <title>{meta.dashboard.title}</title>
+        <meta name="description" content={meta.dashboard.description} />
+        <meta property="og:title" content={meta.dashboard.title} />
+        <meta property="og:description" content={meta.dashboard.description} />
+        <meta property="og:image" content={meta.dashboard.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.dashboard.url}`}
+        />
+      </Helmet>
       <Box
         sx={{
           display: "flex",

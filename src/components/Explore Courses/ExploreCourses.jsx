@@ -4,6 +4,8 @@ import Lottie from "lottie-light-react";
 import React from "react";
 import courseLottie from "./explore-courses.json";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 function ExploreCourses() {
   const weburl =
     useSelector((state) => state.authSlice?.orgDetails?.orgWeb) || "";
@@ -19,6 +21,20 @@ function ExploreCourses() {
         flex: 1,
       }}
     >
+      <Helmet>
+        <title>{meta.exploreCourses.title}</title>
+        <meta name="description" content={meta.exploreCourses.description} />
+        <meta property="og:title" content={meta.exploreCourses.title} />
+        <meta
+          property="og:description"
+          content={meta.exploreCourses.description}
+        />
+        <meta property="og:image" content={meta.exploreCourses.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.exploreCourses.url}`}
+        />
+      </Helmet>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography variant="h4" fontWeight={600}>

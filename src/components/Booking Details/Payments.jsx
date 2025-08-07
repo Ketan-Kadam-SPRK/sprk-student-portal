@@ -8,6 +8,8 @@ import BookingDetailsCard from "./child/BookingDetailsCard";
 import ErrorHandling from "../Common/ErrorHandling";
 import NoDataPage from "../Common/NoDataPage";
 import { getBookingDetails } from "./action/Payment.action";
+import { meta } from "../../../metaConfig";
+import { Helmet } from "react-helmet-async";
 
 function Payments() {
   const dispatch = useDispatch();
@@ -57,6 +59,17 @@ function Payments() {
         flex: 1,
       }}
     >
+      <Helmet>
+        <title>{meta.bookings.title}</title>
+        <meta name="description" content={meta.bookings.description} />
+        <meta property="og:title" content={meta.bookings.title} />
+        <meta property="og:description" content={meta.bookings.description} />
+        <meta property="og:image" content={meta.bookings.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.bookings.url}`}
+        />
+      </Helmet>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Typography variant="h4" sx={{ color: "#0A2647", fontWeight: 600 }}>

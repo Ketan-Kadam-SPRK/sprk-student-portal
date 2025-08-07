@@ -19,6 +19,8 @@ import { resetPassword } from "../Login/store/login.actions";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../Login/store/authSlice";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 function ResetPass() {
   const location = useLocation();
@@ -159,6 +161,20 @@ function ResetPass() {
         overflow: "auto",
       }}
     >
+      <Helmet>
+        <title>{meta.resetPassword.title}</title>
+        <meta name="description" content={meta.resetPassword.description} />
+        <meta property="og:title" content={meta.resetPassword.title} />
+        <meta
+          property="og:description"
+          content={meta.resetPassword.description}
+        />
+        <meta property="og:image" content={meta.resetPassword.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.resetPassword.url}`}
+        />
+      </Helmet>
       <Box
         sx={{
           display: "flex",

@@ -23,6 +23,8 @@ import TrimmedString from "../../Utils/TrimmedString";
 import batchesLottie from "./batchesLottie.json";
 import examLottie from "./examLottie.json";
 import jobOpportunityLottie from "./job-opportunityLottie.json";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 function Login() {
   const dispatch = useDispatch();
@@ -218,6 +220,17 @@ function Login() {
           style={{ width: "200px", height: "200px" }}
         />
       </Backdrop>
+      <Helmet>
+        <title>{meta.login.title}</title>
+        <meta name="description" content={meta.login.description} />
+        <meta property="og:title" content={meta.login.title} />
+        <meta property="og:description" content={meta.login.description} />
+        <meta property="og:image" content={meta.login.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.dashboard.url}`}
+        />
+      </Helmet>
       <Grid2
         size={{
           xs: 0,

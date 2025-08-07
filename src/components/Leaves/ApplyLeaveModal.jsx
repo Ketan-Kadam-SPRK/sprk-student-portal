@@ -19,6 +19,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 //common component, hooks,actions
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { applyForLeave, editStudentLeave } from "./action/leaves.action";
+import { leaveFormValidation } from "../../Utils/leaveFormValidation";
 
 function ApplyLeaveModal({
   handleClose,
@@ -69,42 +70,7 @@ function ApplyLeaveModal({
    * @returns {Object} - Object with error messages
    */
   const validateForm = (data) => {
-    const errors = {};
-    const startDate = new Date(data?.start);
-    const endDate = new Date(data?.end);
-    const sixMonthsLater = new Date(data?.start);
-    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
-
-    if (!data?.start) {
-      errors.start = "Please enter a valid start date";
-    } else if (data.end && startDate > endDate) {
-      errors.start = "Start date cannot be after end date";
-    }
-
-    if (!data?.end) {
-      errors.end = "Please enter a valid end date";
-    } else if (data.start && endDate < startDate) {
-      errors.end = "End date cannot be before start date";
-    }
-
-    if (!data?.reason) {
-      errors.reason = "Reason is required";
-    } else if (data?.reason?.length > 500) {
-      errors.reason = "Reason should be less than 500 characters";
-    } else if (data?.reason?.length < 10) {
-      errors.reason = "Reason must be at least 10 characters long";
-    }
-
-    if (data.start && data.end) {
-      if (endDate > sixMonthsLater) {
-        errors.start =
-          "The difference between start and end date cannot be greater than six months";
-        errors.end =
-          "The difference between start and end date cannot be greater than six months";
-      }
-    }
-
-    return { ...validationErrors, ...errors };
+    return leaveFormValidation(data);
   };
 
   /**
@@ -116,71 +82,27 @@ function ApplyLeaveModal({
   const handleFormInputs = (e) => {
     const { name, value } = e.target;
 
-    let updatedValue = value;
-    if (name === "start" || name === "end") {
-      if (value) {
-        updatedValue = value;
-      } else {
-        updatedValue = "";
-      }
-    }
-
-    const updatedFormData = { ...formData, [name]: updatedValue };
+    const updatedFormData = {
+      ...formData,
+      [name]: value,
+    };
 
     setFormData(updatedFormData);
-    const newErrors = { ...validationErrors, [name]: null };
 
-    if (name === "start" || name === "end") {
-      const startDate = updatedFormData?.start;
-      const endDate = updatedFormData?.end;
+    // Validate the entire form using shared function
+    const errors = leaveFormValidation(updatedFormData);
 
-      if (isNaN(new Date(endDate).getTime())) {
-        newErrors.end = "Please enter a valid end date";
-      }
-      if (isNaN(new Date(startDate).getTime())) {
-        newErrors.start = "Please enter a valid start date";
-      }
-      if (startDate && endDate) {
-        if (startDate > endDate) {
-          newErrors.start = "Start date cannot be after end date";
-          newErrors.end = "End date cannot be before start date";
-        } else {
-          const start = new Date(startDate);
-          const end = new Date(endDate);
-          const sixMonthsLater = new Date(start);
-          sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
-
-          if (end > sixMonthsLater) {
-            newErrors.start =
-              "The difference between start and end date cannot be greater than six months";
-            newErrors.end =
-              "The difference between start and end date cannot be greater than six months";
-          } else {
-            newErrors.start = null;
-            newErrors.end = null;
-          }
-        }
-      }
-    }
-    if (name === "reason") {
-      if (!updatedFormData?.reason.trim()) {
-        newErrors.reason = "Reason is required";
-      } else if (updatedFormData?.reason?.length >= 500) {
-        newErrors.reason = "Reason should be less than 500 characters";
-      } else if (updatedFormData?.reason?.trim().length < 10) {
-        newErrors.reason = "Reason must be at least 10 characters long";
-      }
-    }
-    setValidationErrors(newErrors);
+    // Only update the relevant field's error
+    setValidationErrors(errors);
   };
 
-/**
- * Handles file selection for proof file. Checks if the file size exceeds 1MB
- * and if the file type is valid. If the file size exceeds 1MB, it will show an
- * error message and reset the file input to null. If the file type is invalid,
- * it will also show an error message and reset the file input to null.
- * @param {Event} event The event object from the file input.
- */
+  /**
+   * Handles file selection for proof file. Checks if the file size exceeds 1MB
+   * and if the file type is valid. If the file size exceeds 1MB, it will show an
+   * error message and reset the file input to null. If the file type is invalid,
+   * it will also show an error message and reset the file input to null.
+   * @param {Event} event The event object from the file input.
+   */
   const handleProofFile = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -222,11 +144,11 @@ function ApplyLeaveModal({
     }
   };
 
-/**
- * Clears the proof file from the state and resets the file input field.
- * If the file data in formData is a string, it resets the proof file after clearing.
- * Ensures the state update flow is maintained by using a timeout.
- */
+  /**
+   * Clears the proof file from the state and resets the file input field.
+   * If the file data in formData is a string, it resets the proof file after clearing.
+   * Ensures the state update flow is maintained by using a timeout.
+   */
 
   const handleClearFile = () => {
     setProofFile(null); // Clear the file in the state
@@ -255,14 +177,14 @@ function ApplyLeaveModal({
     return formattedDate;
   }
 
-/**
- * Handles form submission by validating the form data and calling
- * the appropriate Redux action (applyForLeave or editStudentLeave)
- * based on whether the leave ID is null or not.
- *
- * @param {Event} event - The form submission event
- * @returns {void}
- */
+  /**
+   * Handles form submission by validating the form data and calling
+   * the appropriate Redux action (applyForLeave or editStudentLeave)
+   * based on whether the leave ID is null or not.
+   *
+   * @param {Event} event - The form submission event
+   * @returns {void}
+   */
   const handleSubmit = (event) => {
     event.preventDefault();
 

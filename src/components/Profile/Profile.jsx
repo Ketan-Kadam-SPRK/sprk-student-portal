@@ -23,6 +23,8 @@ import { getUserPic, uploadUserProfilePic } from "../Login/store/login.actions";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { setUserProfilePic } from "../Login/store/authSlice";
 import StudentStatus from "../Common/student status/StudentStatus";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -138,6 +140,17 @@ function Profile() {
         },
       }}
     >
+      <Helmet>
+        <title>{meta.profile.title}</title>
+        <meta name="description" content={meta.profile.description} />
+        <meta property="og:title" content={meta.profile.title} />
+        <meta property="og:description" content={meta.profile.description} />
+        <meta property="og:image" content={meta.profile.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.profile.url}`}
+        />
+      </Helmet>
       <Box
         sx={{
           display: "flex",

@@ -14,6 +14,8 @@ import BatchCardHorizontal from "./child/BatchCardHorizontal";
 import ErrorHandling from "../Common/ErrorHandling";
 import NoDataPage from "../Common/NoDataPage";
 import { getBatches } from "./action/batches.actions";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 function Batches() {
   const dispatch = useDispatch();
@@ -66,6 +68,17 @@ function Batches() {
         flex: 1,
       }}
     >
+      <Helmet>
+        <title>{meta.batches.title}</title>
+        <meta name="description" content={meta.batches.description} />
+        <meta property="og:title" content={meta.batches.title} />
+        <meta property="og:description" content={meta.batches.description} />
+        <meta property="og:image" content={meta.batches.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.batches.url}`}
+        />
+      </Helmet>
       <Box
         sx={{
           display: "flex",
@@ -85,7 +98,6 @@ function Batches() {
           }
           bgColor="var(--secondary-color)"
         />
-
         <BoxCard
           title="Upcoming Batches"
           number={
