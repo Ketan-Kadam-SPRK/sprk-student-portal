@@ -21,6 +21,8 @@ import swal from "sweetalert";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import { sentFeedback } from "./feedback.action";
+import LightTooltip from "../../Common/LightTooltip";
+import InfoIcon from "@mui/icons-material/Info";
 
 const FeedbackDialog = ({ open, handleClose }) => {
   const initialState = {
@@ -36,6 +38,7 @@ const FeedbackDialog = ({ open, handleClose }) => {
 
   const handleFormInputs = (e) => {
     const { name, value } = e.target;
+    const trimmedValue = value.trim();
 
     // Update form data
     setFormData((prev) => ({
@@ -46,16 +49,16 @@ const FeedbackDialog = ({ open, handleClose }) => {
     // Validate individual field
     let errorMsg = "";
 
-    if (name === "type" && value.trim() === "") {
+    if (name === "type" && trimmedValue === "") {
       errorMsg = "Feedback type is required";
     }
 
     if (name === "subject") {
-      if (value.trim() === "") {
+      if (trimmedValue === "") {
         errorMsg = "Feedback description is required";
-      } else if (value?.trim().length < 10) {
+      } else if (trimmedValue?.length < 10) {
         errorMsg = "Feedback description should be at least 10 characters long";
-      } else if (value?.trim().length > 500) {
+      } else if (trimmedValue?.length > 500) {
         errorMsg = "Feedback description should be at most 500 characters long";
       }
     }
@@ -68,12 +71,12 @@ const FeedbackDialog = ({ open, handleClose }) => {
   };
 
   const handleProofFile = (event) => {
-    const files = Array.from(event.target.files);
+    const files = Array?.from(event.target.files);
 
     const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
     const maxSize = 1024 * 1024;
 
-    const validFiles = files.filter((file) => {
+    const validFiles = files?.filter((file) => {
       if (!allowedTypes.includes(file.type)) {
         swal({
           title: "Invalid File Type",
@@ -110,49 +113,48 @@ const FeedbackDialog = ({ open, handleClose }) => {
     handleClose();
   };
 
-const handleSubmit = async () => {
-  const newErrors = {};
-  if (!formData.type) {
-    newErrors.type = "Feedback type is required";
-  }
-  if (!formData?.subject || formData?.subject?.trim().length === 0) {
-    newErrors.subject = "Feedback description is required";
-  } else if (formData?.subject?.trim().length < 10) {
-    newErrors.subject =
-      "Feedback description should be at least 10 characters long";
-  } else if (formData?.subject?.trim().length > 500) {
-    newErrors.subject =
-      "Feedback description should be at most 500 characters long";
-  }
-
-  if (Object.keys(newErrors).length > 0) {
-    setErrors(newErrors);
-    return;
-  }
-
-  setIsLoading(true);
-
-  try {
-    const trimmedFormData = {
-      ...formData,
-      subject: formData?.subject?.trim(),
-    };
-
-    const res = await dispatch(
-      sentFeedback({ headers, formData: trimmedFormData, proofFiles })
-    );
-
-    if (res?.payload !== undefined) {
-      handleDialogClose();
+  const handleSubmit = async () => {
+    const newErrors = {};
+    if (!formData.type) {
+      newErrors.type = "Feedback type is required";
+    }
+    if (!formData?.subject || formData?.subject?.trim().length === 0) {
+      newErrors.subject = "Feedback description is required";
+    } else if (formData?.subject?.trim().length < 10) {
+      newErrors.subject =
+        "Feedback description should be at least 10 characters long";
+    } else if (formData?.subject?.trim().length > 500) {
+      newErrors.subject =
+        "Feedback description should be at most 500 characters long";
     }
 
-    setIsLoading(false);
-  } catch (error) {
-    console.error("Error sending feedback:", error);
-    setIsLoading(false);
-  }
-};
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
+    setIsLoading(true);
+
+    try {
+      const trimmedFormData = {
+        ...formData,
+        subject: formData?.subject?.trim(),
+      };
+
+      const res = await dispatch(
+        sentFeedback({ headers, formData: trimmedFormData, proofFiles })
+      );
+
+      if (res?.payload !== undefined) {
+        handleDialogClose();
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error sending feedback:", error);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Dialog open={open} fullWidth maxWidth="sm">
@@ -199,15 +201,24 @@ const handleSubmit = async () => {
               size="small"
               multiline
               rows={4}
-              value={formData.subject}
+              value={formData?.subject}
               onChange={handleFormInputs}
-              error={!!errors.subject}
-              helperText={errors.subject}
+              error={!!errors?.subject}
+              helperText={errors?.subject}
             />
           </Box>
           <Box>
             <Typography sx={{ mb: 1 }}>
               Upload Screenshots (if any) :
+              <LightTooltip
+                title="You can select multiple files at once using the 'Choose File' button, if you want."
+                arrow
+                sx={{ zIndex: 9999 }}
+              >
+                <IconButton size="small">
+                  <InfoIcon color="primary" />
+                </IconButton>
+              </LightTooltip>
             </Typography>
             <Box
               sx={{
@@ -222,9 +233,9 @@ const handleSubmit = async () => {
                   size="small"
                   fullWidth
                   value={
-                    proofFiles.length === 0
+                    proofFiles?.length === 0
                       ? "No file chosen"
-                      : proofFiles.map((f) => f.name).join(", ")
+                      : proofFiles?.map((f) => f.name).join(", ")
                   }
                   name="proof_file"
                   InputProps={{

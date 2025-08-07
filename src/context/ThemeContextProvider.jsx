@@ -54,7 +54,6 @@ export const ThemeProvider = ({ children }) => {
 
   const orgCode =
     useSelector((state) => state.authSlice?.orgDetails?.orgCode) || "KHAR";
-  console.log(orgCode);
 
   const applyThemeColors = (colors) => {
     if (!colors) return;
@@ -153,8 +152,6 @@ export const ThemeProvider = ({ children }) => {
     const fallbackTheme = themesJson?.find(
       (theme) => theme.name === fallbackThemeName
     )?.colors;
-
-    console.log(fallbackTheme);
 
     if (fallbackTheme) {
       setColors(fallbackTheme);
