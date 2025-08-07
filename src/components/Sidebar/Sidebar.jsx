@@ -245,9 +245,9 @@ function Sidebar() {
                 color="auto"
                 className={Styles.profileMenuStyle}
               >
-                {userProfilePic ? (
+                {/* {userProfilePic ? (
                   <img
-                    src={userProfilePic}
+                    src={userProfilePic || "./default-.png"}
                     className={Styles.ProfileStyle}
                     alt="profile-pic"
                     // loading="lazy"
@@ -256,6 +256,22 @@ function Sidebar() {
                   <Avatar>
                     <AccountCircleIcon className={Styles.avtarStyle} />
                   </Avatar>
+                )} */}
+
+                {!userProfilePic ? (
+                  <Avatar className={Styles.avtarStyle}>
+                    <AccountCircleIcon fontSize="large" />
+                  </Avatar>
+                ) : (
+                  <img
+                    src={userProfilePic || "./default-avatar.png"}
+                    className={Styles.ProfileStyle}
+                    alt="profile"
+                    loading="eager"
+                    onError={(e) =>
+                      (e.currentTarget.src = "./default-avatar.png  ")
+                    }
+                  />
                 )}
                 <Box
                   sx={{
