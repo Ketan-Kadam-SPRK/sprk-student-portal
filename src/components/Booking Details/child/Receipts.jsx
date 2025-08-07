@@ -13,6 +13,8 @@ import Receipt from "../modals/Receipt/Receipt";
 import ErrorHandling from "../../Common/ErrorHandling";
 import PopupFilterComponent from "../../Common/FilterMenuComponent/PopupFilterComponent";
 import { getAllReceipts } from "../action/Payment.action";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../../metaConfig";
 
 function Receipts() {
   const [openReciept, setOpenReciept] = useState(false);
@@ -215,6 +217,17 @@ function Receipts() {
         flex: 1,
       }}
     >
+      <Helmet>
+        <title>{meta.receipts.title}</title>
+        <meta name="description" content={meta.receipts.description} />
+        <meta property="og:title" content={meta.receipts.title} />
+        <meta property="og:description" content={meta.receipts.description} />
+        <meta property="og:image" content={meta.receipts.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.receipts.url}`}
+        />
+      </Helmet>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Typography variant="h4" fontWeight={600}>
