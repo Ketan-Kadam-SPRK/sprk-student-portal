@@ -1,3 +1,5 @@
+import { forgotPassword } from "./src/components/Login/store/login.actions";
+
 // metaConfig.js
 export const meta = {
   login: {
@@ -67,9 +69,21 @@ export const meta = {
     url: "/Explore_Courses",
   },
   profile: {
-    title: "Profile | SPRKonnect",
+    title: "Profile | SPRKonnect - Student Portal",
     description: "View and edit your student profile.",
     ogImage: "/Favicon-SPRK.ico",
     url: "/profile",
+  },
+  forgotPassword: {
+    title: "Forgot Password | SPRKonnect - Student Portal",
+    description: "Reset your password.",
+    ogImage: "/Favicon-SPRK.ico",
+    url: "/forgot-password",
+  },
+  resetPassword: {
+    title: "Reset Password | SPRKonnect - Student Portal",
+    description: "Reset your password.",
+    ogImage: "/Favicon-SPRK.ico",
+    url: "/reset-password",
   },
 };

@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { forgotPassword } from "../Login/store/login.actions";
 import { setLogout } from "../Login/store/authSlice";
+import { Helmet } from "react-helmet-async";
+import { meta } from "../../../metaConfig";
 
 function ForgotPass() {
   const navigate = useNavigate();
@@ -131,6 +133,20 @@ function ForgotPass() {
         // backgroundPosition: " 0 0,15px 15px",
       }}
     >
+      <Helmet>
+        <title>{meta.forgotPassword.title}</title>
+        <meta name="description" content={meta.forgotPassword.description} />
+        <meta property="og:title" content={meta.forgotPassword.title} />
+        <meta
+          property="og:description"
+          content={meta.forgotPassword.description}
+        />
+        <meta property="og:image" content={meta.forgotPassword.ogImage} />
+        <meta
+          property="og:url"
+          content={`https://student.sprktechnologies.in${meta.forgotPassword.url}`}
+        />
+      </Helmet>
       <Box
         sx={{
           display: "flex",
