@@ -1,5 +1,3 @@
-import { forgotPassword } from "./src/components/Login/store/login.actions";
-
 // metaConfig.js
 export const meta = {
   login: {
