@@ -89,7 +89,7 @@ const FeedbackDialog = ({ open, handleClose }) => {
       if (file.size > maxSize) {
         swal({
           title: "File Too Large",
-          text: `${file.name} exceeds 1MB limit.`,
+          text: `${file.name} exceeds 2MB limit.`,
           icon: "error",
         });
         return false;
@@ -211,7 +211,7 @@ const FeedbackDialog = ({ open, handleClose }) => {
             <Typography sx={{ mb: 1 }}>
               Upload Screenshots (if any) :
               <LightTooltip
-                title="You can select multiple files at once using the 'Choose File' button, if you want."
+                title="You can select multiple files at once using the 'Choose File' button ; however, each file must be less than 2MB in size."
                 arrow
                 sx={{ zIndex: 9999 }}
               >
