@@ -74,7 +74,7 @@ const FeedbackDialog = ({ open, handleClose }) => {
     const files = Array?.from(event.target.files);
 
     const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
-    const maxSize = 1024 * 1024;
+    const maxSize =2 * 1024 * 1024;
 
     const validFiles = files?.filter((file) => {
       if (!allowedTypes.includes(file.type)) {
