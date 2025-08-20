@@ -6,6 +6,7 @@ import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
 import AbsentLog from "./AbsentLog/AbsentLog";
 import PopupFilterComponent from "../../../Common/FilterMenuComponent/PopupFilterComponent";
+import BatchNotes from "./Notes/BatchNotes";
 
 const TabPanel = ({ children, value, index }) => {
   return (
@@ -16,7 +17,7 @@ const TabPanel = ({ children, value, index }) => {
 };
 
 function BatchDetailsTab({ sessionData }) {
-  const tabNames = ["SESSIONS", "MODULES"];
+  const tabNames = ["SESSIONS", "MODULES","NOTES"];
   const [activeTab, setActiveTab] = useState(0);
   const batchId = useParams().batchId || null;
   const [filterData, setFilterData] = useState([]);
@@ -77,9 +78,9 @@ function BatchDetailsTab({ sessionData }) {
       <TabPanel value={activeTab} index={1}>
         <Modules batchId={batchId} />
       </TabPanel>
-      {/* <TabPanel value={activeTab} index={2}>
-        <AbsentLog batchId={batchId} />
-      </TabPanel> */}
+      <TabPanel value={activeTab} index={2}>
+        <BatchNotes batchId={batchId}/>
+      </TabPanel>
     </Box>
   );
 }

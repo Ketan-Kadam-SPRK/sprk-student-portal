@@ -1,0 +1,59 @@
+.filePreviewGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.attachmentCard {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 8px 0 8px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fileThumb {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.pdfThumb {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fcebea;
+    border-radius: 6px;
+}
+
+.otherThumb {
+    width: 100%;
+    height: 70px;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f4f4;
+    border-radius: 6px;
+}
+
+.fileName {
+    margin-top: 6px;
+    font-size: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.iconActions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}

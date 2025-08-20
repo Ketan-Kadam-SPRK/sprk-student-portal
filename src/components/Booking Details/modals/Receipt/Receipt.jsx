@@ -169,7 +169,6 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
             p: 1,
             display: "flex",
             justifyContent: "flex-end",
-
             backgroundColor: "#263238",
           }}
         >

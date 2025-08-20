@@ -1,0 +1,240 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    height: 100%;
+    position: relative;
+    min-height: 300px;
+}
+
+.chatArea {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+}
+
+.messageBubble {
+    display: flex;
+    margin-bottom: 8px;
+    justify-content: flex-start;
+}
+
+.sent {
+    justify-content: flex-end;
+}
+
+.received {
+    justify-content: flex-start;
+}
+
+
+.messageContent {
+    padding: 8px 12px;
+    border-radius: 12px;
+    max-width: 70vw;
+    position: relative;
+    background-color: #f0f4ff;
+}
+
+.messageTextDiv {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: space-between;
+    align-items: start;
+    flex-wrap: nowrap;
+}
+
+.messageTextStyle {
+    word-break: break-all;
+    /* word-wrap: break-word; */
+
+}
+
+.sent .messageContent {
+    background-color: #f0f4ff;
+}
+
+.received .messageContent {
+    background-color: #ffffff;
+}
+
+.messageActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filePreview img {
+    max-width: 150px;
+    border-radius: 8px;
+    margin-top: 6px;
+}
+
+.previewContainer {
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    /* overflow-x: auto; */
+}
+
+.previewItem {
+    position: relative;
+}
+
+.previewItem img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.removeBtn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.previewContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+}
+
+.inputBox {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: white;
+
+    /* border-top: 1px solid #ddd; */
+}
+
+.commentList {
+    margin-bottom: 12px;
+}
+
+.commentItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    /* padding: 5px;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+}
+
+.commentInput {
+    display: flex;
+    gap: 8px;
+    align-items: start;
+    width: 100%;
+
+}
+
+
+.filePreviewGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.attachmentCard {
+    width: 100px;
+    padding: 4px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.attachmentThumb {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.pdfPreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pdfIcon {
+    width: 40px;
+    height: 40px;
+}
+
+.fileActions {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+}
+
+.iconActions {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.attachmentCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.attachmentThumb {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.pdfPreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pdfIcon {
+    width: 40px;
+    height: 40px;
+}
+
+
+@media (max-width: 768px) {
+    .messageContent {
+        max-width: 80vw;
+    }
+
+
+
+}
+
+
+@media (max-width: 500px) {
+    .commentItem {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .avatar {
+        visibility: hidden;
+    }
+
+}
