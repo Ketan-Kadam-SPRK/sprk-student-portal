@@ -12,19 +12,33 @@ export default function FilePreview({ attachments }) {
     return "other";
   };
 
+  async function downloadImage(file) {
+    const response = await fetch(file?.imageUrl);
+    const blob = await response.blob();
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${file.originalName}`; // saved name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(link.href); // cleanup
+  }
+
   return (
     <Box className={styles.filePreviewGrid}>
       {attachments?.map((file, idx) => (
         <Box key={idx} className={styles.attachmentCard}>
           {/* File Preview */}
-          {getFileType(file.imageUrl) === "pdf" ? (
+          {getFileType(file?.imageUrl) === "pdf" ? (
             <Box className={styles.pdfThumb}>
               <PictureAsPdfIcon fontSize="large" color="error" />
             </Box>
-          ) : getFileType(file.imageUrl) === "image" ? (
+          ) : getFileType(file?.imageUrl) === "image" ? (
             <img
-              src={file.imageUrl}
-              alt={file.publicId}
+              src={file?.imageUrl}
+              alt={file?.publicId}
               className={styles.fileThumb}
             />
           ) : (
@@ -38,7 +52,7 @@ export default function FilePreview({ attachments }) {
             className={styles.fileName}
             title={file.imageUrl}
           >
-            {file.imageUrl.split("/").pop() || "File"}
+            {file?.imageUrl?.split("/").pop() || "File"}
           </Typography>
 
           {/* Icons */}
@@ -52,15 +66,7 @@ export default function FilePreview({ attachments }) {
               </IconButton>
             </Tooltip>
             <Tooltip title="Download">
-              <IconButton
-                size="small"
-                onClick={() => {
-                  const link = document.createElement("a");
-                  link.href = file.imageUrl;
-                  link.download = file.imageUrl.split("/").pop();
-                  link.click();
-                }}
-              >
+              <IconButton size="small" onClick={() => downloadImage(file)}>
                 <DownloadIcon sx={{ fontSize: "14px" }} />
               </IconButton>
             </Tooltip>

@@ -29,12 +29,10 @@ export default function NoteList({
 
   // Comments
   const handleOpenComments = (noteId) => {
-    console.log(noteId);
     setEditNoteId(noteId);
     setCommentDialogOpen(true);
   };
 
-  console.log(notes, "notes");
   return (
     <Box className={styles.chatArea} ref={noteListRef}>
       {notes &&
@@ -42,12 +40,12 @@ export default function NoteList({
           <Box key={note.noteUid} className={`${styles.messageBubble} `}>
             <Paper className={styles.messageContent}>
               <Box className={styles.messageTextDiv}>
-                {note.noteContent && (
+                {note?.noteContent && (
                   <Typography
                     className={styles.messageTextStyle}
                     variant="body1"
                   >
-                    {note.noteContent}
+                    {note?.noteContent}
                   </Typography>
                 )}
               </Box>
@@ -68,7 +66,7 @@ export default function NoteList({
                   color="textSecondary"
                   sx={{ display: "block", mt: 0.5 }}
                 >
-                  {note.createdAt && convertToCustomFormat(note.createdAt)}
+                  {note?.createdAt && convertToCustomFormat(note.createdAt)}
                 </Typography>
               </Box>
             </Paper>

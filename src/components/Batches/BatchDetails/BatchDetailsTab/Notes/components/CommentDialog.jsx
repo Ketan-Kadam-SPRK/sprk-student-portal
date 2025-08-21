@@ -18,6 +18,16 @@ import { Close } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { addCommentToNote, getCommentsByNoteId } from "../action/notes.action";
 import { useAuthHeaders } from "../../../../../../Hooks/useAuthHeaders";
+import { convertToCustomFormat } from "../../../../../../Utils/ConvertToCustomFormat";
+
+const generateRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
 export default function CommentDialog({ open, onClose, editNoteId }) {
   const dispatch = useDispatch();
@@ -26,6 +36,7 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
   const [commentText, setCommentText] = useState("");
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [commentColors, setCommentColors] = useState({});
 
   useEffect(() => {
     if (editNoteId) {
@@ -37,9 +48,19 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
     setLoading(true);
     dispatch(getCommentsByNoteId({ headers, noteId: editNoteId }))
       .then((res) => {
-        console.log(res);
         if (res?.payload !== undefined) {
-          setComments(res?.payload?.data?.data || []);
+          const data = res?.payload?.data?.data || [];
+          setComments(data);
+
+          setCommentColors((prev) => {
+            const newColors = { ...prev };
+            data?.forEach((c) => {
+              if (!newColors[c?.commentBy]) {
+                newColors[c?.commentBy] = generateRandomColor();
+              }
+            });
+            return newColors;
+          });
         }
         setLoading(false);
       })
@@ -49,8 +70,10 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
       });
   };
 
+  const MAX_LENGTH = 500;
+
   const handleAddComment = () => {
-    if (commentText === "") return;
+    if (commentText?.trim() === "" || commentText?.length > MAX_LENGTH) return;
     setAdding(true);
     dispatch(addCommentToNote({ headers, editNoteId, commentText }))
       .then((res) => {
@@ -105,20 +128,37 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
           ) : (
             <>
               {comments?.length ? (
-                comments.map((c, index) => (
+                comments?.map((c, index) => (
                   <Box key={index} className={styles.commentItem}>
-                    <Avatar
-                      className={styles.avatar}
-                      sx={{ width: 28, height: 28 }}
-                    >
-                      {c.commentBy}
-                    </Avatar>
+                  <Avatar
+                    className={styles.avatar}
+                    sx={{
+                      width: 28,
+                      height: 28,
+                      backgroundColor: commentColors[c?.commentBy] || "#999",
+                    }}
+                  >
+                    {c?.commentBy.charAt(0).toUpperCase()}
+                  </Avatar>
+                  <Box sx={{ ml: 1 }}>
                     <Typography
                       variant="body2"
-                      sx={{ ml: 1, wordBreak: "break-word" }}
+                      sx={{ wordBreak: "break-word" }}
                     >
-                      <strong>{c.commentBy}:</strong> {c.comment}
+                      <strong>{c?.commentBy}:</strong> {c?.comment}
                     </Typography>
+
+                    {/* Commented on date/time */}
+                    {c.commentOn && (
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ display: "block", mt: 0.25 }}
+                      >
+                        Commented on {convertToCustomFormat(c?.commentOn)}
+                      </Typography>
+                    )}
+                  </Box>
                   </Box>
                 ))
               ) : (
@@ -139,8 +179,22 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
             size="small"
             placeholder="Add a comment..."
             value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value.length <= MAX_LENGTH) {
+                setCommentText(e.target.value);
+              }
+            }}
             fullWidth
+            helperText={`${commentText?.length}/${MAX_LENGTH}`}
+            FormHelperTextProps={{
+              sx: {
+                textAlign: "right",
+                mr: 1,
+                fontSize: "0.75rem",
+                color:
+                  commentText?.length === MAX_LENGTH ? "red" : "text.secondary",
+              },
+            }}
           />
           <Button
             variant="contained"

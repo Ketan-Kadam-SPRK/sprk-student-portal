@@ -127,7 +127,7 @@
 
 .commentItem {
     display: flex;
-    align-items: center;
+    align-items: start;
     margin-bottom: 6px;
     /* padding: 5px;
     border-radius: 10px;

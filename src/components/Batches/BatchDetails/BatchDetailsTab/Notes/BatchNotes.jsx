@@ -26,7 +26,6 @@ export default function BatchNotes({ batchId }) {
     setLoading(true);
     dispatch(getBAtchNoteByBatchId({ headers, batchId }))
       .then((res) => {
-        console.log(res);
         if (res?.payload !== undefined) {
           setNotes(res?.payload?.data?.data || []);
         }
