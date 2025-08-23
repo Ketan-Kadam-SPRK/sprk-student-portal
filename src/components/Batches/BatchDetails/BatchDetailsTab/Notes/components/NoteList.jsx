@@ -10,12 +10,10 @@ import styles from "../batchNotes.module.css";
 import FilePreview from "./FilePreview";
 import CommentDialog from "./CommentDialog";
 import { convertToCustomFormat } from "../../../../../../Utils/ConvertToCustomFormat";
-// import { convertToCustomFormat } from "Utils/ConvertToAMPm";
 
 export default function NoteList({
   notes = [],
   setEditNoteId,
-  editMode,
   editNoteId,
 }) {
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
@@ -44,6 +42,7 @@ export default function NoteList({
                   <Typography
                     className={styles.messageTextStyle}
                     variant="body1"
+                      sx={{ whitespace: "pre-line" }}
                   >
                     {note?.noteContent}
                   </Typography>

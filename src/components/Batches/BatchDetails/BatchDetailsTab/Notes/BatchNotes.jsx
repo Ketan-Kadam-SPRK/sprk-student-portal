@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import styles from "./batchNotes.module.css";
 import NoteList from "./components/NoteList";
-// import NoteInput from "./components/NoteInput";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
 import { getBAtchNoteByBatchId } from "./action/notes.action";
 
@@ -11,10 +10,7 @@ import { getBAtchNoteByBatchId } from "./action/notes.action";
 export default function BatchNotes({ batchId }) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
-
   const [notes, setNotes] = useState([]);
-
-  const [editMode, setEditMode] = useState(false);
   const [editNoteId, setEditNoteId] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -55,7 +51,6 @@ export default function BatchNotes({ batchId }) {
         <NoteList
           notes={notes || []}
           setEditNoteId={setEditNoteId}
-          setEditMode={setEditMode}
           editNoteId={editNoteId}
         />
       ) : (
@@ -76,8 +71,6 @@ export default function BatchNotes({ batchId }) {
         </Box>
       )}
 
-      {/* Input box */}
-      {/* <NoteInput getNotesById={getNotesById} editMode={editMode} /> */}
     </Box>
   );
 }
