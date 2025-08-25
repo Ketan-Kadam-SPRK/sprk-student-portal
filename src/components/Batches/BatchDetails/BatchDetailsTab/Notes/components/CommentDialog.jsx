@@ -70,12 +70,17 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
       });
   };
 
-  const MAX_LENGTH = 500;
+  const MAX_LENGTH = 499;
 
   const handleAddComment = () => {
-    if (commentText?.trim() === "" || commentText?.length > MAX_LENGTH) return;
+    const trimmedCommentText = commentText.trim();
+    if (trimmedCommentText === "" || trimmedCommentText.length > MAX_LENGTH)
+      return;
+
     setAdding(true);
-    dispatch(addCommentToNote({ headers, editNoteId, commentText }))
+    dispatch(
+      addCommentToNote({ headers, editNoteId, commentText: trimmedCommentText })
+    )
       .then((res) => {
         if (res?.payload !== undefined) {
           setCommentText("");
@@ -130,41 +135,50 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
               {comments?.length ? (
                 comments?.map((c, index) => (
                   <Box key={index} className={styles.commentItem}>
-                  <Avatar
-                    className={styles.avatar}
-                    sx={{
-                      width: 28,
-                      height: 28,
-                      backgroundColor: commentColors[c?.commentBy] || "#999",
-                    }}
-                  >
-                    {c?.commentBy.charAt(0).toUpperCase()}
-                  </Avatar>
-                  <Box sx={{ ml: 1 }}>
-                    <Typography
-                      variant="body2"
-                      sx={{ wordBreak: "break-word" }}
+                    <Avatar
+                      className={styles.avatar}
+                      sx={{
+                        width: 28,
+                        height: 28,
+                        backgroundColor: commentColors[c?.commentBy] || "#999",
+                      }}
                     >
-                      <strong>{c?.commentBy}:</strong> {c?.comment}
-                    </Typography>
-
-                    {/* Commented on date/time */}
-                    {c.commentOn && (
+                      {c?.commentBy.charAt(0).toUpperCase()}
+                    </Avatar>
+                    <Box sx={{ ml: 1 }}>
                       <Typography
-                        variant="caption"
-                        color="text.secondary"
-                        sx={{ display: "block", mt: 0.25 }}
+                        variant="body2"
+                        className={styles.messageTextStyle}
                       >
-                        Commented on {convertToCustomFormat(c?.commentOn)}
+                        <strong>{c?.commentBy}:</strong> {c?.comment}
                       </Typography>
-                    )}
-                  </Box>
+
+                      {/* Commented on date/time */}
+                      {c.commentOn && (
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{ display: "block", mt: 0.25 }}
+                        >
+                          Commented on {convertToCustomFormat(c?.commentOn)}
+                        </Typography>
+                      )}
+                    </Box>
                   </Box>
                 ))
               ) : (
-                <Typography variant="body2" color="textSecondary">
-                  No comments yet.
-                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                  }}
+                >
+                  <Typography variant="body2" color="textSecondary">
+                    No comments yet.
+                  </Typography>
+                </Box>
               )}
             </>
           )}
@@ -179,20 +193,21 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
             size="small"
             placeholder="Add a comment..."
             value={commentText}
-            onChange={(e) => {
-              if (e.target.value.length <= MAX_LENGTH) {
-                setCommentText(e.target.value);
-              }
-            }}
+            onChange={(e) => setCommentText(e.target.value)}
             fullWidth
-            helperText={`${commentText?.length}/${MAX_LENGTH}`}
+            error={commentText.length > MAX_LENGTH}
+            helperText={
+              commentText.length > MAX_LENGTH
+                ? `Character limit exceeded! ${commentText.length}/${MAX_LENGTH}`
+                : `${commentText.length}/${MAX_LENGTH}`
+            }
             FormHelperTextProps={{
               sx: {
                 textAlign: "right",
                 mr: 1,
                 fontSize: "0.75rem",
                 color:
-                  commentText?.length === MAX_LENGTH ? "red" : "text.secondary",
+                  commentText.length > MAX_LENGTH ? "red" : "text.secondary",
               },
             }}
           />

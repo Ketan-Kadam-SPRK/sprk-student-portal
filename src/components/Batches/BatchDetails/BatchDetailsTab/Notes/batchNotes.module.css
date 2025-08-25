@@ -47,9 +47,10 @@
 }
 
 .messageTextStyle {
-    word-break: break-all;
-    /* word-wrap: break-word; */
-
+    white-space: pre-line;
+    /* preserve newlines + wrap normally */
+    word-break: break-word;
+    /* break only long words if needed */
 }
 
 .sent .messageContent {
@@ -123,6 +124,7 @@
 
 .commentList {
     margin-bottom: 12px;
+    min-height: 250px;
 }
 
 .commentItem {
@@ -140,6 +142,13 @@
     align-items: start;
     width: 100%;
 
+}
+
+.messageTextStyle {
+    white-space: pre-line;
+    /* preserve newlines + wrap normally */
+    word-break: break-word;
+    /* break only long words if needed */
 }
 
 

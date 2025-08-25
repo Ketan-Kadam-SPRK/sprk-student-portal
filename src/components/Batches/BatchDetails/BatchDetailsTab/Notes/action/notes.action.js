@@ -56,13 +56,13 @@ export const addCommentToNote = createAsyncThunk(
       // Make a PATCH request to resume the batch
       const res = await axiosInstance.post(
         `/student-portal/batch/notes/${editNoteId}/comments`,
-        commentText,
+        { comment: commentText },
         {
           headers,
         }
       );
 
-      return handleResponse(res?.data);
+      return res?.data;
     } catch (error) {
       handleError(error);
       throw error;
