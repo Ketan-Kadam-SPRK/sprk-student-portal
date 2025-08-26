@@ -34,7 +34,7 @@ export default function NoteList({ notes = [], setEditNoteId, editNoteId }) {
     <Box className={styles.chatArea} ref={noteListRef}>
       {notes &&
         notes?.map((note) => (
-          <Box key={note.noteUid} className={`${styles.messageBubble} `}>
+          <Box key={note?.noteUid} className={`${styles.messageBubble} `}>
             <Paper className={styles.messageContent}>
               <Box className={styles.messageTextDiv}>
                 {note?.noteContent && (
@@ -55,7 +55,7 @@ export default function NoteList({ notes = [], setEditNoteId, editNoteId }) {
               <Box className={styles.messageActions}>
                 <IconButton
                   size="small"
-                  onClick={() => handleOpenComments(note.noteUid)}
+                  onClick={() => handleOpenComments(note?.noteUid)}
                 >
                   <CommentIcon fontSize="small" />{" "}
                   <span style={{ marginLeft: "5px", fontSize: "12px" }}>
@@ -68,11 +68,11 @@ export default function NoteList({ notes = [], setEditNoteId, editNoteId }) {
                     color="textSecondary"
                     sx={{ display: "block", mt: 0.5 }}
                   >
-                    {note.createdAt &&
-                      `${convertToCustomFormat(note.createdAt)} -
+                    {note?.createdAt &&
+                      `${convertToCustomFormat(note?.createdAt)} -
                      `}
                   </Typography>
-                  <LightTooltip title={note.createdBy}>
+                  <LightTooltip title={note?.createdBy}>
                     <Avatar
                       sx={{
                         width: 18,
@@ -82,7 +82,7 @@ export default function NoteList({ notes = [], setEditNoteId, editNoteId }) {
                         ml: 1,
                       }}
                     >
-                      {note.createdBy.charAt(0).toUpperCase()}
+                      {note?.createdBy.charAt(0).toUpperCase()}
                     </Avatar>
                   </LightTooltip>
                 </Box>

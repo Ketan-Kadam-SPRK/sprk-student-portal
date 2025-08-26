@@ -73,8 +73,8 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
   const MAX_LENGTH = 499;
 
   const handleAddComment = () => {
-    const trimmedCommentText = commentText.trim();
-    if (trimmedCommentText === "" || trimmedCommentText.length > MAX_LENGTH)
+    const trimmedCommentText = commentText?.trim();
+    if (trimmedCommentText === "" || trimmedCommentText?.length > MAX_LENGTH)
       return;
 
     setAdding(true);

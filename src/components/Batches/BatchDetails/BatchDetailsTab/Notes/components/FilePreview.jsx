@@ -50,7 +50,7 @@ export default function FilePreview({ attachments }) {
             variant="caption"
             noWrap
             className={styles.fileName}
-            title={file.imageUrl}
+            title={file?.imageUrl}
           >
             {file?.imageUrl?.split("/").pop() || "File"}
           </Typography>
@@ -60,7 +60,7 @@ export default function FilePreview({ attachments }) {
             <Tooltip title="View">
               <IconButton
                 size="small"
-                onClick={() => window.open(file.imageUrl, "_blank")}
+                onClick={() => window.open(file?.imageUrl, "_blank")}
               >
                 <VisibilityIcon sx={{ fontSize: "14px" }} />
               </IconButton>
