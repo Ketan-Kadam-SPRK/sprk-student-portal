@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { addCommentToNote, getCommentsByNoteId } from "../action/notes.action";
 import { useAuthHeaders } from "../../../../../../Hooks/useAuthHeaders";
 import { convertToCustomFormat } from "../../../../../../Utils/ConvertToCustomFormat";
+import { useBatch } from "../../../BatchContext";
 
 const generateRandomColor = () => {
   const letters = "0123456789ABCDEF";
@@ -37,6 +38,10 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);
   const [commentColors, setCommentColors] = useState({});
+
+  const { sessionData } = useBatch();
+
+  console.log(sessionData,"sessionData");
 
   useEffect(() => {
     if (editNoteId) {
@@ -213,7 +218,7 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
           />
           <Button
             variant="contained"
-            disabled={adding}
+            disabled={adding || sessionData?.is_removed}
             onClick={handleAddComment}
           >
             {adding ? <CircularProgress size={20} /> : "Add"}
