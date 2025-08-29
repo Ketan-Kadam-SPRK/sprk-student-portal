@@ -23,7 +23,7 @@ function BatchDetailsTab({ sessionData }) {
   const handleTabChange = (event, newTabIndex) => {
     setActiveTab(newTabIndex);
   };
-
+  
   return (
     <BatchContext.Provider value={{ sessionData,batchId }}>
       <Box className={styles.mainBox}>

@@ -11,10 +11,12 @@ import { formatForDisplay } from "../../../../../Utils/formateForDisplay";
 import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
 import NoDataPage from "../../../../Common/NoDataPage";
 import NoDataAvailableUI from "../../../../Common/CustomAgGrid/NoDataAvailableUI";
+import { useBatch } from "../../BatchContext";
 
-function Sessions({ sessionData, filterData }) {
+function Sessions({filterData }) {
   const [show, setShow] = useState(false);
   const [showAttendanceDrawer, setShowAttendanceDrawer] = useState(false);
+  const { sessionData } = useBatch();
 
   const handleToggleDrawer = () => {
     setShowAttendanceDrawer(!showAttendanceDrawer);
