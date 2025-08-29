@@ -5,14 +5,18 @@ import NoteList from "./components/NoteList";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
 import { getBAtchNoteByBatchId } from "./action/notes.action";
+import { useBatch } from "../../BatchContext";
 
 
-export default function BatchNotes({ batchId }) {
+
+export default function BatchNotes() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [notes, setNotes] = useState([]);
   const [editNoteId, setEditNoteId] = useState(null);
   const [loading, setLoading] = useState(false);
+  
+  const {batchId} = useBatch()
 
   useEffect(() => {
     getNotesById();

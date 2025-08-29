@@ -41,8 +41,6 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
 
   const { sessionData } = useBatch();
 
-  console.log(sessionData,"sessionData");
-
   useEffect(() => {
     if (editNoteId) {
       getComments();
@@ -200,11 +198,11 @@ export default function CommentDialog({ open, onClose, editNoteId }) {
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
             fullWidth
-            error={commentText.length > MAX_LENGTH}
+            error={commentText?.length > MAX_LENGTH}
             helperText={
-              commentText.length > MAX_LENGTH
-                ? `Character limit exceeded! ${commentText.length}/${MAX_LENGTH}`
-                : `${commentText.length}/${MAX_LENGTH}`
+              commentText?.length > MAX_LENGTH
+                ? `Character limit exceeded! ${commentText?.length}/${MAX_LENGTH}`
+                : `${commentText?.length}/${MAX_LENGTH}`
             }
             FormHelperTextProps={{
               sx: {

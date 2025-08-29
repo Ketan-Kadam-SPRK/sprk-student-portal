@@ -12,13 +12,16 @@ import ErrorHandling from "../../../../Common/ErrorHandling";
 
 import { getModulesDetails } from "../../../action/batches.actions";
 import StatusStyledComponent from "../../../../Common/StatusStyledComponent/StatusStyledComponent";
+import { useBatch } from "../../BatchContext";
 
-function Modules({ batchId }) {
+function Modules() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const [loading, setLoading] = useState(false);
   const [modules, setModules] = useState([]);
   const [error500, setError500] = useState(false);
+
+  const {batchId} = useBatch()
 
   const getModules = async () => {
     setLoading(true);

@@ -25,7 +25,7 @@ function BatchDetailsTab({ sessionData }) {
   };
 
   return (
-    <BatchContext.Provider value={{ sessionData }}>
+    <BatchContext.Provider value={{ sessionData,batchId }}>
       <Box className={styles.mainBox}>
         <Box className={styles.tabBox}>
           <Tabs
@@ -71,13 +71,13 @@ function BatchDetailsTab({ sessionData }) {
         </Box>
 
         <TabPanel value={activeTab} index={0}>
-          <Sessions filterData={filterData} /> {/* still local */}
+          <Sessions filterData={filterData} />
         </TabPanel>
         <TabPanel value={activeTab} index={1}>
-          <Modules batchId={batchId} /> {/* still local */}
+          <Modules /> 
         </TabPanel>
         <TabPanel value={activeTab} index={2}>
-          <BatchNotes batchId={batchId} /> {/* still local */}
+          <BatchNotes /> 
         </TabPanel>
       </Box>
     </BatchContext.Provider>
