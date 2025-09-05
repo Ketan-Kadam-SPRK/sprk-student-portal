@@ -11,7 +11,8 @@ const themesJson = [
   {
     name: "defaultBlue",
     colors: {
-      backgroundColor: "#F4F7FC",
+      // backgroundColor: "#e8eefa",
+      backgroundColor: "#dce8ff",
       textColor: "#1A1A1A",
       primary: "#007bff",
       secondary: "#007bff",
@@ -60,42 +61,60 @@ export const ThemeProvider = ({ children }) => {
 
     const root = document.documentElement;
 
-    root.style.setProperty("--primary-color", colors.primary);
-    root.style.setProperty("--secondary-color", colors.secondary);
-    root.style.setProperty("--background-color", colors.backgroundColor);
-    root.style.setProperty("--text-color", colors.textColor);
+    root.style.setProperty("--primary-color", colors.primary, "important");
+    root.style.setProperty("--secondary-color", colors.secondary, "important");
+    root.style.setProperty(
+      "--background-color",
+      colors.backgroundColor,
+      "important"
+    );
+    root.style.setProperty("--text-color", colors.textColor, "important");
 
-    root.style.setProperty("--sidebar-bg-color", colors.sidebarBg);
-    root.style.setProperty("--sidebar-acitve-tab", colors.sidebarActiveTab);
-    root.style.setProperty("--sidebar-subTab-color", colors.sidebarSubTab);
-    root.style.setProperty("--sidebar-onhover-tab", colors.sidebarOnHoverTab);
+    root.style.setProperty("--sidebar-bg-color", colors.sidebarBg, "important");
+    root.style.setProperty(
+      "--sidebar-active-tab",
+      colors.sidebarActiveTab,
+      "important"
+    );
+    root.style.setProperty(
+      "--sidebar-sub-tab",
+      colors.sidebarSubTab,
+      "important"
+    );
+    root.style.setProperty(
+      "--sidebar-onhover-tab",
+      colors.sidebarOnHoverTab,
+      "important"
+    );
     root.style.setProperty(
       "--sidebar-onhover-tab-text",
-      colors.sidebarOnHoverTabText
+      colors.sidebarOnHoverTabText,
+      "important"
     );
     root.style.setProperty(
       "--sidebar-active-tab-text",
-      colors.sidebarActiveTabText
+      colors.sidebarActiveTabText,
+      "important"
     );
 
-    root.style.setProperty("--skill-card-bg-color", colors.skillCardBg);
-    root.style.setProperty("--table-header-bg", colors.tableHeaderBg);
+    root.style.setProperty(
+      "--skill-card-bg-color",
+      colors.skillCardBg,
+      "important"
+    );
+    root.style.setProperty(
+      "--table-header-bg",
+      colors.tableHeaderBg,
+      "important"
+    );
 
-    root.style.setProperty("--text-on-dark", colors.textOnDark);
-    root.style.setProperty("--text-on-light", colors.textOnLight);
-
-    // Optional font sizes
-    root.style.setProperty("--font-size-extra-small", "clamp(12px, 1vw, 13px)");
-    root.style.setProperty("--font-size-small", "clamp(14px, 1vw, 16px)");
-    root.style.setProperty("--font-size-medium", "clamp(16px, 3vw, 20px)");
-    root.style.setProperty("--font-size-large", "clamp(20px, 4vw, 32px)");
+    root.style.setProperty("--text-on-dark", colors.textOnDark, "important");
+    root.style.setProperty("--text-on-light", colors.textOnLight, "important");
   };
 
   const muiTheme = createTheme({
     palette: {
-      primary: {
-        main: colors?.primary || "#007bff",
-      },
+      primary: { main: colors?.primary || "#007bff" },
     },
     components: {
       MuiButton: {
@@ -137,32 +156,18 @@ export const ThemeProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    // const fetchThemeColors = async () => {
-    //   try {
-    //     const response = await fetch("/api/theme-colors");
-    //     const colorsData = await response.json();
-    //     if (colorsData) {
-    //       setColors(colorsData);
-    //       applyThemeColors(colorsData);
-    //     }
-    //   } catch (error) {
-    // console.error("Error fetching theme colors:", error);
     const fallbackThemeName =
       orgCode === "SRA" ? "customMaroon" : "defaultBlue";
-    const fallbackTheme = themesJson?.find(
-      (theme) => theme.name === fallbackThemeName
+    const fallbackTheme = themesJson.find(
+      (t) => t.name === fallbackThemeName
     )?.colors;
 
     if (fallbackTheme) {
       setColors(fallbackTheme);
       applyThemeColors(fallbackTheme);
     }
-    // } finally {
-    //   setIsLoading(false);
-    // }
-    // };
 
-    // fetchThemeColors();
+    setIsLoading(false);
   }, [orgCode]);
 
   return (

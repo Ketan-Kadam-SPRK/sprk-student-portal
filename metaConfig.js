@@ -2,7 +2,7 @@
 export const meta = {
   login: {
     title: "Login Page | SPRKonnect",
-    description: "Login to your account on SPRKonnect Student Portal.",
+    description: "Login to your account on SPRKonnect Student Portal. ",
     ogImage: "/Favicon-SPRK.ico",
     url: "/login",
   },

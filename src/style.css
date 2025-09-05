@@ -1,67 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
-* {
-  font-family: 'Roboto';
-
-}
-
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
 :root {
-  --background-color: #F4F7FC;
-  --text-color: #1A1A1A;
+  /* --background-color: #e8eefa; */
+  --background-color: #dce8ff;
+
+  --text-color: #1a1a1a;
   --primary-color: #007bff;
   --secondary-color: #007bff;
-  --sidebar-bg-color: #0A2647;
-  --sidebar-acitve-tab: #0056b3;
+
+  --sidebar-bg-color: #0a2647;
+  --sidebar-active-tab: #0056b3;
+  --sidebar-sub-tab: #cce5ff;
   --sidebar-onhover-tab: #cce5ff;
   --sidebar-onhover-tab-text: #0056b3;
   --sidebar-active-tab-text: #ffffff;
 
-  --font-size-extra-small: clamp(12px, 1vw, 13px);
+  --table-header-bg: #007bff;
+  --skill-card-bg-color: linear-gradient(180deg, #007bff 0%, #0a2647 100%);
 
-  --font-size-small: clamp(14px, 1vw, 16px);
-  --font-size-medium: clamp(16px, 3vw, 20px);
-  --font-size-large: clamp(20px, 4vw, 32px);
-
-}
-
-/* :root {
-  --background-color: #FDF7F7;
-  --text-color: #1A1A1A;
-
-  --primary-color: #800000;
-
-  --secondary-color: #B22222;
-
-  --sidebar-bg-color: #4B0000;
-  --sidebar-acitve-tab: #990000;
-  --sidebar-onhover-tab: #e6b8b8;
-  --sidebar-onhover-tab-text: #800000;
-  --sidebar-active-tab-text: #ffffff;
+  --text-on-dark: #ffffff;
+  --text-on-light: #1a1a1a;
 
   --font-size-extra-small: clamp(12px, 1vw, 13px);
   --font-size-small: clamp(14px, 1vw, 16px);
   --font-size-medium: clamp(16px, 3vw, 20px);
   --font-size-large: clamp(20px, 4vw, 32px);
-} */
-
-.swal2-container {
-  z-index: 100000000000 !important;
 }
-
 
 [data-theme="dark"] {
   --background-color: #000000;
   --text-color: #ffffff;
 }
 
-
-
 body {
-  font-family: 'Roboto';
+  font-family: "Roboto", sans-serif;
   font-size: var(--font-size-medium);
-  background-color: var(--background-color);
   color: var(--text-color);
   padding: 0;
   margin: 0;
@@ -75,18 +48,7 @@ p {
   font-size: var(--font-size-small);
 }
 
-
-/* ::-webkit-scrollbar {
-  width: 0px;
-} */
-
-input[type="password"]::-ms-reveal,
-input[type="password"]::-ms-clear {
-  display: none;
-}
-
-
-/* WebKit-based browsers (Chrome, Edge, Safari) */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -94,25 +56,20 @@ input[type="password"]::-ms-clear {
 
 ::-webkit-scrollbar-track {
   background: #f9f9f9;
-  /* very light background */
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: #d0d7de;
-  /* soft gray-blue */
   border-radius: 10px;
   border: 2px solid #f9f9f9;
-  /* padding effect */
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #bdc5cd;
-  /* slightly darker on hover */
 }
 
-
-/* For Firefox */
+/* Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: #bdc5cd #f9f9f9;

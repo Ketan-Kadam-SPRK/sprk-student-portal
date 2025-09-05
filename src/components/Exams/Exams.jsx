@@ -183,6 +183,7 @@ function Exams() {
                   : "var(--background-color)",
               color: activeTab === 0 && "white",
               minWidth: "150px",
+              border: "1px solid var(--secondary-color)",
             }}
             onClick={() => handleTabChange(0)}
             endIcon={
@@ -205,6 +206,7 @@ function Exams() {
                   : "var(--background-color)",
               color: activeTab === 1 && "white",
               minWidth: "150px",
+              border: "1px solid var(--secondary-color)",
             }}
             onClick={() => handleTabChange(1)}
             endIcon={
@@ -222,6 +224,7 @@ function Exams() {
                   : "var(--background-color)",
               color: activeTab === 2 && "white",
               minWidth: "150px",
+              border: "1px solid var(--secondary-color)",
             }}
             onClick={() => handleTabChange(2)}
             endIcon={

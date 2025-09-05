@@ -105,7 +105,8 @@ function ExamCard({ item }) {
         p: 2,
         borderRadius: "10px",
         backgroundColor: "white",
-        boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+        boxShadow:
+          "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
         width: "100%",
         height: "100%",
       }}

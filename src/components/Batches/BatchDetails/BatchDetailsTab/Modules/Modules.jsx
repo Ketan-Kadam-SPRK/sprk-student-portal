@@ -21,7 +21,7 @@ function Modules() {
   const [modules, setModules] = useState([]);
   const [error500, setError500] = useState(false);
 
-  const {batchId} = useBatch()
+  const { batchId } = useBatch();
 
   const getModules = async () => {
     setLoading(true);
@@ -115,7 +115,8 @@ function Modules() {
               justifyContent: "space-between",
               alignItems: "center",
               p: 2,
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Adds a shadow
+              boxShadow:
+                " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
               borderRadius: "8px", // Rounds the corners
             }}
           >

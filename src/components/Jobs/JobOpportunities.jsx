@@ -175,6 +175,7 @@ function JobOpportunities() {
                     ? "var(--secondary-color)"
                     : "var(--background-color)",
                 color: activeTAb === res && "white",
+                border: "1px solid var(--secondary-color)",
               }}
               endIcon={
                 <Badge badgeContent={count[res]} color="secondary"></Badge>

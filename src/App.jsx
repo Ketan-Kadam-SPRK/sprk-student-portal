@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Login from "./components/Login/Login";
-import "./style.css";
 import { useSelector } from "react-redux";
 import ForgotPass from "./components/Forgot Password/ForgotPass";
 import ResetPass from "./components/Forgot Password/ResetPass";

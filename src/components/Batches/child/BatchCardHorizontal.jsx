@@ -53,13 +53,12 @@ function BatchCardHorizontal({ item = {} }) {
     <Box
       key={item?.batch_uid}
       sx={{
-        backgroundColor: item?.is_removed
-          ? "lightgray"
-          : "var(--background-color)",
+        backgroundColor: item?.is_removed ? "lightgray" : "white",
         borderRadius: "10px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        border: "1px solid lightgray",
         p: 2,
         gap: 4,
         opacity: item?.is_removed ? 0.7 : 1,
@@ -67,8 +66,10 @@ function BatchCardHorizontal({ item = {} }) {
         flexWrap: "wrap",
 
         flexDirection: { xs: "column", sm: "column", md: "column", lg: "row" },
+        // boxShadow:
+        //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
         boxShadow:
-          "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+          " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
         // "rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px",
       }}
     >

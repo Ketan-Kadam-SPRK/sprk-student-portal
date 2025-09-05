@@ -54,7 +54,8 @@ function CourseGrpCard({ item, index }) {
         gap: "20px",
         borderRadius: "10px",
         p: 2,
-        boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+        boxShadow:
+          "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
         backgroundColor: "white",
       }}
     >
