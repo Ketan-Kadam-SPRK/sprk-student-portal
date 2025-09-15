@@ -1,4 +1,4 @@
-import { Box, Grid2, Typography } from "@mui/material";
+import { Box, Grid2, Typography, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Image } from "cloudinary-react";
@@ -10,6 +10,8 @@ import NoDataPage from "../Common/NoDataPage";
 import { getBookingDetails } from "./action/Payment.action";
 import { meta } from "../../../metaConfig";
 import { Helmet } from "react-helmet-async";
+import axios from "axios";
+import MakePayment from "./MakePayment";
 
 function Payments() {
   const dispatch = useDispatch();
@@ -70,6 +72,7 @@ function Payments() {
           content={`https://student.sprktechnologies.in${meta.bookings.url}`}
         />
       </Helmet>
+      <MakePayment />
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Typography variant="h4" sx={{ color: "#0A2647", fontWeight: 600 }}>
