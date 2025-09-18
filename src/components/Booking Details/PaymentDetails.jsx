@@ -27,6 +27,7 @@ import Receipt from "./modals/Receipt/Receipt";
 import { CapitalFirstLetterOnly } from "../../Utils/CapitalFirstLetterOnly";
 import ErrorHandling from "../Common/ErrorHandling";
 import { getBookingInstallments } from "./action/Payment.action";
+import MakePayment from "./MakePayment";
 
 function PaymentDetails() {
   const navigate = useNavigate();
@@ -106,6 +107,10 @@ function PaymentDetails() {
     if (statuses.includes("PENDING")) return "PENDING";
     return "PAID";
   };
+
+const latestUnpaidId = data?.instal
+  ?.filter((i) => i.installment_status !== "PAID")
+  ?.sort((a, b) => new Date(a.due_at) - new Date(b.due_at))[0]?.installment_id;
 
   /**
    * Retrieves the full month name from a given date string.
@@ -235,7 +240,12 @@ function PaymentDetails() {
       width: 300,
       format: (action, row) => {
         return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <MakePayment
+          row={row}
+          disabled={row?.installment_status === "PAID" || row?.installment_id !== latestUnpaidId}
+          getBookingInstallmentDetails={getBookingInstallmentDetails}
+        />
             <Button
               sx={{ textWrap: "nowrap" }}
               size="small"
