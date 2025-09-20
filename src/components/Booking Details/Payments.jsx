@@ -72,7 +72,7 @@ function Payments() {
           content={`https://student.sprktechnologies.in${meta.bookings.url}`}
         />
       </Helmet>
-      <MakePayment />
+      {/* <MakePayment /> */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Typography variant="h4" sx={{ color: "#0A2647", fontWeight: 600 }}>
