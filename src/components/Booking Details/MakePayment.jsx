@@ -4,7 +4,6 @@ import { Button, CircularProgress } from "@mui/material";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 
 const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
-
   const [loading, setLoading] = useState(false);
   const headers = useAuthHeaders();
   const handlePay = async () => {
@@ -38,6 +37,14 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
           },
           theme: {
             color: "#3399cc",
+          },
+          method: {
+            upi: true,
+            card: true,
+            netbanking: true,
+            wallet: false,
+            paylater: false,
+            emi: false,
           },
         };
 
