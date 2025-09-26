@@ -118,3 +118,46 @@ export const getAllReceipts = createAsyncThunk(
     }
   }
 );
+
+
+export const CreateOrderFromBackend = createAsyncThunk(
+  "onlinePayment/CreateOrderFromBackend",
+  async ({ headers, id }) => {
+    try {
+      // Send a POST request to the login API endpoint with user data
+      const res = await axiosInstance.post(
+        `student-portal/pay/${id}`,
+        {},
+        {
+          headers: headers,
+        }
+      );
+
+      const data = await res.data; // Corrected this line
+      return data;
+    } catch (err) {
+      return handleError(err);
+    }
+  }
+);
+
+export const cancelOnlinePayment = createAsyncThunk(
+  "onlinePayment/cancelOnlinePayment",
+  async ({ headers,installmentId,orderId}) => {
+    try {
+      // Send a POST request to the login API endpoint with user data
+      const res = await axiosInstance.post(
+        `student-portal/dismiss/${installmentId}/${orderId}`,
+        {},
+        {
+          headers: headers,
+        }
+      );
+
+      const data = await res.data; // Corrected this line
+      return data;
+    } catch (err) {
+      return handleError(err);
+    }
+  }
+);
