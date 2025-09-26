@@ -7,7 +7,7 @@ import {
   Dialog,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
@@ -108,9 +108,11 @@ function PaymentDetails() {
     return "PAID";
   };
 
-const latestUnpaidId = data?.instal
-  ?.filter((i) => i.installment_status !== "PAID")
-  ?.sort((a, b) => new Date(a.due_at) - new Date(b.due_at))[0]?.installment_id;
+  const latestUnpaidId = data?.instal
+    ?.filter((i) => i.installment_status !== "PAID")
+    ?.sort(
+      (a, b) => new Date(a.due_at) - new Date(b.due_at)
+    )[0]?.installment_id;
 
   /**
    * Retrieves the full month name from a given date string.
@@ -141,6 +143,9 @@ const latestUnpaidId = data?.instal
         return { color: "#755200", backgroundColor: "#FFF3A4" };
       case "OVERDUE":
         return { color: "#9F0000", backgroundColor: "#FFB5B5" };
+      case "PROCESSING":
+        return { color: "#004085", backgroundColor: "#CCE5FF" };
+
       default:
         return { color: "", backgroundColor: "" };
     }
@@ -241,11 +246,15 @@ const latestUnpaidId = data?.instal
       format: (action, row) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <MakePayment
-          row={row}
-          disabled={row?.installment_status === "PAID" || row?.installment_id !== latestUnpaidId}
-          getBookingInstallmentDetails={getBookingInstallmentDetails}
-        />
+            <MakePayment
+              row={row}
+              disabled={
+                row?.installment_status === "PAID" ||
+                row?.installment_id !== latestUnpaidId ||
+                row?.installment_status === "PROCESSING"
+              }
+              getBookingInstallmentDetails={getBookingInstallmentDetails}
+            />
             <Button
               sx={{ textWrap: "nowrap" }}
               size="small"

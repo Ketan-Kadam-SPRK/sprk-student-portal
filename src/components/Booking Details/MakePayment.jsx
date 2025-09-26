@@ -2,20 +2,35 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Button, CircularProgress } from "@mui/material";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
+import { useDispatch } from "react-redux";
+import { cancelOnlinePayment, CreateOrderFromBackend } from "./action/Payment.action";
 
 const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
   const [loading, setLoading] = useState(false);
   const headers = useAuthHeaders();
+  const dispatch = useDispatch();
+
+  // 🔹 Function to call dismiss API
+  const handleDismiss = async (installmentId, orderId) => {
+    try {
+      await dispatch(cancelOnlinePayment({ headers, installmentId, orderId })
+      );
+      // console.log("Dismiss API called successfully");
+    } catch (error) {
+      console.error("Dismiss API failed:", error);
+    } finally {
+      getBookingInstallmentDetails(); // ✅ Refresh after dismiss
+    }
+  };
+
   const handlePay = async () => {
     setLoading(true);
     try {
       // Step 1: Create order from backend
-      const res = await axios.post(
-        `https://jnvjzs5t-8888.inc1.devtunnels.ms/api/student-portal/pay/${row?.installment_id}`,
-        {},
-        { headers }
-      );
-      const order = JSON.parse(res.data.data); // This is the JSON you pasted
+      const res = await dispatch(CreateOrderFromBackend({headers, id: row?.installment_id})); 
+      console.log(res, "res");
+      const order = JSON.parse(res?.payload?.data);
+      console.log(order, "order");
 
       // Step 2: Load Razorpay script
       const script = document.createElement("script");
@@ -25,12 +40,12 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
 
       script.onload = () => {
         const options = {
-          key: "rzp_test_RBUYUcRfQUh5Aw", // Replace with your Razorpay Key ID
-          amount: order.amount, // Amount in paise
+          key: "rzp_test_RBUYUcRfQUh5Aw",
+          amount: order.amount,
           currency: order.currency,
           name: "SPRK Technologies",
           description: "Course Payment",
-          order_id: order.id, // <-- This is important
+          order_id: order.id,
           handler: function (response) {
             console.log("Payment successful:", response);
             getBookingInstallmentDetails();
@@ -45,6 +60,12 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
             wallet: false,
             paylater: false,
             emi: false,
+          },
+          modal: {
+            ondismiss: function () {
+              console.log("Payment popup closed by user");
+              handleDismiss(row?.installment_id, order?.id); // ✅ Call dismiss API
+            },
           },
         };
 
@@ -67,7 +88,6 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
       }}
       size="small"
       variant="contained"
-      // color="success"
       onClick={handlePay}
       disabled={disabled || loading}
     >
