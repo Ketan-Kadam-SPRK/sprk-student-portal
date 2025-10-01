@@ -28,9 +28,8 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
     try {
       // Step 1: Create order from backend
       const res = await dispatch(CreateOrderFromBackend({headers, id: row?.installment_id})); 
-      console.log(res, "res");
+
       const order = JSON.parse(res?.payload?.data);
-      console.log(order, "order");
 
       // Step 2: Load Razorpay script
       const script = document.createElement("script");
@@ -47,7 +46,6 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
           description: "Course Payment",
           order_id: order.id,
           handler: function (response) {
-            console.log("Payment successful:", response);
             getBookingInstallmentDetails();
           },
           theme: {
@@ -63,7 +61,6 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
           },
           modal: {
             ondismiss: function () {
-              console.log("Payment popup closed by user");
               handleDismiss(row?.installment_id, order?.id); // ✅ Call dismiss API
             },
           },
