@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
  * - Authorization: "Bearer <token>"
  */
 export const useAuthHeaders = () => {
-  const rtoken = useSelector((state) => state.authSlice.token);
+  const rtoken = useSelector((state) => state?.authSlice.token);
   return {
     "ngrok-skip-browser-warning": true,
     "Content-Type": "application/json",

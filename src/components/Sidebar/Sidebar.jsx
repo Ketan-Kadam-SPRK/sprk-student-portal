@@ -154,6 +154,33 @@ function Sidebar() {
     setOpen((prevState) => !prevState);
   };
 
+useEffect(() => {
+  const handleOutsideClick = (event) => {
+    // Only close on mobile screens
+    if (window.innerWidth > 768) return;
+
+    const drawer = document.querySelector(`.${Styles.drawer}`);
+    const menuButton = document.querySelector("#sidebar-menu-button"); // Add an id to the IconButton
+
+    if (
+      drawer &&
+      open &&
+      !drawer.contains(event.target) &&
+      !menuButton.contains(event.target)
+    ) {
+      setOpen(false);
+    }
+  };
+
+  document.addEventListener("click", handleOutsideClick);
+
+  return () => {
+    document.removeEventListener("click", handleOutsideClick);
+  };
+}, [open]);
+
+
+
   return (
     <Box
       sx={{
@@ -177,6 +204,7 @@ function Sidebar() {
           <Toolbar className={Styles.toolbarStyle}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <IconButton
+              id="sidebar-menu-button"
                 color="inherit"
                 aria-label="open drawer"
                 // onClick={handleDrawerOpen }
