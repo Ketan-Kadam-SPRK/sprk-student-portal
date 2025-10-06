@@ -412,7 +412,7 @@ const Receipt = forwardRef(({ handleClosePayment, receiptID = null }, ref) => {
                 <Grid item xs={6} md={6} lg={6}>
                   <Box sx={{ display: "flex" }}>
                     <Typography style={text1}>
-                      Online Payment Refer No:{" "}
+                      Online Payment Ref. No:{" "}
                     </Typography>
                     <Typography style={text2}>
                       {" "}
