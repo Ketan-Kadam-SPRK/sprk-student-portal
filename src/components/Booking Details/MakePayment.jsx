@@ -43,7 +43,7 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
 
       script.onload = () => {
         const options = {
-          key: "rzp_live_RBUCsur11oZLHZ",
+          key: "rzp_test_RBUYUcRfQUh5Aw",
           amount: order.amount,
           currency: order.currency,
           name: "SPRK Technologies",
