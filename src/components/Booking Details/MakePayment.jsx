@@ -3,7 +3,10 @@ import axios from "axios";
 import { Button, CircularProgress } from "@mui/material";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import { useDispatch } from "react-redux";
-import { cancelOnlinePayment, CreateOrderFromBackend } from "./action/Payment.action";
+import {
+  cancelOnlinePayment,
+  CreateOrderFromBackend,
+} from "./action/Payment.action";
 
 const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
   const [loading, setLoading] = useState(false);
@@ -13,8 +16,7 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
   // 🔹 Function to call dismiss API
   const handleDismiss = async (installmentId, orderId) => {
     try {
-      await dispatch(cancelOnlinePayment({ headers, installmentId, orderId })
-      );
+      await dispatch(cancelOnlinePayment({ headers, installmentId, orderId }));
       // console.log("Dismiss API called successfully");
     } catch (error) {
       console.error("Dismiss API failed:", error);
@@ -27,7 +29,9 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
     setLoading(true);
     try {
       // Step 1: Create order from backend
-      const res = await dispatch(CreateOrderFromBackend({headers, id: row?.installment_id})); 
+      const res = await dispatch(
+        CreateOrderFromBackend({ headers, id: row?.installment_id })
+      );
 
       const order = JSON.parse(res?.payload?.data);
 
@@ -58,6 +62,9 @@ const MakePayment = ({ row, disabled, getBookingInstallmentDetails }) => {
             wallet: false,
             paylater: false,
             emi: false,
+          },
+          upi: {
+            flow: "intent", // disables QR
           },
           modal: {
             ondismiss: function () {

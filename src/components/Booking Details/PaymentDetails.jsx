@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Dialog,
+  IconButton,
   Typography,
 } from "@mui/material";
 import React, { use, useEffect, useState } from "react";
@@ -28,6 +29,8 @@ import { CapitalFirstLetterOnly } from "../../Utils/CapitalFirstLetterOnly";
 import ErrorHandling from "../Common/ErrorHandling";
 import { getBookingInstallments } from "./action/Payment.action";
 import MakePayment from "./MakePayment";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import PaymentHistory from "./modals/paymentHistory/PaymentHistory";
 
 function PaymentDetails() {
   const navigate = useNavigate();
@@ -41,6 +44,12 @@ function PaymentDetails() {
   const [data, setData] = useState([]);
   const [error500, setError500] = useState(false);
   const [error404, setError404] = useState(false);
+  const [openPaymentHistory, setOpenPaymentHistory] = useState(false);
+  const handleClosePaymentHistory = () => {
+    setOpenPaymentHistory(false);
+  };
+
+  const [PaymentHistoryData, setPaymentHistoryData] = useState([]);
 
   const handleDetailModal = () => {
     setOpenDetailModal(!openDetailModal);
@@ -184,13 +193,13 @@ function PaymentDetails() {
   };
 
   const columns = [
-    {
-      headerName: "Month",
-      id: "month",
-      minWidth: 150,
-      filterable: false,
-      format: (value) => getMonthName(value),
-    },
+    // {
+    //   headerName: "Month",
+    //   id: "month",
+    //   minWidth: 150,
+    //   filterable: false,
+    //   format: (value) => getMonthName(value),
+    // },
     {
       headerName: "Due Date",
       id: "due_at",
@@ -218,13 +227,6 @@ function PaymentDetails() {
       minWidth: 150,
       format: (value) => formatForDisplay(value),
     },
-    {
-      headerName: "Paid On",
-      id: "paid_at",
-      minWidth: 150,
-      style: { color: "#0074BD", fontWeight: 600 },
-      format: (value) => dateFormator(value),
-    },
 
     {
       headerName: "Status",
@@ -237,6 +239,33 @@ function PaymentDetails() {
       },
       format: (installment_status, rowData) => (
         <StatusBadge status={installment_status} />
+      ),
+    },
+    {
+      headerName: "Payment Attempts",
+      id: "payment_attempts",
+      minWidth: 150,
+      style: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      format: (payment_attempts, rowData) => (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography>{payment_attempts?.length || "-"}</Typography>
+          {payment_attempts?.length > 0 && (
+            <IconButton
+              size="small"
+              onClick={() => {
+                setOpenPaymentHistory(true);
+                setPaymentHistoryData(payment_attempts);
+              }}
+              data-testid={`view-payments-btn`}
+            >
+              <RemoveRedEyeIcon color="primary" />
+            </IconButton>
+          )}
+        </Box>
       ),
     },
     {
@@ -268,6 +297,13 @@ function PaymentDetails() {
           </Box>
         );
       },
+    },
+    {
+      headerName: "Paid On",
+      id: "paid_at",
+      minWidth: 150,
+      style: { color: "#0074BD", fontWeight: 600 },
+      format: (value) => dateFormator(value),
     },
   ];
 
@@ -490,6 +526,13 @@ function PaymentDetails() {
         <BookingAknowLetter
           handleDetailModal={handleDetailModal}
           booking_uid={booking_uid}
+        />
+      </Dialog>
+
+      <Dialog open={openPaymentHistory} maxWidth="md" fullWidth={true}>
+        <PaymentHistory
+          handleClose={handleClosePaymentHistory}
+          history={PaymentHistoryData || []}
         />
       </Dialog>
     </Box>

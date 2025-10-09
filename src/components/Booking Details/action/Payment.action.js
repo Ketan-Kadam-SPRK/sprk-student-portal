@@ -119,7 +119,6 @@ export const getAllReceipts = createAsyncThunk(
   }
 );
 
-
 export const CreateOrderFromBackend = createAsyncThunk(
   "onlinePayment/CreateOrderFromBackend",
   async ({ headers, id }) => {
@@ -143,7 +142,7 @@ export const CreateOrderFromBackend = createAsyncThunk(
 
 export const cancelOnlinePayment = createAsyncThunk(
   "onlinePayment/cancelOnlinePayment",
-  async ({ headers,installmentId,orderId}) => {
+  async ({ headers, installmentId, orderId }) => {
     try {
       // Send a POST request to the login API endpoint with user data
       const res = await axiosInstance.post(
