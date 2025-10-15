@@ -182,20 +182,18 @@ function Exams() {
                   ? "var(--secondary-color)"
                   : "var(--background-color)",
               color: activeTab === 0 && "white",
-              minWidth: "150px",
+              minWidth: {xs:"auto",sm:"150px"},
               border: "1px solid var(--secondary-color)",
             }}
             onClick={() => handleTabChange(0)}
-            endIcon={
-              <Badge
+          >
+            Theory <Badge
                 badgeContent={
                   count.practice + count.internal_assessment + count.final
                 }
                 color="secondary"
+                sx={{mx:0.5}}
               ></Badge>
-            }
-          >
-            Theory
           </Button>
           <Button
             sx={{
@@ -205,15 +203,12 @@ function Exams() {
                   ? "var(--secondary-color)"
                   : "var(--background-color)",
               color: activeTab === 1 && "white",
-              minWidth: "150px",
+              minWidth: {xs:"auto",sm:"150px"},
               border: "1px solid var(--secondary-color)",
             }}
             onClick={() => handleTabChange(1)}
-            endIcon={
-              <Badge badgeContent={count.practical} color="secondary"></Badge>
-            }
           >
-            Practical
+            Practical <Badge badgeContent={count.practical} color="secondary" sx={{mx:0.5}}></Badge>
           </Button>
           <Button
             sx={{
@@ -223,15 +218,12 @@ function Exams() {
                   ? "var(--secondary-color)"
                   : "var(--background-color)",
               color: activeTab === 2 && "white",
-              minWidth: "150px",
+              minWidth: {xs:"auto",sm:"150px"},
               border: "1px solid var(--secondary-color)",
             }}
             onClick={() => handleTabChange(2)}
-            endIcon={
-              <Badge badgeContent={count.project} color="secondary"></Badge>
-            }
           >
-            Project
+            Project <Badge badgeContent={count.project} color="secondary" sx={{mx:0.5}}></Badge>
           </Button>
         </Box>
         <Box sx={{ flex: 1, py: 2 }}>
