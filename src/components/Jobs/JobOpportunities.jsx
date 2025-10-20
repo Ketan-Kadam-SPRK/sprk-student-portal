@@ -99,7 +99,6 @@ function JobOpportunities() {
         flexDirection: "column",
         gap: 2,
         p: 2,
-        // minHeight: "100vh",
         overflow: "auto",
         flex: 1,
       }}
@@ -119,25 +118,29 @@ function JobOpportunities() {
         />
       </Helmet>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Typography variant="h4" fontWeight={"bold"}>
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            fontSize: { xs: "1.25rem", sm: "1.5rem", md: "2rem" },
+          }}
+        >
           Job Openings for You{" "}
         </Typography>
         <Image
           publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739512032/magnifying_glass_ws5lix.svg"
-          style={{
-            width: "auto",
-            height: "40px",
-            objectFit: "contain",
-            marginLeft: "5px",
-          }}
           cloudName="dxlzzgbfw"
+          style={{ objectFit: "contain", marginLeft: "5px" }}
+          sx={{
+            width: "auto",
+            height: { xs: "20px", sm: "40px" },
+          }}
         />
       </Box>
       <Box>
         <Typography fontSize={"var(--font-size-medium)"}>
           Stay ahead with opportunities selected just for you.{" "}
         </Typography>
-        <Typography fontSize={"var(--font-size-small)"}>
+        <Typography sx={{fontSize:{xs:"12px",sm:"14px"}}}>
           (Note: Applying to the jobs and not showing up may result in excluding
           you from future job opportunities.)
         </Typography>
@@ -147,29 +150,31 @@ function JobOpportunities() {
           display: "flex",
           flexDirection: "column",
           gap: 2,
-          //   flex: 1,
           height: "100vh",
           backgroundColor: "white",
           p: 2,
         }}
       >
-        <Box sx={{ display: "flex", gap: 2, overflow: "auto" }}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: { xs: 1, sm: 2 },
+            overflow: "auto",
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
           {status?.map((res, index) => (
             <Button
-              // variant={activeTAb === res ? "contained" : "outlined"}
               key={index}
               onClick={() => handleTabChange(res)}
               data-testid={`button-${res}`}
               sx={{
                 borderRadius: "5px",
-                padding: "10px",
-                width: "150px",
+                padding: { xs: "5px", sm: "10px" },
+                width: { xs: "100%", sm: "150px" },
                 minWidth: "150px",
-                // boxShadow:
-                //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
                 fontWeight: "bold",
                 fontSize: "14px",
-                gap: "10px",
                 backgroundColor:
                   activeTAb === res
                     ? "var(--secondary-color)"
