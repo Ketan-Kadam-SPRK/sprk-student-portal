@@ -99,16 +99,19 @@ const CourseList = ({ data, navigate }) => {
                 }}
               >
                 <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={2}
-                  sx={{ width: "100%" }}
-                  flexWrap={"wrap"}
+                  direction={{ xs: "column", sm: "row" }}
+                  alignItems={"center"}
+                  spacing={{ xs: 0.5, sm: 2 }}
+                  sx={{ width: "100%", flexWrap: "wrap" }}
                 >
                   <Image
                     publicId={item?.course_logo}
-                    style={{ width: 70, height: 70, objectFit: "contain" }}
                     cloudName={item?.course_logo?.split("/")[0]}
+                    sx={{
+                      width: { xs: 50, sm: 70 },
+                      height: { xs: 50, sm: 70 },
+                      objectFit: "contain",
+                    }}
                   />
                   <Stack spacing={1} sx={{ flexGrow: 1 }}>
                     <Typography variant="h6" color="white" fontWeight={700}>
