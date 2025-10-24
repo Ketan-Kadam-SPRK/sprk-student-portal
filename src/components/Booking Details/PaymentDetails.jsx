@@ -244,14 +244,14 @@ function PaymentDetails() {
     {
       headerName: "Payment Attempts",
       id: "payment_attempts",
-      minWidth: 150,
+      minWidth: 175,
       style: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       },
       format: (payment_attempts, rowData) => (
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1,justifyContent:'center' }}>
           <Typography>{payment_attempts?.length || "-"}</Typography>
           {payment_attempts?.length > 0 && (
             <IconButton
@@ -292,7 +292,7 @@ function PaymentDetails() {
               disabled={row?.installment_status !== "PAID"}
               data-testid={`view-receipt-btn`}
             >
-              View Receipt
+              Receipt
             </Button>
           </Box>
         );
