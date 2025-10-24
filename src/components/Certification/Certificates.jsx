@@ -9,6 +9,7 @@ import {
   Dialog,
   IconButton,
   CircularProgress,
+  Grid2,
 } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -273,45 +274,77 @@ function Certificates() {
                         gap: { lg: null, md: 2, sm: 2, xs: 2 },
                       }}
                     >
-                      <Box sx={{ display: "flex", gap: 3, width: "300px" }}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            width: "80px",
-                            height: "80px",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            p: 2,
-                            borderRadius: "5px",
-                            backgroundColor: "white",
-                            boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                          }}
-                        >
-                          <Image
-                            publicId={item?.logo}
-                            cloudName="dxlzzgbfw"
-                            style={{
-                              width: "60px",
-                              height: "60px",
-                              objectFit: "contain",
-                            }}
-                          />
-                        </Box>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "100%",
-                          }}
-                        >
-                          <Typography variant="h6" fontWeight={600}>
-                            {item?.cou_cert_name}
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: "#4D535A" }}>
-                            {item?.boo_uid}
-                          </Typography>
-                        </Box>
-                      </Box>
+<Box
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    gap: { xs: 1.5, sm: 3 },
+    width: "100%", // full responsive width
+    maxWidth: 400, // prevent excessive stretch on large screens
+    flexWrap: "nowrap", // prevent wrapping
+  }}
+>
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: { xs: 50, sm: 70 },
+      height: { xs: 50, sm: 70 },
+      flexShrink: 0, // prevent image box from shrinking
+      borderRadius: "8px",
+      backgroundColor: "white",
+      boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+      p: { xs: 1, sm: 2 },
+    }}
+  >
+    <Image
+      publicId={item?.logo}
+      cloudName="dxlzzgbfw"
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+      }}
+    />
+  </Box>
+
+  <Box
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      overflow: "hidden", // prevent text overflow
+      minWidth: 0,
+    }}
+  >
+    <Typography
+      variant="h6"
+      fontWeight={600}
+      sx={{
+        fontSize: { xs: "0.9rem", sm: "1.3rem" },
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      }}
+    >
+      {item?.cou_cert_name}
+    </Typography>
+    <Typography
+      variant="body2"
+      sx={{
+        color: "#4D535A",
+        fontSize: { xs: "0.75rem", sm: "0.85rem" },
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      }}
+    >
+      {item?.boo_uid}
+    </Typography>
+  </Box>
+</Box>
+
                       <Box
                         sx={{
                           width: {
@@ -349,42 +382,63 @@ function Certificates() {
                     </Box>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: {
-                          lg: "row",
-                          md: "row",
-                          sm: "row",
-                          xs: "column",
-                        },
-                        gap: {
-                          lg: "100px",
-                          md: "50px",
-                          sm: "30px",
-                          xs: "20px",
-                        },
-                        justifyContent: "center",
-                        py: 3,
-                      }}
-                    >
-                      <Box sx={{ display: "flex", gap: 1 }}>
-                        <Typography>Theory Exam</Typography>
-                        {renderStatusIcon(item?.theory)}
-                      </Box>
-                      <Box sx={{ display: "flex", gap: 1 }}>
-                        <Typography>Project Exam</Typography>
-                        {renderStatusIcon(item?.project)}
-                      </Box>
-                      <Box sx={{ display: "flex", gap: 1 }}>
-                        <Typography>Attendance</Typography>
-                        {renderStatusIcon(item?.attendance)}
-                      </Box>
-                      <Box sx={{ display: "flex", gap: 1 }}>
-                        <Typography>Fees Paid</Typography>
-                        {renderStatusIcon(item?.pendingFees === 0)}
-                      </Box>
-                    </Box>
+
+<Box
+  sx={{
+    width: "100%",
+    py: { xs: 1.5, sm: 3 },
+  }}
+>
+  <Grid2
+    container
+    spacing={{ xs: 1, sm: 3, md: 5, lg: 8 }}
+    alignItems="center"
+    justifyContent="center"
+  >
+    {[
+      { label: "Theory Exam", value: item?.theory },
+      { label: "Project Exam", value: item?.project },
+      { label: "Attendance", value: item?.attendance },
+      { label: "Fees Paid", value: item?.pendingFees === 0 },
+    ].map((el, index) => (
+      <Grid2
+        item
+        key={index}
+        xs={12}
+        sm={6}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start", // align content left
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: {
+                xs: "var(--font-size-extra-small)",
+                sm: "var(--font-size-small)",
+              },
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {el.label}
+          </Typography>
+          {renderStatusIcon(el.value)}
+        </Box>
+      </Grid2>
+    ))}
+  </Grid2>
+</Box>
+
+
+
                   </AccordionDetails>
                 </Accordion>
               );

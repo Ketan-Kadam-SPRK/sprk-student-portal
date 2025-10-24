@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -12,6 +12,7 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
+import { useMediaQuery } from "@mui/material";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -96,16 +97,32 @@ const steps = [
 ];
 
 export default function ProgressBar({ activeStep = 0 }) {
+    const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+
+    const steps = isXs
+    ? ["Pending", "To Review", "Ready", "Released"] // short labels for mobile
+    : ["Certificate Pending", "Certificate To Review", "Certificate Ready", "Certificate Released"];
+
   return (
     <Stack sx={{ width: "100%" }} spacing={4}>
       <Stepper
         alternativeLabel
         activeStep={activeStep}
         connector={<ColorlibConnector />}
+        
       >
         {steps.map((label) => (
           <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+            <StepLabel 
+            StepIconComponent={ColorlibStepIcon}
+                    sx={{
+          "& .MuiStepLabel-label": {
+            whiteSpace: "nowrap", // 👈 keeps “To Review” on one line
+            fontSize: { xs: "0.7rem", sm: "0.85rem", md: "1rem" },
+          },
+        }}
+            >{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
