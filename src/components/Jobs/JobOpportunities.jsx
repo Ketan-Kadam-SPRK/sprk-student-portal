@@ -121,7 +121,7 @@ function JobOpportunities() {
         <Typography
           sx={{
             fontWeight: "bold",
-            fontSize: { xs: "1.25rem", sm: "1.5rem", md: "2rem" },
+            fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
           }}
         >
           Job Openings for You{" "}
