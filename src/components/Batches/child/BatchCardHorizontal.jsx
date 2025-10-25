@@ -111,6 +111,7 @@ function BatchCardHorizontal({ item = {} }) {
           gap: 2,
           alignItems: "center",
           flexWrap: "wrap",
+          justifyContent: "center",
         }}
       >
         <Image

@@ -144,30 +144,47 @@ function CoureseDetails() {
           </Button>
         </Box>
 
-        <Box
-          sx={{ display: "flex", alignItems: "center", alignContent: "center" }}
-        >
-          <Typography
-            sx={{
-              marginRight: "10px",
-              fontSize: "14px",
-              fontWeight: 700,
-            }}
-          >
-            COURSE GROUP STATUS :
-          </Typography>
+<Box
+  sx={{
+    display: "flex",
+    // alignItems: "center",
+    alignContent: "center",
+    flexWrap: "wrap", // allow wrapping on small screens
+    gap: 1,
+    // stack vertically on very small screens
+    flexDirection: { xs: "column", sm: "row" },
+    alignItems: { xs: "flex-start", sm: "center" },
+  }}
+>
+  <Typography
+    sx={{
+      mr: { xs: 0, sm: 1.5 },
+      fontSize: { xs: "12px", sm: "14px" },
+      fontWeight: 700,
+      textAlign: { xs: "left", sm: "right" },
+    }}
+  >
+    COURSE GROUP STATUS :
+  </Typography>
 
-          {/* Display Batch Status with Styling */}
-          {data?.courses?.length ? (
-            <StatusStyledComponent
-              value={data?.status}
-              color={color}
-              backgroundColor={backgroundColor}
-            />
-          ) : (
-            <Typography sx={{ fontWeight: "bold" }}>NA</Typography>
-          )}
-        </Box>
+  {data?.courses?.length ? (
+    <StatusStyledComponent
+      value={data?.status}
+      color={color}
+      backgroundColor={backgroundColor}
+    />
+  ) : (
+    <Typography
+      sx={{
+        fontWeight: "bold",
+        fontSize: { xs: "12px", sm: "14px" },
+      }}
+    >
+      NA
+    </Typography>
+  )}
+</Box>
+
       </Box>
       <Box
         sx={{
@@ -192,33 +209,74 @@ function CoureseDetails() {
             }}
           >
             <Accordion sx={{ p: 2 }}>
-              <AccordionSummary
-                expandIcon={
-                  <InfoRoundedIcon
-                    sx={{ fontSize: "30px", color: "#0073E6 !important" }}
-                  />
-                }
-              >
-                <Image
-                  publicId={data?.cg_logo}
-                  style={{
-                    width: "70px",
-                    height: "auto",
-                    objectFit: "cover",
-                  }}
-                  cloudName={data?.cg_logo?.split("/")[0]}
-                />
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontSize: { xs: "20px", sm: "25px", md: "30px" },
-                    fontWeight: "bold",
-                    ml: 2,
-                  }}
-                >
-                  {data?.cg_name || "NA"}
-                </Typography>
-              </AccordionSummary>
+<AccordionSummary
+  expandIcon={
+    <InfoRoundedIcon
+      sx={{
+        fontSize: { xs: "24px", sm: "30px" },
+        color: "#0073E6 !important",
+      }}
+    />
+  }
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 2,
+    flexWrap: "nowrap",
+    width: "100%",
+  }}
+>
+  {/* Left section: image + name */}
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      gap: { xs: 1.5, sm: 2 },
+      minWidth: 0, // enables text wrapping correctly
+      flex: 1, // push expandIcon to right
+    }}
+  >
+    {/* Fixed-size logo (won’t stretch) */}
+    <Box
+      sx={{
+        flexShrink: 0,
+        width: { xs: 50, sm: 70 },
+        height: { xs: 50, sm: 70 },
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Image
+        publicId={data?.cg_logo}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+        }}
+        cloudName={data?.cg_logo?.split("/")[0]}
+      />
+    </Box>
+
+    {/* Course name (wraps properly without stretching image) */}
+    <Typography
+      variant="h6"
+      sx={{
+        fontSize: { xs: "16px", sm: "20px", md: "25px" },
+        fontWeight: "bold",
+        wordBreak: "break-word",
+        whiteSpace: "normal",
+        lineHeight: 1.2,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      }}
+    >
+      {data?.cg_name || "NA"}
+    </Typography>
+  </Box>
+</AccordionSummary>
+
               <AccordionDetails>
                 <Box
                   sx={{ display: "flex", flexDirection: "column", gap: "10px" }}
