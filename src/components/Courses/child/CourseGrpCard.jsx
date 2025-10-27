@@ -71,19 +71,21 @@ function CourseGrpCard({ item, index }) {
           justifyContent: "space-between",
         }}
       >
-        <Typography
-          sx={{
-            color: "white",
-            fontWeight: "bold",
-            fontSize: "var(--font-size-medium)",
-            textTransform: "capitalize",
-            width: "200px",
-            maxWidth: "100%",
-            wordBreak: "break-word",
-          }}
-        >
-          {item?.course_group || ""}
-        </Typography>
+        <Box>
+          <Typography
+            sx={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "var(--font-size-medium)",
+              textTransform: "capitalize",
+              width: "200px",
+              maxWidth: "100%",
+              wordBreak: "break-word",
+            }}
+          >
+            {item?.course_group || ""}
+          </Typography>
+        </Box>
 
         <img
           src={item?.logo}

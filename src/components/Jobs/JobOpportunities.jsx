@@ -122,6 +122,7 @@ function JobOpportunities() {
           sx={{
             fontWeight: "bold",
             fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
+            color: "#0A2647"
           }}
         >
           Job Openings for You{" "}
@@ -196,7 +197,8 @@ function JobOpportunities() {
             gap: 4,
             flexWrap: "wrap",
             flex: 1,
-            p: 2,
+            py: 2,
+            px:{xs:1,sm:2},
             overflow: "auto",
             width: "100%",
           }}

@@ -328,54 +328,52 @@ function PaymentDetails() {
         flex: 1,
       }}
     >
-<Box
-  sx={{
-    backgroundColor: "white",
-    display: "flex",
-    justifyContent: "space-between",
-    p: 2,
-    gap: "20px",
-    flexWrap: "wrap", // responsive wrapping
-  }}
->
-  {/* Back Button */}
-  <Box sx={{ display: "flex" }}>
-    <Button
-      variant="outlined"
-      sx={{ color: "#747474" }}
-      onClick={() => navigate(-1)}
-    >
-      <ArrowBackIcon />
-    </Button>
-  </Box>
+      <Box
+        sx={{
+          backgroundColor: "white",
+          display: "flex",
+          justifyContent: "space-between",
+          p: 2,
+          gap: "20px",
+          flexWrap: "wrap", // responsive wrapping
+        }}
+      >
+        {/* Back Button */}
+        <Box sx={{ display: "flex" }}>
+          <Button
+            variant="outlined"
+            sx={{ color: "#747474" }}
+            onClick={() => navigate(-1)}
+          >
+            <ArrowBackIcon />
+          </Button>
+        </Box>
 
-  {/* Payment Status Section (Responsive like COURSE GROUP STATUS) */}
-  <Box
-    sx={{
-      display: "flex",
-      alignContent: "center",
-      flexWrap: "wrap",
-      gap: 1,
-      flexDirection: { xs: "column", sm: "row" },
-      alignItems: { xs: "flex-start", sm: "center" },
-    }}
-  >
-    <Typography
-      sx={{
-        mr: { xs: 0, sm: 1.5 },
-        fontSize: { xs: "12px", sm: "14px" },
-        fontWeight: 700,
-        textAlign: { xs: "left", sm: "right" },
-      }}
-    >
-      PAYMENT STATUS :
-    </Typography>
+        {/* Payment Status Section (Responsive like COURSE GROUP STATUS) */}
+        <Box
+          sx={{
+            display: "flex",
+            alignContent: "center",
+            flexWrap: "wrap",
+            gap: 1,
+            flexDirection: { xs: "column", sm: "row" },
+            alignItems: { xs: "flex-start", sm: "center" },
+          }}
+        >
+          <Typography
+            sx={{
+              mr: { xs: 0, sm: 1.5 },
+              fontSize: { xs: "12px", sm: "14px" },
+              fontWeight: 700,
+              textAlign: { xs: "left", sm: "right" },
+            }}
+          >
+            PAYMENT STATUS :
+          </Typography>
 
-    <StatusBadge
-      status={determinePaymentStatus(data?.instal)}
-    />
-  </Box>
-</Box>
+          <StatusBadge status={determinePaymentStatus(data?.instal)} />
+        </Box>
+      </Box>
 
       <Box sx={{ px: 3 }}>
         <Box
@@ -458,23 +456,23 @@ function PaymentDetails() {
                 </Button>
               </Box>
             </Box>
-            <Box sx={{ display: "flex", gap: "20px", py: "15px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: { xs: "10px", sm: "20px" },
+                py: "15px",
+              }}
+            >
               <Typography>
-                <span style={{ fontWeight: "bold", marginRight: "5px" }}>
-                  Paid Amount:
-                </span>
+                <span style={{ fontWeight: "bold",marginRight:"3px" }}>Paid Amount:</span>
                 {AmountFormat(data?.paid_fees)}{" "}
               </Typography>
               <Typography>
-                <span style={{ fontWeight: "bold", marginRight: "5px" }}>
-                  Payment due:
-                </span>
+                <span style={{ fontWeight: "bold",marginRight:"3px" }}>Payment due:</span>
                 {AmountFormat(data?.pending_fees)}
               </Typography>
               <Typography>
-                <span style={{ fontWeight: "bold", marginRight: "5px" }}>
-                  Total Amount:
-                </span>{" "}
+                <span style={{ fontWeight: "bold" }}>Total Amount:</span>{" "}
                 {AmountFormat(data?.total_fees)}
               </Typography>
             </Box>

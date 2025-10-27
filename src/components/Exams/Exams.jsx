@@ -145,8 +145,14 @@ function Exams() {
       </Helmet>
       <Box sx={{ mt: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h4" fontWeight={"600"}>
-            Your Exams
+          <Typography
+            sx={{
+              fontWeight: "bold",
+              fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
+              color: "#0A2647",
+            }}
+          >
+            Your Exams{" "}
           </Typography>
           <Image
             publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740202998/your_exam_hrlt8t.svg"
@@ -167,33 +173,36 @@ function Exams() {
         sx={{
           flex: 1,
           backgroundColor: "white",
-          p: 2,
+          px: { xs: 1.2, sm: 2 },
+          py: 2,
           display: "flex",
           flexDirection: "column",
           gap: 2,
         }}
       >
-        <Box sx={{ display: "flex", gap: 2, overflowY: "auto" }}>
+        <Box sx={{ display: "flex", gap: { xs: 1, sm: 2 }, overflowY: "auto" }}>
           <Button
             sx={{
               ...buttonStyle,
+              padding: { xs: "5px 8px", sm: "5px 20px" },
               backgroundColor:
                 activeTab === 0
                   ? "var(--secondary-color)"
                   : "var(--background-color)",
               color: activeTab === 0 && "white",
-              minWidth: {xs:"auto",sm:"150px"},
+              minWidth: { xs: "auto", sm: "150px" },
               border: "1px solid var(--secondary-color)",
             }}
             onClick={() => handleTabChange(0)}
           >
-            Theory <Badge
-                badgeContent={
-                  count.practice + count.internal_assessment + count.final
-                }
-                color="secondary"
-                sx={{mx:0.5}}
-              ></Badge>
+            Theory{" "}
+            <Badge
+              badgeContent={
+                count.practice + count.internal_assessment + count.final
+              }
+              color="secondary"
+              sx={{ mx: 0.5 }}
+            ></Badge>
           </Button>
           <Button
             sx={{
@@ -203,12 +212,17 @@ function Exams() {
                   ? "var(--secondary-color)"
                   : "var(--background-color)",
               color: activeTab === 1 && "white",
-              minWidth: {xs:"auto",sm:"150px"},
+              minWidth: { xs: "auto", sm: "150px" },
               border: "1px solid var(--secondary-color)",
             }}
             onClick={() => handleTabChange(1)}
           >
-            Practical <Badge badgeContent={count.practical} color="secondary" sx={{mx:0.5}}></Badge>
+            Practical{" "}
+            <Badge
+              badgeContent={count.practical}
+              color="secondary"
+              sx={{ mx: 0.5 }}
+            ></Badge>
           </Button>
           <Button
             sx={{
@@ -218,12 +232,17 @@ function Exams() {
                   ? "var(--secondary-color)"
                   : "var(--background-color)",
               color: activeTab === 2 && "white",
-              minWidth: {xs:"auto",sm:"150px"},
+              minWidth: { xs: "auto", sm: "150px" },
               border: "1px solid var(--secondary-color)",
             }}
             onClick={() => handleTabChange(2)}
           >
-            Project <Badge badgeContent={count.project} color="secondary" sx={{mx:0.5}}></Badge>
+            Project{" "}
+            <Badge
+              badgeContent={count.project}
+              color="secondary"
+              sx={{ mx: 0.5 }}
+            ></Badge>
           </Button>
         </Box>
         <Box sx={{ flex: 1, py: 2 }}>

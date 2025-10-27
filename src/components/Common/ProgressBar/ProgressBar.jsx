@@ -98,14 +98,14 @@ const steps = [
 
 export default function ProgressBar({ activeStep = 0 }) {
     const theme = useTheme();
-  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+  const isXs = useMediaQuery(theme.breakpoints.down("md"));
 
     const steps = isXs
     ? ["Pending", "To Review", "Ready", "Released"] // short labels for mobile
     : ["Certificate Pending", "Certificate To Review", "Certificate Ready", "Certificate Released"];
 
   return (
-    <Stack sx={{ width: "100%" }} spacing={4}>
+    <Stack sx={{ width: "100%" }} spacing={3}>
       <Stepper
         alternativeLabel
         activeStep={activeStep}
@@ -119,7 +119,7 @@ export default function ProgressBar({ activeStep = 0 }) {
                     sx={{
           "& .MuiStepLabel-label": {
             whiteSpace: "nowrap", // 👈 keeps “To Review” on one line
-            fontSize: { xs: "0.7rem", sm: "0.85rem", md: "1rem" },
+            fontSize: { xs: "0.7rem", sm: "0.85rem", md: "0.9rem" },
           },
         }}
             >{label}</StepLabel>
