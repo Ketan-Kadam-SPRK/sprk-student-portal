@@ -89,41 +89,57 @@ function Profile() {
     });
   };
 
-  const renderBox = ({ Icon, title, value }) => {
-    return (
+const renderBox = ({ Icon, title, value }) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        gap: 3,
+        alignItems: "center",
+        flexWrap: "wrap", // allow wrapping for small screens
+        width: "100%",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
-          gap: 3,
           alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#D8D6FF",
+          borderRadius: "5px",
+          p: 1,
+          flexShrink: 0, // prevent icon box from shrinking
         }}
       >
-        {" "}
-        <Box
+        <Icon sx={{ color: "#3A33E6", fontSize: "30px" }} />
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          minWidth: 0, // enables ellipsis to work
+        }}
+      >
+        <Typography fontWeight="bold">{title}</Typography>
+        <Typography
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#D8D6FF",
-            borderRadius: "5px",
-            p: 1,
+            color: "#2F2F2FDE",
+            wordBreak: "break-word", // break long words/emails
+            overflowWrap: "anywhere", // ensures wrapping
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            fontSize: { xs: "0.85rem", sm: "1rem" },
           }}
         >
-          <Icon sx={{ color: "#3A33E6", fontSize: "30px" }} />
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Typography fontWeight={"bold"}>{title}</Typography>
-          <Typography
-            sx={{
-              color: "#2F2F2FDE",
-            }}
-          >
-            {value}
-          </Typography>
-        </Box>
+          {value}
+        </Typography>
       </Box>
-    );
-  };
+    </Box>
+  );
+};
+
 
   return (
     <Box
@@ -335,14 +351,14 @@ function Profile() {
                 }}
               />
             </Box>
-            <Typography variant="h3" color="white">
+            <Typography  color="white" sx={{fontSize: { xs: "2rem", sm: "2rem", md: "2.75rem" }, }}>
               {userDetails?.name || ""}
             </Typography>
 
             <Typography
-              variant="h5"
+              // variant="h5"
               color="white"
-              sx={{ mt: 4, textAlign: "center" }}
+              sx={{ mt: 3, textAlign: "center", fontSize: { xs: "1.2rem", sm: "1.5rem" } }} // 👈 keeps “To Review” on one line{fontSize: { xs: "2rem", sm: "2rem", md: "3rem" } }}
             >
               "Education is the most powerful weapon which you can use to change
               the world."
@@ -386,6 +402,7 @@ function Profile() {
           <Box
             sx={{
               display: "flex",
+              flexDirection:{xs:'column',sm:'row'},
               justifyContent: "center",
               alignItems: "center",
               p: 2,
@@ -396,6 +413,7 @@ function Profile() {
               variant="contained"
               color="primary"
               onClick={handleToogleChangePassword}
+              sx={{width:{xs:"100%",sm:"auto"}}}
             >
               Change Password
             </Button>
@@ -403,6 +421,7 @@ function Profile() {
               variant="contained"
               color="primary"
               onClick={handleLogoutModal}
+              sx={{width:{xs:"100%",sm:"auto"}}}
             >
               Logout All
             </Button>
