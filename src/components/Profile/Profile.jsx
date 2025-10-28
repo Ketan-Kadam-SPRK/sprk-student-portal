@@ -426,11 +426,11 @@ const renderBox = ({ Icon, title, value }) => {
               Logout All
             </Button>
           </Box>
-          <Dialog open={openChangePassword} maxWidth="sm">
+          <Dialog open={openChangePassword} maxWidth="sm" onClose={handleToogleChangePassword}>
             <ChangePassword handleClose={handleToogleChangePassword} />
           </Dialog>
 
-          <Dialog open={openLogout} maxWidth="sm">
+          <Dialog open={openLogout} maxWidth="sm" onClose={handleLogoutModal}>
             <LogoutAll handleClose={handleLogoutModal} />
           </Dialog>
         </Box>
