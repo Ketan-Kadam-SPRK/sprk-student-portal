@@ -157,7 +157,7 @@ const FeedbackDialog = ({ open, handleClose }) => {
   };
 
   return (
-    <Dialog open={open} fullWidth maxWidth="sm">
+    <Dialog open={open} fullWidth maxWidth="sm" onClose={handleDialogClose}>
       <DialogTitle>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6">Feedback</Typography>
