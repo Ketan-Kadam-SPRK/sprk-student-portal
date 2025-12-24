@@ -25,7 +25,7 @@ const SidebarItem = ({ title, icon: Icon, open, isActive, onClick }) => {
           minHeight: 48,
           justifyContent: "initial",
           borderRadius: "10px",
-          backgroundColor: isActive ? "var(--sidebar-acitve-tab)" : "inherit",
+          backgroundColor: isActive ? "var(--sidebar-active-tab)" : "inherit",
           "&:hover": {
             backgroundColor: "var(--sidebar-onhover-tab)",
           },
