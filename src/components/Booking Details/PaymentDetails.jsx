@@ -241,33 +241,33 @@ function PaymentDetails() {
         <StatusBadge status={installment_status} />
       ),
     },
-    {
-      headerName: "Payment Attempts",
-      id: "payment_attempts",
-      minWidth: 175,
-      style: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      },
-      format: (payment_attempts, rowData) => (
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1,justifyContent:'center' }}>
-          <Typography>{payment_attempts?.length || "-"}</Typography>
-          {payment_attempts?.length > 0 && (
-            <IconButton
-              size="small"
-              onClick={() => {
-                setOpenPaymentHistory(true);
-                setPaymentHistoryData(payment_attempts);
-              }}
-              data-testid={`view-payments-btn`}
-            >
-              <RemoveRedEyeIcon color="primary" />
-            </IconButton>
-          )}
-        </Box>
-      ),
-    },
+    // {
+    //   headerName: "Payment Attempts",
+    //   id: "payment_attempts",
+    //   minWidth: 175,
+    //   style: {
+    //     display: "flex",
+    //     alignItems: "center",
+    //     justifyContent: "center",
+    //   },
+    //   format: (payment_attempts, rowData) => (
+    //     <Box sx={{ display: "flex", alignItems: "center", gap: 1,justifyContent:'center' }}>
+    //       <Typography>{payment_attempts?.length || "-"}</Typography>
+    //       {payment_attempts?.length > 0 && (
+    //         <IconButton
+    //           size="small"
+    //           onClick={() => {
+    //             setOpenPaymentHistory(true);
+    //             setPaymentHistoryData(payment_attempts);
+    //           }}
+    //           data-testid={`view-payments-btn`}
+    //         >
+    //           <RemoveRedEyeIcon color="primary" />
+    //         </IconButton>
+    //       )}
+    //     </Box>
+    //   ),
+    // },
     {
       headerName: "Action",
       id: "leaveRequestUid",
@@ -275,7 +275,7 @@ function PaymentDetails() {
       format: (action, row) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <MakePayment
+            {/* <MakePayment
               row={row}
               disabled={
                 row?.installment_status === "PAID" ||
@@ -283,7 +283,7 @@ function PaymentDetails() {
                 row?.installment_status === "PROCESSING"
               }
               getBookingInstallmentDetails={getBookingInstallmentDetails}
-            />
+            /> */}
             <Button
               sx={{ textWrap: "nowrap" }}
               size="small"
@@ -328,54 +328,52 @@ function PaymentDetails() {
         flex: 1,
       }}
     >
-<Box
-  sx={{
-    backgroundColor: "white",
-    display: "flex",
-    justifyContent: "space-between",
-    p: 2,
-    gap: "20px",
-    flexWrap: "wrap", // responsive wrapping
-  }}
->
-  {/* Back Button */}
-  <Box sx={{ display: "flex" }}>
-    <Button
-      variant="outlined"
-      sx={{ color: "#747474" }}
-      onClick={() => navigate(-1)}
-    >
-      <ArrowBackIcon />
-    </Button>
-  </Box>
+      <Box
+        sx={{
+          backgroundColor: "white",
+          display: "flex",
+          justifyContent: "space-between",
+          p: 2,
+          gap: "20px",
+          flexWrap: "wrap", // responsive wrapping
+        }}
+      >
+        {/* Back Button */}
+        <Box sx={{ display: "flex" }}>
+          <Button
+            variant="outlined"
+            sx={{ color: "#747474" }}
+            onClick={() => navigate(-1)}
+          >
+            <ArrowBackIcon />
+          </Button>
+        </Box>
 
-  {/* Payment Status Section (Responsive like COURSE GROUP STATUS) */}
-  <Box
-    sx={{
-      display: "flex",
-      alignContent: "center",
-      flexWrap: "wrap",
-      gap: 1,
-      flexDirection: { xs: "column", sm: "row" },
-      alignItems: { xs: "flex-start", sm: "center" },
-    }}
-  >
-    <Typography
-      sx={{
-        mr: { xs: 0, sm: 1.5 },
-        fontSize: { xs: "12px", sm: "14px" },
-        fontWeight: 700,
-        textAlign: { xs: "left", sm: "right" },
-      }}
-    >
-      PAYMENT STATUS :
-    </Typography>
+        {/* Payment Status Section (Responsive like COURSE GROUP STATUS) */}
+        <Box
+          sx={{
+            display: "flex",
+            alignContent: "center",
+            flexWrap: "wrap",
+            gap: 1,
+            flexDirection: { xs: "column", sm: "row" },
+            alignItems: { xs: "flex-start", sm: "center" },
+          }}
+        >
+          <Typography
+            sx={{
+              mr: { xs: 0, sm: 1.5 },
+              fontSize: { xs: "12px", sm: "14px" },
+              fontWeight: 700,
+              textAlign: { xs: "left", sm: "right" },
+            }}
+          >
+            PAYMENT STATUS :
+          </Typography>
 
-    <StatusBadge
-      status={determinePaymentStatus(data?.instal)}
-    />
-  </Box>
-</Box>
+          <StatusBadge status={determinePaymentStatus(data?.instal)} />
+        </Box>
+      </Box>
 
       <Box sx={{ px: 3 }}>
         <Box

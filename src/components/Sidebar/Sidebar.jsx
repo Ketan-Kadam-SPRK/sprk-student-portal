@@ -55,19 +55,6 @@ import { setUserProfilePic } from "../Login/store/authSlice";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import BlinkedStatus from "../Common/BlinkedStatus/BlinkedStatus";
 
-const allowedTabs = [
-  "Dashboard",
-  "Course_Groups",
-  "Batches",
-  "Exams",
-  "Leaves",
-  "Bookings",
-  "Receipts",
-  "Certificates",
-  "Job_Opportunities",
-  "Explore_Courses",
-];
-
 /**
  * @class Sidebar
  * @description
@@ -82,6 +69,7 @@ function Sidebar() {
   // useConvertImgToBase64();
 
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
+  const allowedTabs = useSelector((state) => state.authSlice.entitlements);
 
   const userProfilePic =
     useSelector((state) => state.authSlice.userProfilePic) || "";
@@ -416,7 +404,7 @@ function Sidebar() {
 
                 <List>
                   {/* ===== Overview ===== */}
-                  {allowedTabs.includes("Dashboard") && (
+                  {allowedTabs.includes("DASHBOARD") && (
                     <>
                       <Typography sx={headingTextStyle}>Overview</Typography>
                       <SidebarItem
@@ -434,16 +422,16 @@ function Sidebar() {
                   )}
 
                   {/* ===== Academics ===== */}
-                  {(allowedTabs.includes("Course_Groups") ||
-                    allowedTabs.includes("Batches") ||
-                    allowedTabs.includes("Exams") ||
-                    allowedTabs.includes("Leaves")) && (
+                  {(allowedTabs.includes("COURSE_GROUPS") ||
+                    allowedTabs.includes("BATCHES") ||
+                    allowedTabs.includes("EXAMS") ||
+                    allowedTabs.includes("LEAVES")) && (
                     <Typography sx={{ ...headingTextStyle, mt: 3 }}>
                       Academics
                     </Typography>
                   )}
 
-                  {allowedTabs.includes("Course_Groups") && (
+                  {allowedTabs.includes("COURSE_GROUPS") && (
                     <SidebarItem
                       title="Course Groups"
                       icon={AutoStoriesRoundedIcon}
@@ -457,7 +445,7 @@ function Sidebar() {
                     />
                   )}
 
-                  {allowedTabs.includes("Batches") && (
+                  {allowedTabs.includes("BATCHES") && (
                     <SidebarItem
                       title="Batches"
                       icon={EventNoteRoundedIcon}
@@ -471,7 +459,7 @@ function Sidebar() {
                     />
                   )}
 
-                  {allowedTabs.includes("Exams") && (
+                  {allowedTabs.includes("EXAMS") && (
                     <SidebarItem
                       title="Exams"
                       icon={AssignmentRoundedIcon}
@@ -485,7 +473,7 @@ function Sidebar() {
                     />
                   )}
 
-                  {allowedTabs.includes("Leaves") && (
+                  {allowedTabs.includes("LEAVES") && (
                     <SidebarItem
                       title="Leaves"
                       icon={EventBusyRounded}
@@ -500,14 +488,14 @@ function Sidebar() {
                   )}
 
                   {/* ===== Payments ===== */}
-                  {(allowedTabs.includes("Bookings") ||
-                    allowedTabs.includes("Receipts")) && (
+                  {(allowedTabs.includes("BOOKINGS") ||
+                    allowedTabs.includes("RECEIPTS")) && (
                     <Typography sx={{ ...headingTextStyle, mt: 3 }}>
                       Payment Details
                     </Typography>
                   )}
 
-                  {allowedTabs.includes("Bookings") && (
+                  {allowedTabs.includes("BOOKINGS") && (
                     <SidebarItem
                       title="Bookings"
                       icon={PaymentsRoundedIcon}
@@ -521,7 +509,7 @@ function Sidebar() {
                     />
                   )}
 
-                  {allowedTabs.includes("Receipts") && (
+                  {allowedTabs.includes("RECEIPTS") && (
                     <SidebarItem
                       title="Receipts"
                       icon={ReceiptLongIcon}
@@ -536,14 +524,14 @@ function Sidebar() {
                   )}
 
                   {/* ===== Career ===== */}
-                  {(allowedTabs.includes("Certificates") ||
-                    allowedTabs.includes("Job_Opportunities")) && (
+                  {(allowedTabs.includes("CERTIFICATES") ||
+                    allowedTabs.includes("JOB_OPPORTUNITIES")) && (
                     <Typography sx={{ ...headingTextStyle, mt: 3 }}>
                       Career
                     </Typography>
                   )}
 
-                  {allowedTabs.includes("Certificates") && (
+                  {allowedTabs.includes("CERTIFICATES") && (
                     <SidebarItem
                       title="Certificates"
                       icon={WorkspacePremiumRoundedIcon}
@@ -557,7 +545,7 @@ function Sidebar() {
                     />
                   )}
 
-                  {allowedTabs.includes("Job_Opportunities") && (
+                  {allowedTabs.includes("JOB_OPPORTUNITIES") && (
                     <SidebarItem
                       title="Job Opportunities"
                       icon={WorkRoundedIcon}
@@ -572,7 +560,7 @@ function Sidebar() {
                   )}
 
                   {/* ===== Keep Learning ===== */}
-                  {allowedTabs.includes("Explore_Courses") && (
+                  {allowedTabs.includes("EXPLORE_COURSES") && (
                     <>
                       <Typography sx={{ ...headingTextStyle, mt: 3 }}>
                         Keep Learning

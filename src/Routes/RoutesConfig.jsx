@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import Dashboard from "../components/Dashboard/Dashboard";
@@ -18,27 +17,27 @@ import ExploreCourses from "../components/Explore Courses/ExploreCourses";
 import Receipts from "../components/Booking Details/child/Receipts";
 
 import ProtectedRoute from "./ProtectedRoute";
+import { useSelector } from "react-redux";
+
+const toTabName = (value = "") => {
+  return value
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join("_");
+};
 
 function RoutesConfig() {
   // 🔐 permissions from API / state
-  const allowedTabs = [
-    "Dashboard",
-    "Course_Groups",
-    "Batches",
-    "Exams",
-    "Leaves",
-    "Bookings",
-    "Receipts",
-    "Certificates",
-    "Job_Opportunities",
-    "Explore_Courses",
-  ];
+  const allowedTabs = useSelector((state) => state.authSlice.entitlements);
 
   return (
     <Routes>
       {/* 🔐 Protected Routes Wrapper */}
       <Route element={<ProtectedRoute allowedTabs={allowedTabs} />}>
-        <Route path="/" element={<Navigate to={`/${allowedTabs[0]}`} />} />
+        <Route
+          path="/"
+          element={<Navigate to={`/${toTabName(allowedTabs[0])}`} />}
+        />
 
         <Route path="Dashboard" element={<Dashboard />} />
 
@@ -69,8 +68,8 @@ function RoutesConfig() {
         </Route>
 
         <Route path="Explore_Courses" element={<ExploreCourses />} />
-        <Route path="Profile" element={<Profile />} />
       </Route>
+      <Route path="Profile" element={<Profile />} />
 
       {/* ❌ fallback */}
       <Route path="*" element={<Navigate to="/" />} />

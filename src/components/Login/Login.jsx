@@ -16,7 +16,12 @@ import { useDispatch } from "react-redux";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import Lottie, { LottiePlayer } from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
-import { setLogin, setOrgDetails, setUserDetails } from "./store/authSlice";
+import {
+  setEntitleMents,
+  setLogin,
+  setOrgDetails,
+  setUserDetails,
+} from "./store/authSlice";
 import { Checkbox } from "@mui/material";
 import { getUser, loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
@@ -170,6 +175,8 @@ function Login() {
               userDetails: userDetails,
             })
           );
+
+          dispatch(setEntitleMents(userDetails?.entitlements));
 
           dispatch(
             setOrgDetails({
