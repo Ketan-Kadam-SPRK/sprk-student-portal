@@ -762,7 +762,8 @@ function Dashboard() {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  navigate(`/Job_Opportunities/${res?.job_uid}`);
+                  checkPermission("JOB_OPPORTUNITIES") &&
+                    navigate(`/Job_Opportunities/${res?.job_uid}`);
                 }}
               >
                 <Image
