@@ -34,6 +34,7 @@ import {
 import StudentStatus from "../Common/student status/StudentStatus";
 import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
+import rearrengePermission from "../../Utils/rearrengePermission";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -103,8 +104,8 @@ function Profile() {
           userDetails: userDetails,
         })
       );
-
-      dispatch(setEntitleMents(userDetails?.entitlements));
+      let newEntitlements = rearrengePermission(userDetails?.entitlements);
+      dispatch(setEntitleMents(newEntitlements));
 
       dispatch(
         setOrgDetails({

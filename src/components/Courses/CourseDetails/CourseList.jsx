@@ -9,14 +9,16 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import { useState } from "react";
 import NoDataPage from "../../Common/NoDataPage";
 import { Image } from "cloudinary-react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
+import { useCheckPermission } from "../../../Utils/checkPermission";
 
 const CourseList = ({ data, navigate }) => {
+  const { checkPermission } = useCheckPermission();
+
   const [expandedCourseId, setExpandedCourseId] = useState(null);
   const handleExpandToggle = (courseId) => {
     setExpandedCourseId(expandedCourseId === courseId ? null : courseId);
@@ -126,7 +128,10 @@ const CourseList = ({ data, navigate }) => {
                         <IconButton
                           key={batchIndex}
                           id="batch_details_btn"
-                          onClick={() => navigate(`/Batches/${batch}`)}
+                          onClick={() => {
+                            checkPermission("BATCHES") &&
+                              navigate(`/Batches/${batch}`);
+                          }}
                         >
                           <StatusStyledComponent
                             value={batch}

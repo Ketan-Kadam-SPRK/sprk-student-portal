@@ -22,7 +22,6 @@ import {
   setOrgDetails,
   setUserDetails,
 } from "./store/authSlice";
-import { Checkbox } from "@mui/material";
 import { getUser, loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
 import batchesLottie from "./batchesLottie.json";
@@ -30,6 +29,7 @@ import examLottie from "./examLottie.json";
 import jobOpportunityLottie from "./job-opportunityLottie.json";
 import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
+import rearrengePermission from "../../Utils/rearrengePermission";
 
 function Login() {
   const dispatch = useDispatch();
@@ -175,8 +175,9 @@ function Login() {
               userDetails: userDetails,
             })
           );
-
-          dispatch(setEntitleMents(userDetails?.entitlements));
+          let newEntitlements = rearrengePermission(userDetails?.entitlements);
+          console.log(newEntitlements);
+          dispatch(setEntitleMents(newEntitlements));
 
           dispatch(
             setOrgDetails({
