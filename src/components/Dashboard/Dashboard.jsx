@@ -24,6 +24,7 @@ import {
 import StudentStatus from "../Common/student status/StudentStatus";
 import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
+import { useCheckPermission } from "../../Utils/checkPermission";
 
 function Dashboard() {
   function convertToTitleCase(text) {
@@ -37,6 +38,7 @@ function Dashboard() {
   const headers = useAuthHeaders();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { checkPermission } = useCheckPermission();
   const studentStatus = useSelector(
     (state) => state.authSlice.userDetails?.student_status
   );
@@ -435,7 +437,7 @@ function Dashboard() {
                   fontWeight: "bold",
                   fontSize: "var(--font-size-extra-small)",
                 }}
-                onClick={() => navigate(`/Exams`)}
+                onClick={() => checkPermission("EXAMS") && navigate(`/Exams`)}
               >
                 View All
               </Button>
@@ -456,7 +458,7 @@ function Dashboard() {
                   backgroundColor: "#F1F5FF",
                   cursor: "pointer",
                 }}
-                onClick={() => navigate(`/Exams`)}
+                onClick={() => checkPermission("EXAMS") && navigate(`/Exams`)}
               >
                 <Image
                   style={{
@@ -590,7 +592,9 @@ function Dashboard() {
                   fontWeight: "bold",
                   fontSize: "var(--font-size-extra-small)",
                 }}
-                onClick={() => navigate(`/Certificates`)}
+                onClick={() =>
+                  checkPermission("CERTIFICATES") && navigate(`/Certificates`)
+                }
               >
                 View All
               </Button>
@@ -733,7 +737,10 @@ function Dashboard() {
                   fontWeight: "bold",
                   fontSize: "var(--font-size-extra-small)",
                 }}
-                onClick={() => navigate(`/Job_Opportunities`)}
+                onClick={() =>
+                  checkPermission("JOB_OPPORTUNITIES") &&
+                  navigate(`/Job_Opportunities`)
+                }
               >
                 View All
               </Button>
@@ -755,7 +762,8 @@ function Dashboard() {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  navigate(`/Job_Opportunities/${res?.job_uid}`);
+                  checkPermission("JOB_OPPORTUNITIES") &&
+                    navigate(`/Job_Opportunities/${res?.job_uid}`);
                 }}
               >
                 <Image

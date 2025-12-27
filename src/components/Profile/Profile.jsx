@@ -19,18 +19,29 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Image } from "cloudinary-react";
 import { Edit, Close } from "@mui/icons-material";
 import Dropzone from "../Common/Dropzonn/DropZone";
-import { getUserPic, uploadUserProfilePic } from "../Login/store/login.actions";
+import {
+  getUser,
+  getUserPic,
+  uploadUserProfilePic,
+} from "../Login/store/login.actions";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { setUserProfilePic } from "../Login/store/authSlice";
+import {
+  setEntitleMents,
+  setOrgDetails,
+  setUserDetails,
+  setUserProfilePic,
+} from "../Login/store/authSlice";
 import StudentStatus from "../Common/student status/StudentStatus";
 import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
+import rearrengePermission from "../../Utils/rearrengePermission";
 
 function Profile() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
   const userProfilePic = useSelector((state) => state.authSlice.userProfilePic);
+  const rtoken = useSelector((state) => state?.authSlice.token);
 
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const handleToogleChangePassword = () => {
@@ -80,7 +91,38 @@ function Profile() {
 
   useEffect(() => {
     getProfilePic();
+    getUserDetails();
   }, []);
+
+  const getUserDetails = async () => {
+    try {
+      const userResponse = await dispatch(getUser({ accessToken: rtoken }));
+      const userDetails = userResponse?.payload?.data || null;
+
+      dispatch(
+        setUserDetails({
+          userDetails: userDetails,
+        })
+      );
+      let newEntitlements = rearrengePermission(userDetails?.entitlements);
+      dispatch(setEntitleMents(newEntitlements));
+
+      dispatch(
+        setOrgDetails({
+          orgDetails: {
+            orgName: userDetails?.org_name,
+            orgLogo: userDetails?.org_logo,
+            orgAddress: userDetails?.org_address,
+            orgWeb: userDetails?.org_web,
+            orgCertificate: userDetails?.org_certificate,
+            orgCode: userDetails?.org_code,
+          },
+        })
+      );
+    } catch (err) {
+      // console.log(err);
+    }
+  };
 
   const getProfilePic = () => {
     // if(userDetails.profile === true){

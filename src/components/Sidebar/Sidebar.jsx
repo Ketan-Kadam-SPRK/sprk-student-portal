@@ -69,6 +69,7 @@ function Sidebar() {
   // useConvertImgToBase64();
 
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
+  const allowedTabs = useSelector((state) => state.authSlice.entitlements);
 
   const userProfilePic =
     useSelector((state) => state.authSlice.userProfilePic) || "";
@@ -121,6 +122,8 @@ function Sidebar() {
     setAnchorEl(null);
   };
 
+  console.log("activeTab", activeTab);
+
   const handleNotiMenuOpen = (event) => {
     setOpenNoti(event.currentTarget);
   };
@@ -154,32 +157,30 @@ function Sidebar() {
     setOpen((prevState) => !prevState);
   };
 
-useEffect(() => {
-  const handleOutsideClick = (event) => {
-    // Only close on mobile screens
-    if (window.innerWidth > 768) return;
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      // Only close on mobile screens
+      if (window.innerWidth > 768) return;
 
-    const drawer = document.querySelector(`.${Styles.drawer}`);
-    const menuButton = document.querySelector("#sidebar-menu-button"); // Add an id to the IconButton
+      const drawer = document.querySelector(`.${Styles.drawer}`);
+      const menuButton = document.querySelector("#sidebar-menu-button"); // Add an id to the IconButton
 
-    if (
-      drawer &&
-      open &&
-      !drawer.contains(event.target) &&
-      !menuButton.contains(event.target)
-    ) {
-      setOpen(false);
-    }
-  };
+      if (
+        drawer &&
+        open &&
+        !drawer.contains(event.target) &&
+        !menuButton.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
 
-  document.addEventListener("click", handleOutsideClick);
+    document.addEventListener("click", handleOutsideClick);
 
-  return () => {
-    document.removeEventListener("click", handleOutsideClick);
-  };
-}, [open]);
-
-
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [open]);
 
   return (
     <Box
@@ -204,7 +205,7 @@ useEffect(() => {
           <Toolbar className={Styles.toolbarStyle}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <IconButton
-              id="sidebar-menu-button"
+                id="sidebar-menu-button"
                 color="inherit"
                 aria-label="open drawer"
                 // onClick={handleDrawerOpen }
@@ -400,155 +401,184 @@ useEffect(() => {
                   </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <List
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    // gap:1
-                  }}
-                >
-                  <Typography sx={{ ...headingTextStyle }}>Overview</Typography>
-                  <SidebarItem
-                    title="Dashboard"
-                    icon={DashboardRoundedIcon}
-                    open={open}
-                    isActive={activeTab === "Dashboard"}
-                    onClick={() => {
-                      navigate("/Dashboard");
-                      handleTabClick("Dashboard");
-                      handleDrawerClose();
-                    }}
-                  />
 
-                  <Typography
-                    sx={{
-                      fontSize: "var(--font-size-small)",
-                      fontWeight: "bold",
-                      color: "white",
-                      mt: 3,
-                    }}
-                  >
-                    Academics
-                  </Typography>
+                <List>
+                  {/* ===== Overview ===== */}
+                  {allowedTabs.includes("DASHBOARD") && (
+                    <>
+                      <Typography sx={headingTextStyle}>Overview</Typography>
+                      <SidebarItem
+                        title="Dashboard"
+                        icon={DashboardRoundedIcon}
+                        open={open}
+                        isActive={activeTab === "Dashboard"}
+                        onClick={() => {
+                          navigate("/Dashboard");
+                          handleTabClick("Dashboard");
+                          handleDrawerClose();
+                        }}
+                      />
+                    </>
+                  )}
 
-                  <SidebarItem
-                    title="Course Groups"
-                    icon={AutoStoriesRoundedIcon}
-                    open={open}
-                    isActive={activeTab === "Course_Groups"}
-                    onClick={() => {
-                      navigate("/Course_Groups");
-                      handleTabClick("Course_Groups");
-                      handleDrawerClose();
-                    }}
-                  />
-                  <SidebarItem
-                    title="Batches"
-                    icon={EventNoteRoundedIcon}
-                    open={open}
-                    isActive={activeTab === "Batches"}
-                    onClick={() => {
-                      navigate("/Batches");
-                      handleTabClick("Batches");
-                      handleDrawerClose();
-                    }}
-                  />
-                  <SidebarItem
-                    title="Exams"
-                    icon={AssignmentRoundedIcon}
-                    open={open}
-                    isActive={activeTab === "Exams"}
-                    onClick={() => {
-                      navigate("/Exams");
-                      handleTabClick("Exams");
-                      handleDrawerClose();
-                    }}
-                  />
-                  <SidebarItem
-                    title="Leaves"
-                    icon={EventBusyRounded}
-                    open={open}
-                    isActive={activeTab === "Leaves"}
-                    onClick={() => {
-                      navigate("/Leaves");
-                      handleTabClick("Leaves");
-                      handleDrawerClose();
-                    }}
-                  />
+                  {/* ===== Academics ===== */}
+                  {(allowedTabs.includes("COURSE_GROUPS") ||
+                    allowedTabs.includes("BATCHES") ||
+                    allowedTabs.includes("EXAMS") ||
+                    allowedTabs.includes("LEAVES")) && (
+                    <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                      Academics
+                    </Typography>
+                  )}
 
-                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
-                    Payment Details
-                  </Typography>
-                  <SidebarItem
-                    title="Bookings"
-                    icon={PaymentsRoundedIcon}
-                    open={open}
-                    isActive={activeTab === "Bookings"}
-                    onClick={() => {
-                      navigate("/Bookings");
-                      handleTabClick("Bookings");
-                      handleDrawerClose();
-                    }}
-                  />
-                  <SidebarItem
-                    title="Receipts"
-                    icon={ReceiptLongIcon}
-                    open={open}
-                    isActive={activeTab === "Receipts"}
-                    onClick={() => {
-                      navigate("/Receipts");
-                      handleTabClick("Receipts");
-                      handleDrawerClose();
-                    }}
-                  />
+                  {allowedTabs.includes("COURSE_GROUPS") && (
+                    <SidebarItem
+                      title="Course Groups"
+                      icon={AutoStoriesRoundedIcon}
+                      open={open}
+                      isActive={activeTab === "Course_Groups"}
+                      onClick={() => {
+                        navigate("/Course_Groups");
+                        handleTabClick("Course_Groups");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
 
-                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
-                    Career
-                  </Typography>
-                  <SidebarItem
-                    title="Certificates"
-                    icon={WorkspacePremiumRoundedIcon}
-                    open={open}
-                    isActive={activeTab === "Certificates"}
-                    onClick={() => {
-                      navigate("/Certificates");
-                      handleTabClick("Certificates");
-                      handleDrawerClose();
-                    }}
-                  />
+                  {allowedTabs.includes("BATCHES") && (
+                    <SidebarItem
+                      title="Batches"
+                      icon={EventNoteRoundedIcon}
+                      open={open}
+                      isActive={activeTab === "Batches"}
+                      onClick={() => {
+                        navigate("/Batches");
+                        handleTabClick("Batches");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
 
-                  <SidebarItem
-                    title="Job Opportunities"
-                    icon={WorkRoundedIcon}
-                    open={open}
-                    isActive={activeTab === "Job_Opportunities"}
-                    onClick={() => {
-                      navigate("/Job_Opportunities");
-                      handleTabClick("Job_Opportunities");
-                      handleDrawerClose();
-                    }}
-                  />
+                  {allowedTabs.includes("EXAMS") && (
+                    <SidebarItem
+                      title="Exams"
+                      icon={AssignmentRoundedIcon}
+                      open={open}
+                      isActive={activeTab === "Exams"}
+                      onClick={() => {
+                        navigate("/Exams");
+                        handleTabClick("Exams");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
 
-                  <Typography sx={{ ...headingTextStyle, mt: 3 }}>
-                    Keep Learning
-                  </Typography>
+                  {allowedTabs.includes("LEAVES") && (
+                    <SidebarItem
+                      title="Leaves"
+                      icon={EventBusyRounded}
+                      open={open}
+                      isActive={activeTab === "Leaves"}
+                      onClick={() => {
+                        navigate("/Leaves");
+                        handleTabClick("Leaves");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
 
-                  <SidebarItem
-                    title="Explore Courses"
-                    icon={CategoryIcon}
-                    open={open}
-                    isActive={activeTab === "Explore_Courses"}
-                    onClick={() => {
-                      navigate("/Explore_Courses");
-                      handleTabClick("Explore_Courses");
-                      handleDrawerClose();
-                    }}
-                  />
+                  {/* ===== Payments ===== */}
+                  {(allowedTabs.includes("BOOKINGS") ||
+                    allowedTabs.includes("RECEIPTS")) && (
+                    <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                      Payment Details
+                    </Typography>
+                  )}
+
+                  {allowedTabs.includes("BOOKINGS") && (
+                    <SidebarItem
+                      title="Bookings"
+                      icon={PaymentsRoundedIcon}
+                      open={open}
+                      isActive={activeTab === "Bookings"}
+                      onClick={() => {
+                        navigate("/Bookings");
+                        handleTabClick("Bookings");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
+
+                  {allowedTabs.includes("RECEIPTS") && (
+                    <SidebarItem
+                      title="Receipts"
+                      icon={ReceiptLongIcon}
+                      open={open}
+                      isActive={activeTab === "Receipts"}
+                      onClick={() => {
+                        navigate("/Receipts");
+                        handleTabClick("Receipts");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
+
+                  {/* ===== Career ===== */}
+                  {(allowedTabs.includes("CERTIFICATES") ||
+                    allowedTabs.includes("JOB_OPPORTUNITIES")) && (
+                    <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                      Career
+                    </Typography>
+                  )}
+
+                  {allowedTabs.includes("CERTIFICATES") && (
+                    <SidebarItem
+                      title="Certificates"
+                      icon={WorkspacePremiumRoundedIcon}
+                      open={open}
+                      isActive={activeTab === "Certificates"}
+                      onClick={() => {
+                        navigate("/Certificates");
+                        handleTabClick("Certificates");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
+
+                  {allowedTabs.includes("JOB_OPPORTUNITIES") && (
+                    <SidebarItem
+                      title="Job Opportunities"
+                      icon={WorkRoundedIcon}
+                      open={open}
+                      isActive={activeTab === "Job_Opportunities"}
+                      onClick={() => {
+                        navigate("/Job_Opportunities");
+                        handleTabClick("Job_Opportunities");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
+
+                  {/* ===== Keep Learning ===== */}
+                  {allowedTabs.includes("EXPLORE_COURSES") && (
+                    <>
+                      <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                        Keep Learning
+                      </Typography>
+                      <SidebarItem
+                        title="Explore Courses"
+                        icon={CategoryIcon}
+                        open={open}
+                        isActive={activeTab === "Explore_Courses"}
+                        onClick={() => {
+                          navigate("/Explore_Courses");
+                          handleTabClick("Explore_Courses");
+                          handleDrawerClose();
+                        }}
+                      />
+                    </>
+                  )}
                 </List>
-              </div>
-              <div>
-                <Divider />
               </div>
             </div>
           </Drawer>

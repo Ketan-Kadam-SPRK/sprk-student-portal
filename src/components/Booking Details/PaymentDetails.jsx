@@ -241,33 +241,33 @@ function PaymentDetails() {
         <StatusBadge status={installment_status} />
       ),
     },
-    {
-      headerName: "Payment Attempts",
-      id: "payment_attempts",
-      minWidth: 175,
-      style: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      },
-      format: (payment_attempts, rowData) => (
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1,justifyContent:'center' }}>
-          <Typography>{payment_attempts?.length || "-"}</Typography>
-          {payment_attempts?.length > 0 && (
-            <IconButton
-              size="small"
-              onClick={() => {
-                setOpenPaymentHistory(true);
-                setPaymentHistoryData(payment_attempts);
-              }}
-              data-testid={`view-payments-btn`}
-            >
-              <RemoveRedEyeIcon color="primary" />
-            </IconButton>
-          )}
-        </Box>
-      ),
-    },
+    // {
+    //   headerName: "Payment Attempts",
+    //   id: "payment_attempts",
+    //   minWidth: 175,
+    //   style: {
+    //     display: "flex",
+    //     alignItems: "center",
+    //     justifyContent: "center",
+    //   },
+    //   format: (payment_attempts, rowData) => (
+    //     <Box sx={{ display: "flex", alignItems: "center", gap: 1,justifyContent:'center' }}>
+    //       <Typography>{payment_attempts?.length || "-"}</Typography>
+    //       {payment_attempts?.length > 0 && (
+    //         <IconButton
+    //           size="small"
+    //           onClick={() => {
+    //             setOpenPaymentHistory(true);
+    //             setPaymentHistoryData(payment_attempts);
+    //           }}
+    //           data-testid={`view-payments-btn`}
+    //         >
+    //           <RemoveRedEyeIcon color="primary" />
+    //         </IconButton>
+    //       )}
+    //     </Box>
+    //   ),
+    // },
     {
       headerName: "Action",
       id: "leaveRequestUid",
@@ -275,7 +275,7 @@ function PaymentDetails() {
       format: (action, row) => {
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <MakePayment
+            {/* <MakePayment
               row={row}
               disabled={
                 row?.installment_status === "PAID" ||
@@ -283,7 +283,7 @@ function PaymentDetails() {
                 row?.installment_status === "PROCESSING"
               }
               getBookingInstallmentDetails={getBookingInstallmentDetails}
-            />
+            /> */}
             <Button
               sx={{ textWrap: "nowrap" }}
               size="small"

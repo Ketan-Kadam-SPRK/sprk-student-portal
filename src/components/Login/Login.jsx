@@ -16,8 +16,12 @@ import { useDispatch } from "react-redux";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import Lottie, { LottiePlayer } from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
-import { setLogin, setOrgDetails, setUserDetails } from "./store/authSlice";
-import { Checkbox } from "@mui/material";
+import {
+  setEntitleMents,
+  setLogin,
+  setOrgDetails,
+  setUserDetails,
+} from "./store/authSlice";
 import { getUser, loginUser } from "./store/login.actions";
 import TrimmedString from "../../Utils/TrimmedString";
 import batchesLottie from "./batchesLottie.json";
@@ -25,6 +29,7 @@ import examLottie from "./examLottie.json";
 import jobOpportunityLottie from "./job-opportunityLottie.json";
 import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
+import rearrengePermission from "../../Utils/rearrengePermission";
 
 function Login() {
   const dispatch = useDispatch();
@@ -170,6 +175,9 @@ function Login() {
               userDetails: userDetails,
             })
           );
+          let newEntitlements = rearrengePermission(userDetails?.entitlements);
+          console.log(newEntitlements);
+          dispatch(setEntitleMents(newEntitlements));
 
           dispatch(
             setOrgDetails({

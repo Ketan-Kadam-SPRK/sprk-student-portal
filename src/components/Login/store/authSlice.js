@@ -7,6 +7,7 @@ const initialState = {
   userDetails: null,
   examsData: null,
   userProfilePic: null,
+  entitlements: [],
   orgDetails: {
     orgName: null,
     orgLogo: null,
@@ -41,6 +42,9 @@ export const authSlice = createSlice({
     setOrgDetails: (state, action) => {
       state.orgDetails = action.payload.orgDetails;
     },
+    setEntitleMents: (state, action) => {
+      state.entitlements = action.payload;
+    },
   },
 });
 
@@ -50,6 +54,7 @@ export const {
   setUserDetails,
   setUserProfilePic,
   setOrgDetails,
+  setEntitleMents,
 } = authSlice.actions;
 
 export default authSlice.reducer;

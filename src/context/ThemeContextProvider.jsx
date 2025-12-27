@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   createTheme,
   ThemeProvider as MuiThemeProvider,
@@ -11,7 +18,6 @@ const themesJson = [
   {
     name: "defaultBlue",
     colors: {
-      // backgroundColor: "#e8eefa",
       backgroundColor: "#dce8ff",
       textColor: "#1A1A1A",
       primary: "#007bff",
@@ -50,128 +56,92 @@ const themesJson = [
 ];
 
 export const ThemeProvider = ({ children }) => {
-  const [colors, setColors] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
   const orgCode =
     useSelector((state) => state.authSlice?.orgDetails?.orgCode) || "KHAR";
 
-  const applyThemeColors = (colors) => {
+  // ✅ fallback theme resolved immediately
+  const defaultThemeColors = useMemo(() => {
+    const themeName = orgCode === "SRA" ? "customMaroon" : "defaultBlue";
+    return themesJson.find((t) => t.name === themeName)?.colors;
+  }, [orgCode]);
+
+  const [colors, setColors] = useState(defaultThemeColors);
+
+  const applyThemeColors = useCallback((colors) => {
     if (!colors) return;
 
     const root = document.documentElement;
 
-    root.style.setProperty("--primary-color", colors.primary, "important");
-    root.style.setProperty("--secondary-color", colors.secondary, "important");
-    root.style.setProperty(
-      "--background-color",
-      colors.backgroundColor,
-      "important"
-    );
-    root.style.setProperty("--text-color", colors.textColor, "important");
+    Object.entries({
+      "--primary-color": colors.primary,
+      "--secondary-color": colors.secondary,
+      "--background-color": colors.backgroundColor,
+      "--text-color": colors.textColor,
+      "--sidebar-bg-color": colors.sidebarBg,
+      "--sidebar-active-tab": colors.sidebarActiveTab,
+      "--sidebar-sub-tab": colors.sidebarSubTab,
+      "--sidebar-onhover-tab": colors.sidebarOnHoverTab,
+      "--sidebar-onhover-tab-text": colors.sidebarOnHoverTabText,
+      "--sidebar-active-tab-text": colors.sidebarActiveTabText,
+      "--skill-card-bg-color": colors.skillCardBg,
+      "--table-header-bg": colors.tableHeaderBg,
+      "--text-on-dark": colors.textOnDark,
+      "--text-on-light": colors.textOnLight,
+    }).forEach(([key, value]) => root.style.setProperty(key, value));
+  }, []);
 
-    root.style.setProperty("--sidebar-bg-color", colors.sidebarBg, "important");
-    root.style.setProperty(
-      "--sidebar-active-tab",
-      colors.sidebarActiveTab,
-      "important"
-    );
-    root.style.setProperty(
-      "--sidebar-sub-tab",
-      colors.sidebarSubTab,
-      "important"
-    );
-    root.style.setProperty(
-      "--sidebar-onhover-tab",
-      colors.sidebarOnHoverTab,
-      "important"
-    );
-    root.style.setProperty(
-      "--sidebar-onhover-tab-text",
-      colors.sidebarOnHoverTabText,
-      "important"
-    );
-    root.style.setProperty(
-      "--sidebar-active-tab-text",
-      colors.sidebarActiveTabText,
-      "important"
-    );
-
-    root.style.setProperty(
-      "--skill-card-bg-color",
-      colors.skillCardBg,
-      "important"
-    );
-    root.style.setProperty(
-      "--table-header-bg",
-      colors.tableHeaderBg,
-      "important"
-    );
-
-    root.style.setProperty("--text-on-dark", colors.textOnDark, "important");
-    root.style.setProperty("--text-on-light", colors.textOnLight, "important");
-  };
-
-  const muiTheme = createTheme({
-    palette: {
-      primary: { main: colors?.primary || "#007bff" },
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            textTransform: "capitalize",
-            fontSize: "14px",
-          },
+  const muiTheme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          primary: { main: colors?.primary || "#007bff" },
         },
-      },
-      MuiOutlinedInput: {
-        styleOverrides: {
-          root: {
-            "&.Mui-disabled": {
-              backgroundColor: "#f1f1f1",
-              opacity: 1,
+        components: {
+          MuiButton: {
+            styleOverrides: {
+              root: {
+                textTransform: "capitalize",
+                fontSize: "14px",
+              },
             },
           },
-          input: {
-            "&.Mui-disabled": {
-              color: "#444",
-              WebkitTextFillColor: "#444",
-              opacity: 1,
+          MuiOutlinedInput: {
+            styleOverrides: {
+              root: {
+                "&.Mui-disabled": {
+                  backgroundColor: "#f1f1f1",
+                },
+              },
+              input: {
+                "&.Mui-disabled": {
+                  color: "#444",
+                  WebkitTextFillColor: "#444",
+                },
+              },
+            },
+          },
+          MuiSelect: {
+            styleOverrides: {
+              select: {
+                "&.Mui-disabled": {
+                  color: "#555555",
+                  WebkitTextFillColor: "#555555",
+                },
+              },
             },
           },
         },
-      },
-      MuiSelect: {
-        styleOverrides: {
-          select: {
-            "&.Mui-disabled": {
-              color: "#555555",
-              WebkitTextFillColor: "#555555",
-            },
-          },
-        },
-      },
-    },
-  });
+      }),
+    [colors]
+  );
 
   useEffect(() => {
-    const fallbackThemeName =
-      orgCode === "SRA" ? "customMaroon" : "defaultBlue";
-    const fallbackTheme = themesJson.find(
-      (t) => t.name === fallbackThemeName
-    )?.colors;
-
-    if (fallbackTheme) {
-      setColors(fallbackTheme);
-      applyThemeColors(fallbackTheme);
-    }
-
-    setIsLoading(false);
-  }, [orgCode]);
+    setColors(defaultThemeColors);
+    applyThemeColors(defaultThemeColors);
+  }, [defaultThemeColors, applyThemeColors]);
 
   return (
-    <ThemeContext.Provider value={{ colors, isLoading }}>
+    <ThemeContext.Provider value={{ colors }}>
       <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
     </ThemeContext.Provider>
   );
