@@ -75,7 +75,13 @@ function Payments() {
       {/* <MakePayment /> */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          <Typography variant="h4" sx={{ color: "#0A2647", fontWeight: 600 }}>
+          <Typography
+            sx={{
+              fontWeight: "bold",
+              fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
+              color: "#0A2647",
+            }}
+          >
             Your Course Group Bookings {""}
           </Typography>
           <Image
@@ -116,7 +122,7 @@ function Payments() {
             Track Your Booking Details
           </Typography>
         </Box>
-        <Box sx={{ p: "20px", height: "100vh", overflow: "auto" }}>
+        <Box sx={{ py: "20px",px:{xs:1,sm:2}, height: "100vh", overflow: "auto"}}>
           {courseData?.length > 0 ? (
             <Grid2 container spacing={2} sx={{ width: "100%", margin: 0 }}>
               {courseData?.map((item, index) => (

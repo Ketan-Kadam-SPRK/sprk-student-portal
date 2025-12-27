@@ -174,7 +174,13 @@ function Certificates() {
       </Helmet>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography variant="h4" fontWeight={600}>
+          <Typography
+            sx={{
+              fontWeight: "bold",
+              fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
+              color: "#0A2647",
+            }}
+          >
             Your Certificates{" "}
           </Typography>
           <Image
@@ -274,76 +280,76 @@ function Certificates() {
                         gap: { lg: null, md: 2, sm: 2, xs: 2 },
                       }}
                     >
-<Box
-  sx={{
-    display: "flex",
-    alignItems: "center",
-    gap: { xs: 1.5, sm: 3 },
-    width: "100%", // full responsive width
-    maxWidth: 400, // prevent excessive stretch on large screens
-    flexWrap: "nowrap", // prevent wrapping
-  }}
->
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      width: { xs: 50, sm: 70 },
-      height: { xs: 50, sm: 70 },
-      flexShrink: 0, // prevent image box from shrinking
-      borderRadius: "8px",
-      backgroundColor: "white",
-      boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-      p: { xs: 1, sm: 2 },
-    }}
-  >
-    <Image
-      publicId={item?.logo}
-      cloudName="dxlzzgbfw"
-      style={{
-        width: "100%",
-        height: "100%",
-        objectFit: "contain",
-      }}
-    />
-  </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: { xs: 1.5, sm: 3 },
+                          width: "100%", // full responsive width
+                          maxWidth: 400, // prevent excessive stretch on large screens
+                          flexWrap: "nowrap", // prevent wrapping
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: { xs: 50, sm: 70 },
+                            height: { xs: 50, sm: 70 },
+                            flexShrink: 0, // prevent image box from shrinking
+                            borderRadius: "8px",
+                            backgroundColor: "white",
+                            boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                            p: { xs: 1, sm: 2 },
+                          }}
+                        >
+                          <Image
+                            publicId={item?.logo}
+                            cloudName="dxlzzgbfw"
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "contain",
+                            }}
+                          />
+                        </Box>
 
-  <Box
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      overflow: "hidden", // prevent text overflow
-      minWidth: 0,
-    }}
-  >
-    <Typography
-      variant="h6"
-      fontWeight={600}
-      sx={{
-        fontSize: { xs: "0.9rem", sm: "1.3rem" },
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-      }}
-    >
-      {item?.cou_cert_name}
-    </Typography>
-    <Typography
-      variant="body2"
-      sx={{
-        color: "#4D535A",
-        fontSize: { xs: "0.75rem", sm: "0.85rem" },
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-      }}
-    >
-      {item?.boo_uid}
-    </Typography>
-  </Box>
-</Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            overflow: "hidden", // prevent text overflow
+                            minWidth: 0,
+                          }}
+                        >
+                          <Typography
+                            variant="h6"
+                            fontWeight={600}
+                            sx={{
+                              fontSize: { xs: "0.9rem", sm: "1.1rem" },
+                              whiteSpace: "normal", // allow wrapping
+                              wordBreak: "break-word", // wrap long words
+                              lineHeight: 1.3,
+                            }}
+                          >
+                            {item?.cou_cert_name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              color: "#4D535A",
+                              fontSize: { xs: "0.75rem", sm: "0.85rem" },
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {item?.boo_uid}
+                          </Typography>
+                        </Box>
+                      </Box>
 
                       <Box
                         sx={{
@@ -382,63 +388,62 @@ function Certificates() {
                     </Box>
                   </AccordionSummary>
                   <AccordionDetails>
-
-<Box
-  sx={{
-    width: "100%",
-    py: { xs: 1.5, sm: 3 },
-  }}
->
-  <Grid2
-    container
-    spacing={{ xs: 1, sm: 3, md: 5, lg: 8 }}
-    alignItems="center"
-    justifyContent="center"
-  >
-    {[
-      { label: "Theory Exam", value: item?.theory },
-      { label: "Project Exam", value: item?.project },
-      { label: "Attendance", value: item?.attendance },
-      { label: "Fees Paid", value: item?.pendingFees === 0 },
-    ].map((el, index) => (
-      <Grid2
-        item
-        key={index}
-        xs={12}
-        sm={6}
-        sx={{
-          display: "flex",
-          justifyContent: "flex-start", // align content left
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: {
-                xs: "var(--font-size-extra-small)",
-                sm: "var(--font-size-small)",
-              },
-              fontWeight: 500,
-              whiteSpace: "nowrap",
-            }}
-          >
-            {el.label}
-          </Typography>
-          {renderStatusIcon(el.value)}
-        </Box>
-      </Grid2>
-    ))}
-  </Grid2>
-</Box>
-
-
-
+                    <Box
+                      sx={{
+                        width: "100%",
+                        py: { xs: 1.5, sm: 3 },
+                      }}
+                    >
+                      <Grid2
+                        container
+                        spacing={{ xs: 1, sm: 3, md: 5, lg: 8 }}
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        {[
+                          { label: "Theory Exam", value: item?.theory },
+                          { label: "Project Exam", value: item?.project },
+                          { label: "Attendance", value: item?.attendance },
+                          {
+                            label: "Fees Paid",
+                            value: item?.pendingFees === 0,
+                          },
+                        ].map((el, index) => (
+                          <Grid2
+                            item
+                            key={index}
+                            xs={12}
+                            sm={6}
+                            sx={{
+                              display: "flex",
+                              justifyContent: "flex-start", // align content left
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  fontSize: {
+                                    xs: "var(--font-size-extra-small)",
+                                    sm: "var(--font-size-small)",
+                                  },
+                                  fontWeight: 500,
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                {el.label}
+                              </Typography>
+                              {renderStatusIcon(el.value)}
+                            </Box>
+                          </Grid2>
+                        ))}
+                      </Grid2>
+                    </Box>
                   </AccordionDetails>
                 </Accordion>
               );

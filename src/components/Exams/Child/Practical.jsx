@@ -61,9 +61,11 @@ function Practical() {
           display: "flex",
           flexDirection: "column",
           gap: 3,
-          p: 2,
+          py: 2,
+          px: {xs:1,sm:2},
           height: "100vh",
           overflowY: "auto",
+                  // border: "1px solid red",
           // flex: 1,
         }}
       >

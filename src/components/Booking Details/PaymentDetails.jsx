@@ -456,23 +456,23 @@ function PaymentDetails() {
                 </Button>
               </Box>
             </Box>
-            <Box sx={{ display: "flex", gap: "20px", py: "15px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: { xs: "10px", sm: "20px" },
+                py: "15px",
+              }}
+            >
               <Typography>
-                <span style={{ fontWeight: "bold", marginRight: "5px" }}>
-                  Paid Amount:
-                </span>
+                <span style={{ fontWeight: "bold",marginRight:"3px" }}>Paid Amount:</span>
                 {AmountFormat(data?.paid_fees)}{" "}
               </Typography>
               <Typography>
-                <span style={{ fontWeight: "bold", marginRight: "5px" }}>
-                  Payment due:
-                </span>
+                <span style={{ fontWeight: "bold",marginRight:"3px" }}>Payment due:</span>
                 {AmountFormat(data?.pending_fees)}
               </Typography>
               <Typography>
-                <span style={{ fontWeight: "bold", marginRight: "5px" }}>
-                  Total Amount:
-                </span>{" "}
+                <span style={{ fontWeight: "bold" }}>Total Amount:</span>{" "}
                 {AmountFormat(data?.total_fees)}
               </Typography>
             </Box>

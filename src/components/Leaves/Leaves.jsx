@@ -383,8 +383,14 @@ function Leaves() {
       </Helmet>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          <Typography variant="h4" fontWeight={600}>
-            Your Leaves
+          <Typography
+            sx={{
+              fontWeight: "bold",
+              fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
+              color: "#0A2647",
+            }}
+          >
+            Your Leaves{" "}
           </Typography>
           <Image
             publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739277438/calendar-with-checklist-date-schedule-3d-icon-removebg-preview_1_vtiyrw.svg"

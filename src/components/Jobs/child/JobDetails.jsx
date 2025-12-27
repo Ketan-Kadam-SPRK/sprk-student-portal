@@ -379,6 +379,7 @@ function JobDetails() {
               component="a"
               href={data?.company_website}
               target="_blank"
+              rel="noopener noreferrer"
             >
               <Language color="primary" />
             </IconButton>
@@ -393,6 +394,7 @@ function JobDetails() {
               component="a"
               href={data?.company_LinkedIn}
               target="_blank"
+              rel="noopener noreferrer"
             >
               <LinkedIn color="primary" />
             </IconButton>

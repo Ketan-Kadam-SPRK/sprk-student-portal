@@ -230,7 +230,13 @@ function Receipts() {
       </Helmet>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          <Typography variant="h4" fontWeight={600}>
+          <Typography
+            sx={{
+              fontWeight: "bold",
+              fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
+              color: "#0A2647",
+            }}
+          >
             Your Receipt History
           </Typography>
           <Image

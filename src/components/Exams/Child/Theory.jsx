@@ -79,8 +79,8 @@ function Theory({ count }) {
                     ? "3px solid var(--secondary-color)"
                     : "2px solid grey",
               },
-              borderBottomLeftRadius: {sm:"Default", md:0},
-              borderBottomRightRadius: {sm:"Default", md:0},
+              borderBottomLeftRadius: { sm: "Default", md: 0 },
+              borderBottomRightRadius: { sm: "Default", md: 0 },
             }}
             endIcon={
               <Badge
@@ -90,7 +90,7 @@ function Theory({ count }) {
               />
             }
           >
-            {btn.label} 
+            {btn.label}
           </Button>
         ))}
       </Box>
@@ -119,7 +119,8 @@ function Theory({ count }) {
           display: "flex",
           flexDirection: "column",
           gap: 3,
-          p: 2,
+          py: 2,
+          px: { xs: 1, sm: 2 },
           height: "100vh",
           overflowY: "auto",
         }}

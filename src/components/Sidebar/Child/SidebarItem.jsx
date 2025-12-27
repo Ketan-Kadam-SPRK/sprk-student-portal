@@ -11,16 +11,26 @@ import Styles from "../Sidebar.module.css";
 const SidebarItem = ({ title, icon: Icon, open, isActive, onClick }) => {
   const [isHover, setHover] = React.useState(false);
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (onClick) onClick();
+    }
+  };
+
   return (
     <ListItem
       disablePadding
-      onClick={() => {
-        if (onClick) onClick();
-      }}
+      // onClick={() => {
+      //   if (onClick) onClick();
+      // }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       <ListItemButton
+        onClick={onClick}
+        onKeyDown={handleKeyDown} // ✅ listen here (focusable element)
+        tabIndex={0} // ✅ make it tabbable 
         sx={{
           minHeight: 48,
           justifyContent: "initial",
@@ -28,6 +38,9 @@ const SidebarItem = ({ title, icon: Icon, open, isActive, onClick }) => {
           backgroundColor: isActive ? "var(--sidebar-active-tab)" : "inherit",
           "&:hover": {
             backgroundColor: "var(--sidebar-onhover-tab)",
+          },
+          "&.Mui-focusVisible": {
+            backgroundColor: "#819A91", // ✅ when focused by keyboard
           },
         }}
       >
