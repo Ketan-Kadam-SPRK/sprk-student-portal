@@ -122,8 +122,6 @@ function Sidebar() {
     setAnchorEl(null);
   };
 
-  console.log("activeTab", activeTab);
-
   const handleNotiMenuOpen = (event) => {
     setOpenNoti(event.currentTarget);
   };
