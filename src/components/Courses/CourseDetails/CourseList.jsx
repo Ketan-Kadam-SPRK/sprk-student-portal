@@ -106,15 +106,17 @@ const CourseList = ({ data, navigate }) => {
                   spacing={{ xs: 0.5, sm: 2 }}
                   sx={{ width: "100%", flexWrap: "wrap" }}
                 >
-                  <Image
-                    publicId={item?.course_logo}
-                    cloudName={item?.course_logo?.split("/")[0]}
-                    sx={{
-                      width: { xs: 50, sm: 70 },
-                      height: { xs: 50, sm: 70 },
+                  <img
+                    src={item?.course_logo}
+                    alt={item?.course_name}
+                    loading="lazy"
+                    style={{
+                      width: "100px",
+                      height: "100px",
                       objectFit: "contain",
                     }}
                   />
+
                   <Stack spacing={1} sx={{ flexGrow: 1 }}>
                     <Typography variant="h6" color="white" fontWeight={700}>
                       {item?.course_name}
