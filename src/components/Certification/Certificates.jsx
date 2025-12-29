@@ -267,7 +267,7 @@ function Certificates() {
                           xs: "column",
                           sm: "column",
                           md: "column",
-                          lg: "row",
+                          lg: "column",
                         },
                         justifyContent: {
                           lg: "space-between",

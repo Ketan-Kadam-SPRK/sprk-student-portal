@@ -184,7 +184,7 @@ function JobOpportunities() {
                 border: "1px solid var(--secondary-color)",
               }}
               endIcon={
-                <Badge badgeContent={count[res]} color="secondary"></Badge>
+                <Badge badgeContent={count[res]} color="secondary" sx={{pl:1}}></Badge>
               }
             >
               {formatForDisplay(res)}
