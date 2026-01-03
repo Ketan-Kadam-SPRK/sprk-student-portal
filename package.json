@@ -5,10 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-  "generate-sitemap": "node generate-sitemap.js",
-  "build": "npm run generate-sitemap && vite build",
-
-
+    "generate-sitemap": "node generate-sitemap.js",
+    "build": "npm run generate-sitemap && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -33,8 +31,8 @@
     "crypto-js": "^4.2.0",
     "html2canvas": "^1.4.1",
     "jwt-decode": "^4.0.0",
-    "lottie-light-react": "^2.4.0",
     "lottie-react": "^2.4.0",
+    "lottie-web": "^5.13.0",
     "react-dropzone": "^14.3.8",
     "react-error-boundary": "^5.0.0",
     "react-helmet-async": "^2.0.5",

@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { Image } from "cloudinary-react";
-import Lottie from "lottie-light-react";
+import Lottie from "lottie-react";
 import React from "react";
 import courseLottie from "./explore-courses.json";
 import { useSelector } from "react-redux";
@@ -110,6 +110,7 @@ function ExploreCourses() {
           <Lottie
             animationData={courseLottie}
             loop={true}
+            renderer="svg"
             style={{ width: "40vw", minWidth: "200px", height: "auto" }}
           />
           <Typography

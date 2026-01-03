@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Lottie from "lottie-light-react";
+import Lottie from "lottie-react";
 import pagenotFoundLottie from "./404page.json";
 
 function Error_404() {
@@ -28,6 +28,7 @@ function Error_404() {
       <Lottie
         animationData={pagenotFoundLottie}
         loop={true}
+        renderer="svg"
         style={{ width: "800px", height: "auto", maxWidth: "100%" }}
       />
       <Button variant="contained" onClick={handleBackNavigation}>

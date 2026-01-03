@@ -1,5 +1,5 @@
 import React from "react";
-import Lottie from "lottie-light-react";
+import Lottie from "lottie-react";
 import SprkLoader from "../../Lottie/SprkLoading.json";
 
 /**
@@ -22,6 +22,7 @@ function CustomBackDrop({ loadData }) {
       <Lottie
         animationData={SprkLoader}
         loop={loadData}
+        renderer="svg"
         style={{ width: "200px", height: "200px" }}
       />
     </div>

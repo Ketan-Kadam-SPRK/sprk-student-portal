@@ -225,6 +225,7 @@ function Login() {
         <Lottie
           animationData={SprkLoader}
           loop={isLoading}
+          renderer="svg"
           style={{ width: "200px", height: "200px" }}
         />
       </Backdrop>
