@@ -50,9 +50,9 @@ export default function FilePreview({ attachments }) {
             variant="caption"
             noWrap
             className={styles.fileName}
-            title={file?.imageUrl}
+            title={file?.originalName}
           >
-            {file?.imageUrl?.split("/").pop() || "File"}
+            {file?.originalName?.split("/").pop() || "File"}
           </Typography>
 
           {/* Icons */}
