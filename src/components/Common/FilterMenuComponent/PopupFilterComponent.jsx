@@ -30,6 +30,7 @@ function PopupFilterComponent({
   dateKey = null,
   statusKey = null,
   search = true,
+  sx = {}, 
 }) {
   const location = useLocation();
   const searchQuery = location?.state?.searchQuery;
@@ -205,6 +206,7 @@ function PopupFilterComponent({
         py: 1,
         alignItems: "center",
         gap: "10px",
+        ...sx,    
       }}
     >
       {search && (

@@ -10,6 +10,7 @@ import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
 import BatchNotes from "./Notes/BatchNotes";
 import { BatchContext } from "../BatchContext";
+import PopupFilterComponent from "../../../Common/FilterMenuComponent/PopupFilterComponent";
 
 const TabPanel = ({ children, value, index }) => (
   <div role="tabpanel" hidden={value !== index}>
@@ -35,9 +36,10 @@ function BatchDetailsTab({ sessionData }) {
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 1,
+            // alignItems: "center",
+            flexDirection: { xs: "column", sm: "row" },
+            // justifyContent: "space-between",
+            // gap: 1,
           }}
         >
           <Tabs
@@ -51,7 +53,7 @@ function BatchDetailsTab({ sessionData }) {
               "& .MuiTab-root": {
                 backgroundColor: "var(--background-color)",
                 color: "var(--primary-color)",
-                fontSize: { xs: "12px", sm: "14px" },
+                fontSize: { xs: "14px", sm: "16px" },
                 fontWeight: 600,
                 textTransform: "none",
                 borderRadius: "8px",
@@ -69,13 +71,25 @@ function BatchDetailsTab({ sessionData }) {
             ))}
           </Tabs>
 
+          {activeTab === 0 && (
+            <Box sx={{display:'flex',justifyContent:"flex-end",}}>
+              <PopupFilterComponent
+                rowData={sessionData?.list}
+                statusOptions={["PRESENT", "ABSENT", "ON_LEAVE"]}
+                setFilterData={setFilterData}
+                dateKey={null}
+                statusKey="studentAttendanceStatus"
+                search={false}
+                sx={{ pt: 0, pb: 1 }} 
+              />
+            </Box>
+          )}
+
         </Box>
 
         {/* 🔹 Tab Panels */}
         <TabPanel value={activeTab} index={0}>
-          <Sessions filterData={filterData}
-            setFilterData={setFilterData}
-            sessionData={sessionData} />
+          <Sessions filterData={filterData}/>
         </TabPanel>
 
         <TabPanel value={activeTab} index={1}>

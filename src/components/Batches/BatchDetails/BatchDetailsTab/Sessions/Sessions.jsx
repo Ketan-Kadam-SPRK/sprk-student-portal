@@ -12,9 +12,8 @@ import { formatDateTimeRange } from "../../../../../Utils/dateTimeFormator";
 import NoDataPage from "../../../../Common/NoDataPage";
 import NoDataAvailableUI from "../../../../Common/CustomAgGrid/NoDataAvailableUI";
 import { useBatch } from "../../BatchContext";
-import PopupFilterComponent from "../../../../Common/FilterMenuComponent/PopupFilterComponent";
 
-function Sessions({ filterData,setFilterData,setSessionData }) {
+function Sessions({ filterData}) {
   const [show, setShow] = useState(false);
   const [showAttendanceDrawer, setShowAttendanceDrawer] = useState(false);
   const { sessionData } = useBatch();
@@ -56,16 +55,6 @@ function Sessions({ filterData,setFilterData,setSessionData }) {
 
   return (
     <>
-      <Box sx={{display:"flex",justifyContent:'flex-end'}}>
-        <PopupFilterComponent
-          rowData={sessionData?.list}
-          statusOptions={["PRESENT", "ABSENT", "ON_LEAVE"]}
-          setFilterData={setFilterData}
-          dateKey={null}
-          statusKey="studentAttendanceStatus"
-          search={false}
-        />
-      </Box>
       {sessionData?.list?.length > 0 ? (
         <Box className={styles.mainBox}>
           <Box sx={{ px: 3, py: 2 }}>
