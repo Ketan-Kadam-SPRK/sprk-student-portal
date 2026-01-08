@@ -23,5 +23,5 @@ const hostname = "https://student.sprktechnologies.in"; // 👈 replace with you
   sitemap.end();
   await streamToPromise(sitemap);
 
-  console.log("✅ Sitemap generated at public/sitemap.xml");
+  // console.log("✅ Sitemap generated at public/sitemap.xml");
 })();

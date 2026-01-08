@@ -176,7 +176,7 @@ function Login() {
             })
           );
           let newEntitlements = rearrengePermission(userDetails?.entitlements);
-          console.log(newEntitlements);
+
           dispatch(setEntitleMents(newEntitlements));
 
           dispatch(

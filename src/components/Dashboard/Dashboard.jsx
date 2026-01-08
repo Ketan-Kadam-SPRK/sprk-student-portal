@@ -48,6 +48,12 @@ function Dashboard() {
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const allowedTabs = useSelector((state) => state.authSlice.entitlements);
+
+  const hasJobPermission = Array.isArray(allowedTabs)
+  ? allowedTabs.includes("JOB_OPPORTUNITIES")
+  : false;
+
   useEffect(() => {
     fetchAllDashboardData();
   }, []);
@@ -689,8 +695,8 @@ function Dashboard() {
             )}
           </Box>
         </Box>
-
-        <Box
+{hasJobPermission && (
+          <Box
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -823,6 +829,8 @@ function Dashboard() {
             />
           )}
         </Box>
+)}
+
       </Box>
     </Box>
   );
