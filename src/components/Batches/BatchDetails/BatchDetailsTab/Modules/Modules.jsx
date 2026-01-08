@@ -113,6 +113,11 @@ function Modules() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              flexDirection:{
+                xs: "column",
+                sm: "row"
+              },
+              gap: "10px",
               alignItems: "center",
               p: 2,
               boxShadow:
@@ -135,7 +140,10 @@ function Modules() {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                px: 3,
+                px:{
+                  xs: "8px",
+                  md: "20px"
+                },
                 gap: "5px",
                 py: 1,
                 borderRadius: "25px",

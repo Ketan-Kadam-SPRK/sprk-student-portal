@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Tabs, Tab, Box } from "@mui/material";
+import {
+  Tabs,
+  Tab,
+  Box,
+} from "@mui/material";
 import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
 import BatchNotes from "./Notes/BatchNotes";
-import PopupFilterComponent from "../../../Common/FilterMenuComponent/PopupFilterComponent";
-import { BatchContext } from "../BatchContext";  // ✅ import context
+import { BatchContext } from "../BatchContext";
 
 const TabPanel = ({ children, value, index }) => (
   <div role="tabpanel" hidden={value !== index}>
@@ -17,33 +20,43 @@ const TabPanel = ({ children, value, index }) => (
 function BatchDetailsTab({ sessionData }) {
   const tabNames = ["SESSIONS", "MODULES", "NOTES"];
   const [activeTab, setActiveTab] = useState(0);
-  const batchId = useParams().batchId || null; // still local
-  const [filterData, setFilterData] = useState([]); // still local
+  const [filterData, setFilterData] = useState([]);
+
+  const batchId = useParams().batchId || null;
 
   const handleTabChange = (event, newTabIndex) => {
     setActiveTab(newTabIndex);
   };
-  
+
   return (
-    <BatchContext.Provider value={{ sessionData,batchId }}>
+    <BatchContext.Provider value={{ sessionData, batchId }}>
       <Box className={styles.mainBox}>
-        <Box className={styles.tabBox}>
+        {/* 🔹 Tabs + Three Dot Menu */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 1,
+          }}
+        >
           <Tabs
             variant="scrollable"
             scrollButtons="auto"
             value={activeTab}
             onChange={handleTabChange}
-            className={styles.tabsStyle}
             sx={{
+              flex: 1,
               "& .MuiTabs-indicator": { display: "none" },
               "& .MuiTab-root": {
                 backgroundColor: "var(--background-color)",
                 color: "var(--primary-color)",
-                fontSize: { xs: "14px", sm: "16px", md: "16px" },
+                fontSize: { xs: "12px", sm: "14px" },
                 fontWeight: 600,
                 textTransform: "none",
                 borderRadius: "8px",
-                marginLeft: "20px",
+                ml: "12px",
+                minHeight: 40,
               },
               "& .MuiTab-root.Mui-selected": {
                 backgroundColor: "var(--secondary-color)",
@@ -56,28 +69,21 @@ function BatchDetailsTab({ sessionData }) {
             ))}
           </Tabs>
 
-          {activeTab === 0 && (
-            <Box className={styles.buttonBox}>
-              <PopupFilterComponent
-                rowData={sessionData?.list}
-                statusOptions={["PRESENT", "ABSENT", "ON_LEAVE"]}
-                setFilterData={setFilterData}
-                dateKey={null}
-                statusKey="studentAttendanceStatus"
-                search={false}
-              />
-            </Box>
-          )}
         </Box>
 
+        {/* 🔹 Tab Panels */}
         <TabPanel value={activeTab} index={0}>
-          <Sessions filterData={filterData} />
+          <Sessions filterData={filterData}
+            setFilterData={setFilterData}
+            sessionData={sessionData} />
         </TabPanel>
+
         <TabPanel value={activeTab} index={1}>
-          <Modules /> 
+          <Modules />
         </TabPanel>
+
         <TabPanel value={activeTab} index={2}>
-          <BatchNotes /> 
+          <BatchNotes />
         </TabPanel>
       </Box>
     </BatchContext.Provider>
