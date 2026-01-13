@@ -135,53 +135,77 @@ function BatchDetails() {
     >
       <Box
         sx={{
-          backgroundColor: "white",
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          backgroundColor: "white",
+          gap: 2,
           justifyContent: "space-between",
-          p: 2,
-          gap: "20px",
+          px: 2,
+          py: 1,
         }}
       >
-        {/* Back Button */}
-        <Box sx={{ display: "flex" }}>
-          <Button
-            variant="outlined"
-            sx={{ color: "#747474" }}
-            onClick={() => navigate(-1)}
-          >
-            {<ArrowBackIcon />}
-          </Button>
-        </Box>
-
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography
-            sx={{
-              marginRight: "10px",
-              fontSize: "14px",
-              fontWeight: 700,
-            }}
-          >
-            BATCH STATUS:
-          </Typography>
-          {/* Display Batch Status with Styling */}
+        <Box
+          sx={{
+            backgroundColor: "white",
+            display: "flex",
+            justifyContent: "space-between",
+            p: { xs: 0, sm: 2 },
+            width: "100%",
+            // gap: "20px",
+          }}
+        >
+          {/* Back Button */}
+          <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+            <Button
+              variant="outlined"
+              sx={{ color: "#747474" }}
+              onClick={() => navigate(-1)}
+            >
+              {<ArrowBackIcon />}
+            </Button>
+          </Box>
           <Box
             sx={{
-              width: "150px",
-              borderRadius: "25px",
               display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "5px", // Add spacing between icon and text
-              padding: "5px",
-              ...getStatusProperties(sessionData?.status).style,
+              flexDirection: { xs: "column-reverse", sm: "row" },
+              justifyContent: "space-between",
+              gap: "10px",
             }}
           >
-            <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
-              {sessionData?.status
-                ? sessionData?.status.replace("_", " ").toUpperCase()
-                : "NA"}
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography
+                sx={{
+                  marginRight: "10px",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                }}
+              >
+                BATCH STATUS:
+              </Typography>
+              {/* Display Batch Status with Styling */}
+              <Box
+                sx={{
+                  width: "150px",
+                  borderRadius: "25px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "5px", // Add spacing between icon and text
+                  padding: "5px",
+                  ...getStatusProperties(sessionData?.status).style,
+                }}
+              >
+                <Typography sx={{ fontSize: "14px", fontWeight: 700 }}>
+                  {sessionData?.status
+                    ? sessionData?.status.replace("_", " ").toUpperCase()
+                    : "NA"}
+                </Typography>
+              </Box>
+            </Box>
           </Box>
+        </Box>
+        <Box sx={{display:'flex',alignItems:"center",justifyContent:'flex-end'}}>
+          <Button variant="outlined">FeedBack</Button>
         </Box>
       </Box>
       <Box
