@@ -10,6 +10,10 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  IconButton,
   Typography,
 } from "@mui/material";
 
@@ -22,6 +26,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import CancelIcon from "@mui/icons-material/Cancel";
+import CloseIcon from "@mui/icons-material/Close";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 
 //common component, utils and hooks
@@ -33,6 +38,7 @@ import ErrorHandling from "../../Common/ErrorHandling";
 //child components, actions
 import BatchDetailsTab from "./BatchDetailsTab/BatchDetailsTab";
 import { getSessionsDetails } from "../action/batches.actions";
+import FeedBackModal from "./FeedBack/FeedBackModal";
 
 function BatchDetails() {
   const batchId = useParams().batchId || null;
@@ -43,6 +49,11 @@ function BatchDetails() {
   const [sessionData, setSessionData] = useState([]);
   const [error500, setError500] = useState(false);
   const [error404, setError404] = useState(false);
+  const [openFeedBack, setOpenFeedBack] = useState(false);
+
+  const handleFeedBack = () => {
+    setOpenFeedBack(!openFeedBack);
+  };
 
   /**
    * Fetches session details for a specific batch and updates the state.
@@ -204,8 +215,17 @@ function BatchDetails() {
             </Box>
           </Box>
         </Box>
-        <Box sx={{display:'flex',alignItems:"center",justifyContent:'flex-end'}}>
-          <Button variant="outlined">FeedBack</Button>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Button variant="outlined" onClick={handleFeedBack}>
+            {" "}
+            FeedBack
+          </Button>
         </Box>
       </Box>
       <Box
@@ -299,6 +319,31 @@ function BatchDetails() {
       <Box sx={{ px: 2, flex: 1 }}>
         <BatchDetailsTab sessionData={sessionData} />
       </Box>
+      <Dialog
+        open={openFeedBack}
+        onClose={handleFeedBack}
+        fullWidth
+        maxWidth="md"
+        scroll="paper"
+      >
+        <DialogTitle>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h6">
+              Batch FeedBack Form
+            </Typography>
+            <IconButton onClick={handleFeedBack}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        </DialogTitle>
+        <FeedBackModal />
+      </Dialog>
     </Box>
   );
 }
