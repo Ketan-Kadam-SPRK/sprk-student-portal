@@ -29,6 +29,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 
+
 //common component, utils and hooks
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import dateFormator from "../../../Utils/dateFormator";
@@ -50,6 +51,7 @@ function BatchDetails() {
   const [error500, setError500] = useState(false);
   const [error404, setError404] = useState(false);
   const [openFeedBack, setOpenFeedBack] = useState(false);
+  const [feedBackBatchId, setFeedBackBatchId] = useState(null);
 
   const handleFeedBack = () => {
     setOpenFeedBack(!openFeedBack);
@@ -222,10 +224,25 @@ function BatchDetails() {
             justifyContent: "flex-end",
           }}
         >
-          <Button variant="outlined" onClick={handleFeedBack}>
-            {" "}
-            FeedBack
-          </Button>
+<Button
+  variant="outlined"
+  disabled={sessionData?.is_feedback_submitted}
+  startIcon={
+    sessionData?.is_feedback_submitted ? (
+      <CheckCircleIcon sx={{ color: "green" }} />
+    ) : null
+  }
+  onClick={() => {
+    if (sessionData?.is_feedback_submitted) return;
+
+    console.log(sessionData, "sessionData");
+    setFeedBackBatchId(sessionData?.batch_uid);
+    handleFeedBack();
+  }}
+>
+  {"Feedback"}
+</Button>
+
         </Box>
       </Box>
       <Box
@@ -334,15 +351,16 @@ function BatchDetails() {
               alignItems: "center",
             }}
           >
-            <Typography variant="h6">
-              Batch FeedBack Form
-            </Typography>
+            <Typography variant="h6">Batch FeedBack Form</Typography>
             <IconButton onClick={handleFeedBack}>
               <CloseIcon />
             </IconButton>
           </Box>
         </DialogTitle>
-        <FeedBackModal />
+        <FeedBackModal 
+        feedBackBatchId={feedBackBatchId}
+        handleFeedBack={handleFeedBack}
+        />
       </Dialog>
     </Box>
   );
