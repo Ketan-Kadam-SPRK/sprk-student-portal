@@ -13,7 +13,7 @@ import NoDataPage from "../../../../Common/NoDataPage";
 import NoDataAvailableUI from "../../../../Common/CustomAgGrid/NoDataAvailableUI";
 import { useBatch } from "../../BatchContext";
 
-function Sessions({ filterData}) {
+function Sessions({ filterData }) {
   const [show, setShow] = useState(false);
   const [showAttendanceDrawer, setShowAttendanceDrawer] = useState(false);
   const { sessionData } = useBatch();
@@ -71,7 +71,7 @@ function Sessions({ filterData}) {
                     id="panel1a-header"
                   >
                     {/* Session information */}
-                    <Box className={styles.infoBox}>
+                    <Box className={styles.infoBox}> 
                       <Box
                         className={styles.SummeryBox}
                         onClick={() => setShow(!show)}
@@ -117,7 +117,14 @@ function Sessions({ filterData}) {
                       {sessionData?.lev_reason && (
                         <Box>
                           <Typography
-                            sx={{ fontSize: "13px", color: "#6E6E6E" }}
+                            sx={{
+                              fontSize: "13px",
+                              color: "#6E6E6E",
+                              wordBreak: "break-word", 
+                              overflowWrap: "anywhere", 
+                              whiteSpace: "normal",
+                              pr: "10px",
+                            }}
                           >
                             <span
                               style={{

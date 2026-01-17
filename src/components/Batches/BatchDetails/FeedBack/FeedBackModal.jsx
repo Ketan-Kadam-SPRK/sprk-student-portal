@@ -10,6 +10,7 @@ import {
   RadioGroup,
   FormControlLabel,
   FormHelperText,
+  CircularProgress,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../Hooks/useAuthHeaders";
@@ -60,7 +61,7 @@ const normalizeQuestions = (backendQuestions = []) => {
   });
 };
 
-function FeedBackModal({ feedBackBatchId, handleFeedBack }) {
+function FeedBackModal({ feedBackBatchId, handleFeedBack, getSessionsDetail }) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
 
@@ -69,6 +70,7 @@ function FeedBackModal({ feedBackBatchId, handleFeedBack }) {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [error500, setError500] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [formInfo, setFormInfo] = useState({
     formUid: null,
     formVersion: null,
@@ -166,52 +168,59 @@ function FeedBackModal({ feedBackBatchId, handleFeedBack }) {
   /**
    * 🔹 Handle Submit + Scroll to First Error
    */
-  const handleSubmit = () => {
-    const newErrors = {};
+  const handleSubmit = async () => {
+    try {
+      const newErrors = {};
 
-    questions.forEach((q) => {
-      const error = validateField(q, answers[q.id]);
-      if (error) newErrors[q.id] = error;
-    });
-
-    setErrors(newErrors);
-
-    // 🚀 Scroll to first error
-    const firstErrorKey = Object.keys(newErrors)[0];
-    if (firstErrorKey) {
-      questionRefs.current[firstErrorKey]?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
+      questions.forEach((q) => {
+        const error = validateField(q, answers[q.id]);
+        if (error) newErrors[q.id] = error;
       });
-      return;
-    }
 
-    const payload = {
-      formUid: formInfo.formUid,
-      formVersion: formInfo.formVersion,
-      questions: questions.map((q) => ({
-        uid: q.id,
-        answer: answers[q.id],
-      })),
-    };
+      setErrors(newErrors);
 
-    dispatch(
-      addSubmitFeedback({ headers, payload, batchId: feedBackBatchId })
-    ).then((res) => {
-      console.log(res, "res");
-      if (res?.payload?.status === 200 || res?.payload?.status === 201) {
-        setFormInfo({
-          formUid: null,
-          formVersion: null,
+      // 🚀 Scroll to first error
+      const firstErrorKey = Object.keys(newErrors)[0];
+      if (firstErrorKey) {
+        questionRefs.current[firstErrorKey]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
         });
-        setQuestionsData([]);
-        handleFeedBack();
+        return;
       }
-    });
 
+      setSubmitLoading(true);
+
+      const payload = {
+        formUid: formInfo.formUid,
+        formVersion: formInfo.formVersion,
+        questions: questions.map((q) => ({
+          uid: q.id,
+          answer: answers[q.id],
+        })),
+      };
+
+      dispatch(
+        addSubmitFeedback({ headers, payload, batchId: feedBackBatchId })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          setFormInfo({
+            formUid: null,
+            formVersion: null,
+          });
+          setQuestionsData([]);
+          handleFeedBack();
+          getSessionsDetail();
+        }
+      });
+
+    } catch (error) {
+      console.error("Feedback submission failed:", error);
+      // Optional: show toast/snackbar here
+    } finally {
+      setSubmitLoading(false);
+    }
   };
-
-  console.log(loading, "loading");
 
   if (loading || error500) {
     return <ErrorHandling error500={error500} loadData={loading} />;
@@ -245,7 +254,7 @@ function FeedBackModal({ feedBackBatchId, handleFeedBack }) {
                     size="small"
                     sx={{ mt: 1, pl: 2 }}
                     value={answers[q.id] ?? ""}
-                    inputProps={{ maxLength: 300 }}
+                    // inputProps={{ maxLength: 300 }}
                     error={Boolean(errors[q.id])}
                     onChange={(e) => handleChange(q, e.target.value)}
                   />
@@ -347,8 +356,12 @@ function FeedBackModal({ feedBackBatchId, handleFeedBack }) {
           <Button variant="outlined" onClick={handleFeedBack}>
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleSubmit}>
-            Submit
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            disabled={submitLoading}
+          >
+            {submitLoading ? <CircularProgress size={24} /> : "Submit"}
           </Button>
         </Box>
       </DialogActions>

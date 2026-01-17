@@ -31,7 +31,6 @@ export const getFeedbackByBatchId = createAsyncThunk(
 export const addSubmitFeedback = createAsyncThunk(
   "addSubmitFeedback",
   async ({ headers, batchId, payload}) => {
-    console.log(payload,"payload");
     try {
       // Make a PATCH request to resume the batch
       const res = await axiosInstance.post(
@@ -42,7 +41,8 @@ export const addSubmitFeedback = createAsyncThunk(
         }
       );
 
-      return res?.data;
+      handleResponse(res?.data);
+      // return res?.data;
     } catch (error) {
       handleError(error);
       throw error;

@@ -29,7 +29,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 
-
 //common component, utils and hooks
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import dateFormator from "../../../Utils/dateFormator";
@@ -224,25 +223,22 @@ function BatchDetails() {
             justifyContent: "flex-end",
           }}
         >
-<Button
-  variant="outlined"
-  disabled={sessionData?.is_feedback_submitted}
-  startIcon={
-    sessionData?.is_feedback_submitted ? (
-      <CheckCircleIcon sx={{ color: "green" }} />
-    ) : null
-  }
-  onClick={() => {
-    if (sessionData?.is_feedback_submitted) return;
-
-    console.log(sessionData, "sessionData");
-    setFeedBackBatchId(sessionData?.batch_uid);
-    handleFeedBack();
-  }}
->
-  {"Feedback"}
-</Button>
-
+          <Button
+            variant="outlined"
+            disabled={sessionData?.is_feedback_submitted}
+            startIcon={
+              sessionData?.is_feedback_submitted ? (
+                <CheckCircleIcon sx={{ color: "green" }} />
+              ) : null
+            }
+            onClick={() => {
+              if (sessionData?.is_feedback_submitted) return;
+              setFeedBackBatchId(sessionData?.batch_uid);
+              handleFeedBack();
+            }}
+          >
+            {"Feedback"}
+          </Button>
         </Box>
       </Box>
       <Box
@@ -351,15 +347,19 @@ function BatchDetails() {
               alignItems: "center",
             }}
           >
-            <Typography variant="h6">Batch FeedBack Form</Typography>
+            <Typography variant="h6">Batch Feedback Form</Typography>
             <IconButton onClick={handleFeedBack}>
               <CloseIcon />
             </IconButton>
           </Box>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+           Note: Feedback can be submitted only once for this batch.
+          </Typography>
         </DialogTitle>
-        <FeedBackModal 
-        feedBackBatchId={feedBackBatchId}
-        handleFeedBack={handleFeedBack}
+        <FeedBackModal
+          feedBackBatchId={feedBackBatchId}
+          handleFeedBack={handleFeedBack}
+          getSessionsDetail={getSessionsDetail}
         />
       </Dialog>
     </Box>
