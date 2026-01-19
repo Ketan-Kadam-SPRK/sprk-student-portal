@@ -10,6 +10,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -39,6 +40,48 @@ import ErrorHandling from "../../Common/ErrorHandling";
 import BatchDetailsTab from "./BatchDetailsTab/BatchDetailsTab";
 import { getSessionsDetails } from "../action/batches.actions";
 import FeedBackModal from "./FeedBack/FeedBackModal";
+import { getFeedbackByBatchId } from "./FeedBack/store/Feedback.action";
+
+const normalizeQuestions = (backendQuestions = []) => {
+  return backendQuestions.map((q) => {
+    let type = "input";
+
+    switch (q.type) {
+      case "TEXT":
+        type = "input";
+        break;
+      case "YES_NO":
+        type = "boolean";
+        break;
+      case "SINGLE_CHOICE":
+        type = "options";
+        break;
+      case "RATING":
+        type = "rating";
+        break;
+      default:
+        type = "input";
+    }
+
+    return {
+      id: q.uid,
+      sequence: q.displayOrder,
+      question: q.text,
+      type,
+      required: q.required,
+      ratingScale: q.ratingScale || 5,
+      options:
+        type === "options"
+          ? q.options
+              ?.sort((a, b) => a.displayOrder - b.displayOrder)
+              .map((opt) => ({
+                label: opt.optionLabel, // 👈 for UI
+                value: opt.optionKey,   // 👈 for payload
+              }))
+          : [],
+    };
+  });
+};
 
 function BatchDetails() {
   const batchId = useParams().batchId || null;
@@ -51,15 +94,46 @@ function BatchDetails() {
   const [error404, setError404] = useState(false);
   const [openFeedBack, setOpenFeedBack] = useState(false);
   const [feedBackBatchId, setFeedBackBatchId] = useState(null);
+  const [questionsData, setQuestionsData] = useState([]);
+  const [formInfo, setFormInfo] = useState({
+    formUid: null,
+    formVersion: null,
+    batchId: null,
+  });
 
   const handleFeedBack = () => {
     setOpenFeedBack(!openFeedBack);
   };
 
-  /**
-   * Fetches session details for a specific batch and updates the state.
-   * Sets loading state to true while fetching data and to false once
-   */
+  const [loadingfeedback, setLoadingFeedback] = useState(false);
+  const handleFetchFeedBack = async (id) => {
+    try {
+      setLoadingFeedback(true);
+      const res = await dispatch(
+        getFeedbackByBatchId({ headers, batchId: id }),
+      );
+
+      const data = res?.payload?.data?.data || {};
+      const status = res?.payload?.status;
+
+      if (status === 200 || status === 201) {
+        setFormInfo({
+          formUid: data?.formUid,
+          formVersion: data?.formVersion,
+          batchId: id,
+        });
+
+        const normalized = normalizeQuestions(data?.questions || []);
+        setQuestionsData(normalized);
+        setOpenFeedBack(true);
+      }
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+    } finally {
+      setLoadingFeedback(false);
+    }
+  };
+
 
   const getSessionsDetail = async () => {
     setLoading(true);
@@ -85,14 +159,6 @@ function BatchDetails() {
     getSessionsDetail();
   }, []);
 
-  /**
-   * Returns the style properties and icon associated with a given status.
-   *
-   * @param {string} status - The status for which to retrieve properties.
-   *                          Can be "ONGOING", "UPCOMING", "ON_HOLD", "COMPLETED", or other.
-   * @returns {object} An object containing the style (background color and text color)
-   *                   and an icon corresponding to the status.
-   */
 
   const getStatusProperties = (status) => {
     switch (status) {
@@ -225,7 +291,7 @@ function BatchDetails() {
         >
           <Button
             variant="outlined"
-            disabled={sessionData?.is_feedback_submitted}
+            disabled={sessionData?.is_feedback_submitted || loadingfeedback}
             startIcon={
               sessionData?.is_feedback_submitted ? (
                 <CheckCircleIcon sx={{ color: "green" }} />
@@ -233,11 +299,10 @@ function BatchDetails() {
             }
             onClick={() => {
               if (sessionData?.is_feedback_submitted) return;
-              setFeedBackBatchId(sessionData?.batch_uid);
-              handleFeedBack();
+              handleFetchFeedBack(sessionData?.batch_uid);
             }}
           >
-            {"Feedback"}
+            {loadingfeedback ? <CircularProgress size={20} /> : "Feedback"}
           </Button>
         </Box>
       </Box>
@@ -353,13 +418,17 @@ function BatchDetails() {
             </IconButton>
           </Box>
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
-           Note: Feedback can be submitted only once for this batch.
+            Note: Feedback can be submitted only once for this batch.
           </Typography>
         </DialogTitle>
         <FeedBackModal
           feedBackBatchId={feedBackBatchId}
           handleFeedBack={handleFeedBack}
           getSessionsDetail={getSessionsDetail}
+          questionsData={questionsData}
+          setQuestionsData={setQuestionsData}
+          formInfo={formInfo}
+          setFormInfo={setFormInfo}
         />
       </Dialog>
     </Box>

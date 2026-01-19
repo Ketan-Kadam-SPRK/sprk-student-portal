@@ -61,20 +61,28 @@ const normalizeQuestions = (backendQuestions = []) => {
   });
 };
 
-function FeedBackModal({ feedBackBatchId, handleFeedBack, getSessionsDetail }) {
+function FeedBackModal({
+  feedBackBatchId,
+  handleFeedBack,
+  getSessionsDetail,
+  questionsData,
+  setQuestionsData,
+  formInfo,
+  setFormInfo,
+}) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
 
-  const [questionsData, setQuestionsData] = useState([]);
+  // const [questionsData, setQuestionsData] = useState([]);
   const [answers, setAnswers] = useState({});
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [error500, setError500] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [formInfo, setFormInfo] = useState({
-    formUid: null,
-    formVersion: null,
-  });
+  // const [formInfo, setFormInfo] = useState({
+  //   formUid: null,
+  //   formVersion: null,
+  // });
 
   // ✅ Refs for scrolling
   const questionRefs = useRef({});
@@ -82,42 +90,42 @@ function FeedBackModal({ feedBackBatchId, handleFeedBack, getSessionsDetail }) {
   /**
    * 🔹 Fetch feedback questions
    */
-  useEffect(() => {
-    if (!feedBackBatchId) return;
+  // useEffect(() => {
+  //   if (!feedBackBatchId) return;
 
-    const fetchFeedback = async () => {
-      try {
-        setLoading(true);
+  //   const fetchFeedback = async () => {
+  //     try {
+  //       setLoading(true);
 
-        const res = await dispatch(
-          getFeedbackByBatchId({ headers, batchId: feedBackBatchId })
-        );
+  //       const res = await dispatch(
+  //         getFeedbackByBatchId({ headers, batchId: feedBackBatchId })
+  //       );
 
-        const data = res?.payload?.data?.data || {};
-        const status = res?.payload?.status;
+  //       const data = res?.payload?.data?.data || {};
+  //       const status = res?.payload?.status;
 
-        if (status === 500 || status === 503) {
-          setError500(true);
-          return;
-        }
+  //       if (status === 500 || status === 503) {
+  //         setError500(true);
+  //         return;
+  //       }
 
-        setFormInfo({
-          formUid: data?.formUid,
-          formVersion: data?.formVersion,
-        });
+  //       setFormInfo({
+  //         formUid: data?.formUid,
+  //         formVersion: data?.formVersion,
+  //       });
 
-        const normalized = normalizeQuestions(data?.questions || []);
-        setQuestionsData(normalized);
-      } catch (error) {
-        console.error("Error fetching feedback:", error);
-        setError500(true);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       const normalized = normalizeQuestions(data?.questions || []);
+  //       setQuestionsData(normalized);
+  //     } catch (error) {
+  //       console.error("Error fetching feedback:", error);
+  //       setError500(true);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchFeedback();
-  }, [feedBackBatchId]);
+  //   fetchFeedback();
+  // }, [feedBackBatchId]);
 
   /**
    * 🔹 Sort questions
@@ -128,22 +136,36 @@ function FeedBackModal({ feedBackBatchId, handleFeedBack, getSessionsDetail }) {
    * 🔹 Validation
    */
   const validateField = (question, value) => {
-    if (!question.required) return "";
-
+    // 🔹 TEXT INPUT
     if (question.type === "input") {
-      if (!value || value.trim() === "") return "This field is required";
-      if (value.length > 300) return "Maximum 300 characters allowed";
+      // Required check
+      if (question.required && (!value || value.trim() === "")) {
+        return "This field is required";
+      }
+
+      // Max length check (ONLY if user typed something)
+      if (value && value.length > 300) {
+        return "Maximum 300 characters allowed";
+      }
     }
 
-    if (question.type === "options" && !value) {
+    // 🔹 OPTIONS
+    if (question.type === "options" && question.required && !value) {
       return "Please select an option";
     }
 
-    if (question.type === "boolean") {
-      if (value !== true && value !== false) return "Please select Yes or No";
+    // 🔹 BOOLEAN
+    if (
+      question.type === "boolean" &&
+      question.required &&
+      value !== true &&
+      value !== false
+    ) {
+      return "Please select Yes or No";
     }
 
-    if (question.type === "rating" && !value) {
+    // 🔹 RATING
+    if (question.type === "rating" && question.required && !value) {
       return "Please select a rating";
     }
 
@@ -196,24 +218,27 @@ function FeedBackModal({ feedBackBatchId, handleFeedBack, getSessionsDetail }) {
         formVersion: formInfo.formVersion,
         questions: questions.map((q) => ({
           uid: q.id,
-          answer: answers[q.id],
+          answer:
+            answers[q.id] !== undefined && answers[q.id] !== ""
+              ? answers[q.id]
+              : null,
         })),
       };
 
       dispatch(
-        addSubmitFeedback({ headers, payload, batchId: feedBackBatchId })
+        addSubmitFeedback({ headers, payload, batchId: formInfo?.batchId }),
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setFormInfo({
             formUid: null,
             formVersion: null,
+            batchId: null,
           });
           setQuestionsData([]);
           handleFeedBack();
           getSessionsDetail();
         }
       });
-
     } catch (error) {
       console.error("Feedback submission failed:", error);
       // Optional: show toast/snackbar here
@@ -221,10 +246,6 @@ function FeedBackModal({ feedBackBatchId, handleFeedBack, getSessionsDetail }) {
       setSubmitLoading(false);
     }
   };
-
-  if (loading || error500) {
-    return <ErrorHandling error500={error500} loadData={loading} />;
-  }
 
   return (
     <>
@@ -277,9 +298,9 @@ function FeedBackModal({ feedBackBatchId, handleFeedBack, getSessionsDetail }) {
                     {q.options.map((opt, i) => (
                       <FormControlLabel
                         key={i}
-                        value={opt}
+                        value={opt.value} // 👈 optionKey
                         control={<Radio />}
-                        label={opt}
+                        label={opt.label} // 👈 optionLabel
                       />
                     ))}
                   </RadioGroup>

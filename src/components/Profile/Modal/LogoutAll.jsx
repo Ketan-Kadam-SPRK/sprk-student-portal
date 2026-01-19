@@ -30,7 +30,6 @@ function LogoutAll({ handleClose }) {
           const userId = decodedToken.sub;
           handleClose();
 
-          // console.log(data.token)
           localStorage.setItem("token", newAccessToken);
           dispatch(
             setLogin({
