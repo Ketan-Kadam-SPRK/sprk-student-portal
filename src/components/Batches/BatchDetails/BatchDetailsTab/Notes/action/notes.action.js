@@ -69,3 +69,27 @@ export const addCommentToNote = createAsyncThunk(
     }
   }
 );
+
+export const getNotesFileById = createAsyncThunk(
+  "getNotesFileById",
+  async ({ headers, fileId }) => {
+    try {
+      const res = await axiosInstance.get(`/student-portal/batch-notes/files//${fileId}`, {
+        headers,
+        responseType: "blob",
+      });
+
+      // Extract data and status from the response
+      const { data, status } = res;
+      // if (data?.error !== null) {
+      //   showAlert("Failed", data?.error, "error", "OK", true);
+      // }
+
+      return { data, status };
+    } catch (err) {
+      // Use rejectWithValue to handle errors and provide additional information
+      handleError(err);
+      return { status: err.response?.status };
+    }
+  }
+);
