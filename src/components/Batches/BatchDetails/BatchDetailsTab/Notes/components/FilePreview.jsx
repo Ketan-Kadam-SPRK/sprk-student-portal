@@ -3,47 +3,122 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DownloadIcon from "@mui/icons-material/Download";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import styles from "./filePreview.module.css"; // CSS Module
+import ArticleIcon from "@mui/icons-material/Article";
+import FolderZipIcon from "@mui/icons-material/FolderZip";
+import PermMediaIcon from "@mui/icons-material/PermMedia";
+import { getNotesFileById } from "../action/notes.action";
+import { useDispatch } from "react-redux";
+import { useAuthHeaders } from "../../../../../../Hooks/useAuthHeaders";
+import { normalizeRenderType } from "../NotesHelper";
+
+const renderThumbnail = (file) => {
+  const fileType = normalizeRenderType(file.name, file.type);
+
+  switch (fileType) {
+    case "pdf":
+      return (
+        <Box className={styles.pdfThumb}>
+          <PictureAsPdfIcon fontSize="large" color="error" />
+        </Box>
+      );
+
+    case "image":
+      return (
+        <Box className={styles.otherThumb}>
+          <PermMediaIcon fontSize="large" color="primary" />
+        </Box>
+      );
+
+    case "office":
+      return (
+        <Box className={styles.otherThumb}>
+          <ArticleIcon fontSize="large" color="primary" />
+        </Box>
+      );
+
+    case "zip":
+      return (
+        <Box className={styles.otherThumb}>
+          <FolderZipIcon fontSize="large" color="warning" />
+        </Box>
+      );
+
+    default:
+      return <Box className={styles.otherThumb}>📎</Box>;
+  }
+};
 
 export default function FilePreview({ attachments }) {
-  const getFileType = (url = "") => {
-    const ext = url.split(".").pop().toLowerCase();
-    if (ext === "pdf") return "pdf";
-    if (["jpg", "jpeg", "png"].includes(ext)) return "image";
-    return "other";
+
+  const dispatch = useDispatch();
+  const headers = useAuthHeaders();
+
+    const handlePreview = async (file) => {
+    try {
+      // Cloudinary file
+      if (file.source === "cloudinary") {
+        window.open(file.previewUrl, "_blank");
+        return;
+      }
+
+      const response = await dispatch(
+        getNotesFileById({
+          headers,
+          fileId: file.fileUid,
+        }),
+      );
+      
+      // ✅ Blob received directly
+      const blob = response.payload.data;
+
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+
+      // cleanup
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      console.error("File preview failed", error);
+    }
   };
 
-  async function downloadImage(file) {
-    const response = await fetch(file?.imageUrl);
-    const blob = await response.blob();
+  /* ================= DOWNLOAD ================= */
+  const handleDownload = async (file) => {
+    console.log(file,"file in preview");
+    try {
+      let blob;
 
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${file.originalName}`; // saved name
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      if (file.source === "cloudinary") {
+        const res = await fetch(file.previewUrl);
+        blob = await res.blob();
+      } else {
+        const response = await dispatch(
+          getNotesFileById({
+            headers,
+            fileId: file.fileUid,
+          }),
+        );
 
-    URL.revokeObjectURL(link.href); // cleanup
-  }
+        blob = response.payload.data;
+      }
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = file.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    } catch (error) {
+      console.error("File download failed", error);
+    }
+  };
 
   return (
     <Box className={styles.filePreviewGrid}>
       {attachments?.map((file, idx) => (
         <Box key={idx} className={styles.attachmentCard}>
           {/* File Preview */}
-          {getFileType(file?.imageUrl) === "pdf" ? (
-            <Box className={styles.pdfThumb}>
-              <PictureAsPdfIcon fontSize="large" color="error" />
-            </Box>
-          ) : getFileType(file?.imageUrl) === "image" ? (
-            <img
-              src={file?.imageUrl}
-              alt={file?.publicId}
-              className={styles.fileThumb}
-            />
-          ) : (
-            <Box className={styles.otherThumb}>📎</Box>
-          )}
+          {renderThumbnail(file)}
 
           {/* File Name */}
           <Typography
@@ -57,16 +132,15 @@ export default function FilePreview({ attachments }) {
 
           {/* Icons */}
           <Box className={styles.iconActions}>
-            <Tooltip title="View">
-              <IconButton
-                size="small"
-                onClick={() => window.open(file?.imageUrl, "_blank")}
-              >
-                <VisibilityIcon sx={{ fontSize: "14px" }} />
-              </IconButton>
-            </Tooltip>
+            {(file.type === "pdf" || file.type === "image") && (
+              <Tooltip title="View">
+                <IconButton size="small" onClick={() => handlePreview(file)}>
+                  <VisibilityIcon sx={{ fontSize: "14px" }} />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title="Download">
-              <IconButton size="small" onClick={() => downloadImage(file)}>
+              <IconButton size="small" onClick={() => handleDownload(file)}>
                 <DownloadIcon sx={{ fontSize: "14px" }} />
               </IconButton>
             </Tooltip>

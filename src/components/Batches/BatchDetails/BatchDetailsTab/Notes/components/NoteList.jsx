@@ -13,6 +13,7 @@ import FilePreview from "./FilePreview";
 import CommentDialog from "./CommentDialog";
 import { convertToCustomFormat } from "../../../../../../Utils/ConvertToCustomFormat";
 import { LightTooltip } from "../../../../../../Utils/LightToolTip";
+import { normalizeAttachments } from "../NotesHelper";
 
 export default function NoteList({ notes = [], setEditNoteId, editNoteId }) {
   const [commentDialogOpen, setCommentDialogOpen] = useState(false);
@@ -49,7 +50,7 @@ export default function NoteList({ notes = [], setEditNoteId, editNoteId }) {
               </Box>
 
               {/* Attachments */}
-              <FilePreview attachments={note?.noteImages || []} />
+              <FilePreview attachments={normalizeAttachments(note)} />
 
               {/* Actions */}
               <Box className={styles.messageActions}>
