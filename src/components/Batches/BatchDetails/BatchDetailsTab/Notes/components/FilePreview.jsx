@@ -83,7 +83,6 @@ export default function FilePreview({ attachments }) {
 
   /* ================= DOWNLOAD ================= */
   const handleDownload = async (file) => {
-    console.log(file,"file in preview");
     try {
       let blob;
 
