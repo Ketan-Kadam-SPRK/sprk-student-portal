@@ -112,6 +112,8 @@ export default function FilePreview({ attachments }) {
     }
   };
 
+  console.log(attachments,"attachments");
+
   return (
     <Box className={styles.filePreviewGrid}>
       {attachments?.map((file, idx) => (
@@ -124,9 +126,9 @@ export default function FilePreview({ attachments }) {
             variant="caption"
             noWrap
             className={styles.fileName}
-            title={file?.originalName}
+            title={file?.name}
           >
-            {file?.originalName?.split("/").pop() || "File"}
+            {file?.name?.split("/").pop() || "File"}
           </Typography>
 
           {/* Icons */}
