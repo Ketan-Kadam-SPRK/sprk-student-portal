@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   FormHelperText,
   CircularProgress,
+  Slider,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../Hooks/useAuthHeaders";
@@ -79,6 +80,13 @@ function FeedBackModal({
   const [loading, setLoading] = useState(false);
   const [error500, setError500] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
+
+  const getRatingMarks = (scale) => {
+  return Array.from({ length: scale }, (_, i) => ({
+    value: i + 1,
+    label: String(i + 1),
+  }));
+};
   // const [formInfo, setFormInfo] = useState({
   //   formUid: null,
   //   formVersion: null,
@@ -343,30 +351,28 @@ function FeedBackModal({
               )}
 
               {/* 🔢 RATING */}
-              {q.type === "rating" && (
-                <>
-                  <RadioGroup
-                    row
-                    sx={{ mt: 1, pl: 2 }}
-                    value={answers[q.id] ?? ""}
-                    onChange={(e) => handleChange(q, Number(e.target.value))}
-                  >
-                    {Array.from({ length: q.ratingScale }).map((_, i) => (
-                      <FormControlLabel
-                        key={i}
-                        value={i + 1}
-                        control={<Radio />}
-                        label={i + 1}
-                      />
-                    ))}
-                  </RadioGroup>
-                  {errors[q.id] && (
-                    <FormHelperText error sx={{ pl: 2 }}>
-                      {errors[q.id]}
-                    </FormHelperText>
-                  )}
-                </>
-              )}
+{q.type === "rating" && (
+  <>
+    <Box sx={{ mt: 2, pl: 2, pr: 4 }}>
+      <Slider
+      // sx={{maxWidth:"500px"}}
+        min={1}
+        max={q.ratingScale}
+        step={1}
+        marks={getRatingMarks(q.ratingScale)}
+        value={answers[q.id] ?? null}
+        valueLabelDisplay="auto"
+        onChange={(e, value) => handleChange(q, value)}
+      />
+    </Box>
+
+    {errors[q.id] && (
+      <FormHelperText error sx={{ pl: 2 }}>
+        {errors[q.id]}
+      </FormHelperText>
+    )}
+  </>
+)}
             </Box>
           ))}
         </Box>
