@@ -6,7 +6,7 @@ import {
 } from "../../../Utils/dateTimeFormator";
 import { Image } from "cloudinary-react";
 
-function BatchCard({ item }) {
+function BatchCard({ item, onClick }) {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -83,13 +83,14 @@ function BatchCard({ item }) {
   const batchTiming = useMemo(
     () =>
       `${convertToLocalTime(item?.start_time)} - ${convertToLocalTime(
-        item?.end_time
+        item?.end_time,
       )}`,
-    [item]
+    [item],
   );
 
   return (
     <Box
+      onClick={onClick}
       sx={{
         display: "flex",
         gap: "10px",
@@ -102,6 +103,7 @@ function BatchCard({ item }) {
           "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
         flexWrap: "wrap",
         m: 1,
+        cursor: "pointer",
       }}
     >
       <Box

@@ -54,6 +54,10 @@ function Dashboard() {
   ? allowedTabs.includes("JOB_OPPORTUNITIES")
   : false;
 
+  const handleBatchClick = (batch_uid) => {
+  navigate(`/Batches/${batch_uid}`);
+};
+
   useEffect(() => {
     fetchAllDashboardData();
   }, []);
@@ -385,7 +389,7 @@ function Dashboard() {
           >
             {batches?.length > 0 ? (
               batches?.map((item, index) => (
-                <BatchCard key={`${item?.batch_uid}-${index}`} item={item} />
+                <BatchCard key={`${item?.batch_uid}-${index}`} item={item} onClick={() => handleBatchClick(item?.batch_uid)}/>
               ))
             ) : (
               <NoDataPageDashboard
