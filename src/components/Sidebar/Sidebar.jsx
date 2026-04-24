@@ -54,6 +54,7 @@ import { getUserPic } from "../Login/store/login.actions";
 import { setUserProfilePic } from "../Login/store/authSlice";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import BlinkedStatus from "../Common/BlinkedStatus/BlinkedStatus";
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 /**
  * @class Sidebar
@@ -480,6 +481,20 @@ function Sidebar() {
                       onClick={() => {
                         navigate("/Leaves");
                         handleTabClick("Leaves");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
+
+                                    {allowedTabs.includes("EVENTS") && (
+                    <SidebarItem
+                      title="Events"
+                      icon={EmojiEventsIcon}
+                      open={open}
+                      isActive={activeTab === "Events"}
+                      onClick={() => {
+                        navigate("/Events");
+                        handleTabClick("Events");
                         handleDrawerClose();
                       }}
                     />
