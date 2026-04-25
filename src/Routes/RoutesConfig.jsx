@@ -31,7 +31,6 @@ function RoutesConfig() {
   // 🔐 permissions from API / state
   const allowedTabs = useSelector((state) => state.authSlice.entitlements);
 
-  console.log(allowedTabs,"allowedTabs");
 
   return (
     <Routes>

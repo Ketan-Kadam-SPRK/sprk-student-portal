@@ -36,6 +36,12 @@ export const meta = {
     ogImage: "/Favicon-SPRK.ico",
     url: "/Leaves",
   },
+    events: {
+    title: "Events | SPRKonnect - Student Portal",
+    description: "Welcome to the Events page.",
+    ogImage: "/Favicon-SPRK.ico",
+    url: "/Events",
+  },
   bookings: {
     title: "Bookings | SPRKonnect - Student Portal",
     description: "Welcome to the Bookings page.",
