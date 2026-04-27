@@ -5,8 +5,6 @@ import { useDispatch } from "react-redux";
 
 import CustomAgGrid from "../Common/CustomAgGrid/CustomAgGrid";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
-import { AmountFormat } from "../../Utils/AmountFormat";
-import dateFormator from "../../Utils/dateFormator";
 import { formatForDisplay } from "../../Utils/formateForDisplay";
 import { LightTooltip } from "../../Utils/LightToolTip";
 import ErrorHandling from "../Common/ErrorHandling";
@@ -15,42 +13,37 @@ import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
 import { getAllEvents } from "./event.action";
 import { formatDateTime } from "../../Utils/dateTimeFormator";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import EventPreviewModal from "./child/EventPreviewModal";
+import dateFormator from "../../Utils/dateFormator";
 
 function Events() {
   const [openEvent, setOpenEvent] = useState(false);
-  const [openDetailModal, setOpenDetailModal] = useState(false);
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
+
   const [loading, setLoading] = useState(false);
   const [eventUid, setEventUid] = useState(null);
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [error500, setError500] = useState(false);
+  const [eventStatus, setEventStatus] = useState("VIEW");
 
-  /**
-   * Fetches all receipts from the server and updates the component's state.
-   * It dispatches an action to retrieve receipts, sorts them by date, and updates the state with sorted data.
-   */
-
+  // ================= FETCH EVENTS =================
   const handleGetAllEvents = async () => {
     setLoading(true);
     try {
       const res = await dispatch(getAllEvents({ headers }));
 
-      console.log(res, "res");
       const data = res?.payload?.data?.data || [];
       const status = res?.payload.status;
 
-      console.log(data, "Data");
-      // const sortedData = data.sort((a, b) => b.receipt_id - a.receipt_id);
       if (status === 500 || status === 503) {
         setError500(true);
       } else {
         const formattedData = data.map((item) => ({
           ...item,
           marksStatus: item.marksReleased ? "RELEASED" : "PENDING",
+          participationFilterStatus: getParticipationStatus(item),
         }));
 
         setData(formattedData);
@@ -67,118 +60,137 @@ function Events() {
     handleGetAllEvents();
   }, []);
 
-  /**
-   * Handles opening of the receipt modal when a receipt is clicked.
-   * Toggles openReciept state and sets receiptId state to the clicked receipt's id.
-   * @param {Object} row - A receipt object with receipt_code property.
-   */
+  // ================= EVENT STATUS =================
+  const getEventStatus = (row) => {
+
+    console.log(row,"rowdata");
+    if (row?.marksReleased) return "VIEW";
+
+    if(row?.participationStatus === "Registered") return "VIEW";
+
+    if (!row?.start) return "VIEW";
+
+    const now = new Date().getTime();
+    const start = new Date(row.start).getTime();
+
+    return now < start ? "APPLY" : "VIEW";
+  };
+
+
   const handleOpenEvent = (row) => {
-    setOpenEvent(!openEvent);
+    const status = getEventStatus(row);
+    setEventStatus(status);
+    setOpenEvent(true);
     setEventUid(row?.uid);
   };
 
-  const getColorAndBackground = (marksReleased) => {
-    switch (marksReleased) {
-      case "RELEASED":
+  const handleCloseEvent = () => {
+    setOpenEvent(false);
+    setEventUid(null);
+  };
+
+  // ================= PARTICIPATION =================
+  const getParticipationStatus = (row) => {
+    const status = row?.participationStatus;
+    const now = new Date().getTime();
+    const end = row?.end ? new Date(row.end).getTime() : null;
+
+    if (status === "ATTENDED") return "Attended";
+    if (status === "NOT_ATTENDED") return "Not Attended";
+    if (status === "REGISTERED") return "Registered";
+
+    if (!status) {
+      if (end && end < now) return "N/A";
+      return "Not Registered";
+    }
+
+    return "-";
+  };
+
+  const getParticipationColor = (status) => {
+    switch (status) {
+      case "Attended":
         return { color: "#1F5200", backgroundColor: "#CBFFAC" };
-      case "PENDING":
+      case "Not Attended":
         return { color: "#9F0000", backgroundColor: "#FFB5B5" };
+      case "Registered":
+        return { color: "#004085", backgroundColor: "#CCE5FF" };
+      case "Not Registered":
+        return { color: "#856404", backgroundColor: "#FFF3CD" };
+      case "N/A":
+        return { color: "#6c757d", backgroundColor: "#E2E3E5" };
       default:
         return { color: "", backgroundColor: "" };
     }
   };
 
-  const StatusBadge = ({ status }) => {
-    const { color, backgroundColor } = getColorAndBackground(status);
+  // ================= MARKS STATUS =================
+  const getColorAndBackground = (status) => {
+    switch (status) {
+      case "RELEASED":
+        return { color: "#1F5200", backgroundColor: "#CBFFAC" };
+      case "PENDING":
+        return { color: "#503d06", backgroundColor: "#f5f56c" };
+      default:
+        return { color: "", backgroundColor: "" };
+    }
+  };
 
+  // ================= COMMON BADGE =================
+  const StatusBadge = ({ label, color, backgroundColor }) => {
     return (
-      <div
-        style={{
-          color: color,
-          backgroundColor: backgroundColor,
+      <Box
+        sx={{
+          color,
+          backgroundColor,
           textAlign: "center",
           borderRadius: "20px",
-          height: "35px",
-          padding: "15px",
-          minWidth: "150px",
+          height: "30px",
+          px: 2,
           fontWeight: "bold",
           display: "flex",
-          fontSize: "14px",
+          fontSize: "12px",
           alignItems: "center",
           justifyContent: "center",
-          maxWidth: "200px",
+          minWidth: "100px",
         }}
       >
-        {formatForDisplay(status)}
-      </div>
+        {label}
+      </Box>
     );
   };
 
+  // ================= COLUMNS =================
   const columns = [
     {
       headerName: "Sr.No.",
       id: "srNo",
-      minWidth: 80,
-      maxWidth: 90,
-      format: (value, row) => {
-        return filterData.findIndex((item) => item.uid === row.uid) + 1;
-      },
+      minWidth: 70,
+      maxWidth: 80,
+      format: (value, row) =>
+        filterData.findIndex((item) => item.uid === row.uid) + 1,
     },
     {
       headerName: "Event Title",
       id: "title",
       minWidth: 250,
-      filterable: false,
       format: (value, row) => {
         const displayValue = value || "-";
         const img = row?.thumbnail;
 
         return (
           <LightTooltip title={displayValue} arrow>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                maxWidth: "230px",
-                cursor: "pointer",
-              }}
-            >
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               {img ? (
                 <img
                   src={img}
                   alt="event"
-                  loading="lazy"
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    objectFit: "contain",
-                    borderRadius: "4px",
-                    flexShrink: 0,
-                  }}
+                  style={{ width: 32, height: 32, borderRadius: 4 }}
                 />
               ) : (
-                <div
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    backgroundColor: "#eee",
-                    borderRadius: "4px",
-                    flexShrink: 0,
-                  }}
-                />
+                <div style={{ width: 32, height: 32, background: "#eee" }} />
               )}
-
-              <span
-                style={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  display: "block",
-                }}
-              >
-                {displayValue}
-              </span>
+              <span>{displayValue}</span>
             </div>
           </LightTooltip>
         );
@@ -188,54 +200,88 @@ function Events() {
       headerName: "Start Date",
       id: "start",
       minWidth: 150,
-      style: { color: "#0074BD", fontWeight: 600 },
-      format: (value) => formatDateTime(value),
+      format: (value) => dateFormator(value),
     },
     {
       headerName: "End Date",
       id: "end",
       minWidth: 120,
-      style: { color: "#0074BD", fontWeight: 600 },
-      format: (value) => formatDateTime(value),
+      format: (value) => dateFormator(value),
     },
 
+    // ✅ PARTICIPATION BADGE
+    {
+      headerName: "Participation",
+      id: "participationStatus",
+      minWidth: 140,
+      format: (value, row) => {
+        const status = getParticipationStatus(row);
+        const { color, backgroundColor } = getParticipationColor(status);
+
+        return (
+          <StatusBadge
+            label={status}
+            color={color}
+            backgroundColor={backgroundColor}
+          />
+        );
+      },
+    },
+
+    // ✅ MARKS STATUS BADGE
     {
       headerName: "Marks Released",
       id: "marksReleased",
-      minWidth: 150,
-      style: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      },
+      minWidth: 140,
       format: (marksReleased) => {
         const status = marksReleased ? "RELEASED" : "PENDING";
-        return <StatusBadge status={status} />;
+        const { color, backgroundColor } = getColorAndBackground(status);
+
+        return (
+          <StatusBadge
+            label={formatForDisplay(status)}
+            color={color}
+            backgroundColor={backgroundColor}
+          />
+        );
       },
     },
 
+    // ✅ MARKS CENTER + "-"
     {
       headerName: "Marks",
       id: "marks",
-      minWidth: 120,
+      minWidth: 90,
+      format: (value) => (
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {value ?? "-"}
+        </Box>
+      ),
     },
+
+    // ✅ ACTION BUTTON
     {
       headerName: "Action",
-      id: "receipt_id",
-      width: 300,
+      id: "action",
+      width: 200,
       format: (action, row) => {
+        const status = getEventStatus(row);
+
         return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Button
-              sx={{ textWrap: "nowrap" }}
-              size="small"
-              variant="contained"
-              onClick={() => handleOpenEvent(row)}
-              data-testid={`view-receipt-btn`}
-            >
-              View
-            </Button>
-          </Box>
+          <Button
+            size="small"
+            variant="contained"
+            color={status === "APPLY" ? "success" : "primary"}
+            onClick={() => handleOpenEvent(row)}
+          >
+            {status === "APPLY" ? "Apply" : "View"}
+          </Button>
         );
       },
     },
@@ -246,86 +292,66 @@ function Events() {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        p: 2,
-        overflow: "auto",
-        flex: 1,
-      }}
-    >
+    <Box sx={{ p: 2 }}>
       <Helmet>
         <title>{meta.events.title}</title>
-        <meta name="description" content={meta.events.description} />
-        <meta property="og:title" content={meta.events.title} />
-        <meta property="og:description" content={meta.events.description} />
-        <meta property="og:image" content={meta.events.ogImage} />
-        <meta
-          property="og:url"
-          content={`https://student.sprktechnologies.in${meta.events.url}`}
-        />
       </Helmet>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          <Typography
-            sx={{
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Typography             sx={{
               fontWeight: "bold",
               fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
               color: "#0A2647",
-            }}
-          >
-            Your Events
-          </Typography>
-          <Image
-            publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1740203145/receipt_slip01_neabsa.svg"
-            cloudName="dxlzzgbfw"
-            style={{
-              width: "auto",
-              height: "40px",
-              objectFit: "contain",
-            }}
-          />
-        </Box>
-        <Typography
-          fontSize={"var(--font-size-medium)"}
-          sx={{ color: "#4D535A" }}
-        >
-          View all your events, schedules, and marks in one place
+            }}>
+          Your Events
         </Typography>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <PopupFilterComponent
-          rowData={data}
-          statusOptions={["RELEASED", "PENDING"]}
-          setFilterData={setFilterData}
-          dateKey="start"
-          statusKey="marksStatus"
-          tabName="Events"
+        <Image
+          style={{
+            width: "auto",
+            height: "40px",
+            objectFit: "contain",
+            marginLeft: "5px",
+          }}
+          publicId={
+            "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739253981/red_and_white_megaphone_n6xssx.svg"
+          }
+          cloudName="dxlzzgbfw"
         />
       </Box>
+      <Typography fontSize={"var(--font-size-medium)"} color="#4D535A">
+        All your events and results at a glance.
+      </Typography>
 
-      <Box>
-        <CustomAgGrid
-          rows={filterData}
-          columns={columns}
-          noDatalength={data}
-          paginationModel={{ page: 0, pageSize: 10 }}
-          height={500}
-          checkboxSelection={false}
-          errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739604325/Calculator_of_modern_design_two_billing_checks_and_bank_plastic_card_kvi8v4.svg"
-          errorHeading="No Receipts!"
-          errorDescription="Your admission is processed using the credit method, so no receipt is generated."
+<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <PopupFilterComponent
+        rowData={data}
+        statusOptions={[
+          "Attended",
+          "Not Attended",
+          "Registered",
+          "Not Registered",
+          "N/A",
+        ]}
+        statusKey="participationFilterStatus"
+        setFilterData={setFilterData}
+        dateKey="start"
+        // statusKey="marksStatus"
+      />
+</Box>
+
+
+      <CustomAgGrid
+        rows={filterData}
+        columns={columns}
+        noDatalength={data}
+        height={500}
+      />
+
+      <Dialog open={openEvent} maxWidth="md" fullWidth>
+        <EventPreviewModal
+          eventUid={eventUid}
+          handleCloseEvent={handleCloseEvent}
+          eventStatus={eventStatus}
         />
-      </Box>
-      <Dialog
-        open={openEvent}
-        onClose={() => handleOpenPayment(null)}
-        maxWidth="md"
-        fullWidth={true}
-      >
-        <EventPreviewModal eventUid={eventUid} />
       </Dialog>
     </Box>
   );
