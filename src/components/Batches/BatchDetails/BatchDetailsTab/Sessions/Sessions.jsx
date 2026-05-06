@@ -71,7 +71,10 @@ function Sessions({ filterData }) {
                     id="panel1a-header"
                   >
                     {/* Session information */}
-                    <Box className={styles.infoBox}> 
+                    <Box    sx={{
+    minWidth: 0,            // ✅ VERY IMPORTANT (fix flex overflow)
+    flex: 1,
+  }}className={styles.infoBox}> 
                       <Box
                         className={styles.SummeryBox}
                         onClick={() => setShow(!show)}
@@ -114,31 +117,39 @@ function Sessions({ filterData }) {
                           </Typography>
                         </Box>
                       </Box>
-                      {sessionData?.lev_reason && (
-                        <Box>
-                          <Typography
-                            sx={{
-                              fontSize: "13px",
-                              color: "#6E6E6E",
-                              wordBreak: "break-word", 
-                              overflowWrap: "anywhere", 
-                              whiteSpace: "normal",
-                              pr: "10px",
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: "14px",
-                                color: "#085186",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              Reason :{" "}
-                            </span>
-                            {sessionData?.lev_reason}
-                          </Typography>
-                        </Box>
-                      )}
+{sessionData?.lev_reason && (
+  <Box
+    sx={{
+      mt: 0.5,
+      maxWidth: "100%",
+    }}
+  >
+    <Typography
+      sx={{
+        fontSize: "13px",
+        color: "#6E6E6E",
+
+        // ✅ Proper wrapping
+        wordBreak: "break-word",
+        overflowWrap: "anywhere",
+        whiteSpace: "normal",
+
+        // ✅ Important for flex layouts
+        minWidth: 0,
+      }}
+    >
+      <span
+        style={{
+          fontWeight: "bold",
+          color: "#085186",
+        }}
+      >
+        Reason:{" "}
+      </span>
+      {sessionData?.lev_reason}
+    </Typography>
+  </Box>
+)}
                     </Box>
 
                     <Box
