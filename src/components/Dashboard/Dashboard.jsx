@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import TypingAnimation from "./Child/TypingAnimation";
 import { getAllCertificates } from "../Certification/certificate.actions";
 import {
+  getAllEvents,
   getDashExams,
   getDashJobs,
   getTodaysBatches,
@@ -40,26 +41,28 @@ function Dashboard() {
   const navigate = useNavigate();
   const { checkPermission } = useCheckPermission();
   const studentStatus = useSelector(
-    (state) => state.authSlice.userDetails?.student_status
+    (state) => state.authSlice.userDetails?.student_status,
   );
   const [batches, setBatches] = useState([]);
   const [certificates, setCertificates] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [Events, setEvents] = useState([]);
 
   const allowedTabs = useSelector((state) => state.authSlice.entitlements);
 
   const hasJobPermission = Array.isArray(allowedTabs)
-  ? allowedTabs.includes("JOB_OPPORTUNITIES")
-  : false;
+    ? allowedTabs.includes("JOB_OPPORTUNITIES")
+    : false;
 
   const handleBatchClick = (batch_uid) => {
-  navigate(`/Batches/${batch_uid}`);
-};
+    navigate(`/Batches/${batch_uid}`);
+  };
 
   useEffect(() => {
     fetchAllDashboardData();
+    handleGetAllEvents();
   }, []);
 
   /**
@@ -75,6 +78,14 @@ function Dashboard() {
    *
    * @returns {Promise<void>}
    */
+
+  const handleGetAllEvents = () => {
+    dispatch(getAllEvents({ headers })).then((res) => {
+      setEvents(res?.payload?.data?.data || []);
+      console.log("res", res);
+    });
+  };
+
   const fetchAllDashboardData = async () => {
     try {
       setLoading(true);
@@ -89,7 +100,7 @@ function Dashboard() {
       // Extract and process data from responses
       const batchData = batchesRes?.payload?.data?.data || [];
       const sortedBatches = batchData.sort(
-        (a, b) => new Date(b.start_time) - new Date(a.start_time)
+        (a, b) => new Date(b.start_time) - new Date(a.start_time),
       );
 
       const certificatesData = certificatesRes?.payload?.data?.data || [];
@@ -108,7 +119,7 @@ function Dashboard() {
     }
   };
 
-  const Events = [];
+  // const Events = [];
 
   if (loading) {
     return <ErrorHandling loadData={loading} />;
@@ -142,34 +153,33 @@ function Dashboard() {
           gap: 3,
           flexDirection: {
             xs: "column",
-            sm: "column",
-            md: "column",
             lg: "row",
           },
         }}
       >
+        {/* LEFT - WELCOME */}
         <Box
           sx={{
+            flex: 1,
+            // minWidth: "50%",
             display: "flex",
             gap: 2,
             backgroundColor: "var(--primary-color)",
             justifyContent: "space-between",
             p: 2,
-            borderRadius: "10px",
-            flexWrap: "wrap",
+            borderRadius: "12px",
             color: "white",
-            flex: 3,
-            boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
           }}
         >
+          {/* TEXT */}
           <Box
             sx={{
               display: "flex",
               gap: 2,
               flexDirection: "column",
-              maxWidth: "400px",
+              maxWidth: "350px",
               justifyContent: "space-between",
-              minHeight: "170px",
             }}
           >
             <TypingAnimation />
@@ -178,57 +188,65 @@ function Dashboard() {
               sx={{
                 fontSize: "var(--font-size-small)",
                 fontStyle: "italic",
+                opacity: 0.9,
               }}
             >
-              " In a world of endless networks, the strongest connection is
-              between knowledge and curiosity ".
+              "In a world of endless networks, the strongest connection is
+              between knowledge and curiosity."
             </Typography>
           </Box>
+
+          {/* STATUS */}
           <Box
             sx={{
-              flex: 1,
-              gap: 2,
               display: "flex",
-              alignItems: "end",
-              justifyContent: "center",
               flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
             <StudentStatus status={studentStatus || "ACTIVE"} />
+
             <Image
               cloudName="dxlzzgbfw"
               publicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738920467/Educational_video_for_online_education_egzdnt.svg"
-              style={{ width: "200px", height: "auto" }}
+              style={{ width: "120px" }}
             />
           </Box>
         </Box>
+
+        {/* RIGHT - EVENTS */}
         <Box
           sx={{
+            flex: 1,
+            minWidth: "50%",
             display: "flex",
             flexDirection: "column",
-            flex: 2,
-            borderRadius: "10px",
+            borderRadius: "12px",
             backgroundColor: "white",
-            boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
-            // boxShadow:
-            //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
             p: 2,
-            gap: 2,
           }}
         >
+          {/* HEADER */}
           <Box
             sx={{
               display: "flex",
+              alignContent: "center",
               alignItems: "center",
               gap: 1,
+              mb: 2,
             }}
           >
             <Typography
-              sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+              sx={{
+                fontSize: "var(--font-size-medium)",
+                fontWeight: "bold",
+                // mb: 2,
+              }}
             >
               Upcoming Events
             </Typography>
-
             <Image
               style={{
                 width: "20px",
@@ -241,78 +259,72 @@ function Dashboard() {
               cloudName="dxlzzgbfw"
             />
           </Box>
-          <Box sx={{ display: "flex", overflowX: "auto" }}>
-            {Events?.length > 0 ? (
-              Events?.map((res, index) => (
-                <Box
-                  key={`${index}`}
-                  sx={{
-                    display: "flex",
-                    p: 2,
-                    borderRadius: "10px",
-                    gap: 4,
-                    minWidth: "250px",
-                    boxShadow:
-                      "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
-                    backgroundColor: "#F1F5FF",
-                    cursor: "pointer",
-                  }}
-                  // onClick={() => navigate(`/Exams`)}
-                >
-                  <Image
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      objectFit: "cover",
-                      filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
-                    }}
-                    publicId={res?.logo}
-                    cloudName={res?.logo?.split("/")[2]}
-                  />
 
-                  <Box
+          {/* EVENTS LIST (VERTICAL SCROLL) */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              maxHeight: "260px",
+              overflowY: "auto",
+              pr: 1,
+            }}
+          >
+            {Events?.length > 0 ? (
+              Events.map((res, index) => (
+                <Box
+                  key={index}
+                  onClick={() => navigate("/Events")}
+                  sx={{
+                    p: 1.5,
+                    borderRadius: "10px",
+                    backgroundColor: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.08)", // ✅ added
+                    transition: "all 0.2s ease",
+                    cursor: "pointer",
+
+                    "&:hover": {
+                      backgroundColor: "#eef2ff",
+                      boxShadow: "0 6px 16px rgba(0,0,0,0.12)", // ✅ hover lift
+                      transform: "translateY(-2px)",
+                    },
+                  }}
+                >
+                  <Typography
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 0.5,
+                      fontWeight: 600,
+                      fontSize: "14px",
+                      mb: 0.5,
                     }}
                   >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: "bold",
-                      }}
-                    >{`${res.title}`}</Typography>
+                    {res.title}
+                  </Typography>
 
-                    <Typography
-                      sx={{
-                        fontSize: "var(--font-size-extra-small)",
-                        color: "red",
-                        display: "flex", // Ensures proper alignment of icon and text
-                        alignItems: "center",
-                      }}
-                    >
-                      <Box
-                        component="span"
-                        sx={{
-                          width: "8px",
-                          height: "8px",
-                          backgroundColor: "black", // Color of the bullet
-                          borderRadius: "50%", // Makes it circular
-                          display: "inline-block",
-                          marginRight: "8px", // Space between the bullet and text
-                        }}
-                      ></Box>
-                      {`Start on : ${formatDateTime(res?.start)}`}
-                    </Typography>
-                  </Box>
+                  <Typography
+                    sx={{
+                      fontSize: "12px",
+                      color: "#22c55e",
+                    }}
+                  >
+                    Start Date: {formatDateTime(res?.start)}
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      fontSize: "12px",
+                      color: "#ef4444",
+                    }}
+                  >
+                    End Date: {formatDateTime(res?.end)}
+                  </Typography>
                 </Box>
               ))
             ) : (
               <NoDataPageDashboard
-                errorImgPublicId={null}
                 errorHeading="No Events Yet!"
-                errorDescription="We're working on something exciting. Stay tuned!"
+                errorDescription="Stay tuned for updates!"
               />
             )}
           </Box>
@@ -389,7 +401,11 @@ function Dashboard() {
           >
             {batches?.length > 0 ? (
               batches?.map((item, index) => (
-                <BatchCard key={`${item?.batch_uid}-${index}`} item={item} onClick={() => handleBatchClick(item?.batch_uid)}/>
+                <BatchCard
+                  key={`${item?.batch_uid}-${index}`}
+                  item={item}
+                  onClick={() => handleBatchClick(item?.batch_uid)}
+                />
               ))
             ) : (
               <NoDataPageDashboard
@@ -640,7 +656,7 @@ function Dashboard() {
                     flex: 1,
                     overflow: "hidden",
                     backgroundColor: ["READY", "RELEASED"].includes(
-                      certificate?.status
+                      certificate?.status,
                     )
                       ? "var(--background-color)"
                       : "#EFEFEF",
@@ -699,142 +715,141 @@ function Dashboard() {
             )}
           </Box>
         </Box>
-{hasJobPermission && (
-          <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            // flexGrow: 10,
-            flex: 2,
-            borderRadius: "10px",
-            backgroundColor: "white",
-            boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
-
-            p: 2,
-            gap: 2,
-          }}
-        >
+        {hasJobPermission && (
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
-              gap: 1,
+              flexDirection: "column",
+              // flexGrow: 10,
+              flex: 2,
+              borderRadius: "10px",
+              backgroundColor: "white",
+              boxShadow: "rgba(0, 0, 0, 0.15) 0px 2px 8px",
+
+              p: 2,
+              gap: 2,
             }}
           >
-            <Typography
-              sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 1,
+              }}
             >
-              Recently Added Jobs{" "}
-              <Image
-                style={{
-                  width: "20px",
-                  height: "auto",
-                  objectFit: "contain",
-                  marginLeft: "5px",
-                }}
-                publicId={
-                  "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254478/ccyolkdgxmljm4bmpkai.png"
-                }
-                cloudName="dxlzzgbfw"
-              />
-            </Typography>
-
-            {jobs?.length > 0 && (
-              <Button
-                endIcon={<ChevronRightRoundedIcon />}
-                sx={{
-                  ml: "auto",
-                  fontWeight: "bold",
-                  fontSize: "var(--font-size-extra-small)",
-                }}
-                onClick={() =>
-                  checkPermission("JOB_OPPORTUNITIES") &&
-                  navigate(`/Job_Opportunities`)
-                }
+              <Typography
+                sx={{ fontSize: "var(--font-size-medium)", fontWeight: "bold" }}
               >
-                View All
-              </Button>
-            )}
-          </Box>
-          {jobs?.length > 0 ? (
-            jobs?.map((res, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  p: 2,
-                  borderRadius: "10px",
-                  gap: 4,
-                  minWidth: "250px",
-                  boxShadow:
-                    "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
-                  backgroundColor: "#F1F5FF",
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  checkPermission("JOB_OPPORTUNITIES") &&
-                    navigate(`/Job_Opportunities/${res?.job_uid}`);
-                }}
-              >
+                Recently Added Jobs{" "}
                 <Image
                   style={{
-                    width: "80px",
-                    height: "80px",
+                    width: "20px",
+                    height: "auto",
                     objectFit: "contain",
-                    filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+                    marginLeft: "5px",
                   }}
-                  publicId={res?.comp_logo}
-                  cloudName={res?.comp_logo?.split("/")[2]}
+                  publicId={
+                    "https://res.cloudinary.com/dxlzzgbfw/image/upload/v1739254478/ccyolkdgxmljm4bmpkai.png"
+                  }
+                  cloudName="dxlzzgbfw"
                 />
+              </Typography>
 
+              {jobs?.length > 0 && (
+                <Button
+                  endIcon={<ChevronRightRoundedIcon />}
+                  sx={{
+                    ml: "auto",
+                    fontWeight: "bold",
+                    fontSize: "var(--font-size-extra-small)",
+                  }}
+                  onClick={() =>
+                    checkPermission("JOB_OPPORTUNITIES") &&
+                    navigate(`/Job_Opportunities`)
+                  }
+                >
+                  View All
+                </Button>
+              )}
+            </Box>
+            {jobs?.length > 0 ? (
+              jobs?.map((res, index) => (
                 <Box
+                  key={index}
                   sx={{
                     display: "flex",
-                    flexDirection: "column",
-                    gap: 0.5,
+                    p: 2,
+                    borderRadius: "10px",
+                    gap: 4,
+                    minWidth: "250px",
+                    boxShadow:
+                      "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+                    backgroundColor: "#F1F5FF",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    checkPermission("JOB_OPPORTUNITIES") &&
+                      navigate(`/Job_Opportunities/${res?.job_uid}`);
                   }}
                 >
-                  <Typography
-                    variant="h6"
+                  <Image
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      objectFit: "contain",
+                      filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+                    }}
+                    publicId={res?.comp_logo}
+                    cloudName={res?.comp_logo?.split("/")[2]}
+                  />
+
+                  <Box
                     sx={{
-                      fontWeight: "bold",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 0.5,
                     }}
                   >
-                    {" "}
-                    {`${res?.post_name} `}
-                  </Typography>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" "}
+                      {`${res?.post_name} `}
+                    </Typography>
 
-                  <Typography
-                    sx={{
-                      fontSize: "var(--font-size-small)",
-                      color: "#565656",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {res?.comp_name}
-                  </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "var(--font-size-small)",
+                        color: "#565656",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {res?.comp_name}
+                    </Typography>
 
-                  <Typography
-                    sx={{
-                      fontSize: "var(--font-size-extra-small)",
-                      color: "#858585",
-                    }}
-                  >{`Posted On: ${formatDateTime(
-                    res?.created_at
-                  )}`}</Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "var(--font-size-extra-small)",
+                        color: "#858585",
+                      }}
+                    >{`Posted On: ${formatDateTime(
+                      res?.created_at,
+                    )}`}</Typography>
+                  </Box>
                 </Box>
-              </Box>
-            ))
-          ) : (
-            <NoDataPageDashboard
-              errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738046047/Search_for_a_job_candidate_jeezzw.png"
-              errorHeading="No Job Openings Right Now!"
-              errorDescription="Keep building your skills while we update jobs!"
-            />
-          )}
-        </Box>
-)}
-
+              ))
+            ) : (
+              <NoDataPageDashboard
+                errorImgPublicId="https://res.cloudinary.com/dxlzzgbfw/image/upload/v1738046047/Search_for_a_job_candidate_jeezzw.png"
+                errorHeading="No Job Openings Right Now!"
+                errorDescription="Keep building your skills while we update jobs!"
+              />
+            )}
+          </Box>
+        )}
       </Box>
     </Box>
   );
