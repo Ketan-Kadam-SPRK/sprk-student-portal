@@ -62,8 +62,6 @@ function Events() {
 
   // ================= EVENT STATUS =================
   const getEventStatus = (row) => {
-
-    console.log(row,"rowdata");
     if (row?.marksReleased) return "VIEW";
 
     if(row?.participationStatus === "Registered") return "VIEW";
