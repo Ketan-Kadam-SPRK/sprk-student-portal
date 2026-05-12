@@ -207,22 +207,14 @@ function CoureseDetails() {
               borderRadius: "10px",
             }}
           >
-            <Accordion sx={{ p: 2 }}>
+            <Accordion expanded={true} sx={{ p: 2 }}>
               <AccordionSummary
-                expandIcon={
-                  <InfoRoundedIcon
-                    sx={{
-                      fontSize: { xs: "24px", sm: "30px" },
-                      color: "#0073E6 !important",
-                    }}
-                  />
-                }
                 sx={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
                   gap: 2,
-                  flexWrap: "nowrap",
+                  // flexWrap: "nowrap",
                   width: "100%",
                 }}
               >
@@ -275,56 +267,6 @@ function CoureseDetails() {
                   </Typography>
                 </Box>
               </AccordionSummary>
-
-              <AccordionDetails>
-                <Box
-                  sx={{ display: "flex", flexDirection: "column", gap: "10px" }}
-                >
-                  <Box style={{ color: "#0074BD", fontWeight: 600 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontWeight: 600, color: "#464646" }}
-                    >
-                      Course Group Overview
-                    </Typography>
-                    <Typography sx={{ color: "#6E6E6E" }}>
-                      {data?.cg_overview || "No Overview Available"}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      variant="h6"
-                      sx={{ fontWeight: 600, color: "#464646" }}
-                    >
-                      Key Features
-                    </Typography>
-                    {data?.key_features?.length > 0 ? (
-                      data?.key_features?.map((item, featureIndex) => (
-                        <Typography
-                          key={item.id}
-                          sx={{
-                            marginLeft: 2,
-                            fontSize: "16px",
-                            color: "#6E6E6E",
-                          }}
-                        >
-                          {`${featureIndex + 1}. ${item?.feature}`}
-                        </Typography>
-                      ))
-                    ) : (
-                      <Typography
-                        sx={{
-                          marginLeft: 2,
-                          fontSize: "16px",
-                          color: "#6E6E6E",
-                        }}
-                      >
-                        No Key Features Available
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-              </AccordionDetails>
             </Accordion>
           </Box>
         )}
