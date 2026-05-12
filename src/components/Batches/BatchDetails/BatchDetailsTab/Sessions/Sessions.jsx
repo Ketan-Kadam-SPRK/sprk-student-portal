@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Sessions.module.css";
-import { Box, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -71,10 +71,13 @@ function Sessions({ filterData }) {
                     id="panel1a-header"
                   >
                     {/* Session information */}
-                    <Box    sx={{
-    minWidth: 0,            // ✅ VERY IMPORTANT (fix flex overflow)
-    flex: 1,
-  }}className={styles.infoBox}> 
+                    <Box
+                      sx={{
+                        minWidth: 0, // ✅ VERY IMPORTANT (fix flex overflow)
+                        flex: 1,
+                      }}
+                      className={styles.infoBox}
+                    >
                       <Box
                         className={styles.SummeryBox}
                         onClick={() => setShow(!show)}
@@ -112,74 +115,156 @@ function Sessions({ filterData }) {
                             Session Date:{" "}
                             {formatDateTimeRange(
                               sessionData?.start_time,
-                              sessionData?.end_time
+                              sessionData?.end_time,
                             )}
                           </Typography>
                         </Box>
                       </Box>
-{sessionData?.lev_reason && (
-  <Box
-    sx={{
-      mt: 0.5,
-      maxWidth: "100%",
-    }}
-  >
-    <Typography
-      sx={{
-        fontSize: "13px",
-        color: "#6E6E6E",
+                      {sessionData?.lev_reason && (
+                        <Box
+                          sx={{
+                            mt: 0.5,
+                            maxWidth: "100%",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: "13px",
+                              color: "#6E6E6E",
 
-        // ✅ Proper wrapping
-        wordBreak: "break-word",
-        overflowWrap: "anywhere",
-        whiteSpace: "normal",
+                              // ✅ Proper wrapping
+                              wordBreak: "break-word",
+                              overflowWrap: "anywhere",
+                              whiteSpace: "normal",
 
-        // ✅ Important for flex layouts
-        minWidth: 0,
-      }}
-    >
-      <span
-        style={{
-          fontWeight: "bold",
-          color: "#085186",
-        }}
-      >
-        Reason:{" "}
-      </span>
-      {sessionData?.lev_reason}
-    </Typography>
-  </Box>
-)}
+                              // ✅ Important for flex layouts
+                              minWidth: 0,
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontWeight: "bold",
+                                color: "#085186",
+                              }}
+                            >
+                              Reason:{" "}
+                            </span>
+                            {sessionData?.lev_reason}
+                          </Typography>
+                        </Box>
+                      )}
                     </Box>
-
                     <Box
                       sx={{
                         display: "flex",
-                        flexWrap: "wrap",
-                        justifyContent: "center",
                         alignItems: "center",
-                        flex: 1,
+                        justifyContent: "center",
+                        minWidth: "140px",
                       }}
                     >
-                      <Box>
-                        {sessionData?.attendance !== null && (
-                          <Typography
-                            sx={{
-                              p: "5px 15px",
-                              borderRadius: "15px",
-                              fontWeight: 600,
-                              fontSize: "14px",
-                              ...getStatusStyles(
-                                sessionData?.studentAttendanceStatus
-                              ),
-                            }}
-                          >
-                            {formatForDisplay(
-                              sessionData?.studentAttendanceStatus
-                            )}
-                          </Typography>
-                        )}
-                      </Box>
+                      <Tooltip
+                        title={
+                          sessionData?.late && sessionData?.online
+                            ? "L = Late, O = Online"
+                            : sessionData?.late
+                              ? "L = Late"
+                              : sessionData?.online
+                                ? "O = Online"
+                                : ""
+                        }
+                        arrow
+                      >
+                        <Typography
+                          sx={{
+                            px: 1.5,
+                            py: 0.5,
+                            minWidth: "115px",
+                            height: "34px",
+                            borderRadius: "18px",
+                            fontWeight: 600,
+                            fontSize: "14px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            whiteSpace: "nowrap",
+                            boxSizing: "border-box",
+                            cursor:
+                              sessionData?.late || sessionData?.online
+                                ? "pointer"
+                                : "default",
+                            ...getStatusStyles(
+                              sessionData?.studentAttendanceStatus,
+                            ),
+                          }}
+                        >
+                          {sessionData?.studentAttendanceStatus ===
+                          "PRESENT" ? (
+                            <>
+                              <span style={{ color: "#0A983C" }}>Present</span>
+
+                              {sessionData?.late && sessionData?.online ? (
+                                <>
+                                  {" "}
+                                  (
+                                  <span
+                                    style={{
+                                      color: "#D97706",
+                                      fontWeight: 700,
+                                    }}
+                                  >
+                                    L
+                                  </span>{" "}
+                                  &{" "}
+                                  <span
+                                    style={{
+                                      color: "#2563EB",
+                                      fontWeight: 700,
+                                    }}
+                                  >
+                                    O
+                                  </span>
+                                  )
+                                </>
+                              ) : sessionData?.late ? (
+                                <>
+                                  {" "}
+                                  (
+                                  <span
+                                    style={{
+                                      color: "#D97706",
+                                      fontWeight: 700,
+                                    }}
+                                  >
+                                    L
+                                  </span>
+                                  )
+                                </>
+                              ) : sessionData?.online ? (
+                                <>
+                                  {" "}
+                                  (
+                                  <span
+                                    style={{
+                                      color: "#2563EB",
+                                      fontWeight: 700,
+                                    }}
+                                  >
+                                    O
+                                  </span>
+                                  )
+                                </>
+                              ) : null}
+                            </>
+                          ) : sessionData?.studentAttendanceStatus ===
+                            "ABSENT" ? (
+                            "Absent"
+                          ) : (
+                            formatForDisplay(
+                              sessionData?.studentAttendanceStatus,
+                            )
+                          )}
+                        </Typography>
+                      </Tooltip>
                     </Box>
                   </AccordionSummary>
 
