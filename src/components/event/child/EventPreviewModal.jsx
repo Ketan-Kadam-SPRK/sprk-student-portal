@@ -8,7 +8,7 @@ import {
   IconButton,
   DialogActions,
   Button,
-  CircularProgress,
+ CircularProgress,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
@@ -16,7 +16,7 @@ import { applyForEvent, getEventByUid } from "../event.action";
 import { Close } from "@mui/icons-material";
 import { formatDateTime } from "../../../Utils/dateTimeFormator";
 
-function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
+function EventPreviewModal({ eventUid, handleCloseEvent, eventStatus,handleGetAllEvents }) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
 
@@ -30,24 +30,28 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
       dispatch(getEventByUid({ headers, eventUid })).then((res) => {
         const data = res?.payload?.data?.data || {};
         setFormData(data);
+        setStudentDesc(data?.studentDescription || "");
       });
     }
   }, [eventUid]);
 
+  console.log("eventStatus", eventStatus);
+
   // ✅ Validation function
   const validateDescription = (value) => {
-    // ✅ Allow empty (optional field)
+    // ✅ Mandatory field validation
     if (!value || value.trim() === "") {
-      return "";
+      return "Please mention your skills";
     }
 
-    // ✅ If user typed something → validate
-    if (value.trim().length < 5) {
-      return "Description must be at least 5 characters";
+    // ✅ Minimum length validation
+    if (value.trim().length < 10) {
+      return "Skills description must be at least 10 characters";
     }
 
+    // ✅ Maximum length validation
     if (value.length > 500) {
-      return "Description must not exceed 500 characters";
+      return "Skills description must not exceed 500 characters";
     }
 
     return "";
@@ -76,14 +80,16 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
 
       const payload = {
         eventUid,
-        studentDescription: studentDesc?.trim() || null,
+        studentDescription: studentDesc?.trim(),
       };
 
       await dispatch(applyForEvent({ headers, payload })).then((res) => {
         if (res.payload !== undefined) {
           handleCloseEvent();
-          setLoading(false);
+          handleGetAllEvents();
         }
+
+        setLoading(false);
       });
     } catch (err) {
       console.error("Apply event error:", err);
@@ -98,6 +104,7 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
           <Typography fontWeight={600} sx={{ fontSize: "16px" }}>
             Event Details
           </Typography>
+
           <IconButton onClick={handleCloseEvent}>
             <Close />
           </IconButton>
@@ -109,6 +116,7 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
           {/* Title */}
           <Box>
             <Typography>Event Title</Typography>
+
             <TextField
               fullWidth
               size="small"
@@ -120,6 +128,7 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
           {/* Fees */}
           <Box>
             <Typography>Registration Fees</Typography>
+
             <TextField
               fullWidth
               size="small"
@@ -132,8 +141,13 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
           <Box sx={{ display: "flex", gap: 2 }}>
             <Box sx={{ flex: 1 }}>
               <Typography>Event Start</Typography>
+
               <Typography
-                sx={{ p: 1, border: "1px solid #ccc", borderRadius: "4px" }}
+                sx={{
+                  p: 1,
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                }}
               >
                 {formatDateTime(formData?.start)}
               </Typography>
@@ -141,8 +155,13 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
 
             <Box sx={{ flex: 1 }}>
               <Typography>Event End</Typography>
+
               <Typography
-                sx={{ p: 1, border: "1px solid #ccc", borderRadius: "4px" }}
+                sx={{
+                  p: 1,
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                }}
               >
                 {formatDateTime(formData?.end)}
               </Typography>
@@ -152,6 +171,7 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
           {/* Summary */}
           <Box>
             <Typography>Summary</Typography>
+
             <TextField
               fullWidth
               size="small"
@@ -165,6 +185,7 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
           {/* Description */}
           <Box>
             <Typography>Description</Typography>
+
             <Box
               sx={{
                 border: "1px solid #ccc",
@@ -180,6 +201,7 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
 
           {/* Images */}
           <Typography>Images</Typography>
+
           <Box
             sx={{
               border: "1px solid #e0e0e0",
@@ -204,6 +226,7 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
                       overflow: "hidden",
                       boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                       transition: "0.3s",
+
                       "&:hover": {
                         transform: "scale(1.05)",
                         boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
@@ -213,8 +236,8 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
                     <img
                       src={img.link}
                       alt={img.img_alt_text}
-                      width={160} // 👈 bigger
-                      height={110} // 👈 bigger
+                      width={160}
+                      height={110}
                       style={{
                         objectFit: "cover",
                         display: "block",
@@ -228,15 +251,19 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
             </Box>
           </Box>
 
-          {/* ✅ NEW FIELD */}
+          {/* ✅ Skills Field */}
           <Box>
-            <Typography>Student Description (optional)</Typography>
+            <Typography>
+              Mention Your Skills Below{" "}
+              <span style={{ color: "red" }}>*</span>
+            </Typography>
+
             <TextField
               fullWidth
               size="small"
               multiline
               rows={4}
-              placeholder="Add any details you'd like us to know..."
+              placeholder="Example: React.js, UI Development, Team Collaboration, Problem Solving..."
               value={studentDesc}
               onChange={handleStudentDescChange}
               error={Boolean(error)}
@@ -247,13 +274,25 @@ function EventPreviewModal({ eventUid, handleCloseEvent,eventStatus }) {
       </DialogContent>
 
       <DialogActions
-        sx={{ display: "flex", justifyContent: "flex-end", px: 3, py: 2 }}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          px: 3,
+          py: 2,
+        }}
       >
         <Box sx={{ display: "flex", gap: 2 }}>
           <Button variant="outlined" onClick={handleCloseEvent}>
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleApplyToEvent} disabled={eventStatus !== "APPLY" || loading}>
+
+          <Button
+            variant="contained"
+            onClick={handleApplyToEvent}
+            disabled={
+              eventStatus !== "APPLY" || loading
+            }
+          >
             {loading ? <CircularProgress size={24} /> : "Apply"}
           </Button>
         </Box>
