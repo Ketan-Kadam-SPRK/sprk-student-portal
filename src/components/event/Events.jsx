@@ -64,7 +64,7 @@ function Events() {
   const getEventStatus = (row) => {
     if (row?.marksReleased) return "VIEW";
 
-    if(row?.participationStatus === "Registered") return "VIEW";
+    if(row?.participationStatus === "REGISTERED") return "APPLIED";
 
     if (!row?.start) return "VIEW";
 
@@ -275,6 +275,7 @@ function Events() {
           <Button
             size="small"
             variant="contained"
+            sx={{ minWidth:"100px" }}
             color={status === "APPLY" ? "success" : "primary"}
             onClick={() => handleOpenEvent(row)}
           >
@@ -349,6 +350,7 @@ function Events() {
           eventUid={eventUid}
           handleCloseEvent={handleCloseEvent}
           eventStatus={eventStatus}
+          handleGetAllEvents={handleGetAllEvents}
         />
       </Dialog>
     </Box>
