@@ -8,7 +8,7 @@ import {
   IconButton,
   DialogActions,
   Button,
- CircularProgress,
+  CircularProgress,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
@@ -16,7 +16,12 @@ import { applyForEvent, getEventByUid } from "../event.action";
 import { Close } from "@mui/icons-material";
 import { formatDateTime } from "../../../Utils/dateTimeFormator";
 
-function EventPreviewModal({ eventUid, handleCloseEvent, eventStatus,handleGetAllEvents }) {
+function EventPreviewModal({
+  eventUid,
+  handleCloseEvent,
+  eventStatus,
+  handleGetAllEvents,
+}) {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
 
@@ -35,7 +40,6 @@ function EventPreviewModal({ eventUid, handleCloseEvent, eventStatus,handleGetAl
     }
   }, [eventUid]);
 
-  console.log("eventStatus", eventStatus);
 
   // ✅ Validation function
   const validateDescription = (value) => {
@@ -254,8 +258,7 @@ function EventPreviewModal({ eventUid, handleCloseEvent, eventStatus,handleGetAl
           {/* ✅ Skills Field */}
           <Box>
             <Typography>
-              Mention Your Skills Below{" "}
-              <span style={{ color: "red" }}>*</span>
+              Mention Your Skills Below <span style={{ color: "red" }}>*</span>
             </Typography>
 
             <TextField
@@ -271,17 +274,7 @@ function EventPreviewModal({ eventUid, handleCloseEvent, eventStatus,handleGetAl
             />
           </Box>
         </Box>
-      </DialogContent>
-
-      <DialogActions
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          px: 3,
-          py: 2,
-        }}
-      >
-        <Box sx={{ display: "flex", gap: 2 }}>
+        <Box sx={{ display: "flex", gap: 2,justifyContent:"flex-end",my:2 }}>
           <Button variant="outlined" onClick={handleCloseEvent}>
             Cancel
           </Button>
@@ -289,14 +282,13 @@ function EventPreviewModal({ eventUid, handleCloseEvent, eventStatus,handleGetAl
           <Button
             variant="contained"
             onClick={handleApplyToEvent}
-            disabled={
-              eventStatus !== "APPLY" || loading
-            }
+            disabled={eventStatus !== "APPLY" || loading}
           >
             {loading ? <CircularProgress size={24} /> : "Apply"}
           </Button>
         </Box>
-      </DialogActions>
+      </DialogContent>
+
     </>
   );
 }

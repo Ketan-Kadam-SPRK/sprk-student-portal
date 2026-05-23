@@ -82,7 +82,6 @@ function Dashboard() {
   const handleGetAllEvents = () => {
     dispatch(getAllEvents({ headers })).then((res) => {
       setEvents(res?.payload?.data?.data || []);
-      console.log("res", res);
     });
   };
 
