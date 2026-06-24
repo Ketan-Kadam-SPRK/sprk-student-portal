@@ -1,7 +1,6 @@
 import {
   Box,
-  Card,
-  CardContent,
+  LinearProgress,
   Typography,
   IconButton,
   Stack,
@@ -11,28 +10,19 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import NoDataPage from "../../Common/NoDataPage";
-import { Image } from "cloudinary-react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import StatusStyledComponent from "../../Common/StatusStyledComponent/StatusStyledComponent";
 import { useCheckPermission } from "../../../Utils/checkPermission";
 
 const CourseList = ({ data, navigate }) => {
+  console.log("Data..", data);
   const { checkPermission } = useCheckPermission();
 
   const [expandedCourseId, setExpandedCourseId] = useState(null);
+
   const handleExpandToggle = (courseId) => {
     setExpandedCourseId(expandedCourseId === courseId ? null : courseId);
   };
-
-  /**
-   * Returns the text and background color associated with a given course status.
-   *
-   * @param {string} status - The current status of the course, which can be one of the following:
-   *                          "ONGOING", "COMPLETED", "EXPIRED", "PENDING".
-   * @returns {Object} An object containing the `color` and `backgroundColor` properties that represent
-   *                   the text and background colors associated with the status.
-   *                   Defaults to black text on white background for unrecognized statuses.
-   */
 
   const getStatusColor = (status) => {
     let color = "";
@@ -81,6 +71,14 @@ const CourseList = ({ data, navigate }) => {
         data?.courses?.map((item, index) => {
           const { color, backgroundColor } = getStatusColor(item?.cou_status);
           const isExpanded = expandedCourseId === item?.course_uid;
+
+          const count = item?.completedModuleCount ?? 0;
+          const total = item?.modules?.length ?? 0;
+          const progress =
+            count < 0 || total === 0
+              ? 0
+              : Math.min(Math.round((count / total) * 100), 100);
+
           return (
             <Accordion
               key={`${index}-${item?.course_uid}`}
@@ -93,34 +91,41 @@ const CourseList = ({ data, navigate }) => {
               }}
             >
               <AccordionSummary
-                expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
+                expandIcon={
+                  <ExpandMoreIcon
+                    sx={{
+                      color: "white",
+                    }}
+                  />
+                }
                 sx={{
                   backgroundColor: item?.course_color,
                   borderRadius: 2,
                   p: 2,
+                  alignItems: "flex-start",
+                  "& .MuiAccordionSummary-expandIconWrapper": {
+                    marginTop: "8px",
+                  },
                 }}
               >
                 <Stack
-                  direction={{ xs: "column", sm: "row" }}
-                  alignItems={"center"}
-                  spacing={{ xs: 0.5, sm: 2 }}
-                  sx={{ width: "100%", flexWrap: "wrap" }}
+                  direction="row"
+                  alignItems="center"
+                  spacing={2}
+                  sx={{ width: "100%" }}
                 >
-                  <img
-                    src={item?.course_logo}
-                    alt={item?.course_name}
-                    loading="lazy"
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "contain",
-                    }}
-                  />
-
-                  <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6" color="white" fontWeight={700}>
-                      {item?.course_name}
-                    </Typography>
+                  {/* LEFT - Image + Batches */}
+                  <Stack alignItems="center" spacing={1}>
+                    <img
+                      src={item?.course_logo}
+                      alt={item?.course_name}
+                      loading="lazy"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "contain",
+                      }}
+                    />
                     <Stack
                       direction="row"
                       spacing={1}
@@ -144,11 +149,91 @@ const CourseList = ({ data, navigate }) => {
                       ))}
                     </Stack>
                   </Stack>
-                  <StatusStyledComponent
-                    value={item?.cou_status}
-                    color={color}
-                    backgroundColor={backgroundColor}
-                  />
+
+                  {/* RIGHT - Name + Progress + Status */}
+                  <Box
+                    sx={{
+                      flex: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 1,
+                    }}
+                  >
+                    {/* Row 1 - Course Name + Status */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography variant="h6" color="white" fontWeight={700}>
+                        {item?.course_name}
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: { xs: "column", sm: "row", md: "row" },
+                          alignItems: {
+                            xs: "flex-start",
+                            sm: "center",
+                            md: "center",
+                          },
+                          gap: 1,
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: "var(--font-size-medium)",
+                            color: "white",
+                            fontWeight: 200,
+                          }}
+                        >
+                          Modules Status :
+                        </Typography>
+                        <StatusStyledComponent
+                          value={item?.cou_status}
+                          color={color}
+                          backgroundColor={backgroundColor}
+                        />
+                      </Box>
+                    </Box>
+
+                    {/* Row 2 - Module Progress | Bar | % */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 2,
+                        width: "100%",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "var(--font-size-extra-small)",
+                          color: "white",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        Module Progress
+                      </Typography>
+                      <LinearProgress
+                        variant="determinate"
+                        value={progress}
+                        sx={{ flex: 1 }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: "var(--font-size-small)",
+                          fontWeight: "bold",
+                          color: "white",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {`${progress}%`}
+                      </Typography>
+                    </Box>
+                  </Box>
                 </Stack>
               </AccordionSummary>
 
@@ -170,7 +255,6 @@ const CourseList = ({ data, navigate }) => {
                         fontWeight: 600,
                         p: 2,
                         my: 2,
-
                         fontSize: "0.875rem",
                         borderRadius: 2,
                         boxShadow: 1,

@@ -101,7 +101,7 @@ function BookingDetailsCard({ item, index }) {
               whiteSpace: "nowrap",
               width: "100%",
               overflow: "hidden",
-              cursor: "pointer",
+              // cursor: "pointer",
             }}
             title={item?.cg_names?.join(" | ") || ""}
           >
