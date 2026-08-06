@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Box,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   Typography,
   Accordion,
   AccordionSummary,
@@ -9,6 +12,11 @@ import {
   Dialog,
   IconButton,
   CircularProgress,
+  TextField,
+    InputAdornment,
+  // IconButton,
+  // Button,
+  Snackbar,
   Grid2,
 } from "@mui/material";
 
@@ -19,6 +27,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Close } from "@mui/icons-material";
 import { Image } from "cloudinary-react";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import ProgressBar from "../Common/ProgressBar/ProgressBar";
@@ -28,6 +37,8 @@ import ErrorHandling from "../../components/Common/ErrorHandling";
 import { downloadCertificate, getAllCertificates } from "./certificate.actions";
 import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
+// import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 function Certificates() {
   const dispatch = useDispatch();
@@ -39,9 +50,25 @@ function Certificates() {
   const [loading, setLoading] = useState(true);
   const [error500, setError500] = useState(false);
   const [certId, setCertId] = useState(null);
+  const [cerUid, setCerUid] = useState(null);
   const [certificateStatus, setCertificateStatus] = useState(null);
   const [openDownload, setOpenDownload] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [shareLinkModal, setShareLinkModal] = useState(false);
+
+  const certificateUrl = `${import.meta.env.VITE_APP_CERTIFICATE_LINK}${cerUid}`;
+
+const [copied, setCopied] = useState(false);
+
+const handleCopy = async () => {
+  await navigator.clipboard.writeText(certificateUrl);
+  setCopied(true);
+};
+
+  const handleShareLinkDialog = (id) => {
+    setShareLinkModal(!shareLinkModal);
+    setCerUid(id);
+  };
 
   const handleDownloadDialog = (id) => {
     setOpenDownload(!openDownload);
@@ -384,6 +411,15 @@ function Certificates() {
                         >
                           <SaveAltIcon />
                         </Button>
+                        <Button
+                          variant="contained"
+                          disabled={item?.status !== "RELEASED"}
+                          onClick={() =>
+                            handleShareLinkDialog(item?.cert_uid)
+                          }
+                        >
+                          share Link
+                        </Button>
                       </Box>
                     </Box>
                   </AccordionSummary>
@@ -544,6 +580,75 @@ function Certificates() {
           handleClose={handleClose}
         />
       </Dialog>
+
+<Dialog
+  open={shareLinkModal}
+  onClose={() => setShareLinkModal(false)}
+  fullWidth
+  maxWidth="sm"
+>
+  <DialogTitle>Certificate Link</DialogTitle>
+
+  <DialogContent>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      sx={{ mb: 2 }}
+    >
+      Share this certificate verification link.
+    </Typography>
+
+    <TextField
+      fullWidth
+      value={certificateUrl}
+      InputProps={{
+        readOnly: true,
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton onClick={handleCopy}>
+              <ContentCopyIcon />
+            </IconButton>
+          </InputAdornment>
+        ),
+      }}
+    />
+  </DialogContent>
+
+  <DialogActions>
+    <Button onClick={() => setShareLinkModal(false)}>
+      Close
+    </Button>
+  </DialogActions>
+</Dialog>
+
+<Snackbar
+  open={copied}
+  autoHideDuration={3000}
+  onClose={() => setCopied(false)}
+  anchorOrigin={{
+    vertical: "bottom",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    severity="success"
+    variant="standard"
+    onClose={() => setCopied(false)}
+    sx={{
+      width: "100%",
+      minWidth: 320,
+      bgcolor: "#fff",
+      color: "#555",
+      borderRadius: 2,
+      boxShadow: "0 8px 24px rgba(0,0,0,.15)",
+      "& .MuiAlert-icon": {
+        color: "#16a34a",
+      },
+    }}
+  >
+    Copied to clipboard
+  </Alert>
+</Snackbar>
     </Box>
   );
 }
