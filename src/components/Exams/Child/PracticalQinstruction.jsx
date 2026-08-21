@@ -116,7 +116,7 @@ function PracticalQinstruction({ data }) {
                     onClick={() =>
                       dispatch(
                         handleDownloadFiles({
-                          fileid: data?.file_id,
+                          fileid: data?.files?.id,
                           rtoken,
                         })
                       )
