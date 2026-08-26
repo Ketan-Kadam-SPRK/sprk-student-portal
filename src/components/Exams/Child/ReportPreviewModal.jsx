@@ -13,10 +13,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { CapitalizeFirstLetter } from "../../../Utils/formateForDisplay";
-import { Close, CloseRounded } from "@mui/icons-material";
+import { CloseRounded } from "@mui/icons-material";
 import { modifyQuestionTextFillUps } from "../../../Utils/ModifyQsnTextFillUps";
 import style from "./reportPreview.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
@@ -26,9 +26,11 @@ import { useAuthHeaders } from "../../../Hooks/useAuthHeaders";
 import { formatForDisplay } from "../../../Utils/formateForDisplay";
 import { getExamResponse } from "../exams.actions";
 import { Image } from "cloudinary-react";
+import { handleDownloadFiles } from "../../Leaves/action/leaves.action";
 
 const ReportPreviewModal = forwardRef(({ id }, ref) => {
   const dispatch = useDispatch();
+  const rtoken = useSelector((state) => state?.authSlice.token);
   const view = "res";
   const headers = useAuthHeaders();
   const [previewData, setPreviewData] = useState({});
@@ -318,15 +320,20 @@ const ReportPreviewModal = forwardRef(({ id }, ref) => {
                         </Typography>
                       </Box>
                     </Box>
-                    {/* <Box>
+                    <Box>
                       <IconButton
-                      // onClick={() =>
-                      //   handleDownloadFile(data?.file_id, rtoken)
-                      // }
+                        onClick={() =>
+                          dispatch(
+                            handleDownloadFiles({
+                              fileid: data?.file_id,
+                              rtoken,
+                            })
+                          )
+                        }
                       >
                         <FileDownloadOutlinedIcon />
                       </IconButton>
-                    </Box> */}
+                    </Box>
                   </Box>
                 )}
               </Box>

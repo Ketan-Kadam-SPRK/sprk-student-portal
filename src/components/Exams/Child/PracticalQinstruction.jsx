@@ -2,7 +2,8 @@ import React from "react";
 // import { handleDownloadFile } from "../../../../Utils/DownloadUploededDocuments";
 import { Box, Typography, TextField, IconButton } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { handleDownloadFiles } from "../../Leaves/action/leaves.action";
 
 function InstructionSentenseFormate(sentence) {
   // Regular expression to match numbers
@@ -30,8 +31,8 @@ function InstructionSentenseFormate(sentence) {
 }
 
 function PracticalQinstruction({ data }) {
-  // const rtoken = useSelector((state) => state.authData.token);
-
+  const rtoken = useSelector((state) => state?.authSlice?.token);
+  const dispatch = useDispatch();
   return (
     <Box sx={{ mx: 2 }}>
       {data?.instruction && (
@@ -112,9 +113,14 @@ function PracticalQinstruction({ data }) {
                 readOnly: true, // Make the TextField read-only
                 endAdornment: (
                   <IconButton
-                    edge="end"
-                    aria-label="download"
-                    // onClick={() => handleDownloadFile(data?.files?.id, rtoken)}
+                    onClick={() =>
+                      dispatch(
+                        handleDownloadFiles({
+                          fileid: data?.files?.id,
+                          rtoken,
+                        })
+                      )
+                    }
                   >
                     <FileDownloadOutlinedIcon />
                   </IconButton>
