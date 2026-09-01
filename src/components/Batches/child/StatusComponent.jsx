@@ -23,6 +23,9 @@ function StatusComponent({ value = "NA" }) {
     } else if (value === "ONHOLD") {
       color = "#755200";
       backgroundColor = "#FFF3A4";
+    } else if (value === "CANCELLED") {
+      color = "rgb(184, 57, 57)";
+      backgroundColor = "rgb(255, 188, 176)";
     }
 
     setData({

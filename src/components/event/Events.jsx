@@ -62,11 +62,10 @@ function Events() {
 
   // ================= EVENT STATUS =================
   const getEventStatus = (row) => {
-
-    console.log(row,"rowdata");
+    console.log(row, "rowdata");
     if (row?.marksReleased) return "VIEW";
 
-    if(row?.participationStatus === "Registered") return "VIEW";
+    if (row?.participationStatus === "Registered") return "VIEW";
 
     if (!row?.start) return "VIEW";
 
@@ -75,7 +74,6 @@ function Events() {
 
     return now < start ? "APPLY" : "VIEW";
   };
-
 
   const handleOpenEvent = (row) => {
     const status = getEventStatus(row);
@@ -152,7 +150,8 @@ function Events() {
           fontSize: "12px",
           alignItems: "center",
           justifyContent: "center",
-          minWidth: "100px",
+          minWidth: "110px",
+          whiteSpace: "nowrap",
         }}
       >
         {label}
@@ -297,11 +296,13 @@ function Events() {
         <title>{meta.events.title}</title>
       </Helmet>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography             sx={{
-              fontWeight: "bold",
-              fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
-              color: "#0A2647",
-            }}>
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            fontSize: { xs: "1.5rem", sm: "1.5rem", md: "2rem" },
+            color: "#0A2647",
+          }}
+        >
           Your Events
         </Typography>
         <Image
@@ -321,23 +322,22 @@ function Events() {
         All your events and results at a glance.
       </Typography>
 
-<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <PopupFilterComponent
-        rowData={data}
-        statusOptions={[
-          "Attended",
-          "Not Attended",
-          "Registered",
-          "Not Registered",
-          "N/A",
-        ]}
-        statusKey="participationFilterStatus"
-        setFilterData={setFilterData}
-        dateKey="start"
-        // statusKey="marksStatus"
-      />
-</Box>
-
+          rowData={data}
+          statusOptions={[
+            "Attended",
+            "Not Attended",
+            "Registered",
+            "Not Registered",
+            "N/A",
+          ]}
+          statusKey="participationFilterStatus"
+          setFilterData={setFilterData}
+          dateKey="start"
+          // statusKey="marksStatus"
+        />
+      </Box>
 
       <CustomAgGrid
         rows={filterData}
