@@ -16,7 +16,7 @@ import NoDataPage from "../Common/NoDataPage";
 import { getBatches } from "./action/batches.actions";
 import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
-import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 function Batches() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
@@ -144,9 +144,7 @@ function Batches() {
             batches?.filter((batch) => batch?.batch_status === "CANCELLED")
               ?.length
           }
-          image={
-            <ClearOutlinedIcon sx={{ color: "white", fontSize: "40px" }} />
-          }
+          image={<HighlightOffIcon sx={{ color: "white", fontSize: "40px" }} />}
           bgColor="rgb(163, 0, 0)"
         />
 
