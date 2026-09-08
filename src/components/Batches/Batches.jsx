@@ -16,7 +16,7 @@ import NoDataPage from "../Common/NoDataPage";
 import { getBatches } from "./action/batches.actions";
 import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
-
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 function Batches() {
   const dispatch = useDispatch();
   const headers = useAuthHeaders();
@@ -136,6 +136,16 @@ function Batches() {
             />
           }
           bgColor="#1F7C20"
+        />
+
+        <BoxCard
+          title="Cancelled Batches"
+          number={
+            batches?.filter((batch) => batch?.batch_status === "CANCELLED")
+              ?.length
+          }
+          image={<HighlightOffIcon sx={{ color: "white", fontSize: "40px" }} />}
+          bgColor="rgb(163, 0, 0)"
         />
 
         <BoxCard

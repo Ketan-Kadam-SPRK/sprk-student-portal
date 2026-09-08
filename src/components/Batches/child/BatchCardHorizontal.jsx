@@ -66,11 +66,8 @@ function BatchCardHorizontal({ item = {} }) {
         flexWrap: "wrap",
 
         flexDirection: { xs: "column", sm: "column", md: "column", lg: "row" },
-        // boxShadow:
-        //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
         boxShadow:
           " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
-        // "rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px",
       }}
     >
       {item?.is_removed && (
@@ -96,7 +93,6 @@ function BatchCardHorizontal({ item = {} }) {
             sx={{
               fontSize: "30px",
               fontWeight: "bold",
-
               cursor: "pointer",
               color: "red",
             }}
@@ -105,6 +101,8 @@ function BatchCardHorizontal({ item = {} }) {
           </Typography>
         </Box>
       )}
+
+      {/* BLOCK A — Image + batch info : order 2 on mobile */}
       <Box
         sx={{
           display: "flex",
@@ -112,6 +110,11 @@ function BatchCardHorizontal({ item = {} }) {
           alignItems: "center",
           flexWrap: "wrap",
           justifyContent: "center",
+          order: { xs: 3, lg: 0 },
+          width: { xs: "100%", lg: "auto" },
+          pt: { xs: 1, lg: 0 },
+          borderTop: { xs: "1px solid #eee", lg: "none" },
+          borderBottom: "none",
         }}
       >
         <Image
@@ -120,7 +123,16 @@ function BatchCardHorizontal({ item = {} }) {
           width="100"
           height="100"
         />
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            justifyContent: "space-between",
+            alignItems: "center",
+            flex: 1,
+          }}
+        >
           <Typography
             sx={{
               fontSize: "var(--font-size-small)",
@@ -150,6 +162,7 @@ function BatchCardHorizontal({ item = {} }) {
         </Box>
       </Box>
 
+      {/* BLOCK B — Module Progress + Sessions : order 3 on mobile */}
       <Box
         sx={{
           display: "flex",
@@ -158,6 +171,8 @@ function BatchCardHorizontal({ item = {} }) {
           justifyContent: "space-between",
           alignItems: "center",
           flex: 1,
+          order: { xs: 3, lg: 0 },
+          width: { xs: "100%", lg: "auto" },
         }}
       >
         <Box
@@ -190,7 +205,6 @@ function BatchCardHorizontal({ item = {} }) {
           sx={{
             display: "flex",
             alignItems: "center",
-            // flexDirection: "column",
             gap: 1,
             width: "100%",
             justifyContent: "center",
@@ -198,7 +212,7 @@ function BatchCardHorizontal({ item = {} }) {
         >
           <LinearProgress
             variant="determinate"
-            value={item?.batch_progress || 0} // Assuming `item.progress` is the percentage value
+            value={item?.batch_progress || 0}
             sx={{ flex: 1, width: "100%" }}
           />
         </Box>
@@ -274,12 +288,19 @@ function BatchCardHorizontal({ item = {} }) {
         </Box>
       </Box>
 
+      {/* BLOCK C — Status + Attendance : order 1 on mobile (top) */}
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          gap: 3,
+          flexDirection: { xs: "row", lg: "column" },
+          gap: { xs: 0, lg: 3 },
           justifyContent: "space-between",
+          alignItems: "center",
+          order: { xs: 3, lg: 0 },
+          width: { xs: "100%", lg: "auto" },
+          pt: { xs: 1, lg: 0 },
+          borderTop: { xs: "1px solid #eee", lg: "none" },
+          borderBottom: "none",
         }}
       >
         <StatusComponent value={item?.batch_status} />
