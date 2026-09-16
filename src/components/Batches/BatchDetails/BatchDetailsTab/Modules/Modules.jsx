@@ -1,8 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Image } from "cloudinary-react";
 import { useDispatch } from "react-redux";
-
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
@@ -113,9 +111,9 @@ function Modules() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              flexDirection:{
+              flexDirection: {
                 xs: "column",
-                sm: "row"
+                sm: "row",
               },
               gap: "10px",
               alignItems: "center",
@@ -140,9 +138,9 @@ function Modules() {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                px:{
+                px: {
                   xs: "8px",
-                  md: "20px"
+                  md: "20px",
                 },
                 gap: "5px",
                 py: 1,

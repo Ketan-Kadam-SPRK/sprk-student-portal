@@ -1,17 +1,13 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Tabs,
-  Tab,
-  Box,
-} from "@mui/material";
+import { Tabs, Tab, Box, Button, Dialog } from "@mui/material";
 import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
 import Modules from "./Modules/Modules";
 import BatchNotes from "./Notes/BatchNotes";
 import { BatchContext } from "../BatchContext";
 import PopupFilterComponent from "../../../Common/FilterMenuComponent/PopupFilterComponent";
-
+import RequestModules from "./Modules/reassignrequest";
 const TabPanel = ({ children, value, index }) => (
   <div role="tabpanel" hidden={value !== index}>
     {value === index && <div>{children}</div>}
@@ -22,11 +18,20 @@ function BatchDetailsTab({ sessionData }) {
   const tabNames = ["SESSIONS", "MODULES", "NOTES"];
   const [activeTab, setActiveTab] = useState(0);
   const [filterData, setFilterData] = useState([]);
+  const [openReassignModal, setOpenReassignModal] = useState(false);
 
   const batchId = useParams().batchId || null;
 
   const handleTabChange = (event, newTabIndex) => {
     setActiveTab(newTabIndex);
+  };
+
+  const handleReassignRequest = () => {
+    setOpenReassignModal(true);
+  };
+
+  const handleCloseReassignModal = () => {
+    setOpenReassignModal(false);
   };
 
   return (
@@ -72,7 +77,7 @@ function BatchDetailsTab({ sessionData }) {
           </Tabs>
 
           {activeTab === 0 && (
-            <Box sx={{display:'flex',justifyContent:"flex-end",}}>
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
               <PopupFilterComponent
                 rowData={sessionData?.list}
                 statusOptions={["PRESENT", "ABSENT", "ON_LEAVE"]}
@@ -80,16 +85,42 @@ function BatchDetailsTab({ sessionData }) {
                 dateKey={null}
                 statusKey="studentAttendanceStatus"
                 search={false}
-                sx={{ pt: 0, pb: 1 }} 
+                sx={{ pt: 0, pb: 1 }}
               />
             </Box>
           )}
 
+          {activeTab === 1 && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                pr: "12px",
+                pb: 2,
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={handleReassignRequest}
+                sx={{
+                  backgroundColor: "var(--secondary-color)",
+                  color: "#FFFFFF",
+                  textTransform: "none",
+                  fontWeight: 600,
+                  borderRadius: "4px",
+                  "&:hover": { backgroundColor: "var(--secondary-color)" },
+                }}
+              >
+                REASSIGN REQUEST
+              </Button>
+            </Box>
+          )}
         </Box>
 
         {/* 🔹 Tab Panels */}
         <TabPanel value={activeTab} index={0}>
-          <Sessions filterData={filterData}/>
+          <Sessions filterData={filterData} />
         </TabPanel>
 
         <TabPanel value={activeTab} index={1}>
@@ -99,6 +130,15 @@ function BatchDetailsTab({ sessionData }) {
         <TabPanel value={activeTab} index={2}>
           <BatchNotes />
         </TabPanel>
+
+        <Dialog
+          open={openReassignModal}
+          onClose={handleCloseReassignModal}
+          fullWidth
+          maxWidth="md"
+        >
+          <RequestModules onClose={handleCloseReassignModal} />
+        </Dialog>
       </Box>
     </BatchContext.Provider>
   );
