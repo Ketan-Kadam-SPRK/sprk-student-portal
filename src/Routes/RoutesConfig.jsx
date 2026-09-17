@@ -19,6 +19,7 @@ import Receipts from "../components/Booking Details/child/Receipts";
 import ProtectedRoute from "./ProtectedRoute";
 import { useSelector } from "react-redux";
 import Events from "../components/event/Events";
+import ModuleRequest from "../components/ModuleRequest/modulerequest";
 
 const toTabName = (value = "") => {
   return value
@@ -30,8 +31,6 @@ const toTabName = (value = "") => {
 function RoutesConfig() {
   // 🔐 permissions from API / state
   const allowedTabs = useSelector((state) => state.authSlice.entitlements);
-
-
   return (
     <Routes>
       {/* 🔐 Protected Routes Wrapper */}
@@ -56,6 +55,8 @@ function RoutesConfig() {
         <Route path="Exams" element={<Exams />} />
         <Route path="Leaves" element={<Leaves />} />
         <Route path="Events" element={<Events />} />
+
+        <Route path="Module_Request" element={<ModuleRequest />} />
 
         <Route path="Bookings" element={<Outlet />}>
           <Route index element={<Payments />} />

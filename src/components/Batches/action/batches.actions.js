@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../../axios/axiosInstance";
+import { handleError, handleResponse } from "../../../Utils/apiHelpers";
 
 export const getBatches = createAsyncThunk(
   "batch/getBatches",
@@ -78,6 +79,27 @@ export const getAbsentLogs = createAsyncThunk(
       return { data: data, status: res.status };
     } catch (err) {
       return { status: err.response.status, error: err.response.data.error };
+    }
+  }
+);
+
+export const batchreassignrequests = createAsyncThunk(
+  "batchreassignrequests",
+  async ({ headers, payload }) => {
+    try {
+      const res = await axiosInstance.post(
+        `/student-portal/batch-reassign-requests`,
+        payload,
+        {
+          headers,
+        }
+      );
+
+      handleResponse(res?.data);
+      // return res?.data.data;
+    } catch (error) {
+      handleError(error);
+      throw error;
     }
   }
 );

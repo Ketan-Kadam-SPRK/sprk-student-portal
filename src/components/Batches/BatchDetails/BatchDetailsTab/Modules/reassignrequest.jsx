@@ -13,12 +13,17 @@ import { useDispatch } from "react-redux";
 import { useAuthHeaders } from "../../../../../Hooks/useAuthHeaders";
 import ErrorHandling from "../../../../Common/ErrorHandling";
 
-import { getModulesDetails } from "../../../action/batches.actions";
+import {
+  getModulesDetails,
+  batchreassignrequests,
+} from "../../../action/batches.actions";
 import StatusStyledComponent from "../../../../Common/StatusStyledComponent/StatusStyledComponent";
 import { useBatch } from "../../BatchContext";
 
 const REASON_MIN_LENGTH = 5;
 const REASON_MAX_LENGTH = 250;
+// const { sessionData } = useBatch();
+// console.log(sessionData);
 
 function RequestModules({ onClose }) {
   const dispatch = useDispatch();
@@ -89,16 +94,32 @@ function RequestModules({ onClose }) {
     reason.trim().length >= REASON_MIN_LENGTH &&
     reason.trim().length <= REASON_MAX_LENGTH;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const payload = {
-      batchId,
-      selectedModules: selectedModules.map((i) => modules[i]),
-      reason,
+      moduleIds: selectedModules.map((index) => modules[index]?.moduleId),
+      reason: reason.trim(),
+      originalBatch: batchId,
     };
-    // TODO: hook this up to the actual submit action/dispatch
-    console.log("Submitting", payload);
-    setSelectedModules([]);
-    setReason("");
+
+    try {
+      setLoading(true);
+
+      const response = await dispatch(
+        batchreassignrequests({
+          headers,
+          payload,
+        })
+      ).unwrap();
+
+      setSelectedModules([]);
+      setReason("");
+
+      onClose();
+    } catch (error) {
+      console.error("Batch reassign request failed:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {

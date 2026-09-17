@@ -82,11 +82,11 @@ function FeedBackModal({
   const [submitLoading, setSubmitLoading] = useState(false);
 
   const getRatingMarks = (scale) => {
-  return Array.from({ length: scale }, (_, i) => ({
-    value: i + 1,
-    label: String(i + 1),
-  }));
-};
+    return Array.from({ length: scale }, (_, i) => ({
+      value: i + 1,
+      label: String(i + 1),
+    }));
+  };
   // const [formInfo, setFormInfo] = useState({
   //   formUid: null,
   //   formVersion: null,
@@ -234,7 +234,7 @@ function FeedBackModal({
       };
 
       dispatch(
-        addSubmitFeedback({ headers, payload, batchId: formInfo?.batchId }),
+        addSubmitFeedback({ headers, payload, batchId: formInfo?.batchId })
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setFormInfo({
@@ -351,28 +351,28 @@ function FeedBackModal({
               )}
 
               {/* 🔢 RATING */}
-{q.type === "rating" && (
-  <>
-    <Box sx={{ mt: 2, pl: 2, pr: 4 }}>
-      <Slider
-      // sx={{maxWidth:"500px"}}
-        min={1}
-        max={q.ratingScale}
-        step={1}
-        marks={getRatingMarks(q.ratingScale)}
-        value={answers[q.id] ?? null}
-        valueLabelDisplay="auto"
-        onChange={(e, value) => handleChange(q, value)}
-      />
-    </Box>
+              {q.type === "rating" && (
+                <>
+                  <Box sx={{ mt: 2, pl: 2, pr: 4 }}>
+                    <Slider
+                      // sx={{maxWidth:"500px"}}
+                      min={1}
+                      max={q.ratingScale}
+                      step={1}
+                      marks={getRatingMarks(q.ratingScale)}
+                      value={answers[q.id] ?? null}
+                      valueLabelDisplay="auto"
+                      onChange={(e, value) => handleChange(q, value)}
+                    />
+                  </Box>
 
-    {errors[q.id] && (
-      <FormHelperText error sx={{ pl: 2 }}>
-        {errors[q.id]}
-      </FormHelperText>
-    )}
-  </>
-)}
+                  {errors[q.id] && (
+                    <FormHelperText error sx={{ pl: 2 }}>
+                      {errors[q.id]}
+                    </FormHelperText>
+                  )}
+                </>
+              )}
             </Box>
           ))}
         </Box>

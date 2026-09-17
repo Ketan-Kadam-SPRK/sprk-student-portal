@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { Tabs, Tab, Box, Button, Dialog } from "@mui/material";
 import styles from "./BatchDetailTab.module.css";
 import Sessions from "./Sessions/Sessions";
@@ -16,7 +16,18 @@ const TabPanel = ({ children, value, index }) => (
 
 function BatchDetailsTab({ sessionData }) {
   const tabNames = ["SESSIONS", "MODULES", "NOTES"];
-  const [activeTab, setActiveTab] = useState(0);
+
+  const [searchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get("tab");
+
+  const tabIndex = {
+    SESSIONS: 0,
+    MODULES: 1,
+    NOTES: 2,
+  };
+
+  const [activeTab, setActiveTab] = useState(tabIndex[tabFromUrl] ?? 0);
+
   const [filterData, setFilterData] = useState([]);
   const [openReassignModal, setOpenReassignModal] = useState(false);
 
@@ -103,13 +114,22 @@ function BatchDetailsTab({ sessionData }) {
               <Button
                 variant="contained"
                 onClick={handleReassignRequest}
+                disabled={sessionData?.isReassigned === true}
                 sx={{
-                  backgroundColor: "var(--secondary-color)",
+                  backgroundColor:
+                    sessionData?.isReassigned === true
+                      ? "#BDBDBD"
+                      : "var(--secondary-color)",
                   color: "#FFFFFF",
                   textTransform: "none",
                   fontWeight: 600,
                   borderRadius: "4px",
-                  "&:hover": { backgroundColor: "var(--secondary-color)" },
+                  "&:hover": {
+                    backgroundColor:
+                      sessionData?.isReassigned === true
+                        ? "#BDBDBD"
+                        : "var(--secondary-color)",
+                  },
                 }}
               >
                 REASSIGN REQUEST

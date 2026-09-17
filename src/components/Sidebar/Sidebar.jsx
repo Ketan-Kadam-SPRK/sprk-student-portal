@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,14 +9,17 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Typography } from "@mui/material";
+import { Typography, Avatar } from "@mui/material";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Image } from "cloudinary-react";
 import Styles from "./Sidebar.module.css";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate, useLocation } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+
 import { useSelector, useDispatch } from "react-redux";
+
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import AutoStoriesRoundedIcon from "@mui/icons-material/AutoStoriesRounded";
 import EventNoteRoundedIcon from "@mui/icons-material/EventNoteRounded";
@@ -25,72 +27,67 @@ import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import PaymentsRoundedIcon from "@mui/icons-material/PaymentsRounded";
 import WorkspacePremiumRoundedIcon from "@mui/icons-material/WorkspacePremiumRounded";
 import WorkRoundedIcon from "@mui/icons-material/WorkRounded";
+import EventBusyRounded from "@mui/icons-material/EventBusyRounded";
+import CategoryIcon from "@mui/icons-material/Category";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
+
 import Breadcrumb from "./Child/Breadcrumb";
-import { Avatar } from "@mui/material";
-// import { setUserProfilePic } from "../Profile/store/profileSlice";
-// import { getUserPic } from "../Profile/store/profile.actions";
-import { useLocation } from "react-router-dom";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Badge } from "@mui/material";
+
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-// import { useAuthHeaders } from "../../hooks/useAuthHeaders";
+
 import { tabMapping } from "./Child/ActiveTabsObject";
+
 import {
   AppBar,
   Drawer,
   DrawerHeader,
   headingTextStyle,
 } from "./Child/MuiDrawerStyle";
-// import ListItemWIcon from "./Child/ListItemWIcon";
+
 import SidebarItem from "./Child/SidebarItem";
-// import NotificationMenu from "./Child/NotificationMenu";
 import ProfileMenu from "./Child/ProfileMenu";
+
 import RoutesConfig from "../../Routes/RoutesConfig";
-import { EventBusyRounded } from "@mui/icons-material";
-import CategoryIcon from "@mui/icons-material/Category";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+
 import { getUserPic } from "../Login/store/login.actions";
 import { setUserProfilePic } from "../Login/store/authSlice";
+
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import BlinkedStatus from "../Common/BlinkedStatus/BlinkedStatus";
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
-/**
- * @class Sidebar
- * @description
- * Renders the sidebar component
- * @returns {JSX.Element} The rendered component
- *  **/
 function Sidebar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const headers = useAuthHeaders();
   const theme = useTheme();
-  // useConvertImgToBase64();
 
   const userDetails = useSelector((state) => state.authSlice.userDetails) || {};
-  const allowedTabs = useSelector((state) => state.authSlice.entitlements);
+
+  const allowedTabs =
+    useSelector((state) => state.authSlice.entitlements) || [];
 
   const userProfilePic =
     useSelector((state) => state.authSlice.userProfilePic) || "";
 
   const orglogo = useSelector((state) => state.authSlice.orgDetails.orgLogo);
 
-  // State to manage the main sidebar open/close state
+  // Sidebar open/close
   const [open, setOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [openNoti, setOpenNoti] = React.useState(null);
-  const isNotiOpen = Boolean(openNoti);
 
+  const isNotiOpen = Boolean(openNoti);
   const isMenuOpen = Boolean(anchorEl);
 
   const location = useLocation();
   const locationPath = location.pathname;
 
-  let activeTab = localStorage.setItem("activeTab", locationPath.split("/")[1]);
+  let activeTab = locationPath.split("/")[1];
 
   for (const path in tabMapping) {
     if (locationPath.startsWith(path)) {
@@ -99,13 +96,14 @@ function Sidebar() {
     }
   }
 
+  // Set active tab
   const setActiveTab = (tabName) => {
     localStorage.setItem("activeTab", tabName);
   };
 
   useEffect(() => {
     setActiveTab(locationPath?.split("/")[1]);
-  }, []);
+  }, [locationPath]);
 
   useEffect(() => {
     setActiveTab(activeTab);
@@ -115,6 +113,7 @@ function Sidebar() {
     setActiveTab(tabName);
   };
 
+  // Profile menu
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -123,6 +122,7 @@ function Sidebar() {
     setAnchorEl(null);
   };
 
+  // Notification menu
   const handleNotiMenuOpen = (event) => {
     setOpenNoti(event.currentTarget);
   };
@@ -131,43 +131,47 @@ function Sidebar() {
     setOpenNoti(null);
   };
 
-  // Function to open the main sidebar
+  // Drawer
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
-  // Function to close the main sidebar
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-
-  useEffect(() => {
-    getProfilePic();
-  }, []);
-
-  const getProfilePic = () => {
-    // if(userDetails.profile === true){
-    dispatch(getUserPic({ headers })).then((res) => {
-      dispatch(setUserProfilePic({ userProfilePic: res?.payload || "" }));
-    });
   };
 
   const handleToggleSidebar = () => {
     setOpen((prevState) => !prevState);
   };
 
+  // Get profile picture
+  useEffect(() => {
+    getProfilePic();
+  }, []);
+
+  const getProfilePic = () => {
+    dispatch(getUserPic({ headers })).then((res) => {
+      dispatch(
+        setUserProfilePic({
+          userProfilePic: res?.payload || "",
+        })
+      );
+    });
+  };
+
+  // Close drawer when clicking outside on mobile
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      // Only close on mobile screens
       if (window.innerWidth > 768) return;
 
       const drawer = document.querySelector(`.${Styles.drawer}`);
-      const menuButton = document.querySelector("#sidebar-menu-button"); // Add an id to the IconButton
+      const menuButton = document.querySelector("#sidebar-menu-button");
 
       if (
         drawer &&
         open &&
         !drawer.contains(event.target) &&
+        menuButton &&
         !menuButton.contains(event.target)
       ) {
         setOpen(false);
@@ -191,10 +195,11 @@ function Sidebar() {
       }}
     >
       <CssBaseline />
+
+      {/* ================= TOP BAR ================= */}
       <div style={{ width: "100%" }}>
         <AppBar
           position="fixed"
-          // open={open}
           sx={{
             backgroundColor: "white",
             boxShadow: "0px 0px 0px 0px",
@@ -203,35 +208,31 @@ function Sidebar() {
         >
           <Toolbar className={Styles.toolbarStyle}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
+              {/* Mobile Menu */}
               <IconButton
                 id="sidebar-menu-button"
                 color="inherit"
                 aria-label="open drawer"
-                // onClick={handleDrawerOpen }
                 onClick={handleToggleSidebar}
                 edge="start"
                 sx={{
                   marginRight: 1,
-                  // ...(open && { display: 'none' }),
                   color: "#e4e8ed",
-                  // display: { sx: "block", sm: "block", md: "none" },
                   display: {
-                    xs: "block", // visible on extra small screens
-                    sm: "block", // visible on small screens
+                    xs: "block",
+                    sm: "block",
                   },
                   "@media (min-width: 769px)": {
-                    display: "none", // hide after 768px
+                    display: "none",
                   },
                 }}
               >
-                {/* {open ? <ChevronLeftIcon /> : <ChevronRightIcon />} */}
-                {/* </IconButton> */}
                 <MenuIcon sx={{ color: "#888888" }} />
               </IconButton>
+
+              {/* Organization Logo */}
               <Box>
-                {/* Display the logo */}
                 <Image
-                  // className={Styles.logo}
                   style={{
                     width: "160px",
                     padding: "10px",
@@ -242,50 +243,21 @@ function Sidebar() {
                 />
               </Box>
             </Box>
-            <Box className={Styles.notificationBox}>
-              {/* <IconButton
-                size="large"
-                edge="start"
-                aria-label="account of current user"
-                // aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleNotiMenuOpen}
-                color="auto"
-                className={Styles.styleNotification}
-              >
-                <Badge
-                  badgeContent={notificationsData?.unseenCount}
-                  color="error"
-                >
-                  <NotificationsIcon size="large" color="action" />
-                </Badge>
-              </IconButton> */}
 
+            {/* ================= RIGHT SIDE ================= */}
+            <Box className={Styles.notificationBox}>
               <BlinkedStatus status={userDetails?.student_status || ""} />
 
+              {/* Profile */}
               <IconButton
                 size="large"
                 edge="start"
                 aria-label="account of current user"
-                // aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
                 color="auto"
                 className={Styles.profileMenuStyle}
               >
-                {/* {userProfilePic ? (
-                  <img
-                    src={userProfilePic || "./default-.png"}
-                    className={Styles.ProfileStyle}
-                    alt="profile-pic"
-                    // loading="lazy"
-                  />
-                ) : (
-                  <Avatar>
-                    <AccountCircleIcon className={Styles.avtarStyle} />
-                  </Avatar>
-                )} */}
-
                 {!userProfilePic ? (
                   <Avatar className={Styles.avtarStyle}>
                     <AccountCircleIcon fontSize="large" />
@@ -296,11 +268,12 @@ function Sidebar() {
                     className={Styles.ProfileStyle}
                     alt="profile"
                     loading="eager"
-                    onError={(e) =>
-                      (e.currentTarget.src = "./default-avatar.png  ")
-                    }
+                    onError={(e) => {
+                      e.currentTarget.src = "./default-avatar.png";
+                    }}
                   />
                 )}
+
                 <Box
                   sx={{
                     display: {
@@ -314,18 +287,12 @@ function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  {/* <Typography className={Styles.empIdStyle}>
-                    {" "}
-                    {userDetails?.name}
-                  </Typography> */}
-
                   <Typography
                     sx={{
                       fontSize: "14px",
                       color: "var(--sidebar-bg-color)",
                       fontWeight: "600",
                       cursor: "pointer",
-                      // width: "120px",
                       maxWidth: "120px",
                       wordBreak: "break-all",
                       textOverflow: "ellipsis",
@@ -334,21 +301,20 @@ function Sidebar() {
                     }}
                     title={userDetails?.name}
                   >
-                    {/* Display user details (employee id) */}
                     {userDetails?.name}
                   </Typography>
+
                   <KeyboardArrowDownIcon color="primary" />
                 </Box>
               </IconButton>
             </Box>
           </Toolbar>
         </AppBar>
+
         <ProfileMenu handleMenuClose={handleMenuClose} isMenuOpen={anchorEl} />
-        {/* <NotificationMenu
-          isNotiOpen={isNotiOpen}
-          handleNotiMenuClose={handleNotiMenuClose}
-        /> */}
       </div>
+
+      {/* ================= MAIN AREA ================= */}
       <div
         style={{
           display: "flex",
@@ -358,6 +324,7 @@ function Sidebar() {
           backgroundColor: "var(--background-color)",
         }}
       >
+        {/* ================= SIDEBAR ================= */}
         <div className={open ? Styles.DrawerDiv : Styles.DrawerDiv2}>
           <Drawer
             variant="permanent"
@@ -371,11 +338,9 @@ function Sidebar() {
                 display: "flex",
                 flexDirection: "column",
                 height: "100%",
-                overflow: "hidden", // Prevent scroll on the drawer itself
+                overflow: "hidden",
               },
             }}
-            // onMouseEnter={handleDrawerOpen}
-            // onMouseLeave={handleDrawerClose}
           >
             <div
               style={{
@@ -385,11 +350,12 @@ function Sidebar() {
                 height: "100%",
                 overflowY: "auto",
                 flexGrow: 1,
-                scrollbarWidth: "none", // Firefox
-                msOverflowStyle: "none", // IE/Edge
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
               }}
             >
               <div>
+                {/* Drawer Header */}
                 <DrawerHeader>
                   <IconButton onClick={handleDrawerClose}>
                     {theme.direction === "rtl" ? (
@@ -399,13 +365,15 @@ function Sidebar() {
                     )}
                   </IconButton>
                 </DrawerHeader>
+
                 <Divider />
 
                 <List>
-                  {/* ===== Overview ===== */}
+                  {/* ================= OVERVIEW ================= */}
                   {allowedTabs.includes("DASHBOARD") && (
                     <>
                       <Typography sx={headingTextStyle}>Overview</Typography>
+
                       <SidebarItem
                         title="Dashboard"
                         icon={DashboardRoundedIcon}
@@ -420,16 +388,24 @@ function Sidebar() {
                     </>
                   )}
 
-                  {/* ===== Academics ===== */}
+                  {/* ================= ACADEMICS ================= */}
                   {(allowedTabs.includes("COURSE_GROUPS") ||
                     allowedTabs.includes("BATCHES") ||
                     allowedTabs.includes("EXAMS") ||
-                    allowedTabs.includes("LEAVES")) && (
-                    <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                    allowedTabs.includes("LEAVES") ||
+                    allowedTabs.includes("EVENTS") ||
+                    allowedTabs.includes("MODULE_REQUEST")) && (
+                    <Typography
+                      sx={{
+                        ...headingTextStyle,
+                        mt: 3,
+                      }}
+                    >
                       Academics
                     </Typography>
                   )}
 
+                  {/* Course Groups */}
                   {allowedTabs.includes("COURSE_GROUPS") && (
                     <SidebarItem
                       title="Course Groups"
@@ -444,6 +420,7 @@ function Sidebar() {
                     />
                   )}
 
+                  {/* Batches */}
                   {allowedTabs.includes("BATCHES") && (
                     <SidebarItem
                       title="Batches"
@@ -458,6 +435,7 @@ function Sidebar() {
                     />
                   )}
 
+                  {/* Exams */}
                   {allowedTabs.includes("EXAMS") && (
                     <SidebarItem
                       title="Exams"
@@ -472,6 +450,7 @@ function Sidebar() {
                     />
                   )}
 
+                  {/* Leaves */}
                   {allowedTabs.includes("LEAVES") && (
                     <SidebarItem
                       title="Leaves"
@@ -486,7 +465,8 @@ function Sidebar() {
                     />
                   )}
 
-                                    {allowedTabs.includes("EVENTS") && (
+                  {/* Events */}
+                  {allowedTabs.includes("EVENTS") && (
                     <SidebarItem
                       title="Events"
                       icon={EmojiEventsIcon}
@@ -500,14 +480,35 @@ function Sidebar() {
                     />
                   )}
 
-                  {/* ===== Payments ===== */}
+                  {/* ================= MODULE REASSIGN ================= */}
+                  {allowedTabs.includes("MODULE_REQUEST") && (
+                    <SidebarItem
+                      title="Module Request"
+                      icon={LibraryAddOutlinedIcon}
+                      open={open}
+                      isActive={activeTab === "Module_Request"}
+                      onClick={() => {
+                        navigate("/Module_Request");
+                        handleTabClick("Module_Request");
+                        handleDrawerClose();
+                      }}
+                    />
+                  )}
+
+                  {/* ================= PAYMENT DETAILS ================= */}
                   {(allowedTabs.includes("BOOKINGS") ||
                     allowedTabs.includes("RECEIPTS")) && (
-                    <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                    <Typography
+                      sx={{
+                        ...headingTextStyle,
+                        mt: 3,
+                      }}
+                    >
                       Payment Details
                     </Typography>
                   )}
 
+                  {/* Bookings */}
                   {allowedTabs.includes("BOOKINGS") && (
                     <SidebarItem
                       title="Bookings"
@@ -522,6 +523,7 @@ function Sidebar() {
                     />
                   )}
 
+                  {/* Receipts */}
                   {allowedTabs.includes("RECEIPTS") && (
                     <SidebarItem
                       title="Receipts"
@@ -536,14 +538,20 @@ function Sidebar() {
                     />
                   )}
 
-                  {/* ===== Career ===== */}
+                  {/* ================= CAREER ================= */}
                   {(allowedTabs.includes("CERTIFICATES") ||
                     allowedTabs.includes("JOB_OPPORTUNITIES")) && (
-                    <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                    <Typography
+                      sx={{
+                        ...headingTextStyle,
+                        mt: 3,
+                      }}
+                    >
                       Career
                     </Typography>
                   )}
 
+                  {/* Certificates */}
                   {allowedTabs.includes("CERTIFICATES") && (
                     <SidebarItem
                       title="Certificates"
@@ -558,6 +566,7 @@ function Sidebar() {
                     />
                   )}
 
+                  {/* Job Opportunities */}
                   {allowedTabs.includes("JOB_OPPORTUNITIES") && (
                     <SidebarItem
                       title="Job Opportunities"
@@ -572,12 +581,18 @@ function Sidebar() {
                     />
                   )}
 
-                  {/* ===== Keep Learning ===== */}
+                  {/* ================= KEEP LEARNING ================= */}
                   {allowedTabs.includes("EXPLORE_COURSES") && (
                     <>
-                      <Typography sx={{ ...headingTextStyle, mt: 3 }}>
+                      <Typography
+                        sx={{
+                          ...headingTextStyle,
+                          mt: 3,
+                        }}
+                      >
                         Keep Learning
                       </Typography>
+
                       <SidebarItem
                         title="Explore Courses"
                         icon={CategoryIcon}
@@ -596,43 +611,27 @@ function Sidebar() {
             </div>
           </Drawer>
         </div>
+
+        {/* Toast */}
         <ToastContainer position="bottom-right" autoClose={3000} />
 
+        {/* ================= CONTENT ================= */}
         <Box
           component="main"
           sx={{
             flexGrow: 1,
-            // width: "100%",
-            // height: "calc(100vh - 65px)",
-            // minHeight: "100vh",
-            // minHeight: "100vh",
-            // width: `calc(100% - ${drawerWidth})`,
-            // overflow: "auto",
             display: "flex",
             flexDirection: "column",
             height: "100%",
             flex: 1,
             overflow: "hidden",
             position: "relative",
-
             zIndex: (theme) => theme.zIndex.drawer + 0,
           }}
         >
           <Breadcrumb />
-          {/* <Box
-            sx={
-              {
-                // mt: 4,
-                // display: "flex",
-                // flexDirection: "column",
-                // gap: "10px",
-                // height: "100%",
-                // flex: 1,
-              }
-            }
-          > */}
+
           <RoutesConfig />
-          {/* </Box> */}
         </Box>
       </div>
     </Box>

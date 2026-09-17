@@ -131,57 +131,56 @@ function Profile() {
     });
   };
 
-const renderBox = ({ Icon, title, value }) => {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        gap: 3,
-        alignItems: "center",
-        flexWrap: "wrap", // allow wrapping for small screens
-        width: "100%",
-      }}
-    >
+  const renderBox = ({ Icon, title, value }) => {
+    return (
       <Box
         sx={{
           display: "flex",
+          gap: 3,
           alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#D8D6FF",
-          borderRadius: "5px",
-          p: 1,
-          flexShrink: 0, // prevent icon box from shrinking
+          flexWrap: "wrap", // allow wrapping for small screens
+          width: "100%",
         }}
       >
-        <Icon sx={{ color: "#3A33E6", fontSize: "30px" }} />
-      </Box>
-
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          flex: 1,
-          minWidth: 0, // enables ellipsis to work
-        }}
-      >
-        <Typography fontWeight="bold">{title}</Typography>
-        <Typography
+        <Box
           sx={{
-            color: "#2F2F2FDE",
-            wordBreak: "break-word", // break long words/emails
-            overflowWrap: "anywhere", // ensures wrapping
-            textOverflow: "ellipsis",
-            overflow: "hidden",
-            fontSize: { xs: "0.85rem", sm: "1rem" },
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#D8D6FF",
+            borderRadius: "5px",
+            p: 1,
+            flexShrink: 0, // prevent icon box from shrinking
           }}
         >
-          {value}
-        </Typography>
-      </Box>
-    </Box>
-  );
-};
+          <Icon sx={{ color: "#3A33E6", fontSize: "30px" }} />
+        </Box>
 
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            minWidth: 0, // enables ellipsis to work
+          }}
+        >
+          <Typography fontWeight="bold">{title}</Typography>
+          <Typography
+            sx={{
+              color: "#2F2F2FDE",
+              wordBreak: "break-word", // break long words/emails
+              overflowWrap: "anywhere", // ensures wrapping
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              fontSize: { xs: "0.85rem", sm: "1rem" },
+            }}
+          >
+            {value}
+          </Typography>
+        </Box>
+      </Box>
+    );
+  };
 
   return (
     <Box
@@ -393,14 +392,21 @@ const renderBox = ({ Icon, title, value }) => {
                 }}
               />
             </Box>
-            <Typography  color="white" sx={{fontSize: { xs: "2rem", sm: "2rem", md: "2.75rem" }, }}>
+            <Typography
+              color="white"
+              sx={{ fontSize: { xs: "2rem", sm: "2rem", md: "2.75rem" } }}
+            >
               {userDetails?.name || ""}
             </Typography>
 
             <Typography
               // variant="h5"
               color="white"
-              sx={{ mt: 3, textAlign: "center", fontSize: { xs: "1.2rem", sm: "1.5rem" } }} // 👈 keeps “To Review” on one line{fontSize: { xs: "2rem", sm: "2rem", md: "3rem" } }}
+              sx={{
+                mt: 3,
+                textAlign: "center",
+                fontSize: { xs: "1.2rem", sm: "1.5rem" },
+              }} // 👈 keeps “To Review” on one line{fontSize: { xs: "2rem", sm: "2rem", md: "3rem" } }}
             >
               "Education is the most powerful weapon which you can use to change
               the world."
@@ -444,7 +450,7 @@ const renderBox = ({ Icon, title, value }) => {
           <Box
             sx={{
               display: "flex",
-              flexDirection:{xs:'column',sm:'row'},
+              flexDirection: { xs: "column", sm: "row" },
               justifyContent: "center",
               alignItems: "center",
               p: 2,
@@ -455,7 +461,7 @@ const renderBox = ({ Icon, title, value }) => {
               variant="contained"
               color="primary"
               onClick={handleToogleChangePassword}
-              sx={{width:{xs:"100%",sm:"auto"}}}
+              sx={{ width: { xs: "100%", sm: "auto" } }}
             >
               Change Password
             </Button>
@@ -463,12 +469,16 @@ const renderBox = ({ Icon, title, value }) => {
               variant="contained"
               color="primary"
               onClick={handleLogoutModal}
-              sx={{width:{xs:"100%",sm:"auto"}}}
+              sx={{ width: { xs: "100%", sm: "auto" } }}
             >
               Logout All
             </Button>
           </Box>
-          <Dialog open={openChangePassword} maxWidth="sm" onClose={handleToogleChangePassword}>
+          <Dialog
+            open={openChangePassword}
+            maxWidth="sm"
+            onClose={handleToogleChangePassword}
+          >
             <ChangePassword handleClose={handleToogleChangePassword} />
           </Dialog>
 

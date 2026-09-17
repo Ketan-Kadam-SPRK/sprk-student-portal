@@ -5,6 +5,7 @@ const tabNames = [
   "EXAMS",
   "LEAVES",
   "EVENTS",
+  "MODULE_REQUEST",
   "BOOKINGS",
   "RECEIPTS",
   "CERTIFICATES",
