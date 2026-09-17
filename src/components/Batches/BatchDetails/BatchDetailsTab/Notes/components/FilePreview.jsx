@@ -112,8 +112,6 @@ export default function FilePreview({ attachments }) {
     }
   };
 
-  console.log(attachments,"attachments");
-
   return (
     <Box className={styles.filePreviewGrid}>
       {attachments?.map((file, idx) => (
