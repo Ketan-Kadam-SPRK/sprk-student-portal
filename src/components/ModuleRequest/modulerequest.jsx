@@ -85,7 +85,7 @@ function ModuleRequest() {
    */
   const columns = [
     {
-      headerName: "Request BID",
+      headerName: "Request BatchId",
       id: "requestBId",
       minWidth: 160,
       format: (value) => {
@@ -109,26 +109,28 @@ function ModuleRequest() {
         );
       },
     },
+    {
+      headerName: "Course Name",
+      id: "courseName",
+      minWidth: 180,
+      format: (value) => value || "--",
+    },
 
     {
-      headerName: "Cancel Reason",
-      id: "AdminReason",
-      minWidth: 220,
-      format: (value) => (
-        <LightTooltip title={value || "--"} arrow>
-          <span
-            style={{
-              display: "block",
-              maxWidth: "220px",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {value || "--"}
-          </span>
-        </LightTooltip>
-      ),
+      headerName: "Date",
+      id: "date",
+      minWidth: 150,
+      format: (value) => {
+        if (!value) return "--";
+
+        return dateFormator(value);
+      },
+    },
+    {
+      headerName: "Reassign BatchId",
+      id: "reassignId",
+      minWidth: 160,
+      format: (value) => value || "--",
     },
 
     {
@@ -151,30 +153,25 @@ function ModuleRequest() {
         </LightTooltip>
       ),
     },
-
     {
-      headerName: "Course Name",
-      id: "courseName",
-      minWidth: 180,
-      format: (value) => value || "--",
-    },
-
-    {
-      headerName: "Date",
-      id: "date",
-      minWidth: 150,
-      format: (value) => {
-        if (!value) return "--";
-
-        return dateFormator(value);
-      },
-    },
-
-    {
-      headerName: "Reassign BID",
-      id: "reassignId",
-      minWidth: 160,
-      format: (value) => value || "--",
+      headerName: "Cancel Reason",
+      id: "AdminReason",
+      minWidth: 220,
+      format: (value) => (
+        <LightTooltip title={value || "--"} arrow>
+          <span
+            style={{
+              display: "block",
+              maxWidth: "220px",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {value || "--"}
+          </span>
+        </LightTooltip>
+      ),
     },
   ];
 
