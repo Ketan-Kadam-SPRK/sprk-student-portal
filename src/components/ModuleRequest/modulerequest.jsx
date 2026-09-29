@@ -13,6 +13,7 @@ import { Helmet } from "react-helmet-async";
 import { meta } from "../../../metaConfig";
 import { modulerequest } from "./store/modulerequet.action";
 import { useNavigate } from "react-router-dom";
+import InfoIcon from "@mui/icons-material/Info";
 
 function ModuleRequest() {
   const dispatch = useDispatch();
@@ -63,22 +64,28 @@ function ModuleRequest() {
   /**
    * Prepare table rows
    */
-  useEffect(() => {
-    const data = Array.isArray(rows)
-      ? rows.map((item, index) => ({
-          id: item?.targetBatchID || item?.originalBatchUid || index,
+/**
+ * Prepare table rows
+ */
+useEffect(() => {
+  const data = Array.isArray(rows)
+    ? rows.map((item, index) => ({
+        id:  index,
+        requestBId: item?.originalBatchUid,
+        AdminReason: item?.rejectionReason,
+        StudentReason: item?.requestReason,
+        courseName: item?.courseName,
+        date: item?.appliedDate,
 
-          requestBId: item?.originalBatchUid,
-          AdminReason: item?.rejectionReason,
-          StudentReason: item?.requestReason,
-          courseName: item?.courseName,
-          date: item?.appliedDate,
-          reassignId: item?.targetBatchID,
-        }))
-      : [];
+        // Correctly map request status
+        requestStatus: item?.requestStatus,
 
-    setFilterData(data);
-  }, [rows]);
+        reassignId: item?.targetBatchID,
+      }))
+    : [];
+
+  setFilterData(data);
+}, [rows]);;
 
   /**
    * Table Columns
@@ -126,11 +133,133 @@ function ModuleRequest() {
         return dateFormator(value);
       },
     },
+
+{
+  headerName: "Request Status",
+  id: "requestStatus",
+  minWidth: 160,
+  format: (status, rowData) => {
+    const getStatusStyle = (status) => {
+      switch (status) {
+        case "APPROVED":
+          return {
+            color: "#239A60",
+            backgroundColor: "#B0F7CC",
+          };
+
+        case "PENDING":
+          return {
+            color: "#783B09",
+            backgroundColor: "#FFFFB8",
+          };
+
+        case "REJECTED":
+          return {
+            color: "#A30000",
+            backgroundColor: "#FFC0C0",
+          };
+
+        case "WITHDREW":
+          return {
+            color: "#1C4963",
+            backgroundColor: "#DDEBFF",
+          };
+
+        default:
+          return {
+            color: "#555555",
+            backgroundColor: "#E0E0E0",
+          };
+      }
+    };
+
+    const formatForDisplay = (status) => {
+      if (!status) return "--";
+
+      switch (status) {
+        case "APPROVED":
+          return "Approved";
+
+        case "PENDING":
+          return "Pending";
+
+        case "DECLINED":
+          return "Declined";
+
+        case "WITHDREW":
+          return "Withdrew";
+
+        default:
+          return status
+            .toLowerCase()
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, (char) => char.toUpperCase());
+      }
+    };
+
+    const { color, backgroundColor } = getStatusStyle(status);
+
+    return (
+      <div
+        style={{
+          color,
+          backgroundColor,
+          textAlign: "center",
+          borderRadius: "20px",
+          minHeight: "35px",
+          padding: "8px 15px",
+          minWidth: "130px",
+          fontWeight: "bold",
+          display: "flex",
+          fontSize: "14px",
+          alignItems: "center",
+          justifyContent: "center",
+          maxWidth: "180px",
+          margin: "auto",
+        }}
+      >
+        {formatForDisplay(status)}
+
+        {status === "DECLINED" && rowData?.AdminReason && (
+          <LightTooltip title={rowData.AdminReason} arrow>
+            <InfoIcon
+              sx={{
+                color: "#9F0000",
+                marginLeft: "8px",
+                fontSize: "16px",
+                cursor: "pointer",
+              }}
+            />
+          </LightTooltip>
+        )}
+      </div>
+    );
+  },
+},
     {
       headerName: "Reassign BatchId",
       id: "reassignId",
       minWidth: 160,
-      format: (value) => value || "--",
+      format: (value) => {
+        if (!value) return "--";
+
+        return (
+          <Typography
+            component="span"
+            sx={{
+              color: "#1976D2",
+              cursor: "pointer",
+              fontWeight: 500,
+              "&:hover": {
+                textDecoration: "underline",
+              },
+            }}
+            onClick={() => navigate(`/Batches/${value}?tab=MODULES`)}
+          >
+            {value}
+          </Typography>
+        );
+      },
     },
 
     {

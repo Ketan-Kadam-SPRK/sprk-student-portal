@@ -114,10 +114,10 @@ function BatchDetailsTab({ sessionData }) {
               <Button
                 variant="contained"
                 onClick={handleReassignRequest}
-                disabled={sessionData?.isReassigned === true}
+                disabled={sessionData?.canRequestReassignment === false}
                 sx={{
                   backgroundColor:
-                    sessionData?.isReassigned === true
+                    sessionData?.canRequestReassignment === false
                       ? "#BDBDBD"
                       : "var(--secondary-color)",
                   color: "#FFFFFF",
@@ -126,7 +126,7 @@ function BatchDetailsTab({ sessionData }) {
                   borderRadius: "4px",
                   "&:hover": {
                     backgroundColor:
-                      sessionData?.isReassigned === true
+                      sessionData?.canRequestReassignment === false
                         ? "#BDBDBD"
                         : "var(--secondary-color)",
                   },
