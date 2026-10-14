@@ -1,0 +1,110 @@
+.maintenanceStatus {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 4px 8px;
+    border-radius: 6px;
+    overflow: hidden;
+    user-select: none;
+}
+
+.maintenanceStatus:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.maintenanceIcon {
+    font-size: 20px !important;
+    flex-shrink: 0;
+    animation: blinkIcon 1s infinite;
+}
+
+.ongoing {
+    color: #d32f2f;
+}
+
+.upcoming {
+    color: #ed6c02;
+}
+
+/* =========================
+   Desktop Marquee
+========================= */
+
+.marqueeWrapper {
+    width: 240px;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.marqueeContent {
+    display: inline-flex;
+    width: max-content;
+    animation: maintenanceMarquee 12s linear infinite;
+}
+
+.marqueeContent span {
+    margin-right: 70px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.marqueeContent strong {
+    font-weight: 700;
+}
+
+/* =========================
+   Blinking Icon
+========================= */
+
+@keyframes blinkIcon {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: scale(1.15);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* =========================
+   Infinite Scrolling
+========================= */
+
+@keyframes maintenanceMarquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-33.333%);
+    }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 768px) {
+    .maintenanceStatus {
+        padding: 4px;
+        gap: 0;
+    }
+
+    .maintenanceIcon {
+        font-size: 23px !important;
+    }
+
+    .marqueeWrapper {
+        display: none;
+    }
+}
