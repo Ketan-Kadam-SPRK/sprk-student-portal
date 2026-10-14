@@ -32,6 +32,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
+import BlinkedMaintenance from "../Common/BlinkedMaintenance/BlinkedMaintenance";
 
 import Breadcrumb from "./Child/Breadcrumb";
 
@@ -57,6 +58,8 @@ import { setUserProfilePic } from "../Login/store/authSlice";
 
 import { useAuthHeaders } from "../../Hooks/useAuthHeaders";
 import BlinkedStatus from "../Common/BlinkedStatus/BlinkedStatus";
+import Dialog from "@mui/material/Dialog";
+import {getMaintenanceListNotify} from "./Sidebar.action";
 
 function Sidebar() {
   const dispatch = useDispatch();
@@ -80,6 +83,48 @@ function Sidebar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [openNoti, setOpenNoti] = React.useState(null);
+  const [maintenanceDialogOpen, setMaintenanceDialogOpen] = useState(false);
+const [maintenanceList, setMaintenanceList] = useState([]);
+
+const ongoingMaintenance = maintenanceList.filter(
+  (item) => item.status === "ONGOING"
+);
+
+const upcomingMaintenance = maintenanceList.filter(
+  (item) => item.status !== "ONGOING"
+);
+
+const handleMaintenanceOpen = () => {
+  setMaintenanceDialogOpen(true);
+};
+
+const handleMaintenanceClose = () => {
+  setMaintenanceDialogOpen(false);
+};
+
+const getMaintenanceList = async () => {
+  try {
+    dispatch(getMaintenanceListNotify({ headers })).then((response) => {
+      console.log("Maintenance List Response:", response);
+      const maintenanceData = response?.payload?.data.data || [];
+      setMaintenanceList(maintenanceData);
+    });
+  } catch (error) {
+    console.error("Failed to fetch maintenance list", error);
+  }
+};
+
+useEffect(() => {
+  getMaintenanceList();
+
+  const interval = setInterval(() => {
+    getMaintenanceList();
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, []);
+
+console.log("Maintenance List:", maintenanceList);
 
   const isNotiOpen = Boolean(openNoti);
   const isMenuOpen = Boolean(anchorEl);
@@ -247,6 +292,23 @@ function Sidebar() {
             {/* ================= RIGHT SIDE ================= */}
             <Box className={Styles.notificationBox}>
               <BlinkedStatus status={userDetails?.student_status || ""} />
+
+                {/* Maintenance */}
+  {maintenanceList.length > 0 && (
+    <BlinkedMaintenance
+      status={
+        ongoingMaintenance.length > 0
+          ? "ONGOING"
+          : "UPCOMING"
+      }
+      onClick={handleMaintenanceOpen}
+      title={
+        ongoingMaintenance.length > 0
+          ? "Maintenance is currently ongoing"
+          : "Maintenance is scheduled"
+      }
+    />
+  )}
 
               {/* Profile */}
               <IconButton
@@ -614,6 +676,138 @@ function Sidebar() {
 
         {/* Toast */}
         <ToastContainer position="bottom-right" autoClose={3000} />
+        <Dialog
+  open={maintenanceDialogOpen}
+  onClose={handleMaintenanceClose}
+  fullWidth
+  maxWidth="sm"
+>
+  <Box sx={{ p: 3 }}>
+    <Typography
+      variant="h6"
+      fontWeight={600}
+      mb={2}
+    >
+      Maintenance & Deployment
+    </Typography>
+
+    {/* Ongoing Maintenance */}
+    {ongoingMaintenance.length > 0 && (
+      <>
+        <Typography
+          variant="body2"
+          fontWeight={600}
+          color="error"
+          mb={1}
+        >
+          🔴 Ongoing Maintenance
+        </Typography>
+
+        {ongoingMaintenance.map((item) => (
+          <Box
+            key={item.id}
+            sx={{
+              mb: 2,
+              p: 1.5,
+              border: "1px solid #eee",
+              borderRadius: 1,
+            }}
+          >
+            <Typography>
+              {item.title}
+            </Typography>
+
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              mt={0.5}
+            >
+              Started:{" "}
+              {new Date(item.startDate).toLocaleString()}
+            </Typography>
+
+            <Typography
+              variant="body2"
+              color="text.secondary"
+            >
+              Ends:{" "}
+              {new Date(item.endDate).toLocaleString()}
+            </Typography>
+          </Box>
+        ))}
+      </>
+    )}
+
+    {/* Upcoming Maintenance */}
+    {upcomingMaintenance.length > 0 && (
+      <>
+        <Typography
+          variant="body2"
+          fontWeight={600}
+          color="warning.main"
+          mb={1}
+        >
+          🟠 Upcoming Maintenance
+        </Typography>
+
+        {upcomingMaintenance.map((item) => (
+          <Box
+            key={item.id}
+            sx={{
+              mb: 2,
+              p: 1.5,
+              border: "1px solid #eee",
+              borderRadius: 1,
+            }}
+          >
+            <Typography>
+              {item.title}
+            </Typography>
+
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              mt={0.5}
+            >
+              Start:{" "}
+              {new Date(item.startDate).toLocaleString()}
+            </Typography>
+
+            <Typography
+              variant="body2"
+              color="text.secondary"
+            >
+              End:{" "}
+              {new Date(item.endDate).toLocaleString()}
+            </Typography>
+          </Box>
+        ))}
+      </>
+    )}
+
+    {/* Warning */}
+    <Box
+      sx={{
+        mt: 1,
+        p: 1.5,
+        borderRadius: 1,
+        backgroundColor:
+          ongoingMaintenance.length > 0
+            ? "#ffebee"
+            : "#fff8e1",
+      }}
+    >
+      <Typography
+        variant="body2"
+        fontWeight={500}
+      >
+        {ongoingMaintenance.length > 0
+          ? "🔴 Maintenance is currently in progress. You cannot perform any work at this time."
+          : "⚠️ Please save your work before the scheduled maintenance starts."}
+      </Typography>
+    </Box>
+  </Box>
+</Dialog>
 
         {/* ================= CONTENT ================= */}
         <Box
