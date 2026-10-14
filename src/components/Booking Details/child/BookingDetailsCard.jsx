@@ -7,6 +7,8 @@ import dateFormator from "../../../Utils/dateFormator";
 import CircularProgressWithLabel from "../../Common/CircularProgressWithLable";
 import { CapitalFirstLetterOnly } from "../../../Utils/CapitalFirstLetterOnly";
 import { AmountFormat } from "../../../Utils/AmountFormat";
+import { Tooltip } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 function BookingDetailsCard({ item, index }) {
   const navigate = useNavigate();
@@ -75,7 +77,7 @@ function BookingDetailsCard({ item, index }) {
             "linear-gradient(270deg, var(--secondary-color) 0.13%, var(--sidebar-bg-color) 91.8%)",
           borderRadius: "10px",
           alignItems: "flex-start",
-          height: "120px",
+          // height: "120px",
           justifyContent: "space-between",
         }}
       >
@@ -118,6 +120,39 @@ function BookingDetailsCard({ item, index }) {
         >
           Booking Date : {dateFormator(item?.booking_date)}
         </Typography>
+<Box
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    gap: "5px",
+    flexWrap: "wrap",
+  }}
+>
+  <Typography
+    sx={{
+      color: "white",
+      fontSize: "var(--font-size-small)",
+      textTransform: "capitalize",
+      maxWidth: "100%",
+    }}
+  >
+    Estimated Expiry Date : {dateFormator(item?.updatedExpiryDate)}
+  </Typography>
+
+  <Tooltip
+    title="The estimated expiry date will be updated based on approved leave days, batch hold periods, or administrative actions."
+    arrow
+    placement="top"
+  >
+    <InfoOutlinedIcon
+      sx={{
+        color: "white",
+        fontSize: "16px",
+        cursor: "pointer",
+      }}
+    />
+  </Tooltip>
+</Box>
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column" }}>
