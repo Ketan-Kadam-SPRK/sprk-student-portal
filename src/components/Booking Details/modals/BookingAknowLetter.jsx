@@ -113,17 +113,18 @@ const BookingAknowLetter = forwardRef(
 
     const joinedNames = courseNames?.join(", "); // Join course names into a string
 
-    const paidPayments = bookingData?.payments
-      ?.filter((payment) => payment.installment_status === "PAID")
-      ?.map((payment) => {
-        const paidAmount = payment.paid_amount || 0;
-        totalFees -= paidAmount; // Update the remaining balance
-        return {
-          ...payment,
-          balance: totalFees,
-        };
-      });
+const paidPayments = bookingData?.payments
+  ?.filter((payment) => payment.installment_status === "PAID")
+  ?.map((payment) => {
+    const paidAmount = payment.paid_amount || 0;
 
+    totalFees = Math.max(0, totalFees - paidAmount);
+
+    return {
+      ...payment,
+      balance: totalFees,
+    };
+  });
     // Calculate total paid amount
     const totalPaidAmount =
       paidPayments?.reduce(
