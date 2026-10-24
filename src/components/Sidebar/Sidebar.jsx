@@ -119,7 +119,7 @@ useEffect(() => {
 
   const interval = setInterval(() => {
     getMaintenanceList();
-  }, 3000);
+  }, 60000);
 
   return () => clearInterval(interval);
 }, []);
